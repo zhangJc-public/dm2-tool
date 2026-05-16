@@ -1,0 +1,410 @@
+# DoDAF V2.0 视图表达形式对照表
+#
+# 数据来源：
+#   - dodaf_v2-02_web.pdf (DoDAF V2.02 web, 289 pages)
+#   - 2009美国国防部体系结构框架 - DoDAF V2.0 - Vol. 2.pdf (Vol 2: Architectural Data and Models)
+#
+# 分类体系 (dodaf_v2-02_web.pdf page 40):
+#   Structural  - 结构/静态关系描述
+#   Behavioral  - 行为/动态过程描述
+#   Tree        - 层级分类/分解
+#   Mapping     - 两类信息间的映射关系
+#   Tabular     - 行列结构数据
+#   Pictorial   - 自由图形描述
+#   Timeline    - 时间线/阶段规划
+#   Ontology    - 术语/本体定义
+#
+# 生成日期: 2026-05-05
+
+# =============================================================================
+# AV — All Viewpoint (全视点) — 2 views
+# =============================================================================
+- id: "AV-1"
+  representation: text
+  mermaid_type: none
+  model_category: Tabular
+  standard_name: "Overview and Summary Information"
+  sections: ["项目概述", "愿景与目标", "范围与边界", "关键指标与效果"]
+
+- id: "AV-2"
+  representation: text
+  mermaid_type: none
+  model_category: Ontology
+  standard_name: "Integrated Dictionary"
+  sections: ["术语定义", "缩写表", "数据类型说明"]
+
+# =============================================================================
+# CV — Capability Viewpoint (能力视点) — 7 views
+# =============================================================================
+- id: "CV-1"
+  representation: text
+  mermaid_type: none
+  model_category: Tabular
+  standard_name: "Vision"
+  sections: ["能力愿景", "战略背景", "能力范围", "预期效果"]
+
+- id: "CV-2"
+  representation: tree
+  mermaid_type: graph
+  model_category: Tree
+  standard_name: "Capability Taxonomy"
+  sections: ["能力层级结构", "能力分类说明", "能力间关系"]
+
+- id: "CV-3"
+  representation: gantt
+  mermaid_type: gantt
+  model_category: Timeline
+  standard_name: "Capability Phasing"
+  sections: ["能力阶段划分", "里程碑", "时间线", "各阶段资源与效果"]
+
+- id: "CV-4"
+  representation: node-link
+  mermaid_type: graph
+  model_category: Structural
+  standard_name: "Capability Dependencies"
+  sections: ["能力依赖关系", "逻辑分组", "依赖分析"]
+
+- id: "CV-5"
+  representation: table
+  mermaid_type: none
+  model_category: Mapping
+  standard_name: "Capability to Organizational Development Mapping"
+  sections: ["能力-组织映射表", "部署阶段", "执行者与位置"]
+
+- id: "CV-6"
+  representation: table
+  mermaid_type: none
+  model_category: Mapping
+  standard_name: "Capability to Operational Activities Mapping"
+  sections: ["能力-作战活动映射表", "映射分析"]
+
+- id: "CV-7"
+  representation: table
+  mermaid_type: none
+  model_category: Mapping
+  standard_name: "Capability to Services Mapping"
+  sections: ["能力-服务映射表", "服务启用能力说明"]
+
+# =============================================================================
+# DIV — Data and Information Viewpoint (数据与信息视点) — 3 views
+# =============================================================================
+- id: "DIV-1"
+  representation: er-diagram
+  mermaid_type: erDiagram
+  model_category: Structural
+  standard_name: "Conceptual Data Model"
+  sections: ["高层数据概念", "实体定义", "实体关系描述", "ER 图"]
+
+- id: "DIV-2"
+  representation: er-diagram
+  mermaid_type: erDiagram
+  model_category: Structural
+  standard_name: "Logical Data Model"
+  sections: ["数据结构定义", "属性说明", "业务规则约束", "逻辑数据图"]
+
+- id: "DIV-3"
+  representation: text
+  mermaid_type: none
+  model_category: Tabular
+  standard_name: "Physical Data Model"
+  sections: ["物理实现格式", "消息格式", "文件结构", "物理模式"]
+
+# =============================================================================
+# OV — Operational Viewpoint (作战视点) — 9 views
+# =============================================================================
+- id: "OV-1"
+  representation: pictorial
+  mermaid_type: graph
+  model_category: Pictorial
+  standard_name: "High-Level Operational Concept Graphic"
+  sections: ["作战概念概述", "系统边界标注", "主要作战节点", "概念图"]
+
+- id: "OV-2"
+  representation: node-link
+  mermaid_type: graph
+  model_category: Structural
+  standard_name: "Operational Resource Flow Description"
+  sections: ["作战节点识别", "资源流描述", "源节点-目标节点分析", "资源流类型"]
+
+- id: "OV-3"
+  representation: table
+  mermaid_type: none
+  model_category: Tabular
+  standard_name: "Operational Resource Flow Matrix"
+  sections: ["资源流矩阵", "交换属性", "资源类型分析"]
+  # NOTE: This is a MATRIX, not a diagram. Use markdown table.
+
+- id: "OV-4"
+  representation: org-chart
+  mermaid_type: graph
+  model_category: Structural
+  standard_name: "Organizational Relationships Chart"
+  sections: ["组织层级关系", "指挥/协作关系", "角色与职责"]
+
+- id: "OV-5a"
+  representation: tree
+  mermaid_type: graph
+  model_category: Tree
+  standard_name: "Operational Activity Decomposition Tree"
+  sections: ["活动层级分解", "活动标识符", "层级结构关系"]
+
+- id: "OV-5b"
+  representation: flowchart
+  mermaid_type: flowchart
+  model_category: Behavioral
+  standard_name: "Operational Activity Model"
+  sections: ["活动上下文", "输入输出关系", "成本/执行者附加信息", "活动模型图"]
+
+- id: "OV-6a"
+  representation: text
+  mermaid_type: none
+  model_category: Tabular
+  standard_name: "Operational Rules Model"
+  sections: ["业务规则识别", "约束条件", "规则适用范围", "规则优先级"]
+
+- id: "OV-6b"
+  representation: state-diagram
+  mermaid_type: stateDiagram
+  model_category: Behavioral
+  standard_name: "State Transition Description"
+  sections: ["状态定义", "状态转换条件", "事件触发", "状态转换图"]
+
+- id: "OV-6c"
+  representation: sequence-diagram
+  mermaid_type: sequenceDiagram
+  model_category: Behavioral
+  standard_name: "Event-Trace Description"
+  sections: ["场景/事件序列", "参与者识别", "交互顺序", "事件追踪图"]
+
+# =============================================================================
+# PV — Project Viewpoint (项目视点) — 3 views
+# =============================================================================
+- id: "PV-1"
+  representation: node-link
+  mermaid_type: graph
+  model_category: Structural
+  standard_name: "Project Portfolio Relationships"
+  sections: ["项目组合概览", "项目依赖关系", "组织结构关联"]
+
+- id: "PV-2"
+  representation: gantt
+  mermaid_type: gantt
+  model_category: Timeline
+  standard_name: "Project Timelines"
+  sections: ["项目时间线", "关键里程碑", "项目依赖关系", "时间规划"]
+
+- id: "PV-3"
+  representation: table
+  mermaid_type: none
+  model_category: Mapping
+  standard_name: "Project to Capability Mapping"
+  sections: ["项目-能力映射表", "能力实现路径", "项目贡献分析"]
+
+# =============================================================================
+# SV — Systems Viewpoint (系统视点) — 14 views
+# =============================================================================
+- id: "SV-1"
+  representation: node-link
+  mermaid_type: graph
+  model_category: Structural
+  standard_name: "Systems Interface Description"
+  sections: ["系统识别", "系统接口定义", "系统间连接", "接口描述图"]
+
+- id: "SV-2"
+  representation: node-link
+  mermaid_type: graph
+  model_category: Structural
+  standard_name: "Systems Resource Flow Description"
+  sections: ["系统资源流", "源-目标系统", "资源流类型"]
+
+- id: "SV-3"
+  representation: table
+  mermaid_type: none
+  model_category: Mapping
+  standard_name: "Systems-Systems Matrix"
+  sections: ["系统-系统矩阵", "接口类型", "规划vs现有分析"]
+  # NOTE: This is a MATRIX.
+
+- id: "SV-4"
+  representation: tree
+  mermaid_type: graph
+  model_category: Tree
+  standard_name: "Systems Functionality Description"
+  sections: ["系统功能层级", "功能分解", "数据流关系"]
+
+- id: "SV-5a"
+  representation: table
+  mermaid_type: none
+  model_category: Mapping
+  standard_name: "Operational Activity to Systems Function Traceability Matrix"
+  sections: ["作战活动-系统功能追溯表", "映射分析"]
+
+- id: "SV-5b"
+  representation: table
+  mermaid_type: none
+  model_category: Mapping
+  standard_name: "Operational Activity to Systems Traceability Matrix"
+  sections: ["系统-能力/活动追溯表", "双向追溯分析"]
+
+- id: "SV-6"
+  representation: table
+  mermaid_type: none
+  model_category: Tabular
+  standard_name: "Systems Resource Flow Matrix"
+  sections: ["系统资源流矩阵", "资源流属性", "交换度量"]
+
+- id: "SV-7"
+  representation: table
+  mermaid_type: none
+  model_category: Tabular
+  standard_name: "Systems Measures Matrix"
+  sections: ["系统度量矩阵", "性能度量", "时间框架"]
+
+- id: "SV-8"
+  representation: gantt
+  mermaid_type: gantt
+  model_category: Timeline
+  standard_name: "Systems Evolution Description"
+  sections: ["系统演进路线图", "迁移阶段", "增量改进步骤"]
+
+- id: "SV-9"
+  representation: text
+  mermaid_type: none
+  model_category: Tabular
+  standard_name: "Systems Technology & Skills Forecast"
+  sections: ["新兴技术", "软件/硬件产品预测", "技能需求", "时间框架"]
+
+- id: "SV-10a"
+  representation: text
+  mermaid_type: none
+  model_category: Tabular
+  standard_name: "Systems Rules Model"
+  sections: ["系统约束规则", "设计/实现约束", "规则适用范围"]
+
+- id: "SV-10b"
+  representation: state-diagram
+  mermaid_type: stateDiagram
+  model_category: Behavioral
+  standard_name: "Systems State Transition Description"
+  sections: ["系统状态定义", "事件响应", "状态转换条件", "状态转换图"]
+
+- id: "SV-10c"
+  representation: sequence-diagram
+  mermaid_type: sequenceDiagram
+  model_category: Behavioral
+  standard_name: "Systems Event-Trace Description"
+  sections: ["关键事件序列", "系统交互时序", "事件追踪图"]
+
+# =============================================================================
+# SvcV — Services Viewpoint (服务视点) — 13 views
+# =============================================================================
+- id: "SvcV-1"
+  representation: node-link
+  mermaid_type: graph
+  model_category: Structural
+  standard_name: "Services Context Description"
+  sections: ["服务识别", "服务项定义", "服务间连接", "服务上下文图"]
+
+- id: "SvcV-2"
+  representation: node-link
+  mermaid_type: graph
+  model_category: Structural
+  standard_name: "Services Resource Flow Description"
+  sections: ["服务资源流", "源-目标服务", "资源流类型"]
+
+- id: "SvcV-3a"
+  representation: table
+  mermaid_type: none
+  model_category: Mapping
+  standard_name: "Systems-Services Matrix"
+  sections: ["系统-服务矩阵", "关系分析"]
+  # NOTE: MATRIX
+
+- id: "SvcV-3b"
+  representation: table
+  mermaid_type: none
+  model_category: Mapping
+  standard_name: "Services-Services Matrix"
+  sections: ["服务-服务矩阵", "服务接口类型", "规划vs现有"]
+  # NOTE: MATRIX
+
+- id: "SvcV-4"
+  representation: tree
+  mermaid_type: graph
+  model_category: Tree
+  standard_name: "Services Functionality Description"
+  sections: ["服务功能层级", "功能分解", "服务数据流"]
+
+- id: "SvcV-5"
+  representation: table
+  mermaid_type: none
+  model_category: Mapping
+  standard_name: "Operational Activity to Services Traceability Matrix"
+  sections: ["作战活动-服务追溯表", "服务映射分析"]
+
+- id: "SvcV-6"
+  representation: table
+  mermaid_type: none
+  model_category: Tabular
+  standard_name: "Services Resource Flow Matrix"
+  sections: ["服务资源流矩阵", "资源流属性"]
+
+- id: "SvcV-7"
+  representation: table
+  mermaid_type: none
+  model_category: Tabular
+  standard_name: "Services Measures Matrix"
+  sections: ["服务度量矩阵", "SLA 指标", "时间框架"]
+
+- id: "SvcV-8"
+  representation: gantt
+  mermaid_type: gantt
+  model_category: Timeline
+  standard_name: "Services Evolution Description"
+  sections: ["服务演进路线图", "SOA 转型步骤", "迁移阶段"]
+
+- id: "SvcV-9"
+  representation: text
+  mermaid_type: none
+  model_category: Tabular
+  standard_name: "Services Technology & Skills Forecast"
+  sections: ["新兴技术", "技能预测", "技术成熟度"]
+
+- id: "SvcV-10a"
+  representation: text
+  mermaid_type: none
+  model_category: Tabular
+  standard_name: "Services Rules Model"
+  sections: ["服务约束规则", "SLA/熔断/降级契约"]
+
+- id: "SvcV-10b"
+  representation: state-diagram
+  mermaid_type: stateDiagram
+  model_category: Behavioral
+  standard_name: "Services State Transition Description"
+  sections: ["服务状态定义", "事件响应", "编排器/Saga状态机"]
+
+- id: "SvcV-10c"
+  representation: sequence-diagram
+  mermaid_type: sequenceDiagram
+  model_category: Behavioral
+  standard_name: "Services Event-Trace Description"
+  sections: ["服务交互序列", "API调用链", "事件追踪图"]
+
+# =============================================================================
+# StdV — Standards Viewpoint (标准视点) — 2 views
+# =============================================================================
+- id: "StdV-1"
+  representation: table
+  mermaid_type: none
+  model_category: Tabular
+  standard_name: "Standards Profile"
+  sections: ["适用标准列表", "标准分类", "适用范围", "合规要求"]
+  # NOTE: This is a TABLE, not a diagram. No Mermaid.
+
+- id: "StdV-2"
+  representation: table
+  mermaid_type: none
+  model_category: Tabular
+  standard_name: "Standards Forecast"
+  sections: ["新兴标准", "潜在影响", "时间框架", "标准趋势分析"]

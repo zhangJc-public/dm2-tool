@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dm2-tool/schemas/run.json",
+  "title": "dm2 run --json / --agent Response Data",
+  "description": "Pipeline 执行的结构化输出（Agent 驱动模式）",
+  "type": "object",
+  "properties": {
+    "pipeline": {
+      "type": "object",
+      "description": "Pipeline 状态",
+      "properties": {
+        "status": { "enum": ["running", "complete", "unknown"] },
+        "current_step": { "type": "string" },
+        "description": { "type": "string" },
+        "iteration": { "type": "integer" },
+        "steps": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "status": { "enum": ["pending", "in_progress", "completed", "failed"] },
+              "output_path": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "first_instructions": {
+      "type": "object",
+      "description": "第一步的 Agent 指令（仅在 --agent 初始化时）",
+      "properties": {
+        "context": {
+          "type": "object",
+          "properties": {
+            "project_description": { "type": "string" }
+          }
+        },
+        "rules": { "type": "array", "items": { "type": "string" } },
+        "template": { "type": "object" },
+        "output_path": { "type": "string" }
+      }
+    },
+    "next_step": {
+      "type": "string",
+      "description": "完成后的下一步 ID（仅在 --complete-step 时）"
+    }
+  }
+}

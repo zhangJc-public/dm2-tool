@@ -1,0 +1,5 @@
+include dm2-reference/core/_dm2_v202_extract.json
+include dm2-reference/core/views.yaml
+graft dm2-reference/core/groups
+graft dm2-reference/reference
+exclude dm2-reference/examples/*

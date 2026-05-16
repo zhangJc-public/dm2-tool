@@ -1,0 +1,2777 @@
+[
+  {
+    "term": "Activity",
+    "definition": "Work, not specific to a single organization, weapon system or individual that transforms inputs (Resources) into outputs (Resources) or changes their state.",
+    "alias": "Action, Process Operational Activity, Processes, Function, System Function, Operation, Task, Plan, Project",
+    "source": "(DoDAF):  An action performed in conducting the business of an enterprise. It is a general term that does not imply a placement in a hierarchy (e.g., it could be a process or a task as defined in other documents and it could be at any level of the hierarchy of the OV-5). It is used to portray operational actions not hardware/software system functions.\" \n(DoDAF/CADM):  (ProcessActivity, catCode=5) The representation of a means by which a process acts on some input to produce a specific output. (DDDS Counter (4204/3)(A))\n(MODAF):  An action performed in conducting the business of an enterprise. It is a general term that does not imply a placement in a hierarchy (eg, it could be a process or a task as defined in other documents and it could be at any level of the hierarchy). It is used to portray operational actions not hardware/software system functions. Operational Activity may include either military operations or business processes.\"\n(NAF):  A logical process, specified independently of how the process is carried out. Note: an <OperationalActivity>> may only be carried out by a logical <<Node>>. (MM)\n(JCS 1-02):  Activity: 1. A unit, organization, or installation performing a function or mission, e.g.,\nreception center, redistribution center, naval station, naval shipyard. 2. A function, mission, action, \nor collection of actions. Also called ACT. See also establishment.\n(Zachman):  Activity: A general term to decribe something that is done.  It is used when a more \nspecific definition is not available.  An ACTIVITY must be either a FUNCTION or a PROCESS.\n(American Heritage Dictionary):  Activity:  1. The state or quality of being active.  2. A specific \ndeed, action, function, or sphere of action.  3. Any specific behavior.  4. The state of being active.\n(Webster's):  Activity: 1. A specific function being performed by an organizational unit or system.  \n2. A pursuit in which a person or system is active.",
+    "groups": [
+      "Resource Flow",
+      "Information And Data",
+      "Reification Levels",
+      "Capability",
+      "Services",
+      "Project",
+      "Pedigree",
+      "Rules",
+      "Information Pedigree"
+    ]
+  },
+  {
+    "term": "activityConsumesResource",
+    "definition": "Represents that an activity consumes a resource",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "Resource Flow",
+      "Information And Data",
+      "Reification Levels",
+      "Capability",
+      "Services",
+      "Project",
+      "Pedigree",
+      "Rules",
+      "Information Pedigree"
+    ]
+  },
+  {
+    "term": "activityMapsToCapabilityType",
+    "definition": "Represents that an activity was / is / can-be/ must-be conducted under certain conditions with a spatiotemporal overlap of the activity with the condition.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "Capability"
+    ]
+  },
+  {
+    "term": "activityPartOfCapability",
+    "definition": "A disposition to manifest an Activity. An Activity to be performed to achieve a desired effect under specified [performance] standards and conditions through combinations of ways and means.",
+    "alias": "",
+    "source": "(DoDAF Meta Model):  A disposition to manifest an Activity. An Activity to be performed to achieve a desired effect under specified [performance] standards and conditions through combinations of ways and means.",
+    "groups": [
+      "Capability"
+    ]
+  },
+  {
+    "term": "activityPartOfProjectType",
+    "definition": "A wholePart relationship between a Project and an Activity (Task) that is part of the Project",
+    "alias": "",
+    "source": "(DM2):  A wholePart relationship between a Project and an Activity (Task) that is part of the Project",
+    "groups": [
+      "Information And Data",
+      "Reification Levels",
+      "Project"
+    ]
+  },
+  {
+    "term": "activityPerformableUnderCondition",
+    "definition": "Represents that an activity was / is / can-be/ must-be conducted under certain conditions with a spatiotemporal overlap of the activity with the condition.",
+    "alias": "",
+    "source": "(DoDAF Meta Model):  Represents that an activity was / is / can-be conducted under certain conditions with a spatio-temporal overlap of the activity with the condition.",
+    "groups": [
+      "Resource Flow",
+      "Capability",
+      "Services",
+      "Project",
+      "Pedigree",
+      "Rules"
+    ]
+  },
+  {
+    "term": "activityPerformedByPerformer",
+    "definition": "An overlap between a Performer and an Activity that is non-specific as to whether:\n1. the Activity is solely performed by the Performer\n2. the Activity is performed by several Performers\n3. the Performer performs only this Activity\n4. the Performer performs other Activities",
+    "alias": "",
+    "source": "(DoDAF Meta Model):  An overlap of an Activity with a Resource, in particular a consuming or producing Activity that expresses an input, output, consumption, or production Activity of the Resource",
+    "groups": [
+      "Resource Flow",
+      "Information And Data",
+      "Reification Levels",
+      "Capability",
+      "Services",
+      "Project",
+      "Pedigree",
+      "Rules",
+      "Information Pedigree"
+    ]
+  },
+  {
+    "term": "activityProducesResource",
+    "definition": "Represents that an activity produces a resource",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "Resource Flow",
+      "Information And Data",
+      "Reification Levels",
+      "Capability",
+      "Services",
+      "Project",
+      "Pedigree",
+      "Rules",
+      "Information Pedigree"
+    ]
+  },
+  {
+    "term": "ActivityType",
+    "definition": "Powertype of Activity",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "AdaptabilityMeasure",
+    "definition": "A measure of the ease with which Performers satisfy differing Constraints and Capability and Service needs.",
+    "alias": "",
+    "source": "(SEI):  the ease with which software satisfies differing system constraints and user needs [Evans 87]",
+    "groups": [
+      "Measure"
+    ]
+  },
+  {
+    "term": "AdaptabilityMeasureType",
+    "definition": "The Powertype of AdaptabilityMeasure.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "Address",
+    "definition": "The name of a location along with the location-finding scheme that allows a location to be found from the name.  Examples include postal address, email address, URL, datalink address.",
+    "alias": "",
+    "source": "(Dictionary.com):  The place or the name of the place where a person, organization, or the like is located or may be reached: What is your address when you're in Des Moines? \n(WordNet):  1.  (computer science) the code that identifies where a piece of information is stored  \n2.  the place where a person or organization can be found or communicated with  ",
+    "groups": [
+      "Location"
+    ]
+  },
+  {
+    "term": "AddressType",
+    "definition": "The Powertype of Address.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "Agreement",
+    "definition": "A consent among parties regarding the terms and conditions of activities that said parties participate in.",
+    "alias": "",
+    "source": "(DoDAF/CADM):  An arrangement between parties. (DDDS Counter (332/1)(A))\n(Webster's):  1. Harmony of opinion; accord. 2. An arrangement between parties regarding a course of action; a covenant.",
+    "groups": [
+      "Information And Data",
+      "Reification Levels",
+      "Rules"
+    ]
+  },
+  {
+    "term": "AgreementType",
+    "definition": "The Powertype of Agreement.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "ArchitecturalDescription",
+    "definition": "Information describing an architecture such as an OV-5 Activity Model document.",
+    "alias": "",
+    "source": "(DM2): Information describing an architecture such as an OV-5 Activity Model document.",
+    "groups": [
+      "Information And Data",
+      "Reification Levels",
+      "Services"
+    ]
+  },
+  {
+    "term": "ArchitecturalDescriptionType",
+    "definition": "The Powertype of ArchitecturalDescription.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "associationOfInformation",
+    "definition": "A relationship or association between two elements of  information.",
+    "alias": "",
+    "source": "(DoDAF Meta Model):  Whole-part association",
+    "groups": [
+      "Information And Data"
+    ]
+  },
+  {
+    "term": "axesDescribedBy",
+    "definition": "A relationship describing the straight lines about which bodies rotate",
+    "alias": "",
+    "source": "(DM2):  A relationship describing the straight lines about which bodies rotate",
+    "groups": [
+      "Location"
+    ]
+  },
+  {
+    "term": "beforeAfter",
+    "definition": "A couple that represents that the temporal extent end time for the individual in place 1 is less than temporal extent start time for the individual in place 2.",
+    "alias": "proceeds, succeeds",
+    "source": "(IDEAS):  A couple that represents that the temporal extent end time for the individual in place 1 is less than temporal extent start time for the individual in place 2.",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "BeforeAfterType",
+    "definition": "An association between two Individual Types signifying that the temporal end of all the Individuals of one Individual Type is before the temporal start of all the Individuals of the other Individual Type.",
+    "alias": "",
+    "source": "(IDEASl):  An association between two Individual Types signifying that the temporal end of all the Individuals of one Individual Type is before the temporal start of all the Individuals of the other Individual Type.",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "Capability",
+    "definition": "The ability to achieve a Desired Effect under specified [performance] standards and conditions through combinations of ways and means [activities and resources] to perform a set of activities.",
+    "alias": "",
+    "source": "(JCIDS):  The ability to achieve a desired effect under specified standards and conditions through combinations of means and ways to perform a set of tasks.\n(DoDAF/CADM):  An ability to achieve an objective. (DDDS Counter (333/1)(A))\n(JC3IEDM):  The potential ability to do work, perform a function or mission, achieve an objective, or provide a service.\n(MODAF):  Capabilities in the MODAF sense are specifically not about equipment but are a high level specification of the enterprise’s ability. A capability is a classification of some ability – and can be specified regardless of whether the enterprise is currently able to achieve it. For example, one could define a capability “Manned Interplanetary Travel” which no-one can currently achieve, but which may be planned or aspired to. Capabilities in MODAF are not time-dependent – once defined they are persistent. It is only the Capability Requirement that changes.\n(NAF):  The ability of one or more resources to deliver a specified type of effect or a specified course of action. (GEN TERM)\n(NAF):  A high level specification of the enterprise's ability. (MM)\n(JCS 1-02):  The ability to execute a specified course of action. (A capability may or may not be accompanied by an intention.)\n(Webster's):  1. The quality of being capable; ability.  2. A talent or ability that has potential for development or use.  3. The capacity to be used, treated, or developed for a specific purpose.\n(Merriam-Webster's Eleventh Collegiate Dictionary): A feature or factor capable of development: POTENTIALITY.    3. The facility or potential for an indicated use or deployment.\n(Joint Publication 1-02, Dictionary of Military and Associated Terms, 12 Apr 2001 (as amended trhough 30 May 2008) ): The ability to exercise a specified course of action (A capability may or may not be accompanied by an intention)\n(Dictionary.com): The quality of being capable; capacity; ability: His capability was unquestionable. The ability to undergo or be affected by a given treatment or action: the capability of glass in resisting heat. Usually, capabilities. qualities, abilities, features, etc., that can be used or developed; potential: Though dilapidated, the house has great capabilities \n(Wiktionary): The power or ability to generate an outcome\n(www.staffordshireprepared.gov.uk/glossary/): Originally a military term which includes the aspects of personnel, equipment, training, planning and operational doctrine. Now used to mean a demonstrable capacity or ability to respond to and recover from a particular threat or hazard.",
+    "groups": [
+      "Capability",
+      "Services"
+    ]
+  },
+  {
+    "term": "capabilityOfPerformer",
+    "definition": "A couple that represents the capability that a performer manifests",
+    "alias": "",
+    "source": "(DM2):  A couple that represents the capability that a performer manifests",
+    "groups": [
+      "Capability",
+      "Services",
+      "Measure"
+    ]
+  },
+  {
+    "term": "CapabilityType",
+    "definition": "Category or type of capability",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "Capability"
+    ]
+  },
+  {
+    "term": "CircularArea",
+    "definition": "The space enclosed by a circle.",
+    "alias": "",
+    "source": "(IDEAS): The space enclosed by a circle.",
+    "groups": [
+      "Location"
+    ]
+  },
+  {
+    "term": "CircularAreaType",
+    "definition": "Powertype Of CircularArea",
+    "alias": "",
+    "source": "(DM2):  Powertype Of CircularArea",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "CircularAreaTypeType",
+    "definition": "The Powertype of CircularAreaType.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "Condition",
+    "definition": "The state of an environment or situation in which a Performer performs or is disposed to perform. ",
+    "alias": "",
+    "source": "(The American Heritage Dictionary): the particular mode or being of a person or thing\n(Dictionary.com): a circumstance indispensable to some result; prerequisite; that on which something else is contingent \n(UJTL)  Those variables of an operational environment or situation in which a unit, system, or individual is expected to operate and may affect performance.  Some conditions are designed to help describe the theater of operations (e.g., host-nation support); others describe the immediate joint operations area (e.g., maritime superiority), while still others describe the battlefield conditions (e.g., littoral composition).  Not to be confused with \"condition\" as it applies to triggers, e.g., in state transition models\n(WordNet) A state at a particular time",
+    "groups": [
+      "Resource Flow",
+      "Capability",
+      "Services",
+      "Project",
+      "Pedigree",
+      "Rules"
+    ]
+  },
+  {
+    "term": "ConditionType",
+    "definition": "The Powertype of Condition.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "coordinateCenterDescribedBy",
+    "definition": "A relationship describing the mid point of a position reference frame",
+    "alias": "",
+    "source": "(DM2):  A relationship describing the mid point of a position reference frame",
+    "groups": [
+      "Location"
+    ]
+  },
+  {
+    "term": "Country",
+    "definition": "A political state or nation or its territory.",
+    "alias": "",
+    "source": "(IDEAS): A political state or nation or its territory.",
+    "groups": [
+      "Location"
+    ]
+  },
+  {
+    "term": "CountryType",
+    "definition": "Powertype Of Country",
+    "alias": "",
+    "source": "(DM2):  Powertype Of Country",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "CountryTypeType",
+    "definition": "The Powertype of CountryType.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "couple",
+    "definition": "An ordered relationship (tuple) between two Things, i.e., that has two place positions.",
+    "alias": "",
+    "source": "(IDEAS): An ordered relationship (tuple) between two Things, i.e., that has two place positions.",
+    "groups": [
+      "Information And Data",
+      "IDEAS Foundation"
+    ]
+  },
+  {
+    "term": "CoupleType",
+    "definition": "A couple in which the places are taken by Types only.",
+    "alias": "entity relationship, class association",
+    "source": "(IDEAS):  A couple in which the places are taken by Types only.",
+    "groups": [
+      "IDEAS Foundation"
+    ]
+  },
+  {
+    "term": "Data",
+    "definition": "Representation of information in a formalized manner suitable for communication, interpretation, or processing by humans or by automatic means. Examples could be whole models, packages, entities, attributes, classes, domain values, enumeration values, records, tables, rows, columns, and fields.",
+    "alias": "",
+    "source": "(NAF):  A reinterpretable representation of information in a formalized manner suitable for communication, interpretation, or processing. Note: Data can be processed by humans or by automatic means (GEN TERM)\n(JCS 1-02 / NECC):  Representation of facts, concepts, or instructions in a formalized manner suitable for communication, interpretation, or processing by humans or by automatic means. Any representations such as characters or analog quantities to which meaning is or might be assigned.\n(Zachman):  The column in the Architecture Framework that is concerned with what things are significant enough to an enterprise that they require holding information about them.\n(American Heritage Dictionary.):  Factual information, especially information organized for analysis or used to reason or make decisions.\n(Webster's):  Factual information (as measurements or statistics) used as a basis for reasoning, discussion, or calculation\n(DoD Net-Centric Data Strategy, App. A (Terminology), May 2003): Data asset refers to any entity that is composed of data. For example, a database is a data asset that comprises data records. In this document, “data asset” means system or application output files, databases, documents, or web pages. “Data asset” also includes services that may be provided to access data from an application. For example, a service that returns individual records from a database would be a data asset. Similarly, a website that returns data in response to specific queries (e.g., weather.com) would be a data asset. The core of the net-centric environment is the data that enables effective decisions. In this context, data implies all data assets such as system files, databases, documents, official electronic records, images, audio files, web sites, and data access services.",
+    "groups": [
+      "Resource Flow"
+    ]
+  },
+  {
+    "term": "DataType",
+    "definition": "Powertype of Data",
+    "alias": "",
+    "source": "(DM2):  Powertype of Data",
+    "groups": [
+      "Resource Flow",
+      "Information And Data"
+    ]
+  },
+  {
+    "term": "describedBy",
+    "definition": "A tuple that asserts that Information describes a Thing.  ",
+    "alias": "",
+    "source": "(DoDAF Meta Model):  An overlap between the possible state or causal disposition of an Activity to a future state of a Desired Effect that constrains the full future state or casual dispositions of the Activity that would be present otherwise.",
+    "groups": [
+      "Information And Data",
+      "Reification Levels",
+      "Services",
+      "Pedigree",
+      "Information Pedigree",
+      "Location",
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "DescriptionScheme",
+    "definition": "A RepresentationScheme and DescriptionType whose members are intentionally descriptions",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "descriptionSchemeInstance",
+    "definition": "A representationSchemeInstance that asserts a Description is a member of a DescriptionScheme.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "desiredEffect",
+    "definition": "A desired state of a Resource",
+    "alias": "",
+    "source": "(JP 1-02) Effect: (n) The result, outcome, or consequence of an action [activity].",
+    "groups": [
+      "Capability",
+      "Project"
+    ]
+  },
+  {
+    "term": "desiredEffectDirectsActivity",
+    "definition": "The couple that represents how a desired effect directs an activity",
+    "alias": "",
+    "source": "(DM2):  The couple that represents how a desired effect directs an activity",
+    "groups": [
+      "Project"
+    ]
+  },
+  {
+    "term": "desiredEffectIsRealizedByProjectType",
+    "definition": "The couple that represents how a desired effect is realized by a project type",
+    "alias": "",
+    "source": "(DM2):  The couple that represents how a desired effect is realized by a project type",
+    "groups": [
+      "Project"
+    ]
+  },
+  {
+    "term": "desiredEffectOfCapability",
+    "definition": "A couple that represents the whole part relationship between a desired effect and a capability",
+    "alias": "",
+    "source": "(DM2):  A couple that represents the whole part relationship between a desired effect and a capability",
+    "groups": [
+      "Capability"
+    ]
+  },
+  {
+    "term": "desireMeasure",
+    "definition": "A measureOfType that relates a DesiredEffect to a MeasureOfDesire",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "Capability",
+      "Project",
+      "Measure"
+    ]
+  },
+  {
+    "term": "DomainInformation",
+    "definition": "Types of information within the scope or domain of the architecture.",
+    "alias": "",
+    "source": "(DoDAF Meta Model):  Types of information within the scope or domain of the architecture.",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "DomainInformationType",
+    "definition": "The Powertype of DomainInformation.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "effectMeasure",
+    "definition": "A measureOfType that relates a DesiredEffect to a MeasureOfEffect\n",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "Capability",
+      "Project",
+      "Measure"
+    ]
+  },
+  {
+    "term": "EllipticalArea",
+    "definition": "The space enclosed by an ellipse.",
+    "alias": "",
+    "source": "(Answers.com):  The space enclosed by an ellipse.",
+    "groups": [
+      "Location"
+    ]
+  },
+  {
+    "term": "EllipticalAreaType",
+    "definition": "Powertype Of EllipticalArea",
+    "alias": "",
+    "source": "(DM2):  Powertype Of EllipticalArea",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "EllipticalAreaTypeType",
+    "definition": "The Powertype of EllipticalAreaType.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "endBoundary",
+    "definition": "A temporal whole part couple that relates the temporal boundary to the whole.",
+    "alias": "",
+    "source": "(IDEAS):  The maximum time value of a temporal extent.",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "EndBoundaryType",
+    "definition": "A temporal whole part couple that relates the temporal boundary to the whole taken over a Type.",
+    "alias": "",
+    "source": "(IDEAS):  The maximum value of a temporal extent taken over a Type, i.e., the maximum time value taken over all it's members.",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "Facility",
+    "definition": "A real property entity consisting of underlying land and one or more of the following: a building, a structure (including linear structures), a utility system, or pavement.",
+    "alias": "",
+    "source": "(DoDAF/CADM):  Real property, having a specified use, that is built or maintained by people.  (DDDS Counter (334/1)(A)). \n(JC3IEDM):  An ObjectItem that built, installed or established to served some particular purpose and is identified by the service it provides rather than by its content.\n(NAF):  Physical Asset: A <<Resource>> that can host systems and/or people. Note 1: synonyms for <<PhysicalAsset>>; would be \"platform\", \"facility\", or \"host\". This is the original intent for the SystemsNode\" concept in DoDAF. (MM)\n(JCS 1-02):  A real property entity consisting of one or more of the following: a building, a structure, a utility system, pavement, and underlying land. See also air facility.\n(Webster's):  1. Something designed, built, installed, etc., to serve a specific function affording a convenience or service.  2. Something that permits the easier performance of an action, course of conduct, etc.\n(DoDI 4165.14):  A building, structure, or linear structure out to an imaginary line surrounding a facility at a distance of five feet from the foundation that, barring specific direction to the contrary such as a utility privatization agreement, denotes what is included in the basic record for the facility (e.g., landscaping, sidewalks, utility connections). This imaginary line is what is commonly referred to as the “five-foot line.”",
+    "groups": [
+      "Location"
+    ]
+  },
+  {
+    "term": "facilityPartOfSite",
+    "definition": "A whole part association between a Facility (part) and the Site (whole) in which it resides.",
+    "alias": "project goals, objectives, desired outcomes",
+    "source": "(DoDAF Meta Model):  An overlap of the future state or casual disposition of a Project to manifested Goals (states of Effect Objects).",
+    "groups": [
+      "Location"
+    ]
+  },
+  {
+    "term": "FacilityType",
+    "definition": "Powertype Of Facility",
+    "alias": "",
+    "source": "(DM2):  Powertype Of Facility",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "FacilityTypeType",
+    "definition": "The Powertype of FacilityType.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "FunctionalStandard",
+    "definition": "Functional standards set forth rules, conditions, guidelines, and characteristics. ",
+    "alias": "",
+    "source": "(ISE FS 200, adapted from):  Functional standards set forth rules, conditions, guidelines, and characteristics.  ",
+    "groups": [
+      "Rules"
+    ]
+  },
+  {
+    "term": "FunctionalStandardType",
+    "definition": "The Powertype of FunctionalStandard.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "GeoFeature",
+    "definition": "An object that encompasses meteorological, geographic, and control features mission significance",
+    "alias": "",
+    "source": "(DoDAF/CADM):  A set of characteristics, structures or other entities that are of military significance.  (DDDS Counter (4134/2)(A)).\n(JC3IEDM):  An OBJECT-ITEM that encompasses meteorological, geographic, and control features of military significance.\n(Webster's):  1. A prominent or conspicuous part or characteristic.  2. Outward appearance; form or shape.",
+    "groups": [
+      "Location"
+    ]
+  },
+  {
+    "term": "GeoFeatureType",
+    "definition": "Powertype Of GeoFeature",
+    "alias": "",
+    "source": "(DM2):  Powertype Of GeoFeature",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "GeoFeatureTypeType",
+    "definition": "The Powertype of GeoFeatureType.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "GeoPoliticalExtent",
+    "definition": "A geospatial extent whose boundaries are by declaration or agreement by political parties.",
+    "alias": "",
+    "source": "(IDEAS): A geospatial extent whose boundaries are by declaration or agreement by political parties.",
+    "groups": [
+      "Resource Flow",
+      "Location",
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "GeoPoliticalExtentType",
+    "definition": "Powertype Of GeoPoliticalExtent",
+    "alias": "",
+    "source": "(DM2):  Powertype Of GeoPoliticalExtent",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "GeoPoliticalExtentTypeType",
+    "definition": "The Powertype of GeoPoliticalExtentType.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "GeoStationaryPoint",
+    "definition": "Unidimensional Individual (dimensionless in space, existant over all time)",
+    "alias": "",
+    "source": "(IDEAS):  Unidimensional Individual (dimensionless in space, existant over all time)",
+    "groups": [
+      "Location"
+    ]
+  },
+  {
+    "term": "GeoStationaryPointType",
+    "definition": "Powertype Of GeoStationaryPoint",
+    "alias": "",
+    "source": "(DM2):  Powertype Of GeoStationaryPoint",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "GeoStationaryPointTypeType",
+    "definition": "The Powertype of GeoStationaryPointType.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "Guidance",
+    "definition": "An authoritative statement intended to lead or steer the execution of actions.",
+    "alias": "",
+    "source": "(DoDAF/CADM):  A statement of direction received from a higher echelon. (DDDS Counter (336/4)(A))\n(Zachman):  A kind of DIRECTION from a DIRECTIVE describing an overall supervision of a BUSINESS PROCESS.\n(Webster's):  The act or function of guiding; leadership; direction.  Synonyms: management, conduct, supervision, control, government.",
+    "groups": [
+      "Rules",
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "GuidanceType",
+    "definition": "The Powertype of Guidance.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "Individual",
+    "definition": "A Thing that has spatio-temporal extent.  Note - this may be something that existed in the past, exists now, or may exist in some future possible world.",
+    "alias": "",
+    "source": "(IDEAS):  A Thing that has spatio-temporal extent.  Note - this may be some that existed in the past, exists now, or may exist in some future possible world.",
+    "groups": [
+      "Organizational Structure",
+      "Pedigree",
+      "Location",
+      "IDEAS Foundation"
+    ]
+  },
+  {
+    "term": "IndividualActivity",
+    "definition": "Activities that are Individuals, i.e., that occur in space and time.",
+    "alias": "",
+    "source": "(DM2):  Activities that are Individuals, i.e., that occur in space and time.",
+    "groups": [
+      "Information And Data",
+      "Reification Levels",
+      "Pedigree"
+    ]
+  },
+  {
+    "term": "IndividualPerformer",
+    "definition": "A specific thing that can perform an action",
+    "alias": "",
+    "source": "(DM2):  A specific thing that can perform an action",
+    "groups": [
+      "Resource Flow",
+      "Information And Data",
+      "Reification Levels",
+      "Organizational Structure",
+      "Pedigree",
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "IndividualPersonRole",
+    "definition": "Person roles defined by the role or roles they share that are relevant to an architecture.  Includes assigned materiel. ",
+    "alias": "",
+    "source": "(DM2):  An individual person",
+    "groups": [
+      "Organizational Structure"
+    ]
+  },
+  {
+    "term": "individualPersonRolePartOfIndividualPerformer",
+    "definition": "Whole part relationship between an individual person role and an individual performer",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "Organizational Structure"
+    ]
+  },
+  {
+    "term": "IndividualResource",
+    "definition": "Any specific physical or virtual entity of limited availability",
+    "alias": "",
+    "source": "(DM2):  Any specific physical or virtual entity of limited availability",
+    "groups": [
+      "Resource Flow",
+      "Organizational Structure",
+      "Pedigree",
+      "Location",
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "individualResourceInLocation",
+    "definition": "A wholePart that asserts an IndividualResourceState is in a Location\r\n",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "Location"
+    ]
+  },
+  {
+    "term": "IndividualType",
+    "definition": "The powertype of Individual.",
+    "alias": "",
+    "source": "(IDEAS):  The powertype of Individual.",
+    "groups": [
+      "Organizational Structure",
+      "Pedigree",
+      "Measure",
+      "IDEAS Foundation"
+    ]
+  },
+  {
+    "term": "IndividualTypeType",
+    "definition": "A PlaceableType that is the Powertype of IndividualType",
+    "alias": "",
+    "source": "(IDEAS):  The powertype of an IndividualType",
+    "groups": [
+      "IDEAS Foundation"
+    ]
+  },
+  {
+    "term": "Information",
+    "definition": "Information is the state of a something of interest that is materialized -- in any medium or form -- and communicated or received.",
+    "alias": "",
+    "source": "(DoDAF/CADM):  InformationElement: A formalized representation of data subject to a functional process.(DDDS Counter (4199/2)(A))\n(NAF):  The knowledge concerning objects, such as facts, events, things, processes or ideas including concepts that within a certain context have a particular meaning. (GEN TERM)\n(JCS 1-02):  1. Facts, data, or instructions in any medium or form. 2. The meaning that a human assigns to data by means of the known conventions used in their representation. (JP 3-13.1)\n(IDEAS):  For Individuals, an instance of a piece of information - e.g. an utterance, and electronic message, a particular instance of a written document, or a particular instance of an electronic file.\n(American Heritage Dictionary.):  1. Knowledge communicated or received concerning a particular fact or circumstance.  2. Factual data.\n(Webster's):  1. The communication or reception of knowledge or intelligence.  2. Knowledge obtained from investigation, study, or instruction.\n(Wikipedia):  Information is the state of a system of interest. Message is the information materialized.  Even though information and data are often used interchangeably, they are actually very different. Data is a set of unrelated information, and as such is of no use until it is properly evaluated. Upon evaluation, once there is some significant relation between data, and they show some relevance, then they are converted into information. Now this same data can be used for different purposes. Thus, till the data convey some information, they are not useful.",
+    "groups": [
+      "Resource Flow",
+      "Information And Data",
+      "Reification Levels",
+      "Services",
+      "Pedigree",
+      "Information Pedigree",
+      "Location",
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "InformationType",
+    "definition": "Category or type of information",
+    "alias": "",
+    "source": "(DM2):  Category or type of information",
+    "groups": [
+      "Resource Flow",
+      "Information And Data",
+      "Reification Levels",
+      "Services",
+      "Pedigree",
+      "Information Pedigree",
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "Installation",
+    "definition": "A base, camp, post, station, yard, center, or other activity, including leased facilities, without regard to the duration of operational control. An installation may include one or more sites. ",
+    "alias": "",
+    "source": "(DODI 4165.14):  A base, camp, post, station, yard, center, or other activity, including leased facilities, under the jurisdiction, custody, or control of the Secretary of Defense or the Secretary of a Military Department or, in the case of an activity in a foreign country, under the operational control of the Secretary of Defense or the Secretary of a Military Department, without regard to the duration of operational control. An installation may include one or more sites.",
+    "groups": [
+      "Location"
+    ]
+  },
+  {
+    "term": "InstallationType",
+    "definition": "Powertype Of Installation",
+    "alias": "",
+    "source": "(DM2):  Powertype Of Installation",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "InstallationTypeType",
+    "definition": "The Powertype of InstallationType.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "jointAction",
+    "definition": "Relating two parts of a joint action",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "Resource Flow"
+    ]
+  },
+  {
+    "term": "Line",
+    "definition": "A geometric figure formed by a point moving along a fixed direction and the reverse direction.",
+    "alias": "",
+    "source": "(IDEAS): A geometric figure formed by a point moving along a fixed direction and the reverse direction.",
+    "groups": [
+      "Location"
+    ]
+  },
+  {
+    "term": "linePartOfPlanarSurface",
+    "definition": "A couple that represents the whole part relationship between Line and PlanarSurface",
+    "alias": "",
+    "source": "(DM2):  A couple that represents the whole part relationship between Line and PlanarSurface",
+    "groups": [
+      "Location"
+    ]
+  },
+  {
+    "term": "LineType",
+    "definition": "Powertype Of Line",
+    "alias": "",
+    "source": "(DM2):  Powertype Of Line",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "LineTypeType",
+    "definition": "The Powertype of LineType.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "Location",
+    "definition": "A point or extent in space that may be referred to physically or logically.",
+    "alias": "",
+    "source": "(JC3IEDM) A specification of position and geometry with respect to a specified horizontal frame of reference and a vertical distance measured from a specified datum.\n(UCORE)  A position on the earth’s surface or in geographic space definable by coordinates or some other referencing system, such as a street address or space indexing system.\n(WordNet) A point or extent in space ",
+    "groups": [
+      "Location",
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "locationNamedByAddress",
+    "definition": "A relationship that represents a location being named by an address",
+    "alias": "",
+    "source": "(DM2):  A relationship that represents a location being named by an address",
+    "groups": [
+      "Location"
+    ]
+  },
+  {
+    "term": "LocationType",
+    "definition": "The powertype of Location",
+    "alias": "",
+    "source": "(DM2):  The powertype of Location",
+    "groups": [
+      "Resource Flow",
+      "Information And Data",
+      "Reification Levels",
+      "Pedigree",
+      "Information Pedigree",
+      "Location",
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "LocationTypeType",
+    "definition": "The Powertype of LocationType.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "MaintainabilityMeasure",
+    "definition": "A category of measures of  the amount of time a Performer is able to conduct Activities over some time interval.",
+    "alias": "",
+    "source": "(Answers.com):  A category of measures of  the amount of time a Performer is able to conduct Activities over some time interval.",
+    "groups": [
+      "Measure"
+    ]
+  },
+  {
+    "term": "MaintainabilityMeasureType",
+    "definition": "The Powertype of MaintainabilityMeasure.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "Materiel",
+    "definition": "Equipment, apparatus or supplies that are of interest, without distinction as to its application for administrative or combat purposes.",
+    "alias": "",
+    "source": "(DoDAF/CADM):  An object of interest that is non-human, mobile and physical.  (DDDS Counter (337/1)(A))\n(JC3IEDM):  An ObjectItem that is equipment, apparatus or supplies, that is of military interest, without distinction as to its application for administrative or combat purposes.\n(JCS 1-02):  All items (including ships, tanks, self-propelled weapons, aircraft, etc., and related spares, repair parts, and support equipment, but excluding real property, installations, and utilities) necessary to equip, operate, maintain, and support military activities without distinction as to its application for administrative or combat purposes. See also equipment; personal property.\n(Webster's):  That in a complex system which constitutes the materials, or instruments employed, in distinction from the personnel, or men; as, the baggage, munitions, provisions, etc., of an army.",
+    "groups": [
+      "Resource Flow"
+    ]
+  },
+  {
+    "term": "materielPartOfPerformer",
+    "definition": "A whole-part association between a Performer (whole) and the Materiel parts of the Performer.  (A Performer can have Personnel Type, System, Service, and Organizational components.)",
+    "alias": "",
+    "source": "(IDEAS):  A whole-part association between a System (whole) and the Materiel parts of the System.  (A System can have Personnel Type and Organizational components.)",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "MaterielType",
+    "definition": "The Powertype of Materiel.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "Measure",
+    "definition": "The magnitude of some attribute of an individual.",
+    "alias": "",
+    "source": "(DoDAF/CADM):  N/A\n(JC3IEDM):  ObjectItemCapabilityNorm: The standard of a specific Capability of an ObjectType.\n(Webster's):  the extent, dimensions, quantity, etc., of something\n(Wikipedia, \"Measurement\"):  the estimation of the magnitude of some attribute of an object\n(Software Engineering Institute (SEI)):  Need Satisfaction (QM.1) How well does the system meet the user's needs and requirements? Performance (QM.2) How well does the system function? Maintenance (QM.3) How easily can the system be repaired or changed? Adaptive (QM.4) How easily can the system evolve or migrate? Organizational (QM.5) none specifically, usually indirect \n(IDEAS):  An Property whose members are Individuals that all share a common, measurable property, or whose properties lie within a MeasureRange.",
+    "groups": [
+      "Resource Flow",
+      "Information And Data",
+      "Reification Levels",
+      "Capability",
+      "Services",
+      "Project",
+      "Pedigree",
+      "Information Pedigree",
+      "Measure",
+      "Location",
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "MeasureableSkill",
+    "definition": "A Skill that can be measured numerically\r\n",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "Measure"
+    ]
+  },
+  {
+    "term": "measureableSkillOfPersonRoleType",
+    "definition": "skillPartOfPersonRoleType is a member of Measure",
+    "alias": "",
+    "source": "(DM2):  skillPartOfPersonType is a member of Measure",
+    "groups": [
+      "Measure"
+    ]
+  },
+  {
+    "term": "MeasureableSkillType",
+    "definition": "The Powertype of MeasureableSkill.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "MeasureOfDesire",
+    "definition": "DesiredEffect is a member of Measure",
+    "alias": "",
+    "source": "(DM2):  DesiredEffect is a member of Measure",
+    "groups": [
+      "Capability",
+      "Project",
+      "Measure"
+    ]
+  },
+  {
+    "term": "MeasureOfDesireType",
+    "definition": "The Powertype of MeasureOfDesire.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "MeasureOfEffect",
+    "definition": "Category of measures on Effect Objects",
+    "alias": "",
+    "source": "(Answers.com):  Category of measures on Effect Objects",
+    "groups": [
+      "Capability",
+      "Project",
+      "Measure"
+    ]
+  },
+  {
+    "term": "MeasureOfEffectType",
+    "definition": "The Powertype of MeasureOfEffect.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "measureOfIndividual",
+    "definition": "A propertyOfIndividual that asserts an Individual is an instance of a Measure - i.e. the Individual \"has\" a property corresponding to the Measure.\r\n\r\nExamples:\r\n\r\nA laptop weighing 2.2kg\r\nA car travelling between 40 and 50 km/h\r\n",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "Pedigree",
+      "Measure",
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "measureOfIndividualEndBoundary",
+    "definition": "endBoundary is a member of Measure",
+    "alias": "",
+    "source": "(DM2):  endBoundary is a member of Measure",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "measureOfIndividualPoint",
+    "definition": "Point is a member of Measure",
+    "alias": "",
+    "source": "(DM2):  Point is a member of Measure",
+    "groups": [
+      "Measure",
+      "Location"
+    ]
+  },
+  {
+    "term": "measureOfIndividualStartBoundary",
+    "definition": "startBoundary is a member of Measure",
+    "alias": "",
+    "source": "(DM2):  startBoundary is a member of Measure",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "measureOfType",
+    "definition": "A propertyOfType that asserts an IndividualType is a subtype of a Measure - i.e. it asserts all members of the Individual type have a property corresponding to the Measure \r\n\r\nExamples:\r\n\r\nAll Porsche 911 2.2S have a mass between 900 and 960 kg\r\nAll atoms of mercury have an atomic weight of 200.59 &thinsp;g·mol&minus;1\r\n",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "Pedigree",
+      "Measure",
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "measureOfTypeActivity",
+    "definition": "A measureOfType that relates an Activity to a Measure",
+    "alias": "",
+    "source": "(DM2):  A measureOfType that relates an Activity to a Measure",
+    "groups": [
+      "Resource Flow",
+      "Information And Data",
+      "Reification Levels",
+      "Capability",
+      "Services",
+      "Project",
+      "Pedigree",
+      "Information Pedigree",
+      "Measure"
+    ]
+  },
+  {
+    "term": "measureOfTypeCondition",
+    "definition": "Condition is a member of Measure",
+    "alias": "",
+    "source": "(DM2):  Condition is a member of Measure",
+    "groups": [
+      "Resource Flow",
+      "Capability",
+      "Services",
+      "Project",
+      "Measure"
+    ]
+  },
+  {
+    "term": "measureOfTypeEndBoundaryType",
+    "definition": "endBoundaryType is a member of Measure",
+    "alias": "",
+    "source": "(DM2):  endBoundaryType is a member of Measure",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "measureOfTypeProjectType",
+    "definition": "ProjectType is a member of Measure",
+    "alias": "",
+    "source": "(DM2):  ProjectType is a member of Measure",
+    "groups": [
+      "Project",
+      "Measure"
+    ]
+  },
+  {
+    "term": "measureOfTypeResource",
+    "definition": "ResourceType is a member of Measure",
+    "alias": "",
+    "source": "(DM2):  ResourceType is a member of Measure",
+    "groups": [
+      "Resource Flow",
+      "Information And Data",
+      "Reification Levels",
+      "Capability",
+      "Services",
+      "Project",
+      "Pedigree",
+      "Information Pedigree",
+      "Measure"
+    ]
+  },
+  {
+    "term": "measureOfTypeStartBoundaryType",
+    "definition": "startBoundaryType is a member of Measure",
+    "alias": "",
+    "source": "(DM2):  startBoundaryType is a member of Measure",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "measureOfTypeWholePartType",
+    "definition": "wholePart is a member of Measure",
+    "alias": "",
+    "source": "(DM2):  wholePart is a member of Measure",
+    "groups": [
+      "Measure"
+    ]
+  },
+  {
+    "term": "MeasureType",
+    "definition": "A category of Measures",
+    "alias": "",
+    "source": "(DM2):  A category of Measures",
+    "groups": [
+      "Capability",
+      "Pedigree",
+      "Rules",
+      "Measure",
+      "Location",
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "measureTypeApplicableToActivity",
+    "definition": "Type instance relationship between Activity and MeasureType",
+    "alias": "",
+    "source": "(DM2):  activityType is a member of MeasureType",
+    "groups": [
+      "Rules",
+      "Measure"
+    ]
+  },
+  {
+    "term": "MeasureTypeUnitsOfMeasure",
+    "definition": "The subtype of MeasureType that has units.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "Capability",
+      "Rules",
+      "Measure",
+      "Location",
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "Name",
+    "definition": "The type of all utterances of a given name for a Thing. The exemplarText provides a written example of the uttered name.",
+    "alias": "",
+    "source": "(IDEAS): The type of all utterances of a given name for a Thing. The exemplarText provides a written example of the uttered name.",
+    "groups": [
+      "Location",
+      "IDEAS Foundation"
+    ]
+  },
+  {
+    "term": "namedBy",
+    "definition": "A couple that asserts that a Name describes a Thing.  ",
+    "alias": "",
+    "source": "(IDEAS):  A couple that asserts that a Name describes a Thing.  ",
+    "groups": [
+      "Location",
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "NameType",
+    "definition": "A RepresentationType that is the Powertype of Name",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "NamingScheme",
+    "definition": "A Type whose members are Names. What kind of name the name is.",
+    "alias": "",
+    "source": "(IDEAS):  A Type whose members are Names. What kind of name the name is.",
+    "groups": [
+      "IDEAS Foundation"
+    ]
+  },
+  {
+    "term": "namingSchemeInstance",
+    "definition": "A representationSchemeInstance that asserts a Name is a member of a NamingScheme.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "NeedsSatisfactionMeasure",
+    "definition": "A category of quality measures that address how well a system meets the user's needs and requirements. ",
+    "alias": "",
+    "source": "(SEI):  a category of quality measures that address how well a system meets the user's needs and requirements. ",
+    "groups": [
+      "Measure"
+    ]
+  },
+  {
+    "term": "NeedsSatisfactionMeasureType",
+    "definition": "The Powertype of NeedsStatisfactionMeasure.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "Organization",
+    "definition": "A specific real-world assemblage of people and other resources organized for an on-going purpose.",
+    "alias": "Department, Agency, Enterprise",
+    "source": "(DoDAF/CADM):  An administrative structure with a mission. (DDDS Counter (345/1)(A))\n(JC3IEDM):  An ObjectItem that is an administrative or functional structure.\n(NAF):  ActualOrganization: An actual specific organisation, an instance of an organisation class - e.g. \"The US Department of Defense\" (MM)\n(Zachman):  A collection of people brought together for a specific purpose and generally recognized as such.\n(IDEAS): No definition yet, possibilities are: (1) An agreement amongst parties to act as a whole; (2) A structure for arranging and classifying; (3) the process of obscuring information to make it unreadable without special knowledge.\n(Webster's):  1. A group of persons organized for some end or work; association. 2. Something that has been organized or made into an ordered whole.  3. The administrative personnel or apparatus of a business.",
+    "groups": [
+      "Resource Flow",
+      "Organizational Structure",
+      "Pedigree"
+    ]
+  },
+  {
+    "term": "OrganizationalMeasure",
+    "definition": "A category of quality measures that address how costly a Performer is to operate and maintain.",
+    "alias": "",
+    "source": "(SEI):  a category of quality measures that address how costly a system is to operate and maintain.",
+    "groups": [
+      "Measure"
+    ]
+  },
+  {
+    "term": "OrganizationalMeasureType",
+    "definition": "The Powertype of OrganizationalMeasure.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "OrganizationType",
+    "definition": "A type of Organization",
+    "alias": "",
+    "source": "(DM2):  A type of Organization",
+    "groups": [
+      "Resource Flow",
+      "Organizational Structure",
+      "Pedigree"
+    ]
+  },
+  {
+    "term": "OrganizationTypeType",
+    "definition": "The Powertype of OrganizationType.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "overlap",
+    "definition": "A couple of wholePart couples where the part in each couple is the same.",
+    "alias": "",
+    "source": "(IDEAS): A couple of wholePart couples where the part in each couple is the same.",
+    "groups": [
+      "Organizational Structure",
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "OverlapType",
+    "definition": "An overlap in which the places are taken by Types only.",
+    "alias": "",
+    "source": "(IDEAS):  An overlap in which the places are taken by Types only.",
+    "groups": [
+      "Organizational Structure",
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "partiesToAnAgreement",
+    "definition": "The two parties involved in an agreement",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "Information And Data",
+      "Reification Levels",
+      "Rules"
+    ]
+  },
+  {
+    "term": "PedigreeInformation",
+    "definition": "Information describing pedigree",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "Information And Data",
+      "Reification Levels",
+      "Pedigree",
+      "Information Pedigree",
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "PedigreeInformationType",
+    "definition": "The Powertype of PedigreeInformation.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "PerformanceMeasure",
+    "definition": "A category of quality measures that address how well a Performer meets Capability needs.",
+    "alias": "",
+    "source": "(SEI):  a category of quality measures that address how well a system functions. ",
+    "groups": [
+      "Measure"
+    ]
+  },
+  {
+    "term": "PerformanceMeasureType",
+    "definition": "The Powertype of PerformanceMeasure.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "Performer",
+    "definition": "Any entity - human, automated, or any aggregation of human and/or automated - that performs an activity and provides a capability.",
+    "alias": "Actor, Agent, Capability Configuration (MODAF)",
+    "source": "(SUMO): Something or someone that can act on its own and produce changes in the world. (SUMO)",
+    "groups": [
+      "Resource Flow",
+      "Information And Data",
+      "Reification Levels",
+      "Organizational Structure",
+      "Capability",
+      "Services",
+      "Project",
+      "Pedigree",
+      "Rules",
+      "Information Pedigree",
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "PerformerType",
+    "definition": "The Powertype of Performer.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "PersonRoleType",
+    "definition": "A category of person roles defined by the role or roles they share that are relevant to an architecture.  Includes assigned materiel. ",
+    "alias": "Role",
+    "source": "(DoDAF/CADM):  A class of persons. (DDDS Counter (897/2)(A))\n(JC3IEDM):  An ObjectItem that represents human beings about whom information is to be held.\n(JCS 1-02):  Personnel: Those individuals required in either a military or civilian capacity to accomplish the assigned mission.\n(Zachman):  A human individual.\n(IDEAS):   An individual human being.\n(Webster's):  Personnel: The body of persons employed by or active in an organization, business, or service. ",
+    "groups": [
+      "Resource Flow",
+      "Organizational Structure",
+      "Pedigree"
+    ]
+  },
+  {
+    "term": "personRoleTypePartOfPerformer",
+    "definition": "A wholePart between a PersonRoleType and a Performer in which it performs",
+    "alias": "",
+    "source": "(DoDAF Meta Model):  A an association of the whole Performer to its Port that is visible and interfaces with other Performers",
+    "groups": [
+      "Organizational Structure"
+    ]
+  },
+  {
+    "term": "PersonRoleTypeType",
+    "definition": "The Powertype of PersonRoleType.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "PhysicalMeasure",
+    "definition": "A category of measures of spatio-temporal extent of an Individual such as length, mass, energy, velocity, …",
+    "alias": "",
+    "source": "(Answers.com):  A category of measures of spatio-temporal extent of an Individual such as length, mass, energy, velocity, …",
+    "groups": [
+      "Measure",
+      "Location"
+    ]
+  },
+  {
+    "term": "PhysicalMeasureType",
+    "definition": "The Powertype of PhysicalMeasure.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "PlanarSurface",
+    "definition": "A two-dimensional portion of space.",
+    "alias": "",
+    "source": "(IDEAS): A two-dimensional portion of space.",
+    "groups": [
+      "Location"
+    ]
+  },
+  {
+    "term": "PlanarSurfaceType",
+    "definition": "Powertype Of PlanarSurface",
+    "alias": "",
+    "source": "(DM2):  Powertype Of PlanarSurface",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "PlanarSurfaceTypeType",
+    "definition": "The Powertype of PlanarSurfaceType.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "Point",
+    "definition": "Unidimensional Individual (dimensionless in space, existant over all time)",
+    "alias": "",
+    "source": "(IDEAS):  Unidimensional Individual (dimensionless in space, existant over all time)",
+    "groups": [
+      "Location"
+    ]
+  },
+  {
+    "term": "pointPartOfLine",
+    "definition": "A couple that represents the whole part relationship between a line and a point",
+    "alias": "",
+    "source": "(DM2):  A couple that represents the whole part relationship between a line and a point",
+    "groups": [
+      "Location"
+    ]
+  },
+  {
+    "term": "pointPartOfPlanarSurface",
+    "definition": "A couple that represents the whole part relationship between a planar surface and a point",
+    "alias": "",
+    "source": "(DM2):  A couple that represents the whole part relationship between a planar surface and a point",
+    "groups": [
+      "Location"
+    ]
+  },
+  {
+    "term": "PointType",
+    "definition": "Powertype Of Point",
+    "alias": "",
+    "source": "(DM2):  Powertype Of Point",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "PointTypeType",
+    "definition": "The Powertype of PointType.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "PolygonArea",
+    "definition": "The space enclosed by a polygon.",
+    "alias": "",
+    "source": "(IDEAS): The space enclosed by a polygon.",
+    "groups": [
+      "Location"
+    ]
+  },
+  {
+    "term": "PolygonAreaType",
+    "definition": "Powertype Of PolygonArea",
+    "alias": "",
+    "source": "(DM2):  Powertype Of PolygonArea",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "PolygonAreaTypeType",
+    "definition": "The Powertype of PolygonAreaType.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "portPartOfPerformer",
+    "definition": "A an association of the whole Performer to its Port that is visible and interfaces with other Performers",
+    "alias": "",
+    "source": "(IDEAS):  A an association of the whole Performer to its Port that is visible and interfaces with other Performers",
+    "groups": [
+      "Services"
+    ]
+  },
+  {
+    "term": "PortType",
+    "definition": "The Powertype of Port.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "PositionReferenceFrame",
+    "definition": "An arbitrary set of axes with reference to which the position or motion of something is described or physical laws are formulated.",
+    "alias": "",
+    "source": "(IDEAS): An arbitrary set of axes with reference to which the position or motion of something is described or physical laws are formulated.",
+    "groups": [
+      "Location"
+    ]
+  },
+  {
+    "term": "PositionReferenceFrameType",
+    "definition": "The Powertype of PositionReferenceFrame.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "Powertype",
+    "definition": "A Type that is the is the set (i.e., Type) of all subsets (i.e., subTypes) that can be taken over the some Type.",
+    "alias": "",
+    "source": "(IDEAS):  A Type that is the powerType of some other Type where a powerType (or power set) is the set of all subsets that can be taken over the other Type.",
+    "groups": [
+      "IDEAS Foundation"
+    ]
+  },
+  {
+    "term": "powertypeInstance",
+    "definition": "An association that between of the sets within the powerType and the powerType.  A special form of typeInstance.",
+    "alias": "",
+    "source": "(DoDAF Meta Model):  A part of an Activity that produces a Resource",
+    "groups": [
+      "IDEAS Foundation"
+    ]
+  },
+  {
+    "term": "Project",
+    "definition": "A temporary endeavor undertaken to create Resources or Desired Effects.",
+    "alias": "Plan, Tactic, Strategy, Activity",
+    "source": "(Project Management Institute, A Guide to the Project Management Body of Knowledge (PMBOK), 3rd edition 2004):  A Project is a temporary endeavor undertaken to create a unique product, service, or result. \n(DoDAF/CADM):  A planned action that represents a set of activities organized and managed to produce a specified product in a specified period of time with specified resources. (DDDS Counter (19607/1)(A))\n(NAF):  A time-limited endeavour to create a specific set of products or services. (MM).\n(Webster's):  1. Something that is contemplated, devised, or planned; plan; scheme.  2. A large or major undertaking, esp. one involving considerable money, personnel, and equipment.",
+    "groups": [
+      "Information And Data",
+      "Reification Levels",
+      "Project"
+    ]
+  },
+  {
+    "term": "ProjectType",
+    "definition": "The powertype of Project",
+    "alias": "",
+    "source": "(DM2):  The powertype of Project",
+    "groups": [
+      "Information And Data",
+      "Reification Levels",
+      "Project"
+    ]
+  },
+  {
+    "term": "ProjectTypeType",
+    "definition": "The Powertype of ProjectType.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "Property",
+    "definition": "An IndividualType whose members all exhibit a common trait or feature. Often the Individuals are states having a property (the state of being 18 degrees centigrade), where this property can be a CategoricalProperty (qv.) or a DispositionalProperty (qv.).\n",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "Pedigree",
+      "Measure",
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "propertyOfIndividual",
+    "definition": "A typeInstance that asserts an Individual is an instance of a Property - i.e. the Individual \"has\" a property \n\nExamples:\n\nA product being \"expensive\"\nA laptop weighing 2.2kg\nA car travelling between 40 and 50 km/h\n",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "Pedigree",
+      "Measure",
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "propertyOfType",
+    "definition": "A superSubtype that asserts an IndividualType is a subtype of a Property - i.e. it asserts all members of the Individual type \"have\" a property \n\nExamples:\n\nAll London Buses are red\nAll Porsche 911 2.2S have a mass between 900 and 960 kg\nAll atoms of merc",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "Pedigree",
+      "Measure",
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "PropertyType",
+    "definition": "The Powertype of Property.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "RealProperty",
+    "definition": "Land and improvements to land (i.e., facilities).",
+    "alias": "",
+    "source": "(DODI 4165.14):  Land and improvements to land (i.e., facilities), equipment affixed and built into the facility as an integral part of the facility heating systems), but not movable equipment (e.g., plant equipment, industrial buoys). In many instances this term is synonymous with real estate.",
+    "groups": [
+      "Location",
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "RealPropertyType",
+    "definition": "Powertype Of RealProperty",
+    "alias": "",
+    "source": "(DM2):  Powertype Of RealProperty",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "RealPropertyTypeType",
+    "definition": "The Powertype of RealPropertyType.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "RectangularArea",
+    "definition": "The space enclosed by a rectangle.",
+    "alias": "",
+    "source": "(IDEAS): The space enclosed by a rectangle.",
+    "groups": [
+      "Location"
+    ]
+  },
+  {
+    "term": "RectangularAreaType",
+    "definition": "Powertype Of RectangularArea",
+    "alias": "",
+    "source": "(DM2):  Powertype Of RectangularArea",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "RectangularAreaTypeType",
+    "definition": "The Powertype of RectangularAreaType.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "RegionOfCountry",
+    "definition": "A large, usually continuous segment of a political state or nation or its territory.",
+    "alias": "",
+    "source": "(IDEAS): A large, usually continuous segment of a political state or nation or its territory.",
+    "groups": [
+      "Location"
+    ]
+  },
+  {
+    "term": "regionOfCountryPartOfCountry",
+    "definition": "A couple that represents the whole part relationship between a country and a region within it",
+    "alias": "",
+    "source": "(DM2):  A couple that represents the whole part relationship between a country and a region within it",
+    "groups": [
+      "Location"
+    ]
+  },
+  {
+    "term": "RegionOfCountryType",
+    "definition": "Powertype Of RegionOfCountry",
+    "alias": "",
+    "source": "(DM2):  Powertype Of RegionOfCountry",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "RegionOfCountryTypeType",
+    "definition": "The Powertype of RegionOfCountryType.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "RegionOfWorld",
+    "definition": "A large, usually continuous segment of a surface or space; area.",
+    "alias": "",
+    "source": "(IDEAS): A large, usually continuous segment of a surface or space; area.",
+    "groups": [
+      "Location"
+    ]
+  },
+  {
+    "term": "RegionOfWorldType",
+    "definition": "Powertype Of RegionOfWorld",
+    "alias": "",
+    "source": "(DM2):  Powertype Of RegionOfWorld",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "RegionOfWorldTypeType",
+    "definition": "The Powertype of RegionOfWorldType.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "Representation",
+    "definition": "A SignType where all the individual Signs are intended to signify the same Thing.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "Pedigree",
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "RepresentationScheme",
+    "definition": "A RepresentationType that is a collection of Representations that are intended to be the preferred Representations in certain contexts.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "representationSchemeInstance",
+    "definition": "A typeInstance that asserts a Representation is a member of a RepresentationScheme.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "RepresentationType",
+    "definition": "A Type that is the Powertype of Representation",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "Resource Flow",
+      "Information And Data",
+      "Reification Levels",
+      "Services",
+      "Pedigree",
+      "Information Pedigree",
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "representedBy",
+    "definition": "A couple that asserts that a Representation represents a Thing.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "Information And Data",
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "Resource",
+    "definition": "Data, Information, Performers, Materiel, or Personnel Types that are produced or consumed.",
+    "alias": "",
+    "source": "OASIS SOA RA: Message exchange is the means by which service participants (or their agents) interact with each other. There are two primary modes of interaction: joint actions that cause real world effects, and notification of events that report real world effects.   A message exchange is used to affect an action when the messages contain the appropriately formatted content that should be interpreted as joint action and the agents involved interpret the message appropriately.  A message exchange is also used to communicate event notifications.  An event is a report of an occurrence that is of interest to some participant; in our case when some real world effect has occurred. Just as action messages will have formatting requirements, so will event notification messages.  In this way, the Information Model of a service must specify the syntax (structure), and semantics (meaning) of the action messages and event notification messages as part of a service interface.  It must also specify the syntax and semantics of any data that is carried as part of a payload of the action or event notification message.  The Information Model is described in greater detail in the Service Description Model (see Section 4.1). ",
+    "groups": [
+      "Resource Flow",
+      "Information And Data",
+      "Reification Levels",
+      "Organizational Structure",
+      "Capability",
+      "Services",
+      "Project",
+      "Pedigree",
+      "Information Pedigree",
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "resourceInLocationType",
+    "definition": "The relationship that describes the location of a performer or type of performer\n",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "Resource Flow",
+      "Information And Data",
+      "Reification Levels",
+      "Pedigree",
+      "Information Pedigree",
+      "Location"
+    ]
+  },
+  {
+    "term": "ResourceType",
+    "definition": "The Powertype of Resource.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "Rule",
+    "definition": "A principle or condition that governs behavior; a prescribed guide for conduct or action  ",
+    "alias": "",
+    "source": "(BMM Concept Catalog):  Business Rules provide specific, actionable guidance to implement Business Policies. Some Business Rules could be automated in software; some are actionable only by people.\n‘Business Rule’ participates in the following associations:\n• is derived from Business Policy\n• may guide Business Processes\n• may have an enforcement level effected by a Tactic.  ‘Business Rule’ in version 1.2 of the BMM is adopted from SBVR.\n(dictionary.com): a principle or regulation governing conduct, action, procedure, arrangement, etc.;  the customary or normal circumstance, occurrence, manner, practice, quality, etc.:  \n(wordnet): a principle or condition that customarily governs behavior; prescribed guide for conduct or action  \n(wikipedia): Business rules or business rulesets describe the operations, definitions and constraints that apply to an organization in achieving its goals. ",
+    "groups": [
+      "Resource Flow",
+      "Information And Data",
+      "Reification Levels",
+      "Capability",
+      "Services",
+      "Project",
+      "Pedigree",
+      "Rules",
+      "Information Pedigree",
+      "Measure",
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "ruleConstrainsActivity",
+    "definition": "An overlap between a Rule and the Activities it allows",
+    "alias": "",
+    "source": "(DoDAF Meta Model):  An overlap between the Service mechanism and the Performer capabilities it provides access to",
+    "groups": [
+      "Resource Flow",
+      "Information And Data",
+      "Reification Levels",
+      "Capability",
+      "Services",
+      "Project",
+      "Pedigree",
+      "Rules",
+      "Information Pedigree"
+    ]
+  },
+  {
+    "term": "rulePartOfMeasureType",
+    "definition": "A couple that represents the whole part relationship between types of measures and rules",
+    "alias": "",
+    "source": "(DM2):  A couple that represents the whole part relationship between types of measures and rules",
+    "groups": [
+      "Capability",
+      "Rules",
+      "Measure"
+    ]
+  },
+  {
+    "term": "RuleType",
+    "definition": "The Powertype of Rule.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "SecurityAttributesGroup",
+    "definition": "The group of Information Security Marking attributes in which the use of attributes 'classification' and 'ownerProducer' is required. This group is to be contrasted with group 'SecurityAttributesOptionGroup' in which use of those attributes is optional.",
+    "alias": "",
+    "source": "(UCORE 1.1):  The group of Information Security Marking attributes in which the use of attributes 'classification' and 'ownerProducer' is required. This group is to be contrasted with group 'SecurityAttributesOptionGroup' in which use of those attributes is optional.",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "SecurityAttributesGroupType",
+    "definition": "The Powertype of SecurityAttributesGroup.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "Service",
+    "definition": "A mechanism to enable access to a set of one or more capabilities , where the access is provided using a prescribed interface and is exercised consistent with constraints and policies as specified by the service description.  The mechanism is a Performer.  The \"capabilities\" accessed are Resources -- Information, Data, Materiel, Performers, and Geo-political Extents.  ",
+    "alias": "",
+    "source": "(Net-Centric Services Strategy, 3/2007): a mechanism to enable access to one or more capabilities, where the access is provided using a prescribed interface and is exercised consistent with constraints and policies as specified by the service description.\n(OASIS SOA RM): A mechanism to enable access to a set of one or more capabilities, where the access is provided using a prescribed interface and is exercised consistent with constraints and policies as specified by the service description.\n(Wordnet): Work done by one person or group that benefits another; \"budget separately for goods and services\" \n(The Free On-line Dictionary of Computing):  Work performed (or offered) by a server. This may mean simply serving simple requests for data to be sent or stored (as with file servers, gopher or http servers, e-mail servers, finger servers, SQL servers, etc.); or it may be more complex work, such as that of irc servers, print servers, X Windows servers, or process servers.  E.g. \"Access to the finger service is restricted to the local subnet, for security reasons\".\n(http://www.ibm.com/developerworks/xml/library/ws-support-soa/ ):  Service-Oriented Architecture (SOA) introduces a highly distributed architecture which assumes multiple consumers executing the same service. In such systems, different consumers can have different quality of service (QoS) requirements for the invocation of the same service. Additionally, new versions of services can be introduced over time, which might require correct routing of requests from different consumers to particular service versions. All of these requirements can be collectively described as service invocation policies. These policies can be either managed separately or incorporated into the service’s definitions.\"\n(Mark Lankhorst, et. al., Archimate Language Primer, Telematica Institut, the Netherlands, p 4.):  A service is defined as a unit of functionality that some entity (e.g., a system, organization or department) makes available to its environment and which has some value to certain entities in the environment. ",
+    "groups": [
+      "Resource Flow",
+      "Services",
+      "Pedigree"
+    ]
+  },
+  {
+    "term": "ServiceDescription",
+    "definition": "Information necessary to interact with the service in such terms as the service inputs, outputs, and associated semantics. The service description also conveys what is accomplished when the service is invoked and the conditions for using the service.",
+    "alias": "Service Interface Description (UPDM)",
+    "source": "DoDAF: The set of descriptive metadata that provides a consistent way to describe the use, composition, and implementation of a service to service providers, users, developers, and managers.  a specification for metadata about a service\nOASIS SOA RM: Contains the information necessary to interact with the service and describes this in such terms as the service inputs, outputs, and associated semantics. The service description also conveys what is accomplished when the service is invoked and the conditions for using the service.\nOASIS SOA Ref Arch: A service description is an artifact, usually document-based, that defines or references the information needed to use, deploy, manage and otherwise control a service. This includes not only the information and behavior models associated with a service to define the service interface but also includes information needed to decide whether the service is appropriate for the current needs of the service consumer. Thus, the service description will also include information such as service reachability, service functionality, and the policies and contracts associated with a service.",
+    "groups": [
+      "Information And Data",
+      "Reification Levels",
+      "Services"
+    ]
+  },
+  {
+    "term": "ServiceDescriptionType",
+    "definition": "The Powertype of ServiceDescription.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "serviceEnablesAccessToResource",
+    "definition": "An overlap between the Service (i.e., mechanism) and the Resources (i.e., capabilities) to which it provides access.",
+    "alias": "",
+    "source": "(IDEAS):  An overlap between the Service mechanism and the Performer capabilities it provides access to",
+    "groups": [
+      "Services"
+    ]
+  },
+  {
+    "term": "ServiceLevel",
+    "definition": "A measurement of the performance of a system or service.",
+    "alias": "",
+    "source": "(Answers.com):  A measurement of the performance of a system or service.",
+    "groups": [
+      "Measure",
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "ServiceLevelType",
+    "definition": "The Powertype of ServiceLevel.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "ServicePort",
+    "definition": "A part of a Performer that specifics a interaction component through which the Performer interacts with other Performers.  This isolates dependencies between performers to particular interaction points rather than to the performer as a whole.",
+    "alias": "Mediator (OASIS SOA RA), Service Interface (UPDM)",
+    "source": "(MODAF): The mechanism by which a <<Service>> communicates.  Note: a <<ServiceInterface>> specifies the <<ServiceInterfaceDefinition>> provided and required by the <<Service>>.",
+    "groups": [
+      "Services"
+    ]
+  },
+  {
+    "term": "servicePortDescribedBy",
+    "definition": "A tuple that asserts that Information describes a Thing.  ",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "Services"
+    ]
+  },
+  {
+    "term": "ServicePortType",
+    "definition": "The Powertype of ServicePort.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "ServiceType",
+    "definition": "The Powertype of Service.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "Sign",
+    "definition": "An Individual that signifies a Thing.\r\n\r\nExample: 'BOSTON' signifies BOSTON",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "SignType",
+    "definition": "An IndividualType that is the Powertype of Sign.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "SignTypeType",
+    "definition": "The Powertype of SignType.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "SingletonActivity",
+    "definition": "A set of activities containing only one activity.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "Pedigree"
+    ]
+  },
+  {
+    "term": "SingletonIndividualType",
+    "definition": "A set of individuals containing only one individual.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "SingletonResource",
+    "definition": "A set of resources containing only one resource",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "Pedigree",
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "Site",
+    "definition": "Physical (geographic) location that is or was owned by, leased to, or otherwise possessed. Each site is assigned to a single installation. A site may exist in one of three forms: (1) Land only, where there are no facilities present and where the land consists of either a single land parcel or two or more contiguous land parcels. (2)  Facility or facilities only, where the underlying land is neither owned nor controlled by the government. A stand-alone facility can be a site. If a facility is not a stand-alone facility, it must be assigned to a site. (3). Land and all the facilities thereon, where the land consists of either a single land parcel or two or more contiguous land parcels. ",
+    "alias": "",
+    "source": "(DODI 4165.14):  Physical (geographic) location that is or was owned by, leased to, or otherwise possessed by a DoD Component. Each site is assigned to a single installation. A site may exist in one of three forms: (1) Land only, where there are no facilities present and where the land consists of either a single land parcel or two or more contiguous land parcels. (2)  Facility or facilities only, where the underlying land is neither owned nor controlled by the government. A stand-alone facility can be a site. If a facility is not a stand-alone facility, it must be assigned to a site. (3). Land and all the facilities thereon, where the land consists of either a single land parcel or two or more contiguous land parcels.",
+    "groups": [
+      "Location"
+    ]
+  },
+  {
+    "term": "sitePartOfInstallation",
+    "definition": "A whole-part association representing that a Site (the part) is spatio-temporally contained within an Installation (the whole).",
+    "alias": "",
+    "source": "(DoDAF Meta Model):  An overlap between a Personnel Type and the Skills it entails",
+    "groups": [
+      "Location"
+    ]
+  },
+  {
+    "term": "SiteType",
+    "definition": "Powertype Of Site",
+    "alias": "",
+    "source": "(DM2):  Powertype Of Site",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "SiteTypeType",
+    "definition": "The Powertype of SiteType.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "Skill",
+    "definition": "The ability, coming from one's knowledge, practice, aptitude, etc., to do something well.",
+    "alias": "Training, Knowledge, Ability",
+    "source": "(DoDAF/CADM):  Skill: An ability. (DDDS Counter (2226/1)(A))\n(NAF):  Competence: A specific set of abilities defined by knowledge, skills and\nattitude. (MM)\n(Webster's):  1. The ability, coming from one's knowledge, practice, aptitude, etc., to do something well. 2. Competent excellence in performance; expertness",
+    "groups": [
+      "Organizational Structure",
+      "Pedigree"
+    ]
+  },
+  {
+    "term": "skillOfPersonRoleType",
+    "definition": "A type property between a PersonRoleType and the Skills it entails",
+    "alias": "",
+    "source": "(IDEAS):  An overlap between a Personnel Type and the Skills it entails",
+    "groups": [
+      "Organizational Structure",
+      "Pedigree",
+      "Measure"
+    ]
+  },
+  {
+    "term": "SkillType",
+    "definition": "The Powertype of Skill.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "SolidVolume",
+    "definition": "The amount of space occupied by a three-dimensional object of definite shape; not liquid or gaseous.",
+    "alias": "",
+    "source": "(IDEAS): The amount of space occupied by a three-dimensional object of definite shape; not liquid or gaseous.",
+    "groups": [
+      "Location"
+    ]
+  },
+  {
+    "term": "SolidVolumeType",
+    "definition": "Powertype Of SolidVolume",
+    "alias": "",
+    "source": "(DM2):  Powertype Of SolidVolume",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "SolidVolumeTypeType",
+    "definition": "The Powertype of SolidVolumeType.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "SpatialMeasure",
+    "definition": "A category of measures of the spatio-temporal location of an Individual.",
+    "alias": "",
+    "source": "(IDEAS):  A category of measures of the spatio-temporal location of an Individual.",
+    "groups": [
+      "Measure",
+      "Location"
+    ]
+  },
+  {
+    "term": "SpatialMeasureType",
+    "definition": "The Powertype of SpatialMeasure.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "Standard",
+    "definition": "A formal agreement documenting generally accepted specifications or criteria for products, processes, procedures, policies, systems, and/or personnel.",
+    "alias": "",
+    "source": "(DoDAF/CADM):  InformationTechnologyStandard: An Agreement for a procedure, product or relationship for the acquisition, storage, manipulation, management, movement, control, switching, interchange, transmission or reception or data.\n(see Metrics)\n(FEA):  A set of criteria (some of which may be mandatory), voluntary guidelines, and best practices. Examples include:\n• Application development\n• Project management\n• Vendor management\n• Production operation\n• User support\n• Asset management\n• Technology evaluation\n• Architecture governance\n• Configuration management\n• Problem resolution.\n(NAF):  A ratified and peer-reviewed specification that is used to guide or constrain the architecture. A <<Standard>> may be applied to any element in the architecture via the [constrainedItem] property of UML::Constraint. (MM)\n(Webster's):  1. Something considered by an authority or by general consent as a basis of comparison; an approved model.  2. A rule or principle that is used as a basis for judgment.  3. An average or normal requirement, quality, quantity, level, grade, etc.  4. An authoritative principle or rule that usually implies a model or pattern for guidance, by comparison with which the quantity, excellence, correctness, etc., of other things may be determined. Synonyms: gauge, basis,\npattern, guide. Standard, criterion refer to the basis for making a judgment. A criterion is a rule or principle used to judge the value, suitability, probability, etc., of something, without necessarily\nimplying any comparison.\n(American Heritage Dictionary): an acknowledged measure of comparison for quantitative\nor qualitative value; criterion.\n(ISE-FS-200):  A specific technical methodology and practice.\n(ANSI):  A formal agreement documenting generally accepted specifications or criteria for products, processes, procedures, policies, systems, and/or personnel.\n(ISO):  An ISO standard is a documented agreement containing technical specifications or other precise criteria to be used consistently as rules, guidelines, or definitions of characteristics to ensure that materials, products, processes and services are fit for their purpose. It is a living agreement that can have a profound influence on things that deserve to be taken seriously - such as the safety, reliability and efficiency of machinery and tools, means of transport, toys, medical devices, and so on.",
+    "groups": [
+      "Rules",
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "StandardType",
+    "definition": "The Powertype of Standard.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "startBoundary",
+    "definition": "The beginning of a temporalBoundary.",
+    "alias": "",
+    "source": "(IDEAS):  The beginning of a temporalBoundary.",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "StartBoundaryType",
+    "definition": "The beginning of a temporalBoundaryType.",
+    "alias": "",
+    "source": "(IDEAS):  The beginning of a temporalBoundaryType.",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "superSubType",
+    "definition": "An association in which one Type (the subtype) is a subset of the other Type (supertype).",
+    "alias": "",
+    "source": "(IDEAS):  An association in which one Type (the subtype) is a subset of the other Type (supertype).",
+    "groups": [
+      "IDEAS Foundation"
+    ]
+  },
+  {
+    "term": "Surface",
+    "definition": "A portion of space having length and breadth but no thickness or regards to time.",
+    "alias": "",
+    "source": "(IDEAS):  Note: as opposed to spatio-temporal area",
+    "groups": [
+      "Location"
+    ]
+  },
+  {
+    "term": "SurfaceType",
+    "definition": "Powertype Of Surface",
+    "alias": "",
+    "source": "(DM2):  Powertype Of Surface",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "SurfaceTypeType",
+    "definition": "The Powertype of SurfaceType.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "System",
+    "definition": "A functionally, physically, and/or behaviorally related group of regularly interacting or interdependent elements.",
+    "alias": "",
+    "source": "(DoDAF):  Any organized assembly of resources and procedures united and regulated by interaction or interdependence to accomplish a set of specific functions.\n(DoDAF/CADM):  An organized assembly of interactive components and procedures forming a unit.(DDDS Counter (19607/1)(A))\n(MODAF):  Any organised assembly of resources and procedures united and regulated by interaction or interdependence to accomplish a set of specific functions.\n(IEEE):  A collection of components organized to accomplish a specific function or set of functions.\n(BEA):  Any organized assembly of resources and procedures united and regulated by interaction or interdependence to accomplish a set of specific functions.\n(NAF):  A collection of components organized to accomplish a specific function or set of functions. (GEN TERM)\n(NAF):  A coherent combination of physical artifacts, energy and information, assembled for a purpose. (MM)\n(JCS 1-02):  A functionally, physically, and/or behaviorally related group of regularly interacting or interdependent elements; that group of elements forming a unified whole. (JP 3-0)\n(Zachman):  A MECHANISM TYPE that consists of one of more linked computers, along with associated software.\n(Webster's):  1. An assemblage or combination of things or parts forming a complex or unitary whole.   2. Any assemblage or set of correlated members.  3. An ordered and comprehensive assemblage of facts, principles, doctrines, or the like in a particular field of knowledge or thought.  4. A coordinated body of methods or a scheme or plan of procedure; organizational scheme. 5. Any formulated, regular, or special method or plan of procedure ocedure; organizational scheme. 5. Any formulated, regular, or special method or plan of procedure \n(INCOSE)  A system is a construct or collection of different elements that together produce results not obtainable by the elements alone. The elements, or parts, can include people, hardware, software, facilities, policies, and documents; that is, all things required to produce systems-level results. The results include system level qualities, properties, characteristics, functions, behavior and performance. The value added by the system as a whole, beyond that contributed independently by the parts, is primarily created by the relationship among the parts; that is, how they are interconnected (Rechtin, 2000). \n(WordNet):  \n(Gene Bellinger):  A system is an entity that maintains its existence through the mutual interaction of its parts.",
+    "groups": [
+      "Resource Flow",
+      "Pedigree"
+    ]
+  },
+  {
+    "term": "SystemType",
+    "definition": "The Powertype of System.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "TechnicalStandard",
+    "definition": "Technical standards document specific technical methodologies and practices to design and implement.  ",
+    "alias": "",
+    "source": "(ISE FS 200, adapted from):  Technical standards document specific technical methodologies and practices to design and implement.",
+    "groups": [
+      "Rules"
+    ]
+  },
+  {
+    "term": "TechnicalStandardType",
+    "definition": "The Powertype of TechnicalStandard.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "temporalBoundary",
+    "definition": "The start and end times for the spatio-temporal extent of an Individual",
+    "alias": "",
+    "source": "(IDEAS): A relationship between two or more things. Note: Tuples are identified by their places (i.e. the ends of the relationship).",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "TemporalBoundaryType",
+    "definition": "The start and end times for the Individual members of a Type.",
+    "alias": "",
+    "source": "(IDEAS): A relationship between two or more things. Note: Tuples are identified by their places (i.e. the ends of the relationship).",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "TemporalMeasure",
+    "definition": "A type of measure of time",
+    "alias": "",
+    "source": "(DoDAF Meta Model):  A type of measure of time.",
+    "groups": [
+      "Measure"
+    ]
+  },
+  {
+    "term": "TemporalMeasureType",
+    "definition": "The Powertype of TemporalMeasure.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "temporalWholePart",
+    "definition": "A wholePart that asserts the spatial extent of the (whole) individual is co-extensive with the spatial extent of the (part) individual for a particular period of time.",
+    "alias": "",
+    "source": "(IDEAS):  A wholePart that asserts the spatial extent of the (whole) individual is co-extensive with the spatial extent of the (part) individual for a particular period of time.",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "TemporalWholePartType",
+    "definition": " A couple between two Individual Types where for each member of the whole set, there is a corresponding member of the part set for which a wholePart relationship exists, and conversely",
+    "alias": "",
+    "source": "(IDEAS):  A couple between two Individual Types where for each member of the whole set, there is a corresponding member of the part set for which a wholePart relationship exists, and conversely",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "Thing",
+    "definition": "The union of Individual, Type, and tuple.",
+    "alias": "",
+    "source": "(IDEAS): The union of Individual, Type, and tuple.",
+    "groups": [
+      "Information And Data",
+      "Reification Levels",
+      "Pedigree",
+      "Information Pedigree",
+      "Location",
+      "IDEAS Foundation"
+    ]
+  },
+  {
+    "term": "tuple",
+    "definition": "A relationship between two or more things. Note: Tuples are identified by their places (i.e. the ends of the relationship).",
+    "alias": "",
+    "source": "(IDEAS): A relationship between two or more things. Note: Tuples are identified by their places (i.e. the ends of the relationship).",
+    "groups": [
+      "Information And Data",
+      "IDEAS Foundation"
+    ]
+  },
+  {
+    "term": "TupleType",
+    "definition": "The powertype of tuple that provides the stereotype for tuples of Types.",
+    "alias": "",
+    "source": "(IDEAS):  The powertype of tuple that provides the stereotype for tuples of Types.",
+    "groups": [
+      "IDEAS Foundation"
+    ]
+  },
+  {
+    "term": "Type",
+    "definition": "A set (or class) of Things.  Note1: Types are identified by their members (i.e. all the things of that type). Note2: The IDEAS Foundation is a higher-order ontology, so Types may have members that are also Types.",
+    "alias": "",
+    "source": "(IDEAS): A set (or class) of Things.  Note1: Types are identified by their members (i.e. all the things of that type). Note2: The IDEAS Foundation is a higher-order ontology, so Types may have members that are also Types.",
+    "groups": [
+      "Pedigree",
+      "IDEAS Foundation"
+    ]
+  },
+  {
+    "term": "typeInstance",
+    "definition": "A Thing can be an instance of a Type - i.e. set membership. Note that IDEAS is a higher-order model, hence Types may be instances of Types.",
+    "alias": "",
+    "source": "(IDEAS):  A Thing can be an instance of a Type - i.e. set membership. Note that IDEAS is a higher-order model, hence Types may be instances of Types.",
+    "groups": [
+      "IDEAS Foundation"
+    ]
+  },
+  {
+    "term": "Vision",
+    "definition": "An end that describes the future state of the enterprise, without regard to how it is to be achieved; a mental image of what the future will or could be like",
+    "alias": "",
+    "source": "(BMM Concept Catalog):  A Vision is an overall image of what the organization wants to be or become. An enterprise can use the Business Motivation Model without defining a Vision explicitly.   An end that is about the future state of the enterprise, without regard to how it is to be achieved.  Dictionary Basis: a mental image of what the future will or could be like [NODE 'vision' (2), bullet 1]\n",
+    "groups": [
+      "Project"
+    ]
+  },
+  {
+    "term": "visionIsRealizedByDesiredEffect",
+    "definition": "The relationship that exists between a vision and the specific desired effect that realised it",
+    "alias": "",
+    "source": "(DM2):  The relationship that exists between a vision and the specific desired effect that realised it",
+    "groups": [
+      "Project"
+    ]
+  },
+  {
+    "term": "VisionType",
+    "definition": "The Powertype of Vision.",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "wholePart",
+    "definition": "A couple that asserts one (part) Individual is part of another (whole) Individual.",
+    "alias": "",
+    "source": "(IDEAS):  A couple that asserts one (part) Individual is part of another (whole) Individual.",
+    "groups": [
+      "Organizational Structure",
+      "IDEAS Foundation"
+    ]
+  },
+  {
+    "term": "WholePartType",
+    "definition": "A coupleType that asserts one Type (the part) has members that have a whole-part relation with a member of the other Type (whole).",
+    "alias": "",
+    "source": "(IDEAS):  A coupleType that asserts one Type (the part) has members that have a whole-part relation with a member of the other Type (whole).",
+    "groups": [
+      "Organizational Structure",
+      "IDEAS Foundation"
+    ]
+  },
+  {
+    "term": "Attribute",
+    "definition": "",
+    "alias": "Property, Measure",
+    "source": "(Random House Dictionary):  something attributed as belonging to a person, thing, group, etc.; a quality, character, characteristic, or property: Sensitivity is one of his attributes. \n(CJSCI 3170.01G):  A quantitative or qualitative characteristic of an element or its actions.",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "AuthentificationInfo",
+    "definition": "",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "Capability",
+    "definition": "",
+    "alias": "",
+    "source": "(SoAML UPMS, beta 2):  A Capability is the ability to act and produce an outcome that achieves a result. It can. Specify a general capability of a participant as well as the specific ability to provide a service.",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "Collaboration ",
+    "definition": "",
+    "alias": "Operational Node?",
+    "source": "(SoAML):  Collaboration is extended to indicate whether the role to part bindings of CollaborationUses typed by a Collaboration are strictly enforced or not. 3 : to cooperate with an agency or instrumentality with which one is not immediately connected",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "Collaboration ",
+    "definition": "",
+    "alias": "",
+    "source": "(SoAML UPMS, beta 2):  Collaboration is extended to indicate whether the role to part bindings of CollaborationUses typed by a Collaboration are strictly enforced or not. ",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "CollaborationUse",
+    "definition": "",
+    "alias": "",
+    "source": "(SoAML UPMS, beta 2):  CollaborationUse is extended to indicate whether the role to part bindings are strictly enforced or loose.",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "Consumer",
+    "definition": "",
+    "alias": "",
+    "source": "(SoAML UPMS, beta 2):  Consumer models the type of a service consumer. A consumer is then used as the type of a role in a service contract and the type of a port on a participant.  ",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "Contract",
+    "definition": "",
+    "alias": "",
+    "source": "(dictionary):  an agreement between two or more parties for the doing or not doing of something specified.\n(OO):  TBS",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "DisclosurePoliciesInfo",
+    "definition": "",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "Education",
+    "definition": "1. The act or process of imparting or acquiring general knowledge, developing the powers of reasoning and judgment, and generally of preparing oneself or others intellectually for mature life.  2. the act or process of imparting or acquiring particular knowledge or skills.",
+    "alias": "",
+    "source": "(JCS 1-02):  Military Education: The systematic instruction of individuals in subjects that will enhance their knowledge of the science and art of war.\n(Webster's):  Leadership: 1. The position or function of a leader.  2. Ability to lead.  Education: 1. The act or process of imparting or acquiring general knowledge, developing the powers of reasoning and judgment, and generally of preparing oneself or others intellectually for mature life.  2. the act or process of imparting or acquiring particular knowledge or skills.",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "Knowledge",
+    "definition": " the fact or state of knowing; the perception of fact or truth; clear and certain mental apprehension.",
+    "alias": "",
+    "source": "(www.dictionary.com):  1. acquaintance with facts, truths, or principles, as from study or investigation; general erudition: knowledge of  many things. 2. familiarity or conversance, as with a particular subject or branch of learning: A knowledge of accounting was necessary for the job.  3.     acquaintance or familiarity gained by sight, experience, or report: a knowledge of human nature. 4. the fact or state of knowing; the perception of fact or truth; clear and certain mental apprehension. 5.\nawareness, as of a fact or circumstance: He had knowledge of her good fortune  6. something that is or may be known; information: He sought knowledge of her activities. 7. the body of truths or facts accumulated in the course of time. 8. the sum of what is known: Knowledge of the true situation is limited.\"",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "Leadership",
+    "definition": "1. The position or function of a leader.  2. Ability to lead.",
+    "alias": "",
+    "source": "(JCS 1-02):  Military Education: The systematic instruction of individuals in subjects that will enhance their knowledge of the science and art of war.\n(Webster's):  Leadership: 1. The position or function of a leader.  2. Ability to lead.  Education: 1. The act or process of imparting or acquiring general knowledge, developing the powers of reasoning and judgment, and generally of preparing oneself or others intellectually for mature life.  2. the act or process of imparting or acquiring particular knowledge or skills.",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "Milestone",
+    "definition": "",
+    "alias": "",
+    "source": "(SoAML UPMS, beta 2):  A Milestone is a means for depicting progress in behaviors in order to analyze liveness. Milestones are particularly useful for behaviors that are long lasting or even infinite.",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "Participant",
+    "definition": "",
+    "alias": "",
+    "source": "(SoAML UPMS, beta 2):  A participant is the type of a provider and/or consumer of services.  In the business domain a participant may be a person, organization or system.  In the systems domain a participant may be a system, application or component.",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "PerformerCapableOfResponsibility",
+    "definition": "",
+    "alias": "",
+    "source": "",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "Port",
+    "definition": "",
+    "alias": "",
+    "source": "(SoAML UPMS, beta 2):  Extends UML Port with a means to indicate whether a Connection is required on this Port or not",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "provider",
+    "definition": "",
+    "alias": "",
+    "source": "(SoAML UPMS, beta 2):  Provider models the type of a service provider in a consumer/provider relationship. A provider is then used as the type of a role in a service contract and the type of a port on a participant.",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "Real World Effect",
+    "definition": "",
+    "alias": "",
+    "source": "(SoAML UPMS, beta 2):  A ServicesContract is used to model an agreement between two or more parties and may constrain the expected real world effects of a service.",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "Request (port stereotype)",
+    "definition": "",
+    "alias": "",
+    "source": "(SoAML UPMS, beta 2):  A Request represents a feature of a Participant that is the consumption of a service by one participant provided by others using well-defined terms, conditions and interfaces. A Request designates ports that define the connection point through which a Participant meets its needs through the consumption of services provided by others.  A request port is a “conjugate” port.  This means that the provided and required interfaces of the port type are inverted; this creates a port that uses the port type rather than implementing the port type.",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "Service",
+    "definition": "",
+    "alias": "",
+    "source": "(SoAML UPMS, beta 2):  A Service represents a feature of a Participant that is the offer of a service by one participant to others using well defined terms, conditions and interfaces. A Service designates a Port that defines the connection point through which a Participant offers its capabilities and provides a service to clients",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "Service Interface",
+    "definition": "",
+    "alias": "",
+    "source": "(SoAML UPMS, beta 2):  Provides the definition of a service. Defines the specification of a service interaction as the type of a «Service» or «Request» port.",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "ServiceChannel",
+    "definition": "",
+    "alias": "",
+    "source": "(SoAML UPMS, beta 2):  A communication path between Services and Requests within an architecture.",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "ServiceContract",
+    "definition": "Specification for a Service that then serves as a vehicle to communcated terms and conditions.  Specification of the joint action between the parties, including roles, what exchanged, metrics, rules, yada, yada. Proposed contract, not the instance to instance level agreement.  High level and lower level things.  From SoaML: A ServiceContract is the specification of the agreement between providers and consumers of a service as to what information, products, assets, value and obligations will flow between the providers and consumers of that service – it specifies the service without regard for realization, capabilities or implementation.  A ServiceContract does not require the specification of who, how or why any party will fulfill their obligations under that ServiceContract, thus providing for the loose coupling of the SOA paradigm.  In most cases a ServiceContract will specify two roles (provider and consumer) – but other service roles may be specified as well.  The ServiceContract may also own a behavior that specifies the sequencing of the exchanges between the parties as well as the resulting state and delivery of the capability.  The owned behavior is the choreography of the service and may use any of the standard UML behaviors such as an interaction, timing, state or activity diagram.  ",
+    "alias": "",
+    "source": "(SoAML):  A ServiceContract is the formalization of a binding exchange of information, goods, or obligations between parties defining a service.  \n(regular dictionary):  Contract: 1 a : a binding agreement between two or more persons or parties; especially : one legally enforceable b : a business arrangement for the supply of goods or services at a fixed price <make parts on contract> c : the act of marriage or an agreement to marry.  2 : a document describing the terms of a contract\n(OASIS SoA RM):  TBS",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "ServiceContract ",
+    "definition": "",
+    "alias": "",
+    "source": "(SoAML UPMS, beta 2):  A ServiceContract is the formalization of a binding exchange of information, goods, or obligations between parties defining a service.",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "Services Architecture",
+    "definition": "",
+    "alias": "",
+    "source": "(SoAML UPMS, beta 2):  The high-level view of a Service Oriented Architecture that defines how a set of participants works together, forming a community, for some purpose by providing and using services.",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  },
+  {
+    "term": "Ways and Means",
+    "definition": "",
+    "alias": "Activities or collections of activities.",
+    "source": "(BMM) TBD",
+    "groups": [
+      "DM2 Foundation"
+    ]
+  }
+]

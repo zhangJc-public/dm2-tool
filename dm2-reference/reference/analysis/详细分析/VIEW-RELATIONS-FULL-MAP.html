@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>DoDAF 全景架构 · 分层关系视图</title>
+    <!-- Mermaid 核心库 -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+        }
+        body {
+            font-family: 'Segoe UI', 'Roboto', system-ui, sans-serif;
+            background: #f5f7fc;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1600px;
+            width: 100%;
+            background: white;
+            border-radius: 28px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), 0 6px 12px rgba(0, 0, 0, 0.05);
+            padding: 24px 20px 30px;
+            transition: all 0.2s;
+        }
+        h1 {
+            font-weight: 500;
+            font-size: 1.9rem;
+            letter-spacing: -0.01em;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 0 0 8px 0;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #e9eef4;
+        }
+        h1 small {
+            font-size: 1rem;
+            font-weight: 400;
+            color: #5e6f8d;
+            margin-left: auto;
+        }
+        .subtitle {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin: 16px 0 20px 0;
+        }
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px 28px;
+            background: #f8fafd;
+            padding: 10px 18px;
+            border-radius: 40px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: #1e293b;
+        }
+        .color-dot {
+            width: 18px;
+            height: 18px;
+            border-radius: 6px;
+            border: 1.5px solid rgba(0,0,0,0.15);
+        }
+        .toolbar {
+            display: flex;
+            gap: 12px;
+        }
+        .btn {
+            background: white;
+            border: 1px solid #cdd9e6;
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #1e3a5f;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            transition: all 0.15s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .btn:hover {
+            background: #eef3fa;
+            border-color: #8ba0bc;
+            box-shadow: 0 6px 10px rgba(0, 20, 40, 0.06);
+            transform: translateY(-1px);
+        }
+        .btn-download {
+            background: #1e3a5f;
+            border-color: #102a44;
+            color: white;
+        }
+        .btn-download:hover {
+            background: #143048;
+        }
+        .diagram-wrapper {
+            background: #fdfdfe;
+            border-radius: 24px;
+            padding: 20px 10px 10px 10px;
+            margin-top: 10px;
+            border: 1px solid #e2e8f0;
+            overflow-x: auto;
+            overflow-y: visible;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.02);
+        }
+        #mermaid-diagram {
+            min-width: 1200px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        /* Mermaid 容器样式微调 */
+        .mermaid {
+            font-family: 'Segoe UI', 'Roboto', sans-serif !important;
+            background: transparent;
+        }
+        .footer-note {
+            margin-top: 24px;
+            text-align: right;
+            font-size: 0.8rem;
+            color: #64748b;
+            border-top: 1px dashed #cbd5e1;
+            padding-top: 18px;
+        }
+        .footer-note a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+        /* 针对移动端 */
+        @media (max-width: 700px) {
+            body { padding: 12px; }
+            .container { padding: 16px 12px; }
+            h1 { font-size: 1.5rem; }
+        }
+        /* 让mermaid的tooltip更美观 (如果有) */
+        .mermaid .label {
+            font-family: inherit;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>
+        🧩 DoDAF 2.0+ 全景视图 · 分层关系模型
+        <small>OV-1 作为场景上下文容器</small>
+    </h1>
+    
+    <div class="subtitle">
+        <div class="legend">
+            <div class="legend-item"><span class="color-dot" style="background: #e8f5e9; border-color: #2e7d32;"></span> L0 战略基础</div>
+            <div class="legend-item"><span class="color-dot" style="background: #fff3e0; border-color: #ef6c00;"></span> L1 能力定义</div>
+            <div class="legend-item"><span class="color-dot" style="background: #e3f2fd; border-color: #1565c0;"></span> L2 作战模型</div>
+            <div class="legend-item"><span class="color-dot" style="background: #fce4ec; border-color: #c62828;"></span> L3 系统轨 (SV)</div>
+            <div class="legend-item"><span class="color-dot" style="background: #f3e5f5; border-color: #7b1fa2;"></span> L3 服务轨 (SvcV)</div>
+            <div class="legend-item"><span class="color-dot" style="background: #e0f7fa; border-color: #00838f;"></span> L4 数据模型</div>
+            <div class="legend-item"><span class="color-dot" style="background: #fff8e1; border-color: #f9a825;"></span> L5 演进/标准/项目</div>
+            <div class="legend-item"><span class="color-dot" style="background: #ffeb3b; border: 3px solid #f57f17;"></span> ★ 核心容器 (OV-1)</div>
+        </div>
+        <div class="toolbar">
+            <button class="btn" id="resetZoomBtn" title="重置视图位置 (如果使用了平移/缩放)">🔄 重置视图</button>
+            <button class="btn btn-download" id="downloadBtn">⬇ 下载 HTML 程序</button>
+        </div>
+    </div>
+
+    <!-- 图表渲染区 -->
+    <div class="diagram-wrapper" id="diagramWrapper">
+        <div id="mermaid-diagram" class="mermaid">
+            <!-- Mermaid 定义将通过 JS 动态注入，以保证渲染稳定及修正缺失节点 -->
+        </div>
+    </div>
+
+    <div class="footer-note">
+        ⚡ 基于 DoDAF 元模型 · 连线表达战略→能力→作战→实现→数据→演进追溯 · 
+        <span id="renderStatus">正在渲染架构图...</span>
+    </div>
+</div>
+
+<script>
+    (function(){
+        "use strict";
+
+        // ---------- 修正版 Mermaid 定义 (补充 SV-7 节点, 保持完整) ----------
+        const mermaidDefinition = `
+%% 全景 DoDAF 架构图 (修正: 增加缺失的 SV-7 节点)
+graph TB
+    %% ===== Layer 0: 战略基础层 =====
+    subgraph L0[「Layer 0」战略基础]
+        direction LR
+        AV1["AV-1<br/>概览"]
+        CV1["CV-1<br/>愿景"]
+        StdV1["StdV-1<br/>标准基线"]
+        AV2["AV-2<br/>集成词典"]
+    end
+
+    %% ===== Layer 1: 能力定义层 =====
+    subgraph L1[「Layer 1」能力定义]
+        direction LR
+        CV2["CV-2<br/>分类法"]
+        CV3["CV-3<br/>阶段规划"]
+        CV4["CV-4<br/>依赖关系"]
+        CV5["CV-5<br/>组织映射"]
+        CV6["CV-6<br/>能力→活动"]
+        CV7["CV-7<br/>能力→服务"]
+    end
+
+    %% ===== Layer 2: 作战模型层（场景上下文容器） =====
+    subgraph L2[「Layer 2」作战模型<br/><b>★ OV-1 = 场景上下文容器 ★</b>]
+        direction LR
+        OV1["<b>OV-1<br/>概念图</b>"]
+        OV4["OV-4<br/>组织"]
+        OV5["OV-5ab<br/>活动分解"]
+        OV2["OV-2<br/>资源流"]
+        OV3["OV-3<br/>资源矩阵"]
+        OV6["OV-6abc<br/>规则/状态/时序"]
+    end
+
+    %% ===== Layer 3: 实现双轨层 =====
+    subgraph L3[「Layer 3」实现<br/>系统轨 ║ 服务轨]
+        direction LR
+        subgraph SV轨[系统轨 SV]
+            SV1["SV-1 接口"]
+            SV4["SV-4 功能"]
+            SV5a["SV-5a 追溯"]
+            SV2["SV-2 资源流"]
+            SV6["SV-6 矩阵"]
+            SV7["SV-7<br/>性能"]
+            SV10a["SV-10a 规则"]
+            SV10b["SV-10b 状态"]
+            SV10c["SV-10c 时序"]
+        end
+        subgraph SvcV轨[服务轨 SvcV]
+            SvcV1["SvcV-1 接口"]
+            SvcV4["SvcV-4 功能"]
+            SvcV5["SvcV-5 追溯"]
+            SvcV2["SvcV-2 资源流"]
+            SvcV6["SvcV-6 矩阵"]
+            SvcV10a["SvcV-10a 规则"]
+            SvcV10b["SvcV-10b 状态"]
+            SvcV10c["SvcV-10c 时序"]
+        end
+    end
+
+    %% ===== Layer 4: 数据模型层 =====
+    subgraph L4[「Layer 4」数据模型<br/>CDM → LDM → PDM]
+        DIV1["DIV-1<br/>概念数据"]
+        DIV2["DIV-2<br/>逻辑数据"]
+        DIV3["DIV-3<br/>物理数据"]
+    end
+
+    %% ===== Layer 5: 演进/标准/项目闭环层 =====
+    subgraph L5[「Layer 5」演进·标准·项目闭环]
+        direction LR
+        SV8["SV-8/SvcV-8<br/>演进"]
+        SV9["SV-9/SvcV-9<br/>技术预测"]
+        StdV2["StdV-2<br/>标准预测"]
+        PV1["PV-1<br/>组合"]
+        PV2["PV-2<br/>时间线"]
+        PV3["PV-3<br/>映射"]
+    end
+
+    %% ========== 层间主干连线 ==========
+
+    %% L0 → L1: 战略驱动能力
+    CV1 -->|"1:N 场景"| OV1
+    CV1 --> CV2
+    StdV1 -->|"约束广播"| OV6
+    StdV1 -->|"约束"| SV10a
+    StdV1 -->|"约束"| SvcV10a
+    StdV1 -->|"格式"| DIV1
+    StdV1 -->|"格式"| DIV2
+    StdV1 -->|"格式"| DIV3
+    AV1 --> OV1
+    AV2 <-->|"术语同步"| DIV1
+
+    %% L1 → L2: 能力锚定作战
+    CV2 --> CV6
+    CV2 --> CV7
+    CV6 --> OV5
+    CV7 --> SvcV4
+    CV5 --> OV4
+    CV3 --> PV2
+
+    %% L2 内部: OV-1 为上下文容器
+    OV1 -.->|"场景语境"| OV4
+    OV1 -.->|"场景语境"| OV5
+    OV1 -.->|"场景语境"| OV2
+    OV1 -.->|"场景语境"| OV6
+
+    %% L2 → L3: 作战→实现（主追溯 + Needline实现）
+    OV5 -->|"活动→功能"| SV4
+    OV5 -->|"活动→功能"| SvcV4
+    OV5 --> SV5a
+    OV5 --> SvcV5
+    OV5 --> OV3
+    OV5 --> OV6
+    OV2 -->|"Needline→接口"| SV1
+    OV2 -->|"Needline→接口"| SvcV1
+    OV4 --> SV1
+    OV4 --> SvcV1
+    OV3 --> SV2
+    OV3 --> SvcV2
+    OV6 --> SV10a
+    OV6 --> SvcV10a
+
+    %% L3 内部: 系统轨与服务轨的对称关系
+    SV1 --> SV2
+    SV1 --> SV6
+    SV4 --> SV5a
+    SV4 --> SV7
+    SV4 --> DIV3
+    SV2 --> SV6
+    SV6 --> DIV3
+    SV7 --> SV8
+    SV10a --> SV10b
+    SV10b --> SV10c
+    SV10c --> SV1
+    SvcV1 --> SvcV2
+    SvcV1 --> SvcV6
+    SvcV4 --> SvcV5
+    SvcV4 --> DIV3
+    SvcV2 --> SvcV6
+    SvcV6 --> DIV3
+    SvcV10a --> SvcV10b
+    SvcV10b --> SvcV10c
+    SvcV10c --> SvcV1
+
+    %% L2 ↔ L4: 作战↔数据双向桥接
+    OV2 -->|"信息元素"| DIV1
+    OV5 -->|"I/O 映射"| DIV1
+    OV6 -->|"业务规则"| DIV1
+    OV6 -->|"约束验证"| DIV2
+    DIV1 --> DIV2
+    DIV2 --> DIV3
+
+    %% L3 → L4: 实现→物理数据
+    SV4 --> DIV3
+    SV6 --> DIV3
+    SvcV4 --> DIV3
+    SvcV6 --> DIV3
+
+    %% L3 → L5: 演进与度量
+    SV1 --> SV8
+    SV4 -->|"性能来源"| SV7
+    SV9 --> StdV2
+    SV9 --> SV8
+    SV8 --> PV2
+    PV1 --> PV2
+    PV2 --> CV5
+    PV2 --> CV3
+
+    %% 样式
+    classDef layer0 fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,color:#1b5e20
+    classDef layer1 fill:#fff3e0,stroke:#ef6c00,stroke-width:2px,color:#e65100
+    classDef layer2 fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,color:#0d47a1
+    classDef layer3sv fill:#fce4ec,stroke:#c62828,stroke-width:2px,color:#b71c1c
+    classDef layer3svc fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,color:#4a148c
+    classDef layer4 fill:#e0f7fa,stroke:#00838f,stroke-width:2px,color:#006064
+    classDef layer5 fill:#fff8e1,stroke:#f9a825,stroke-width:2px,color:#f57f17
+    classDef ctxNode fill:#ffeb3b,stroke:#f57f17,stroke-width:3px,color:#bf360c,font-weight:bold
+
+    class AV1,CV1,StdV1,AV2 layer0
+    class CV2,CV3,CV4,CV5,CV6,CV7 layer1
+    class OV1,OV4,OV5,OV2,OV3,OV6 layer2
+    class SV1,SV4,SV5a,SV2,SV6,SV7,SV10a,SV10b,SV10c layer3sv
+    class SvcV1,SvcV4,SvcV5,SvcV2,SvcV6,SvcV10a,SvcV10b,SvcV10c layer3svc
+    class DIV1,DIV2,DIV3 layer4
+    class SV8,SV9,StdV2,PV1,PV2,PV3 layer5
+    class OV1 ctxNode
+        `;
+
+        // ---------- Mermaid 初始化配置 ----------
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'base',
+            themeVariables: {
+                'background': '#fdfdfe',
+                'primaryColor': '#e3f2fd',
+                'primaryTextColor': '#0b3b5c',
+                'primaryBorderColor': '#1565c0',
+                'lineColor': '#3a5f7a',
+                'secondaryColor': '#fff3e0',
+                'tertiaryColor': '#fce4ec',
+                'fontFamily': 'Segoe UI, Roboto, sans-serif',
+                'fontSize': '14px',
+            },
+            flowchart: {
+                useMaxWidth: false,
+                htmlLabels: true,
+                curve: 'basis',
+                padding: 18,
+                nodeSpacing: 50,
+                rankSpacing: 70,
+            },
+            securityLevel: 'loose',
+        });
+
+        const diagramElement = document.getElementById('mermaid-diagram');
+        const statusEl = document.getElementById('renderStatus');
+
+        // 渲染函数
+        async function renderMermaid() {
+            try {
+                // 清空并插入定义 (mermaid 渲染基于元素内容)
+                diagramElement.innerHTML = mermaidDefinition;
+                diagramElement.removeAttribute('data-processed');
+                
+                // 运行 mermaid
+                await mermaid.run({
+                    nodes: [diagramElement],
+                    suppressErrors: true,
+                });
+                statusEl.innerHTML = '✅ 架构图渲染完成 · 可拖拽平移 (按住空格/鼠标中键)';
+                
+                // 附加简单平移能力: 让包装器支持滚动, 同时给svg添加一点提示
+                const wrapper = document.getElementById('diagramWrapper');
+                const svg = diagramElement.querySelector('svg');
+                if (svg) {
+                    svg.style.cursor = 'grab';
+                    svg.addEventListener('mousedown', (e) => {
+                        if (e.button === 0) { // 左键按下时变为 grabbing
+                            svg.style.cursor = 'grabbing';
+                        }
+                    });
+                    svg.addEventListener('mouseup', () => { svg.style.cursor = 'grab'; });
+                    svg.addEventListener('mouseleave', () => { svg.style.cursor = 'grab'; });
+                }
+            } catch (e) {
+                console.error('Mermaid render error:', e);
+                statusEl.innerHTML = '⚠️ 渲染遇到问题，但图表已尽量显示。可尝试刷新。';
+                // 降级显示文本
+                diagramElement.innerHTML = `<pre style="white-space: pre-wrap; padding: 20px; background:#fff0f0;">${mermaidDefinition.replace(/</g, '&lt;')}</pre>`;
+            }
+        }
+
+        // 重置视图 (滚动到初始位置)
+        function resetView() {
+            const wrapper = document.getElementById('diagramWrapper');
+            if (wrapper) {
+                wrapper.scrollTo({ left: 0, top: 0, behavior: 'smooth' });
+            }
+            // 如果存在svg缩放库 (未使用)，仅重置滚动
+        }
+
+        // ---------- 生成下载 HTML (完全自包含) ----------
+        function generateDownloadableHTML() {
+            return `<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DoDAF 全景架构图 · 分层清晰版</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"><\/script>
+    <style>
+        * { margin:0; box-sizing:border-box; }
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f5f7fc;
+            padding: 24px;
+            display: flex;
+            justify-content: center;
+        }
+        .master-container {
+            max-width: 1600px;
+            width: 100%;
+            background: white;
+            border-radius: 28px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            padding: 24px 20px 30px;
+        }
+        h1 {
+            font-weight: 500;
+            color: #1e293b;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 16px;
+            margin-bottom: 16px;
+        }
+        .legend { display:flex; flex-wrap:wrap; gap:16px 28px; background:#f8fafd; padding:10px 20px; border-radius:40px; margin-bottom:20px; }
+        .legend-item { display:flex; align-items:center; gap:8px; font-size:0.85rem; }
+        .color-dot { width:18px; height:18px; border-radius:6px; border:1.5px solid rgba(0,0,0,0.15); }
+        .diagram-box {
+            background: #fdfdfe;
+            border-radius: 24px;
+            padding: 20px 10px;
+            border: 1px solid #e2e8f0;
+            overflow-x: auto;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.02);
+        }
+        .footer { margin-top: 24px; color: #64748b; text-align: right; }
+        .btn-reset {
+            background: white; border:1px solid #cdd9e6; border-radius:30px; padding:6px 18px;
+            font-weight:500; cursor:pointer; margin-right:12px;
+        }
+    </style>
+</head>
+<body>
+<div class="master-container">
+    <h1>🧩 DoDAF 2.0+ 全景 · 关系追溯 (OV-1 上下文容器) 
+        <span style="font-size:0.9rem; font-weight:normal; margin-left:20px; color:#3a5f7a;">修正SV-7节点 · 完整版</span>
+    </h1>
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div class="legend">
+            <div class="legend-item"><span class="color-dot" style="background:#e8f5e9;border-color:#2e7d32;"></span> L0 战略</div>
+            <div class="legend-item"><span class="color-dot" style="background:#fff3e0;border-color:#ef6c00;"></span> L1 能力</div>
+            <div class="legend-item"><span class="color-dot" style="background:#e3f2fd;border-color:#1565c0;"></span> L2 作战</div>
+            <div class="legend-item"><span class="color-dot" style="background:#fce4ec;border-color:#c62828;"></span> L3 系统轨</div>
+            <div class="legend-item"><span class="color-dot" style="background:#f3e5f5;border-color:#7b1fa2;"></span> L3 服务轨</div>
+            <div class="legend-item"><span class="color-dot" style="background:#e0f7fa;border-color:#00838f;"></span> L4 数据</div>
+            <div class="legend-item"><span class="color-dot" style="background:#fff8e1;border-color:#f9a825;"></span> L5 演进</div>
+            <div class="legend-item"><span class="color-dot" style="background:#ffeb3b; border:3px solid #f57f17;"></span> OV-1 容器</div>
+        </div>
+        <button class="btn-reset" onclick="document.querySelector('.diagram-box').scrollTo({left:0,top:0,behavior:'smooth'})">🔄 重置滚动</button>
+    </div>
+    <div class="diagram-box">
+        <div class="mermaid" id="main-diagram" style="min-width:1200px;">
+${mermaidDefinition}
+        </div>
+    </div>
+    <div class="footer">
+        ⚡ DoDAF 元模型 · 战略→能力→作战→实现→数据→演进 · 双击空白可平移 (按住鼠标拖拽)
+    </div>
+</div>
+<script>
+    mermaid.initialize({
+        startOnLoad: true,
+        theme: 'base',
+        themeVariables: {
+            'background': '#fdfdfe',
+            'primaryColor': '#e3f2fd',
+            'lineColor': '#3a5f7a',
+            'fontFamily': 'Segoe UI, Roboto, sans-serif',
+        },
+        flowchart: { useMaxWidth: false, htmlLabels: true, curve: 'basis', padding: 18, nodeSpacing: 50, rankSpacing: 70 },
+        securityLevel: 'loose',
+    });
+    window.addEventListener('load', function() {
+        // 确保渲染
+        try { mermaid.run({ nodes: [document.getElementById('main-diagram')] }); } catch(e) {}
+        // 添加简单抓取样式
+        setTimeout(() => {
+            const svg = document.querySelector('#main-diagram svg');
+            if(svg) { svg.style.cursor='grab'; svg.addEventListener('mousedown',()=>svg.style.cursor='grabbing'); svg.addEventListener('mouseup',()=>svg.style.cursor='grab'); }
+        }, 200);
+    });
+<\/script>
+</body>
+</html>`;
+        }
+
+        // 下载功能
+        function downloadHTML() {
+            const content = generateDownloadableHTML();
+            const blob = new Blob([content], { type: 'text/html;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'DoDAF_Architecture_Panorama.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            statusEl.innerHTML = '✅ 下载已开始 · 文件: DoDAF_Architecture_Panorama.html';
+            setTimeout(() => { statusEl.innerHTML = '✅ 架构图渲染完成 · 可拖拽平移 (按住空格/鼠标中键)'; }, 2000);
+        }
+
+        // 绑定事件
+        window.addEventListener('load', () => {
+            renderMermaid();
+            document.getElementById('resetZoomBtn').addEventListener('click', resetView);
+            document.getElementById('downloadBtn').addEventListener('click', downloadHTML);
+        });
+
+        // 如果调整窗口大小，不需要重绘，但保留手动重置功能
+    })();
+</script>
+<!-- 备选：若脚本加载慢，手动再触发一次 -->
+<noscript>
+    <div style="padding:20px; background:#ffecb3;">您的浏览器未启用JavaScript，无法渲染交互图表。请启用JS或下载HTML文件查看。</div>
+</noscript>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dm2-tool/schemas/status.json",
+  "title": "dm2 status --json Response Data",
+  "description": "项目知识库状态概览",
+  "type": "object",
+  "properties": {
+    "knowledge_base": {
+      "type": "object",
+      "properties": {
+        "total_terms": { "type": "integer", "description": "DM2 术语总数" },
+        "total_concepts": { "type": "integer", "description": "DM2 概念总数" },
+        "total_views": { "type": "integer", "description": "DoDAF 视图模板总数" }
+      },
+      "required": ["total_terms", "total_concepts", "total_views"]
+    }
+  },
+  "required": ["knowledge_base"]
+}

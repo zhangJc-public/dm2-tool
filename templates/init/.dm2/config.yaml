@@ -1,0 +1,10 @@
+# DM2 项目配置
+# vault_path: /path/to/obsidian/vault  # 可选：连接 Obsidian vault 补充参考
+
+views:
+  include_mermaid: true
+  include_timestamps: true
+
+consistency:
+  check_enabled: true
+  strict_mode: false

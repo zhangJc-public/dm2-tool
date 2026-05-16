@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dm2-tool/schemas/cynefin.json",
+  "title": "dm2 cynefin --json Response Data",
+  "description": "Cynefin 复杂度评估的结构化输出",
+  "type": "object",
+  "properties": {
+    "domain": {
+      "type": "string",
+      "enum": ["简单（Clear）", "繁杂（Complicated）", "复杂（Complex）", "混沌（Chaotic）"],
+      "description": "Cynefin 域标签"
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "评估置信度"
+    },
+    "recommended_view_count": {
+      "type": "string",
+      "description": "推荐视图数范围，如 '12-17 个（P0 核心）'"
+    },
+    "reasoning": {
+      "type": "string",
+      "description": "评估推理详情"
+    }
+  },
+  "required": ["domain", "confidence", "recommended_view_count", "reasoning"]
+}

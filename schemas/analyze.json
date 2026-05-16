@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dm2-tool/schemas/analyze.json",
+  "title": "dm2 analyze --json Response Data",
+  "description": "6W 分析 + 视图推荐的结构化输出",
+  "type": "object",
+  "properties": {
+    "primary_6w": {
+      "type": "string",
+      "enum": ["What", "How", "Where", "Who", "When", "Why"],
+      "description": "主要 6W 维度"
+    },
+    "secondary_6ws": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["What", "How", "Where", "Who", "When", "Why"] },
+      "description": "次要 6W 维度"
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "分析置信度"
+    },
+    "extracted_entities": {
+      "type": "object",
+      "description": "提取的实体，键为实体类型，值为实体名称列表",
+      "additionalProperties": {
+        "type": "array",
+        "items": { "type": "string" }
+      }
+    },
+    "recommended_views": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "view_id": { "type": "string", "description": "视图 ID，如 OV-1" },
+          "view_name": { "type": "string", "description": "视图名称" },
+          "priority": { "type": "integer", "minimum": 1, "maximum": 3, "description": "1=必须, 2=推荐, 3=可选" },
+          "relevance_score": { "type": "number", "minimum": 0, "maximum": 1 }
+        },
+        "required": ["view_id", "view_name", "priority", "relevance_score"]
+      }
+    },
+    "suggested_views": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "建议的视图 ID 列表"
+    }
+  },
+  "required": ["primary_6w", "secondary_6ws", "confidence", "extracted_entities", "recommended_views", "suggested_views"]
+}

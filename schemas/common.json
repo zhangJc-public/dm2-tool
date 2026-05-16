@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dm2-tool/schemas/common.json",
+  "title": "DM2 CLI Unified JSON Response Envelope",
+  "description": "所有 dm2 CLI --json 输出的统一响应格式",
+  "oneOf": [
+    {
+      "title": "Success Response",
+      "properties": {
+        "status": { "enum": ["success"] },
+        "data": { "description": "命令特定的数据载荷" }
+      },
+      "required": ["status", "data"]
+    },
+    {
+      "title": "Error Response",
+      "properties": {
+        "status": { "enum": ["error"] },
+        "error": {
+          "type": "object",
+          "properties": {
+            "code": { "type": "string", "description": "错误代码（如 MISSING_ARG, NOT_FOUND）" },
+            "message": { "type": "string", "description": "人类可读的错误描述" }
+          },
+          "required": ["code", "message"]
+        }
+      },
+      "required": ["status", "error"]
+    }
+  ]
+}

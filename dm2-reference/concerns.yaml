@@ -1,0 +1,340 @@
+# DM2 Architecture Concern Templates
+# Each concern encapsulates a domain-specific architecture focus with:
+#   - expected_data_groups: DM2 data groups that SHOULD activate for this concern
+#   - core_views: Focused DoDAF views for this concern (subset of individual group views)
+#   - keywords: Domain-specific terms for text matching (AI Agent side)
+#
+# Used by dm2-propose-workflow: AI Agent loads this file, matches against
+# analyze --json activation vectors + user description keywords, then
+# presents ranked candidates for Human selection.
+#
+# Matching algorithm (in SKILL.md, not Python):
+#   concern_score = 0.6 * group_activation_overlap + 0.4 * keyword_match
+#   where:
+#     group_activation_overlap = |active_groups ∩ concern.expected_groups| / |concern.expected_groups|
+#     keyword_match = |desc_words ∩ concern.keywords| / |concern.keywords|
+
+concerns:
+  - id: "identity-access-control"
+    name: "身份认证与访问控制"
+    category: "安全架构"
+    description: >
+      身份管理、认证机制、授权策略、访问控制——谁可以用什么方式访问什么资源，
+      常见的 SSO、MFA、OAuth、RBAC 等认证授权基础设施设计
+    expected_data_groups:
+      - "05-guidance"       # 认证标准 (NIST 800-63, ISO 27001)
+      - "08-services"       # 认证服务 (SSO, MFA, OAuth, LDAP)
+      - "10-rules"          # 访问控制规则 (RBAC, ABAC, ACL)
+      - "11-resource-flow"  # 认证流、令牌传递
+    core_views:
+      - "OV-1"              # 高级概念图（认证拓扑）
+      - "OV-2"              # 作战节点连接（认证端点关系）
+      - "SV-1"              # 系统接口描述（认证组件交互）
+      - "StdV-1"            # 标准配置文件（认证标准映射）
+    keywords:
+      - 认证
+      - 授权
+      - 访问控制
+      - 身份管理
+      - 单点登录
+      - SSO
+      - MFA
+      - OAuth
+      - OIDC
+      - SAML
+      - LDAP
+      - RBAC
+      - ABAC
+      - ACL
+      - 权限
+      - 登录
+      - 凭证
+      - 令牌
+      - token
+      - 密码
+      - 角色
+      - 会话
+      - 审计
+
+  - id: "network-security-boundary"
+    name: "网络安全与边界防护"
+    category: "安全架构"
+    description: >
+      网络边界、防火墙、分段、DMZ、零信任网络架构——
+      系统、服务、数据流的网络拓扑和防护策略
+    expected_data_groups:
+      - "07-location"       # 网络位置、区域
+      - "10-rules"          # 防火墙规则、ACL
+      - "11-resource-flow"  # 网络流、数据交换
+    core_views:
+      - "OV-1"              # 高级概念图（网络拓扑）
+      - "OV-2"              # 作战节点连接（网络连接关系）
+      - "SV-2"              # 系统接口描述（网络接口）
+      - "SV-6"              # 系统资源流矩阵（网络数据流）
+    keywords:
+      - 网络
+      - 防火墙
+      - 边界
+      - DMZ
+      - 零信任
+      - 分段
+      - 隔离
+      - 路由器
+      - 交换机
+      - VPN
+      - IPS
+      - IDS
+      - WAF
+      - 负载均衡
+      - DNS
+      - 代理
+      - 网关
+      - 端口
+      - 协议
+      - 拓扑
+      - 区域
+      - 网段
+
+  - id: "data-security-compliance"
+    name: "数据安全与合规"
+    category: "安全架构"
+    description: >
+      数据保护、分类分级、加密存储、数据治理、合规审计——
+      数据从采集到销毁全生命周期的安全和管理
+    expected_data_groups:
+      - "04-resource"             # 数据资产
+      - "05-guidance"             # 合规标准 (GDPR, 等保)
+      - "10-rules"                # 数据策略规则
+      - "16-information-data"     # 数据模型、元数据
+    core_views:
+      - "DIV-1"             # 概念数据模型
+      - "DIV-2"             # 逻辑数据模型
+      - "DIV-3"             # 物理数据模型
+      - "StdV-1"            # 标准配置文件（合规标准）
+    keywords:
+      - 数据安全
+      - 合规
+      - 加密
+      - 脱敏
+      - 分类分级
+      - GDPR
+      - 等保
+      - ISO27001
+      - SOC2
+      - 数据治理
+      - 数据保护
+      - 隐私
+      - PII
+      - 密钥
+      - 证书
+      - 签名
+      - 审计
+      - audit
+      - 血缘
+      - 溯源
+      - 元数据
+      - metadata
+      - 备份
+      - 容灾
+      - DLP
+
+  - id: "system-integration-interoperability"
+    name: "系统集成与互操作"
+    category: "集成架构"
+    description: >
+      异构系统间的互联互通——服务集成、API 网关、消息中间件、
+      数据交换标准、接口协议、ETL 和数据管道
+    expected_data_groups:
+      - "01-performer"      # 系统、服务作为执行者
+      - "08-services"       # 服务接口、服务编排
+      - "11-resource-flow"  # 数据流、接口连接
+    core_views:
+      - "SV-1"              # 系统接口描述
+      - "SV-4"              # 系统功能描述
+      - "SvcV-1"            # 服务组合接口描述
+      - "SvcV-3"            # 服务-系统矩阵
+    keywords:
+      - 集成
+      - 互操作
+      - 接口
+      - API
+      - 网关
+      - 消息
+      - 队列
+      - ETL
+      - ESB
+      - 微服务
+      - SOA
+      - REST
+      - gRPC
+      - 中间件
+      - 适配器
+      - 协议
+      - 同步
+      - 异步
+      - 事件
+      - 调度
+      - 编排
+      - 连接器
+      - 数据交换
+      - 消息队列
+
+  - id: "capability-planning-evolution"
+    name: "能力规划与演进"
+    category: "规划架构"
+    description: >
+      组织能力建模、分类、差距分析、演进路线图——
+      从战略到战术的能力谱系、成熟度评估和阶段规划
+    expected_data_groups:
+      - "03-capability"     # 能力模型
+      - "06-measure"        # 能力度量、KPI
+      - "09-project"        # 项目交付、路线图
+    core_views:
+      - "CV-1"              # 能力愿景
+      - "CV-3"              # 能力阶段规划
+      - "CV-5"              # 能力与组织映射
+      - "PV-2"              # 项目组合时间线
+    keywords:
+      - 能力
+      - 规划
+      - 演进
+      - 战略
+      - 路线图
+      - 成熟度
+      - 差距
+      - 分类
+      - 愿景
+      - 阶段
+      - 组合
+      - 投资
+      - 预算
+      - 优先级
+      - roadmap
+      - maturity
+      - capability
+      - KPI
+      - 目标
+      - 需求
+      - 依赖
+      - 转型
+      - 现代化
+
+  - id: "threat-detection-response"
+    name: "威胁检测与响应"
+    category: "安全架构"
+    description: >
+      安全威胁的检测、分析、响应流程——SOC 运行、日志监控、
+      SIEM、事件响应、安全编排自动化
+    expected_data_groups:
+      - "02-activity"       # 安全事件流程
+      - "06-measure"        # 安全度量、告警指标
+      - "07-location"       # 检测部署位置
+      - "10-rules"          # 检测规则、告警策略
+    core_views:
+      - "OV-1"              # 高级概念图（安全监控拓扑）
+      - "OV-6a"             # 作战规则模型（响应规则）
+      - "SV-7"              # 系统度量矩阵（安全指标）
+      - "SV-10a"            # 系统规则模型（告警规则）
+    keywords:
+      - 威胁
+      - 检测
+      - 响应
+      - 安全事件
+      - SOC
+      - SIEM
+      - 日志
+      - 监控
+      - 告警
+      - 入侵
+      - 漏洞
+      - APT
+      - 应急
+      - 取证
+      - 攻击
+      - 扫描
+      - 蜜罐
+      - SOAR
+      - EDR
+      - XDR
+      - 态势感知
+      - 威胁情报
+      - incident
+      - 关联分析
+
+  - id: "organization-governance"
+    name: "组织与治理"
+    category: "管理架构"
+    description: >
+      组织架构设计、治理框架、决策权责、角色分工——
+      从行政层级到技术管理，涉及干系人和汇报关系
+    expected_data_groups:
+      - "01-performer"      # 组织、角色作为执行者
+      - "03-capability"     # 组织能力
+      - "14-org-structure"  # 组织层级、汇报关系
+    core_views:
+      - "OV-4"              # 组织关系图
+      - "PV-1"              # 项目组合关系
+      - "CV-5"              # 能力与组织映射
+    keywords:
+      - 组织
+      - 治理
+      - 层级
+      - 汇报
+      - 角色
+      - 职责
+      - 权限
+      - 决策
+      - 干系人
+      - 部门
+      - 职能
+      - 矩阵
+      - 委员会
+      - 分离
+      - 审批
+      - 管理
+      - 流程
+      - 合规
+      - 审计
+      - 问责
+      - 授权
+      - 岗位
+      - 编制
+
+  - id: "project-management-delivery"
+    name: "项目管理与交付"
+    category: "管理架构"
+    description: >
+      项目组合管理、版本交付、敏捷迭代——
+      从 roadmap 到 release，涉及时间线、里程碑和项目-能力映射
+    expected_data_groups:
+      - "06-measure"        # 进度度量、KPI
+      - "09-project"        # 项目阶段、里程碑
+      - "12-pedigree"       # 溯源、置信度追踪
+    core_views:
+      - "PV-1"              # 项目组合关系图
+      - "PV-2"              # 项目组合时间线
+      - "PV-3"              # 项目-能力映射
+    keywords:
+      - 项目
+      - 交付
+      - sprint
+      - release
+      - 迭代
+      - 里程碑
+      - 路线图
+      - 预算
+      - 进度
+      - 组合
+      - 敏捷
+      - 看板
+      - 冲刺
+      - 发布
+      - 版本
+      - deploy
+      - 部署
+      - 上线
+      - 验收
+      - 回顾
+      - 计划
+      - 排期
+      - 资源

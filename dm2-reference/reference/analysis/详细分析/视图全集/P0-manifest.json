@@ -1,0 +1,135 @@
+[
+  {
+    "id": "AV-1",
+    "name": "Overview and Summary Information",
+    "pages": "110-112",
+    "text_chars": 8390,
+    "text_file": "e:\\obsidianDB\\EA\\文学\\领域知识\\DM2\\详细分析\\视图全集\\P0-AV-1-raw.txt"
+  },
+  {
+    "id": "AV-2",
+    "name": "Integrated Dictionary",
+    "pages": "113-116",
+    "text_chars": 12817,
+    "text_file": "e:\\obsidianDB\\EA\\文学\\领域知识\\DM2\\详细分析\\视图全集\\P0-AV-2-raw.txt"
+  },
+  {
+    "id": "CV-1",
+    "name": "Vision",
+    "pages": "117-117",
+    "text_chars": 2135,
+    "text_file": "e:\\obsidianDB\\EA\\文学\\领域知识\\DM2\\详细分析\\视图全集\\P0-CV-1-raw.txt"
+  },
+  {
+    "id": "CV-2",
+    "name": "Capability Taxonomy",
+    "pages": "118-119",
+    "text_chars": 4083,
+    "text_file": "e:\\obsidianDB\\EA\\文学\\领域知识\\DM2\\详细分析\\视图全集\\P0-CV-2-raw.txt"
+  },
+  {
+    "id": "CV-3",
+    "name": "Capability Phasing",
+    "pages": "120-121",
+    "text_chars": 3991,
+    "text_file": "e:\\obsidianDB\\EA\\文学\\领域知识\\DM2\\详细分析\\视图全集\\P0-CV-3-raw.txt"
+  },
+  {
+    "id": "DIV-1",
+    "name": "Conceptual Data Model",
+    "pages": "133-134",
+    "text_chars": 4121,
+    "text_file": "e:\\obsidianDB\\EA\\文学\\领域知识\\DM2\\详细分析\\视图全集\\P0-DIV-1-raw.txt"
+  },
+  {
+    "id": "DIV-2",
+    "name": "Logical Data Model",
+    "pages": "135-136",
+    "text_chars": 4562,
+    "text_file": "e:\\obsidianDB\\EA\\文学\\领域知识\\DM2\\详细分析\\视图全集\\P0-DIV-2-raw.txt"
+  },
+  {
+    "id": "DIV-3",
+    "name": "Physical Data Model",
+    "pages": "137-138",
+    "text_chars": 5712,
+    "text_file": "e:\\obsidianDB\\EA\\文学\\领域知识\\DM2\\详细分析\\视图全集\\P0-DIV-3-raw.txt"
+  },
+  {
+    "id": "OV-1",
+    "name": "High Level Operational Concept Graphic",
+    "pages": "142-143",
+    "text_chars": 6188,
+    "text_file": "e:\\obsidianDB\\EA\\文学\\领域知识\\DM2\\详细分析\\视图全集\\P0-OV-1-raw.txt"
+  },
+  {
+    "id": "OV-2",
+    "name": "Operational Resource Flow Description",
+    "pages": "144-147",
+    "text_chars": 11469,
+    "text_file": "e:\\obsidianDB\\EA\\文学\\领域知识\\DM2\\详细分析\\视图全集\\P0-OV-2-raw.txt"
+  },
+  {
+    "id": "OV-4",
+    "name": "Organizational Relationships Chart",
+    "pages": "150-151",
+    "text_chars": 5505,
+    "text_file": "e:\\obsidianDB\\EA\\文学\\领域知识\\DM2\\详细分析\\视图全集\\P0-OV-4-raw.txt"
+  },
+  {
+    "id": "OV-5a",
+    "name": "Operational Activity Decomposition Tree",
+    "pages": "152-153",
+    "text_chars": 5571,
+    "text_file": "e:\\obsidianDB\\EA\\文学\\领域知识\\DM2\\详细分析\\视图全集\\P0-OV-5a-raw.txt"
+  },
+  {
+    "id": "OV-5b",
+    "name": "Operational Activity Model",
+    "pages": "152-153",
+    "text_chars": 5571,
+    "text_file": "e:\\obsidianDB\\EA\\文学\\领域知识\\DM2\\详细分析\\视图全集\\P0-OV-5b-raw.txt"
+  },
+  {
+    "id": "SvcV-1",
+    "name": "Services Interface Description",
+    "pages": "170-172",
+    "text_chars": 8676,
+    "text_file": "e:\\obsidianDB\\EA\\文学\\领域知识\\DM2\\详细分析\\视图全集\\P0-SvcV-1-raw.txt"
+  },
+  {
+    "id": "SvcV-4",
+    "name": "Services Functionality Description",
+    "pages": "179-180",
+    "text_chars": 4023,
+    "text_file": "e:\\obsidianDB\\EA\\文学\\领域知识\\DM2\\详细分析\\视图全集\\P0-SvcV-4-raw.txt"
+  },
+  {
+    "id": "StdV-1",
+    "name": "Standards Profile",
+    "pages": "198-199",
+    "text_chars": 4474,
+    "text_file": "e:\\obsidianDB\\EA\\文学\\领域知识\\DM2\\详细分析\\视图全集\\P0-StdV-1-raw.txt"
+  },
+  {
+    "id": "SV-1",
+    "name": "Systems Interface Description",
+    "pages": "204-206",
+    "text_chars": 8938,
+    "text_file": "e:\\obsidianDB\\EA\\文学\\领域知识\\DM2\\详细分析\\视图全集\\P0-SV-1-raw.txt"
+  },
+  {
+    "id": "SV-2",
+    "name": "Systems Resource Flow Description",
+    "pages": "207-208",
+    "text_chars": 2547,
+    "text_file": "e:\\obsidianDB\\EA\\文学\\领域知识\\DM2\\详细分析\\视图全集\\P0-SV-2-raw.txt"
+  },
+  {
+    "id": "SV-4",
+    "name": "Systems Functionality Description",
+    "pages": "211-212",
+    "text_chars": 5583,
+    "text_file": "e:\\obsidianDB\\EA\\文学\\领域知识\\DM2\\详细分析\\视图全集\\P0-SV-4-raw.txt"
+  }
+]

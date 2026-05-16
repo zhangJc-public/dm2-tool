@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dm2-tool/schemas/generate.json",
+  "title": "dm2 generate --json Response Data",
+  "description": "DoDAF 视图生成的结构化输出",
+  "type": "object",
+  "properties": {
+    "view_id": { "type": "string", "description": "生成的视图 ID" },
+    "success": { "type": "boolean", "description": "生成是否成功" },
+    "content": { "type": "string", "description": "生成的视图 Markdown 内容" },
+    "content_length": { "type": "integer", "description": "内容字符数" }
+  },
+  "required": ["view_id", "success", "content", "content_length"]
+}

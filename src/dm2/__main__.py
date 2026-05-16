@@ -1,0 +1,5 @@
+"""python -m dm2 entry point"""
+from .cli.main import app
+
+if __name__ == "__main__":
+    app()
