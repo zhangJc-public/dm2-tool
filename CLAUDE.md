@@ -6,38 +6,32 @@ DoDAF Meta Model 2.02 系统工程辅助工具。
 
 ```
 ~/workroot/dm2-tool/
-├── src/dm2/                    ← Python 包
-│   ├── cli/                    ← CLI 入口
-│   │   ├── main.py             ← 主入口（17 个命令）
-│   │   ├── json_output.py      ← 统一 JSON 响应 helper
-│   │   └── commands/           ← 子命令模块
-│   │       ├── knowledge.py    ← dm2 knowledge * (5 个子命令)
-│   │       ├── change.py       ← dm2 change * (4 个子命令)
-│   │       └── view.py         ← dm2 view * (1 个子命令)
-│   ├── core/                   ← 核心引擎（AI Agent 接口）
-│   │   ├── knowledge/api.py    ← KnowledgeAPI（结构化知识查询）
-│   │   ├── artifacts/graph.py  ← ArtifactGraph（视图依赖管理）
-│   │   ├── agent/instructions.py ← InstructionBuilder（Agent 指令生成）
-│   │   ├── changes/manager.py  ← ChangeManager（变更生命周期）
-│   │   ├── views/manager.py    ← ViewManager（视图生命周期状态）
-│   │   ├── pipeline/orchestrator.py ← PipelineOrchestratorV2（Agent 驱动）
-│   │   ├── templates/          ← 工作流模板（7 个 dm2 workflow 的 Python 定义）
-│   │   │   ├── __init__.py     ← WorkflowTemplate / SkillTemplate / CommandTemplate dataclass + WORKFLOWS 注册表
-│   │   │   ├── generator.py    ← generate_agent_config() 模板→文件生成引擎
-│   │   │   └── workflows/      ← 每个 workflow 的 Python 模板（propose, continue, new, ff, verify, onboard, bulk-archive）
-│   │   └── adapters/           ← 工具适配器（输出路径 + frontmatter 格式）
-│   │       ├── __init__.py     ← ToolAdapter ABC（tool_id, get_skills_dir, get_commands_dir, format_*_frontmatter）
-│   │       └── claude.py       ← ClaudeCodeAdapter（.claude/skills/, .claude/commands/dm2/）
-│   ├── kernel/                 ← DM2 元模型和索引
-│   ├── engine/                 ← 视图生成、pipeline 各步骤
-│   ├── cognitive/              ← Cynefin/6W 分析
-│   ├── llm/                    ← RAG 检索、配置管理
-│   ├── reasoning/              ← 一致性检查
-│   └── utils/                  ← 路径、frontmatter 解析
-├── dm2-reference/              ← 内置 DM2 参考知识库
-│   └── core/                   ← 打包发布的核心数据（296 KB）
-├── templates/init/             ← 项目模板（dm2 init 使用）
-└── pyproject.toml              ← 包配置
+├── .github/                  # GitHub 配置
+│   ├── workflows/           # CI/CD (test, release, docs)
+│   ├── ISSUE_TEMPLATE/      # Issue 模板 (bug_report, feature_request)
+│   └── PULL_REQUEST_TEMPLATE.md
+├── .claude/                  # AI Agent 接口定义
+│   ├── settings.example.json # 配置模板（用户参考）
+│   ├── skills/              # 17 个 skill 定义
+│   └── commands/            # 命令定义 (dm2/, opsx/)
+├── src/dm2/                  ← Python 包
+│   ├── cli/                 ← CLI 入口
+│   ├── core/                ← 核心引擎（AI Agent 接口）
+│   ├── kernel/              ← DM2 元模型和索引
+│   ├── engine/              ← 视图生成、pipeline 各步骤
+│   ├── cognitive/           ← Cynefin/6W 分析
+│   ├── reasoning/           ← 一致性检查
+│   └── utils/               ← 路径、frontmatter 解析
+├── dm2-reference/           ← 内置 DM2 参考知识库
+│   └── core/                ← 打包发布的核心数据
+├── docs/                    ← 用户文档
+├── test/                    ← 测试套件
+├── templates/               ← 项目模板（dm2 init 使用）
+├── openspec/                ← 实验性 OpenSpec 工作流
+├── LICENSE                  ← MIT 许可证
+├── CHANGELOG.md             ← 变更日志
+├── README.md                ← GitHub 项目主页
+└── pyproject.toml           ← 包配置
 ```
 
 ## 架构：四层模型
