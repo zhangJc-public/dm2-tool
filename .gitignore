@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+*.pyo
+dist/
+*.egg-info/
+.env
+dm2-changes/*/output/
+.pytest_cache/
+.ruff_cache/
+settings.local.json
+.DS_Store

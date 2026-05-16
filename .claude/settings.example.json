@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      {
+        "prompt": "run pytest",
+        "tool": "Bash"
+      },
+      {
+        "prompt": "run ruff",
+        "tool": "Bash"
+      },
+      {
+        "prompt": "run ruff format",
+        "tool": "Bash"
+      }
+    ]
+  }
+}

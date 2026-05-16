@@ -1,0 +1,103 @@
+name: Verify
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  knowledge-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+      - name: Verify views.yaml integrity
+        run: |
+          python -c "
+          import yaml, sys
+          with open('dm2-reference/views.yaml') as f:
+              data = yaml.safe_load(f)
+          views = data['views']
+          ids = {v['id'] for v in views}
+          print(f'Views defined: {len(ids)}')
+          # Check dependency closure
+          missing = set()
+          for v in views:
+              for dep in v.get('dependencies', []):
+                  if dep not in ids:
+                      missing.add(dep)
+          if missing:
+              print(f'ERROR: unresolved dependencies: {missing}')
+              sys.exit(1)
+          # Check downstream closure
+          for v in views:
+              for ds in v.get('downstream', []):
+                  if ds not in ids:
+                      print(f'WARNING: unresolved downstream {ds} in {v[\"id\"]}')
+          print('views.yaml integrity: OK')
+          "
+      - name: Verify dm2-reference structure
+        run: |
+          python -c "
+          from pathlib import Path
+          ref = Path('dm2-reference')
+          # Each numbered data group directory should exist (00-16)
+          for i in range(17):
+              prefix = f'{i:02d}'
+              matches = list(ref.glob(f'{prefix}*'))
+              if not matches:
+                  print(f'WARNING: no directory for data group prefix {prefix}')
+          # Check _dm2_v202_extract.json exists
+          json_path = ref / '_dm2_v202_extract.json'
+          if not json_path.exists():
+              print('ERROR: _dm2_v202_extract.json not found')
+              exit(1)
+          print(f'Reference structure: OK ({json_path.stat().st_size:,} bytes)')
+          "
+
+  smoke-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+      - name: Smoke test CLI commands
+        run: |
+          set -e
+          # version
+          python -m dm2 version
+
+          # init project and verify structure
+          mkdir -p /tmp/dm2-test
+          cd /tmp/dm2-test
+          python -m dm2 init testproj
+          test -d testproj/.dm2 || (echo 'FAIL: .dm2 not created'; exit 1)
+          test -f testproj/.dm2/config.yaml || (echo 'FAIL: config.yaml not created'; exit 1)
+          test -d testproj/dm2-changes || (echo 'FAIL: dm2-changes not created'; exit 1)
+          echo 'CLI smoke tests: OK'
+
+  unit-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+      - name: Run tests
+        run: pytest test/ -v
