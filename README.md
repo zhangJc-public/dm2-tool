@@ -73,7 +73,7 @@ dm2 config -s llm.model=claude-opus-4-7  # 设置 LLM
 dm2 --help                          # 所有命令
 dm2 version                         # 版本信息
 dm2 knowledge search <q>            # 搜索 DM2 术语
-dm2 knowledge views                  # 列出所有视图
+dm2 knowledge views                 # 列出所有视图
 dm2 change new <name>               # 创建架构变更
 dm2 run -d "..."                    # 6 步融合流程
 ```
