@@ -78,6 +78,10 @@ dm2 change new <name>               # 创建架构变更
 dm2 run -d "..."                    # 6 步融合流程
 ```
 
+## 完整文档
+
+详细中文文档：See [docs/readme.md](docs/readme.md)
+
 ## 许可证
 
 MIT License - 详见 [LICENSE](LICENSE)
