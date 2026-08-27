@@ -113,3 +113,31 @@ class TestAnalyzeCliSmoke:
         assert all("reason" in r for r in recommended)
         candidates = data["candidate_views"]
         assert any("路径完整性补充" in r["reason"] for r in candidates)
+        # stderr must be silent (DM2_DEBUG-gated diagnostics) so 2>&1 streams parse
+        assert proc.stderr == "", f"stderr not clean: {proc.stderr!r}"
+
+    def test_merged_stream_is_parseable_json(self):
+        """`2>&1` merged stream must still be valid JSON (regression for stderr noise)."""
+        import os
+        env = dict(os.environ)
+        env.pop("DM2_DEBUG", None)
+        proc = subprocess.run(
+            [sys.executable, "-m", "dm2.cli.main", "analyze", "-d", "资源流", "--json"],
+            capture_output=True, text=True, check=True, env=env,
+        )
+        merged = proc.stdout + proc.stderr
+        parsed = json.loads(merged)  # must not raise
+        assert parsed["status"] == "success"
+
+    def test_debug_env_restores_indexer_diagnostics(self):
+        """DM2_DEBUG=1 re-enables the indexer Loaded line (for human debugging)."""
+        import os
+        env = dict(os.environ)
+        env["DM2_DEBUG"] = "1"
+        proc = subprocess.run(
+            [sys.executable, "-m", "dm2.cli.main", "knowledge", "views", "--json"],
+            capture_output=True, text=True, check=True, env=env,
+        )
+        assert "[DM2 Indexer] Loaded:" in proc.stderr
+        # stdout is still pure JSON
+        assert json.loads(proc.stdout)["status"] == "success"

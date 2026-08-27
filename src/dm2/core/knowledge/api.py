@@ -52,16 +52,10 @@ class KnowledgeAPI:
     """Public API for querying DM2 knowledge base."""
 
     def __init__(self):
-        import io
-        import sys
+        # Indexer diagnostics are DM2_DEBUG-gated (indexer._diag), so stderr stays
+        # clean for --json consumers piping 2>&1. No redirection needed here.
         self._indexer = DM2KnowledgeIndexer()
-        # Suppress indexer log output to keep JSON stdout clean
-        old_stdout = sys.stdout
-        sys.stdout = io.StringIO()
-        try:
-            self._indexer.load_all()
-        finally:
-            sys.stdout = old_stdout
+        self._indexer.load_all()
 
     def search_terms(self, query: str) -> list[KnowledgeSearchResult]:
         results = self._indexer.search_terms(query)

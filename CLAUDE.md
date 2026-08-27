@@ -52,6 +52,7 @@ python3 -m dm2 version        # 验证安装
 python3 -m dm2.cli.main --help  # 查看所有命令
 pytest test/                  # 运行测试
 ruff check src/               # Lint
+DM2_DEBUG=1 dm2 analyze ...   # 显示索引器诊断（默认静默，保证 --json 的 2>&1 流纯净）
 ```
 
 ## 源码关键映射

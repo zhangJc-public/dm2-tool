@@ -4,6 +4,7 @@ DM2 Knowledge Base Indexer
 """
 
 import json
+import os
 import re
 import sys
 from dataclasses import dataclass, field
@@ -13,6 +14,16 @@ from typing import Optional
 
 from dm2.utils.frontmatter import FrontmatterParser
 from dm2.utils.paths import get_reference_path, get_vault_path
+
+
+def _diag(msg: str) -> None:
+    """诊断输出：仅 DM2_DEBUG 环境变量设置时写 stderr。
+
+    保证 --json 命令的 stdout 保持纯净 JSON（即使调用方用 2>&1 合并流也可解析）。
+    """
+    if os.environ.get("DM2_DEBUG"):
+        print(msg, file=sys.stderr)
+
 
 VALID_MODEL_CATEGORIES = {
     "Structural", "Behavioral", "Tree", "Mapping",
@@ -139,7 +150,7 @@ class DM2KnowledgeIndexer:
             missing = set(self._view_templates.keys()) - set(order)
             raise ValueError(f"Circular dependency detected involving: {missing}")
 
-        print(f"[DM2 Indexer] Loaded: {len(self._terms_cache)} terms, {len(self._concepts_cache)} concepts", file=sys.stderr)
+        _diag(f"[DM2 Indexer] Loaded: {len(self._terms_cache)} terms, {len(self._concepts_cache)} concepts")
 
     def _load_terms_from_json(self):
         """从 _dm2_v202_extract.json 加载术语"""
@@ -206,7 +217,7 @@ class DM2KnowledgeIndexer:
                 related_links=links
             )
         except Exception as e:
-            print(f"[DM2 Indexer] Error parsing {file_path}: {e}", file=sys.stderr)
+            _diag(f"[DM2 Indexer] Error parsing {file_path}: {e}")
             return None
 
     def _validate_view(self, entry: dict) -> list[str]:
@@ -262,7 +273,7 @@ class DM2KnowledgeIndexer:
 
             # Validate new metadata fields (warnings only, non-blocking)
             for w in self._validate_view(entry):
-                print(f"[DM2 Indexer] Warning: {w}", file=sys.stderr)
+                _diag(f"[DM2 Indexer] Warning: {w}")
 
             self._view_templates[vid] = ViewTemplate(
                 view_id=vid,
