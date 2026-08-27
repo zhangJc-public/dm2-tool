@@ -100,7 +100,17 @@ Run a complete DoDAF architecture analysis and generate planning artifacts with 
 
    If Human picked "全部视图" (no concern filter), use all candidate_views as P1/P2/P3 based on relevance_score.
 
-7. **Generate planning artifacts in the change directory**
+7. **视图完整性确认 (View-set completeness confirmation)**
+
+   After P1/P2/P3 phase assignment, verify the focused view set is dependency-complete. The analyze JSON includes a `view_dependencies` map (each view → its prerequisite views, from views.yaml):
+
+   - For every view in the focused set, compute its **transitive ancestors** (the prerequisites of its prerequisites, recursively).
+   - Any ancestor that is absent from the set SHALL be supplemented into **P3** and marked `P3 supplement` (路径完整性补充). List each supplemented view with its dependency rationale — e.g. "OV-1 — prerequisite of OV-2/OV-5a".
+   - Worked example: if the focused set contains OV-2 or OV-5a but not OV-1, OV-1 MUST be added; OV-1's own prerequisites (CV-1, AV-1) are then added transitively. This applies even when the Human-selected concerns' `core_views` exclude OV-1 (e.g. data-security-and-compliance) — dependency requirements override concern focus.
+
+   **Pictorial communication baseline**: `pictorial` views — **OV-1** (High-Level Operational Concept Graphic), **CV-1** (Vision), **AV-1** (Overview and Summary Information) — SHALL NOT be dropped from the view set solely because the DM2 monster matrix marks them data-light (few necessary terms / no necessary associations). These views are the **communication baseline for decision-makers**: a view set containing only data-dense models cannot be presented to or decided on by non-modelers. Data-lightness is never grounds for exclusion.
+
+8. **Generate planning artifacts in the change directory**
 
    Create three files under `dm2-changes/<name>/`:
 
@@ -120,12 +130,12 @@ Run a complete DoDAF architecture analysis and generate planning artifacts with 
       - Key decisions and trade-offs
 
    c. **tasks.md** — executable task list
-      - View generation tasks ordered by dependency (use ArtifactGraph topological order)
+      - View generation tasks ordered by dependency (use ArtifactGraph topological order; ancestors first)
       - Each task: `- [ ] Generate <View-ID>: <description>`
-      - Phase-labelled: P1 (concern core), P2 (concern extended), P3 (supplementary)
+      - Phase-labelled: P1 (concern core), P2 (concern extended), P3 (supplementary), `P3 supplement` (dependency-complete ancestors from step 7, with rationale)
       - Total view count should be focused (typically ≤ 12, vs unfocused 15+)
 
-8. **Show results**
+9. **Show results**
 
    ```
    ## Analysis Complete: <change-name>
@@ -145,6 +155,7 @@ Run a complete DoDAF architecture analysis and generate planning artifacts with 
 
    ### Phase 3 (Supplementary)
    - <view-id>: <brief description>
+   - <view-id> (P3 supplement): <missing ancestor + dependency rationale from step 7>
    ...
 
    Planning artifacts created at: dm2-changes/<name>/
@@ -191,6 +202,8 @@ Present concerns with score ≥ 0.10 to the Human (up to 5 options).
 - Tasks must be ordered by view dependency (use ArtifactGraph topological order)
 - Concern matching algorithm runs in the AI Agent (this SKILL), NOT in Python code
 - The focused view set from selected concerns MUST be a subset/superset of candidate_views; use union logic
+- The focused view set MUST be dependency-complete: every view's transitive ancestors (per the analyze JSON `view_dependencies`) are present; supplemented ancestors go into P3 marked `P3 supplement` with their dependency rationale
+- Pictorial views (OV-1/CV-1/AV-1) are the decision-maker communication baseline — never exclude them solely because the monster matrix marks them data-light
 - If the user provides additional context during the conversation (compliance requirements, stakeholder roles, etc.), incorporate it into the artifacts and keyword matching
 - Always let the Human make the final concern selection — never auto-select
 - Focused view set target: ≤ 12 views (vs unfocused 15+)

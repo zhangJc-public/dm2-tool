@@ -595,6 +595,8 @@ def analyze(
 
     recommender = ViewRecommender(indexer)
     recs = recommender.recommend(result, raw_description=description)
+    # 路径完整性补充：传递依赖祖先视图（如 OV-2/OV-5a → OV-1/CV-1/AV-1），去重并按 (priority, -score) 排序
+    recs = recommender.verify_and_supplement_views(recs, result)
 
     # 数据组激活检测 (增强 JSON 输出)
     activations = recommender.get_data_group_activation(description)
@@ -688,6 +690,7 @@ def analyze(
                     "view_id": r.view_id,
                     "view_name": r.view_name,
                     "relevance_score": r.relevance_score,
+                    "reason": r.reason,
                     "dm2_groups": r.dm2_groups,
                 }
                 for r in recs
@@ -697,6 +700,7 @@ def analyze(
                     "view_id": r.view_id,
                     "view_name": r.view_name,
                     "relevance_score": r.relevance_score,
+                    "reason": r.reason,
                     "dm2_groups": r.dm2_groups,
                 }
                 for r in recs[:10]

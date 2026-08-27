@@ -51,6 +51,7 @@ Depending on what the user brings, you might:
 **Explore architecture decisions**
 - What views are needed for a capability-driven analysis?
 - How does view dependency work? Check `dm2 knowledge view SV-1 --json` → lookup its dependencies recursively
+- **Trace dependency chains**: when examining any view, note both its `dependencies` (prerequisites — views that must exist first) and its `downstream` (dependents — views that need this one) from `dm2 knowledge view <id> --json`. E.g. OV-1 is a prerequisite of OV-2 and OV-5a: a discussion of operational node connections or activity decomposition that never surfaces OV-1 (the high-level operational concept graphic) is skipping the communication baseline. Bring dependency-implied views into the discussion even when the user didn't name them.
 - What representation formats are appropriate for a given concern?
 
 **Visualize**
