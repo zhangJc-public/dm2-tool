@@ -106,6 +106,11 @@ def init(
         if _terms_src.exists():
             shutil.copy2(str(_terms_src), str(_ref_dst / "_dm2_v202_extract.json"))
             ref_copied += 1
+        # Cynefin 推导词库
+        _cynefin_kw = _ref_src / "cynefin-keywords.yaml"
+        if _cynefin_kw.exists():
+            shutil.copy2(str(_cynefin_kw), str(_ref_dst / _cynefin_kw.name))
+            ref_copied += 1
     # group-to-views.yaml（在 dm2-reference/ 根目录而非 core/ 下）
     _g2v_src = _dm2_root / "dm2-reference" / "group-to-views.yaml"
     if _g2v_src.exists():
@@ -251,7 +256,12 @@ def status(
         typer.echo("分析状态:")
         c = analysis_state.get("cynefin")
         if c:
-            typer.echo(f"  Cynefin 域: {c.get('domain', '?')} (置信度 {c.get('confidence', 0):.0%})")
+            # 新格式含 domain_label/depth_tier；旧格式 domain 直接存中文标签
+            label = c.get("domain_label") or c.get("domain", "?")
+            confidence = c.get("confidence", 0) or 0
+            tier = c.get("depth_tier")
+            tier_str = f"，视图档位 {tier}" if tier else ""
+            typer.echo(f"  Cynefin 域: {label} (置信度 {confidence:.0%}{tier_str})")
         a = analysis_state.get("analyze")
         if a:
             typer.echo(f"  6W 分析: {a.get('primary_6w', '?')} (置信度 {a.get('confidence', 0):.0%})")
@@ -306,108 +316,106 @@ def archive(
     typer.echo(f"✅ 已归档: {change} → {dst.name}")
 
 
-def _derive_cynefin_from_description(desc: str) -> dict:
-    """从描述文本自动推导 Cynefin 评估参数"""
-    text = desc.lower()
-
-    # 系统数量: 按关键词估算
-    system_indicators = ["系统", "子系统", "节点", "组件", "模块", "平台", "设备",
-                         "service", "微服务", "api", "数据库", "网络"]
-    count = 0
-    for kw in system_indicators:
-        count += text.count(kw)
-    systems = 3 if count <= 2 else 5 if count <= 5 else 8
-
-    # 干系人复杂度
-    stakeholder_kw = ["组织", "部门", "科室", "机构", "干系人", "甲方", "乙方",
-                      "监管", "团队", "stakeholder"]
-    stakeholder_hit = sum(1 for kw in stakeholder_kw if kw in text)
-    stakeholders = "simple" if stakeholder_hit <= 1 else "medium" if stakeholder_hit <= 3 else "complex"
-
-    # 不确定性
-    uncertainty_kw = ["未知", "不确定", "动态", "变化", "新兴", "新业务", "创新",
-                      "预测", "unknown", "uncertain"]
-    uncertainty_hit = sum(1 for kw in uncertainty_kw if kw in text)
-    uncertainty = "simple" if uncertainty_hit <= 1 else "medium" if uncertainty_hit <= 3 else "complex"
-
-    # 规则复杂度
-    rules_kw = ["合规", "法规", "标准", "等保", "规则", "规范", "法律", "监管",
-                "安全", "审计", "加密", "compliance", "regulation", "security"]
-    rules_hit = sum(1 for kw in rules_kw if kw in text)
-    rules = "simple" if rules_hit <= 2 else "medium" if rules_hit <= 5 else "complex"
-
-    return {
-        "systems": systems,
-        "stakeholders": stakeholders,
-        "uncertainty": uncertainty,
-        "rules": rules,
-    }
-
-
 @app.command()
 def cynefin(
-    systems: int = typer.Option(3, "--systems", "-s", help="系统数量"),
-    stakeholders: str = typer.Option("medium", "--stakeholders", help="干系人复杂度"),
-    uncertainty: str = typer.Option("medium", "--uncertainty", help="不确定性"),
-    rules: str = typer.Option("medium", "--rules", "-r", help="规则复杂度"),
-    description: str = typer.Option("", "--desc", "-d", help="系统/架构描述（自动推导参数）"),
+    description: str = typer.Option("", "--desc", "-d", help="系统/架构描述（自动推导维度倾向与证据）"),
+    knowability: str = typer.Option(None, "--knowability", help="需求可知性：clear|complicated|complex"),
+    maturity: str = typer.Option(None, "--maturity", help="实践成熟度：clear|complicated|complex"),
+    dynamics: str = typer.Option(None, "--dynamics", help="环境动态性：clear|complicated|complex"),
+    alignment: str = typer.Option(None, "--alignment", help="目标一致性：clear|complicated|complex"),
+    constraints: str = typer.Option(None, "--constraints", help="约束清晰度：clear|complicated|complex"),
+    systems: int = typer.Option(None, "--systems", "-s", help="规模信号：系统数量（不参与域判定）"),
+    stakeholder_count: int = typer.Option(None, "--stakeholder-count", help="规模信号：干系人数量"),
+    time_span: str = typer.Option(None, "--time-span", help="规模信号：short|medium|long"),
     json_flag: bool = typer.Option(False, "--json", "-j", help="输出结构化 JSON"),
 ):
-    """运行 Cynefin 复杂度评估"""
-    from dm2.cognitive.cynefin_analyzer import CynefinAnalyzer
+    """运行 Cynefin 复杂度评估（五维域投票 + 硬触发，含 Disorder 第五域）"""
+    from dm2.cognitive.cynefin_analyzer import (
+        DIMENSION_IDS,
+        CynefinAnalyzer,
+        DimensionVote,
+        ScaleProfile,
+        Tendency,
+    )
+    from dm2.cognitive.cynefin_deriver import CynefinDeriver, votes_from_user
 
-    analyzer = CynefinAnalyzer()
-
-    # 如果提供了描述文本，自动推导参数
-    if description:
-        derived = _derive_cynefin_from_description(description)
-        systems = derived["systems"]
-        stakeholders = derived["stakeholders"]
-        uncertainty = derived["uncertainty"]
-        rules = derived["rules"]
-
-    values = {
-        "system_count": "simple" if systems <= 2 else "medium" if systems <= 5 else "complex",
-        "time_span": "medium",
-        "stakeholders": stakeholders,
-        "uncertainty": uncertainty,
-        "rule_complexity": rules,
+    user_dimensions = {
+        "requirement_knowability": knowability,
+        "practice_maturity": maturity,
+        "environmental_dynamics": dynamics,
+        "goal_alignment": alignment,
+        "constraint_clarity": constraints,
     }
-    result = analyzer.assess(values)
+    valid_tendencies = {"clear", "complicated", "complex"}
+    bad = [v for v in user_dimensions.values() if v is not None and v not in valid_tendencies]
+    if bad or (time_span is not None and time_span not in {"short", "medium", "long"}):
+        if json_flag:
+            from dm2.cli.json_output import json_error
+            json_error("INVALID_ARG", "维度取值须为 clear|complicated|complex，时间跨度须为 short|medium|long")
+            raise typer.Exit(1)
+        typer.echo("错误：维度取值须为 clear|complicated|complex，--time-span 须为 short|medium|long")
+        raise typer.Exit(1)
+
+    # 描述推导（CLI 与 pipeline 共用同一 deriver）；无描述时五维全部弃权
+    if description:
+        derivation = CynefinDeriver().derive(description)
+        votes = derivation.votes
+        crisis = derivation.crisis
+        scale = derivation.scale_profile
+    else:
+        votes = votes_from_user({})
+        crisis = False
+        scale = ScaleProfile()
+
+    # 显式选项逐维覆盖推导结果（修复旧版 override 不生效的缺陷）
+    vote_by_id = {v.dimension_id: v for v in votes}
+    for dim_id, raw in user_dimensions.items():
+        if raw is not None:
+            vote_by_id[dim_id] = DimensionVote(
+                dim_id, Tendency(raw), evidence=["用户显式指定"], source="user"
+            )
+    votes = [vote_by_id[dim_id] for dim_id in DIMENSION_IDS]
+
+    # 规模信号只影响规模剖面，不参与域判定
+    if systems is not None:
+        scale.systems = systems
+    if stakeholder_count is not None:
+        scale.stakeholders = stakeholder_count
+    if time_span is not None:
+        scale.time_span = time_span
+
+    result = CynefinAnalyzer().assess(
+        votes, crisis=crisis, scale=scale, context=description[:100]
+    )
+    payload = result.to_dict()
 
     # Silently persist analysis state for cross-session context
     from dm2.utils.paths import is_dm2_project
     if is_dm2_project():
-        import yaml as _yaml
         from datetime import datetime as _dt
+
+        import yaml as _yaml
         _sf = Path.cwd() / ".dm2" / "analysis-state.yaml"
         _sf.parent.mkdir(parents=True, exist_ok=True)
         _existing = {}
         if _sf.exists():
             _existing = _yaml.safe_load(_sf.read_text(encoding='utf-8')) or {}
-        _existing["cynefin"] = {
-            "domain": result.domain_label,
-            "confidence": result.confidence,
-            "recommended_view_count": result.recommended_view_count,
-            "timestamp": _dt.now().isoformat(),
-        }
+        _existing["cynefin"] = {**payload, "timestamp": _dt.now().isoformat()}
         _sf.write_text(_yaml.dump(_existing, allow_unicode=True, default_flow_style=False), encoding='utf-8')
 
     if json_flag:
         from dm2.cli.json_output import json_success
-        json_success({
-            "domain": result.domain_label,
-            "confidence": result.confidence,
-            "recommended_view_count": result.recommended_view_count,
-            "reasoning": result.reasoning_details,
-        })
+        json_success(payload)
         return
 
     typer.echo(f"Cynefin 域: {result.domain_label}")
     typer.echo(f"置信度: {result.confidence:.0%}")
-    typer.echo(f"推荐视图数: {result.recommended_view_count}")
+    typer.echo(f"视图深度档位: {result.depth_tier} — {result.depth_guidance}")
     typer.echo()
     typer.echo(result.reasoning_details)
+    if result.needs_clarification:
+        typer.echo()
+        typer.echo("⚠ 判定依据不足，请先澄清需求（或用维度选项显式赋值），再选择视图集。")
 
 
 @app.command()

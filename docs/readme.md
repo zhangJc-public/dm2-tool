@@ -242,21 +242,25 @@ dm2 archive <变更名称>         # 将完成的变更移入 dm2-archive/
 
 ### `dm2 cynefin` — 复杂度评估
 
-基于 Cynefin 框架评估系统复杂度，帮助确定合适的方法论（Clear → Complicated → Complex → Chaotic）。
+基于 Cynefin 框架评估问题的**因果可知性**（而非规模），沿五个语义维度投票：需求可知性、实践成熟度、环境动态性、目标一致性、约束清晰度。五域为 Clear / Complicated / Complex / Chaotic / Disorder；证据不足且跨域矛盾时判 Disorder，提示先澄清需求。
 
 ```bash
-dm2 cynefin                                    # 使用默认参数
-dm2 cynefin -s 5 --uncertainty high --rules complex
+dm2 cynefin -d "医院等保三级建设，需专家分析，多方协调"   # 自动推导
+dm2 cynefin                                                # 无输入 → Disorder
+dm2 cynefin -d "..." --maturity complex --systems 8        # 显式覆盖单维 + 规模信号
 ```
 
 参数：
 
-| 参数 | 简写 | 取值 | 默认值 |
-|------|------|------|--------|
-| `--systems` | `-s` | 整数（自动映射到 simple/medium/complex） | 3 |
-| `--stakeholders` | — | `simple` / `medium` / `complex` | medium |
-| `--uncertainty` | — | `simple` / `medium` / `complex` | medium |
-| `--rules` | `-r` | `simple` / `medium` / `complex` | medium |
+| 参数 | 取值 | 默认 |
+|------|------|------|
+| `--desc` / `-d` | 系统/架构描述（自动推导维度倾向、证据、危机信号、规模剖面） | — |
+| `--knowability` / `--maturity` / `--dynamics` / `--alignment` / `--constraints` | `clear` / `complicated` / `complex`（覆盖对应推导维度） | 不传=按推导/弃权 |
+| `--systems` / `-s` / `--stakeholder-count` | 整数，规模剖面，**不参与域判定** | 推导 |
+| `--time-span` | `short` / `medium` / `long`，规模剖面 | 推导 |
+| `--json` / `-j` | 输出逐维度投票+证据、置信度分解、depth_tier、规模剖面的结构化 JSON | false |
+
+域 → 视图深度档位（depth_tier）：Clear=minimal（2-4 个）、Complicated=core（P0 核心）、Complex=extended（P0+P1+行为三件套）、Chaotic=full（全量+Fusion）、Disorder=none（先澄清）。词库位于 `dm2-reference/core/cynefin-keywords.yaml`，可在不改代码的前提下调整。
 
 ### `dm2 analyze` — 架构分析（无需 LLM）
 
@@ -483,10 +487,10 @@ dm2 archive 防火墙HA升级
 ### 场景 3：Cynefin 驱动的分析策略
 
 ```bash
-# 1. 评估场景复杂度
-dm2 cynefin -s 8 --stakeholders complex --uncertainty high --rules complex
+# 1. 评估复杂度（危机场景 → Chaotic 域 → full 档位）
+dm2 cynefin -d "核心业务全站中断，应急处置中，事态仍在蔓延"
 
-# 2. 根据输出（Chaotic 域 → 全量视图集）运行分析
+# 2. 根据域与 depth_tier 运行分析
 dm2 analyze -d "多部门协同的安全运营中心，跨三个数据中心"
 
 # 3. 按优先级生成视图

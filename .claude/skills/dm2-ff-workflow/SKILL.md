@@ -32,9 +32,9 @@ Fast-forward through architecture analysis and view generation — run everythin
 
 3. **Run Cynefin assessment**
    ```bash
-   python3 -m dm2.cli.main cynefin "<description>" --json
+   python3 -m dm2.cli.main cynefin -d "<description>" --json
    ```
-   Parse the domain and confidence for the summary.
+   Parse the domain, confidence and depth_tier for the summary. If `needs_clarification` is true (Disorder), state that the assessment is under-evidenced and proceed with the P0 core view set cautiously.
 
 4. **Run 6W analysis to get recommended views**
    ```bash

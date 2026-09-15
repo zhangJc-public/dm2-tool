@@ -1,0 +1,294 @@
+# Cynefin 复杂度推导词库
+#
+# 维度按「因果关系可知性」组织，与规模信号分离。
+# 每个维度三档倾向：clear（明晰）/ complicated（繁杂）/ complex（复杂）。
+# - clear / complicated 词表在匹配时带否定前缀保护（不|未|没|无|毫|并不|尚未|难以），
+#   例如「不确定」不会再被「确定」二次命中；
+# - 否定式（不确定、无先例、规则缺失）直接列在 complex 词表中；
+# - 匹配按长度优先、去重叠：长词（难以协调）覆盖其包含的短词（协调）。
+# scale 节只产出规模剖面，不参与域判定。
+version: 1
+
+# 危机信号：命中即一票进 Chaotic；命中片段不回流维度匹配
+crisis:
+  - 应急
+  - 应急响应
+  - 应急处置
+  - 应急指挥
+  - 中断
+  - 全站中断
+  - 宕机
+  - 失控
+  - 蔓延
+  - 战时
+  - 紧急抢修
+  - 救灾
+  - 抢险
+  - outage
+  - emergency
+  - crisis
+
+# 否定前缀：用于 clear / complicated 正面词的后顾断言
+negation_prefixes:
+  - 并不
+  - 尚未
+  - 难以
+  - 不
+  - 未
+  - 没
+  - 无
+  - 毫
+
+dimensions:
+  # ── 需求可知性：问题空间是否已知 ──────────────────────────────
+  requirement_knowability:
+    clear:
+      - 需求明确
+      - 范围明确
+      - 目标明确
+      - 要求明确
+      - 已冻结
+      - 需求冻结
+      - 定义清晰
+      - 明确
+      - 已知
+      - 确定
+      - well-defined
+      - requirements clear
+    complicated:
+      - 分阶段明确
+      - 逐步明确
+      - 逐步收敛
+      - 部分明确
+      - 需调研
+      - 待调研
+      - 需要澄清部分需求
+      - 需求梳理
+    complex:
+      - 不确定
+      - 不明确
+      - 尚未明确
+      - 未知
+      - 模糊
+      - 含糊
+      - 涌现
+      - 持续涌现
+      - 持续变化
+      - 探索性需求
+      - 需求演变
+      - 待定
+      - 未定
+      - tbd
+      - uncertain
+      - unclear
+      - unknown
+      - emerging requirements
+
+  # ── 实践成熟度：解空间知识（最佳实践→专家分析→无先例）────────
+  practice_maturity:
+    clear:
+      - 成熟方案
+      - 成熟产品
+      - 标准部署
+      - 标准化部署
+      - 最佳实践
+      - 常规交付
+      - 常规实施
+      - 开箱即用
+      - 单一产品部署
+      - mature solution
+      - best practice
+      - off-the-shelf
+    complicated:
+      - 等保
+      - 等保2.0
+      - 等保三级
+      - 密评
+      - 分级保护
+      - 合规改造
+      - 定制集成
+      - 系统集成
+      - 专家分析
+      - 多方案选型
+      - 方案选型
+      - 专业评估
+      - 架构评审
+      - custom integration
+      - expert analysis
+    complex:
+      - 业内首次
+      - 行业首次
+      - 尚无先例
+      - 无先例
+      - 没有先例
+      - 前沿
+      - 前沿探索
+      - 自研新范式
+      - 新范式
+      - 探索前行
+      - 探索中
+      - 开创性
+      - 史无前例
+      - unprecedented
+      - no precedent
+      - cutting edge
+
+  # ── 环境动态性：答案的时效性 ─────────────────────────────────
+  environmental_dynamics:
+    clear:
+      - 长期稳定
+      - 稳定
+      - 固定不变
+      - 长期不变
+      - 静态
+      - stable
+      - static
+    complicated:
+      - 可预测变化
+      - 渐进演进
+      - 分期建设
+      - 分阶段建设
+      - 逐步演进
+      - 路线图清晰
+      - predictable evolution
+    complex:
+      - 快速变化
+      - 迅速变化
+      - 动态
+      - 自适应
+      - 对抗演变
+      - 持续演变
+      - 瞬息万变
+      - 答案会过期
+      - 高速迭代
+      - rapidly changing
+      - dynamic
+      - adaptive
+      - fast-moving
+
+  # ── 目标一致性：干系人冲突（不是干系人数量）──────────────────
+  goal_alignment:
+    clear:
+      - 目标一致
+      - 各方一致
+      - 统一目标
+      - 意见一致
+      - 共识明确
+      - aligned goals
+      - shared goals
+    complicated:
+      - 多方协调
+      - 跨部门协作
+      - 多方协作
+      - 利益相关方协调
+      - 多方配合
+      - 协调各方
+      - multi-stakeholder coordination
+    complex:
+      - 目标冲突
+      - 利益冲突
+      - 立场对立
+      - 诉求矛盾
+      - 诉求冲突
+      - 难以协调
+      - 不可调和
+      - 互相掣肘
+      - conflicting goals
+      - conflict of interest
+
+  # ── 约束清晰度：规则的一致性（不是条文数量）──────────────────
+  constraint_clarity:
+    clear:
+      - 规则完备
+      - 标准完备
+      - 标准明确
+      - 规范完备
+      - 法规完备
+      - 制度完备
+      - 无合规要求
+      - 没有合规要求
+      - clear regulations
+      - well-defined standards
+    complicated:
+      - 有合规框架
+      - 合规框架
+      - 行业规范
+      - 行业标准
+      - 需解释
+      - 弹性解释
+      - 标准解读
+      - regulatory framework
+      - industry standards
+    complex:
+      - 规则缺失
+      - 监管缺失
+      - 监管不明
+      - 无章可循
+      - 相互矛盾
+      - 规则矛盾
+      - 规范冲突
+      - 政策空白
+      - 监管真空
+      - contradictory rules
+      - unregulated
+
+# ── 规模剖面：仅作视图广度/预算参考，不参与域判定 ──────────────
+scale:
+  # 长度优先（子系统 在 系统 之前），去重叠计数
+  system_terms:
+    - 子系统
+    - 下一代防火墙
+    - 防火墙
+    - 网关
+    - 探针
+    - 传感器
+    - 路由器
+    - 交换机
+    - 数据库
+    - 微服务
+    - 平台
+    - 系统
+    - 节点
+    - 组件
+    - 模块
+    - 设备
+    - 服务
+    - 网络
+    - service
+    - microservice
+    - api
+    - database
+    - appliance
+  org_terms:
+    - 监管机构
+    - 集成商
+    - 组织
+    - 部门
+    - 科室
+    - 机构
+    - 团队
+    - 公司
+    - 厂商
+    - 院方
+    - 甲方
+    - 乙方
+    - 干系人
+    - stakeholder
+  time:
+    short:
+      - 一期
+      - 单次
+      - 短期
+      - 三个月内
+      - 一次性
+    medium:
+      - 年度
+      - 分阶段
+      - 分期
+      - 中期
+    long:
+      - 多年
+      - 长期
+      - 持续运营
+      - 三到五年
+      - 长期规划

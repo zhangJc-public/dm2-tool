@@ -1,4 +1,5 @@
 from __future__ import annotations
+
 """
 Step 1+2: Intent Clarification + Scope Definition (意图澄清 + 范围界定)
 
@@ -11,12 +12,11 @@ Step 1+2: Intent Clarification + Scope Definition (意图澄清 + 范围界定)
   6. 输出范围定义文档
 """
 
-import re
 from dataclasses import dataclass, field
-from pathlib import Path
 
-from dm2.cognitive.six_w_analyzer import SixWAnalyzer, SixW, SIX_W_TO_DM2_GROUPS
-from dm2.cognitive.cynefin_analyzer import CynefinAnalyzer, CynefinDomain
+from dm2.cognitive.cynefin_analyzer import CynefinAnalyzer, Domain
+from dm2.cognitive.cynefin_deriver import CynefinDeriver
+from dm2.cognitive.six_w_analyzer import SIX_W_TO_DM2_GROUPS, SixW, SixWAnalyzer
 from dm2.kernel.indexer import DM2KnowledgeIndexer
 
 
@@ -32,6 +32,8 @@ class IntentScopeResult:
     scope_boundaries: str
     primary_w: str
     secondary_ws: list[str]
+    needs_clarification: bool = False
+    scale_profile: dict = field(default_factory=dict)
 
 
 REVERSE_QUESTION_TEMPLATES = {
@@ -88,6 +90,7 @@ class Step1IntentScope:
     def __init__(self, indexer: DM2KnowledgeIndexer = None):
         self.six_w_analyzer = SixWAnalyzer()
         self.cynefin_analyzer = CynefinAnalyzer()
+        self.cynefin_deriver = CynefinDeriver()
         self.indexer = indexer or DM2KnowledgeIndexer()
 
     def execute(self, description: str) -> IntentScopeResult:
@@ -99,9 +102,14 @@ class Step1IntentScope:
             six_w_result.primary_w, six_w_result.secondary_ws
         )
 
-        # 3. Cynefin 复杂度判定
-        cynefin_values = self._infer_cynefin_values(description, six_w_result)
-        cynefin_result = self.cynefin_analyzer.assess(cynefin_values, context=description)
+        # 3. Cynefin 复杂度判定（CLI 与 pipeline 共用同一推导器）
+        derivation = self.cynefin_deriver.derive(description)
+        cynefin_result = self.cynefin_analyzer.assess(
+            derivation.votes,
+            crisis=derivation.crisis,
+            scale=derivation.scale_profile,
+            context=description,
+        )
 
         # 4. 选择 DM2 数据组
         data_groups = self._select_data_groups(six_w_result.primary_w, six_w_result.secondary_ws)
@@ -125,6 +133,12 @@ class Step1IntentScope:
             scope_boundaries=boundaries,
             primary_w=six_w_result.primary_w.value,
             secondary_ws=[w.value for w in six_w_result.secondary_ws],
+            needs_clarification=cynefin_result.needs_clarification,
+            scale_profile={
+                "systems": cynefin_result.scale_profile.systems,
+                "time_span": cynefin_result.scale_profile.time_span,
+                "stakeholders": cynefin_result.scale_profile.stakeholders,
+            },
         )
 
     def _generate_clarification_questions(
@@ -143,48 +157,6 @@ class Step1IntentScope:
 
         return questions
 
-    def _infer_cynefin_values(self, description: str, six_w) -> dict[str, str]:
-        """从描述推断 Cynefin 维度值"""
-
-        system_count = "medium"
-        sys_patterns = [r"(?:系统|平台|组件|模块|服务|探针|网关|防火墙|IDS|IPS|SIEM|SOC|WAF|HIDS|EDR)", r"\b(?:system|platform|component|service)\b"]
-        sys_count = 0
-        for p in sys_patterns:
-            sys_count += len(re.findall(p, description, re.IGNORECASE))
-        if sys_count <= 1:
-            system_count = "simple"
-        elif sys_count <= 5:
-            system_count = "medium"
-        else:
-            system_count = "complex"
-
-        uncertainty = "medium"
-        if re.search(r"(?:不确定|未知|待定|TBD|可能|或许|大概)", description):
-            uncertainty = "complex"
-        if re.search(r"(?:明确|确定|已知|固定)", description):
-            uncertainty = "simple"
-
-        stakeholders = "medium"
-        org_count = len(re.findall(r"(?:组织|部门|机构|团队|公司|厂商|甲方|乙方|SOC|NOC|运维|开发|安全|合规)", description))
-        if org_count <= 1:
-            stakeholders = "simple"
-        elif org_count >= 4:
-            stakeholders = "complex"
-
-        rules = "medium"
-        if re.search(r"(?:等保|密评|关基|合规|GDPR|ISO|NIST|等级保护|分级保护|2\.0|3\.0)", description):
-            rules = "complex"
-        if re.search(r"(?:无合规|不要求|灵活|自主)", description):
-            rules = "simple"
-
-        return {
-            "system_count": system_count,
-            "time_span": "medium",
-            "stakeholders": stakeholders,
-            "uncertainty": uncertainty,
-            "rule_complexity": rules,
-        }
-
     def _select_data_groups(self, primary: SixW, secondary: list[SixW]) -> list[str]:
         groups = set()
         groups.update(SIX_W_TO_DM2_GROUPS.get(primary, []))
@@ -202,27 +174,31 @@ class Step1IntentScope:
     def _describe_boundaries(
         self,
         data_groups: list[str],
-        domain: CynefinDomain,
+        domain: Domain,
         budget: int,
         description: str,
     ) -> str:
         max_safe_budget = 8000
         lines = [
-            f"## 范围边界",
-            f"",
+            "## 范围边界",
+            "",
             f"- **复杂度域**: {domain.value}",
             f"- **上下文预算估算**: {budget} tokens",
         ]
+        if domain == Domain.DISORDER:
+            lines.append(
+                "- **⚠ 域判定不明**: 证据不足或跨域矛盾，视图选择前应先回答澄清问题"
+            )
         if budget > max_safe_budget:
             lines.append(f"- **⚠️ 预算警告**: 估算 {budget}tokens 超过安全阈值 {max_safe_budget}tokens")
-            lines.append(f"- **建议**: 考虑缩小范围或采用分阶段方法")
+            lines.append("- **建议**: 考虑缩小范围或采用分阶段方法")
         else:
             lines.append(f"- **预算状态**: 在安全范围内（阈值 {max_safe_budget}tokens）")
 
         lines.append(f"- **选定数据组 ({len(data_groups)} 个):**")
         for g in data_groups:
             lines.append(f"  - {g}")
-        lines.append(f"- **排除**: 未选中的数据组不纳入本次架构分析")
+        lines.append("- **排除**: 未选中的数据组不纳入本次架构分析")
         return "\n".join(lines)
 
     def format_output(self, result: IntentScopeResult) -> str:
@@ -231,6 +207,10 @@ class Step1IntentScope:
             f"{i}. {q}" for i, q in enumerate(result.clarification_questions, 1)
         )
         groups_str = "\n".join(f"- {g}" for g in result.selected_data_groups)
+        disorder_note = (
+            "\n⚠ **判定不明（Disorder）**：请优先回答上方澄清问题，暂不推荐固定视图集。"
+            if result.needs_clarification else ""
+        )
 
         return f"""# Step 1+2：意图澄清 + 范围界定
 
@@ -246,6 +226,8 @@ class Step1IntentScope:
 
 - **域**: {result.cynefin_domain}
 - **置信度**: {result.cynefin_confidence:.0%}
+- **规模剖面**: 系统 {result.scale_profile.get('systems') or '?'} / 干系人 {result.scale_profile.get('stakeholders') or '?'} / 时间跨度 {result.scale_profile.get('time_span') or '未知'}（不参与域判定）
+{disorder_note}
 
 ### 评估详情
 
@@ -280,6 +262,8 @@ class Step1IntentScope:
                 "domain": result.cynefin_domain,
                 "confidence": result.cynefin_confidence,
                 "details": result.cynefin_details,
+                "needs_clarification": result.needs_clarification,
+                "scale_profile": result.scale_profile,
             },
             "six_w": {
                 "primary": result.primary_w,

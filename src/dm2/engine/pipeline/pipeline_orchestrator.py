@@ -103,6 +103,8 @@ class PipelineOrchestrator:
             content = self.step1.format_output(result)
             output_path.write_text(content, encoding='utf-8')
             print(f"   ✓ Cynefin 域: {result.cynefin_domain}")
+            if result.needs_clarification:
+                print("   ⚠ 域判定不明（Disorder）：请先处理反向质问再固定视图集")
             print(f"   ✓ 反向质问: {len(result.clarification_questions)} 个问题")
             print(f"   ✓ 数据组: {len(result.selected_data_groups)} 个")
 

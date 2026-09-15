@@ -65,7 +65,7 @@ DM2_DEBUG=1 dm2 analyze ...   # 显示索引器诊断（默认静默，保证 --
 | `src/dm2/core/templates/workflows/` | 技能 Markdown 模板（from Python `.py` → `.claude/skills/`） |
 | `src/dm2/kernel/` | DM2 元模型定义、视图 schema、术语索引 |
 | `src/dm2/engine/` | 视图生成 pipeline 各步骤 |
-| `src/dm2/cognitive/` | Cynefin 复杂度评估 + 6W 分析 |
+| `src/dm2/cognitive/` | Cynefin 复杂度评估（五维域投票+硬触发，含 Disorder；`cynefin_deriver.py` 外部化 YAML 词库，CLI/pipeline 共用）+ 6W 分析 |
 | `src/dm2/reasoning/` | 一致性校验（R1-R5） |
 | `dm2-reference/core/` | views.yaml、术语 JSON、数据组模板、group-to-views 映射 |
 | `test/` | 测试套件 |

@@ -39,8 +39,8 @@ Run a complete DoDAF architecture analysis and generate planning artifacts with 
    python3 -m dm2.cli.main cynefin --json -d "<system description>"
    ```
 
-   Parse the JSON output to understand the complexity level (clear/complicated/complex/chaotic/disorder). This determines the scope of views to recommend.
-   Optionally save your own rich Cynefin analysis to `dm2-changes/<name>/analysis/cynefin-assessment.md` for audit. Do NOT dump the raw CLI JSON — it is thin keyword-match output with little audit value. Capture your reasoning, not the CLI response.
+   Parse the JSON evidence pack: `domain` (Clear/Complicated/Complex/Chaotic/Disorder), `confidence` plus `confidence_breakdown`, per-dimension `tendency` votes with matched `evidence`, `depth_tier` (view scope guidance), and `scale_profile` (advisory breadth signal, not part of domain logic).
+   The JSON is auditable as-is. Accept it unless you have grounds to override a vote; if you do override, save your reasoning to `dm2-changes/<name>/analysis/cynefin-assessment.md` and note which dimension you changed and why. If `needs_clarification` is true (Disorder), surface the uncertainty to the user before fixing the view set — do not silently pick a domain.
 
 4. **Run enhanced analysis with data group activation**
 

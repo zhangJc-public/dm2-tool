@@ -1,9 +1,5 @@
-# DM2 Cynefin Auto-Derive
+## MODIFIED Requirements
 
-## Purpose
-Enable `dm2 cynefin` and the Step 1+2 pipeline to derive Cynefin dimension votes, evidence, crisis signals and scale profile from a natural language description through one shared polarity-safe deriver with an externalized YAML lexicon, while preserving manual dimension overrides.
-
-## Requirements
 ### Requirement: Auto-derive Cynefin parameters from description
 The `dm2 cynefin` command SHALL support automatic derivation of Cynefin assessment inputs from a natural language description: all five semantic dimension tendency values (`clear` / `complicated` / `complex`, or abstaining), the matched evidence spans supporting each dimension, the crisis signal flag, and a scale profile (estimated system count, time span, stakeholder count). Derivation SHALL use the shared Cynefin deriver and SHALL be polarity-safe: negated lexemes (e.g. 「不确定」「不明确」「未稳定」) SHALL match their negated polarity and MUST NOT be re-matched by an inner positive lexeme (e.g. the substring 「确定」 inside 「不确定」).
 
@@ -32,6 +28,8 @@ The `dm2 cynefin` command SHALL support automatic derivation of Cynefin assessme
 #### Scenario: No input means Disorder
 - **WHEN** user runs `dm2 cynefin` with neither `--desc` nor any explicit dimension option
 - **THEN** the command SHALL succeed and output domain `Disorder` with `needs_clarification: true`, instead of fabricating a middle-value assessment
+
+## ADDED Requirements
 
 ### Requirement: Single shared deriver for CLI and pipeline
 
@@ -70,4 +68,3 @@ When the pipeline's Cynefin assessment resolves to `Disorder`, the Step 1+2 resu
 - **WHEN** `Step1IntentScope.execute()` produces a Disorder assessment
 - **THEN** the result SHALL include `cynefin_domain` labeled as Disorder and a positive clarification-needed indicator
 - **AND** the pipeline SHALL continue producing its remaining Step 1+2 outputs normally
-

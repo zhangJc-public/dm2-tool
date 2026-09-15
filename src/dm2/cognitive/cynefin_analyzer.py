@@ -1,299 +1,335 @@
 """
-Cynefin Complexity Analyzer - 动态复杂度评估器
-支持灵活的复杂度维度配置和动态评估
+Cynefin Complexity Analyzer — 基于因果可知性的复杂度评估
+
+模型要点：
+- 5 个语义维度（需求可知性 / 实践成熟度 / 环境动态性 / 目标一致性 / 约束清晰度），
+  每个维度投出一张域倾向票（clear / complicated / complex）或弃权（None）。
+- 域解析顺序：危机否决（Chaotic）→ 无证据 Disorder → 低证据+跨域矛盾 Disorder
+  → ≥3 张 complex 硬触发（Complex）→ 加权带（Clear / Complicated / Complex）。
+- 规模信号（系统数、时间跨度、干系人数）走独立的 ScaleProfile，不参与域判定。
 """
+
+from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import Enum
+from typing import Optional
+
+# 五个语义维度（ID → 中文名），顺序同时是输出顺序
+DIMENSIONS: list[tuple[str, str]] = [
+    ("requirement_knowability", "需求可知性"),
+    ("practice_maturity", "实践成熟度"),
+    ("environmental_dynamics", "环境动态性"),
+    ("goal_alignment", "目标一致性"),
+    ("constraint_clarity", "约束清晰度"),
+]
+DIMENSION_IDS = [dim_id for dim_id, _ in DIMENSIONS]
+DIMENSION_LABELS = dict(DIMENSIONS)
+
+# 维度默认权重（硬触发与带边界承担主要判别，权重保持均等以便解释）
+DEFAULT_DIMENSION_WEIGHTS: dict[str, float] = {dim_id: 1.0 for dim_id in DIMENSION_IDS}
+
+# 倾向 → 分数
+TENDENCY_SCORES = {"clear": 1.0, "complicated": 2.0, "complex": 3.0}
+
+# 加权带边界（投票维度的加权平均）
+BAND_CLEAR_MAX = 1.5          # avg < 1.5 → Clear
+BAND_COMPLICATED_MAX = 2.5    # 1.5 ≤ avg < 2.5 → Complicated；≥ 2.5 → Complex
+
+# 硬触发：≥3 张 complex 票直接判 Complex
+COMPLEX_HARD_TRIGGER = 3
+
+# Disorder 证据门槛：携带证据（或用户显式赋值）的维度少于此值且跨域矛盾
+MIN_INFORMED_DIMENSIONS = 3
+
+# 置信度公式常量
+CONFIDENCE_FLOOR = 0.20
+CONFIDENCE_CEILING = 0.95
+CONFIDENCE_BASE = 0.20
+CONFIDENCE_COVERAGE_WEIGHT = 0.45
+CONFIDENCE_AGREEMENT_WEIGHT = 0.30
 
 
-class CynefinDomain(str, Enum):
-    """Cynefin 域"""
-    CLEAR = "Clear"       # 明晰 - 简单问题，最小视图集
-    COMPLICATED = "Complicated"  # 繁杂 - 标准视图集
-    COMPLEX = "Complex"   # 复杂 - 全量视图集
-    CHAOTIC = "Chaotic"   # 混沌 - 全量 + Fusion
+class Tendency(str, Enum):
+    """维度域倾向票"""
+    CLEAR = "clear"
+    COMPLICATED = "complicated"
+    COMPLEX = "complex"
+
+
+class Domain(str, Enum):
+    """Cynefin 五域（含 Disorder 第 5 域）"""
+    CLEAR = "Clear"
+    COMPLICATED = "Complicated"
+    COMPLEX = "Complex"
+    CHAOTIC = "Chaotic"
+    DISORDER = "Disorder"
+
+
+_DOMAIN_LABELS = {
+    Domain.CLEAR: "明晰（Clear）",
+    Domain.COMPLICATED: "繁杂（Complicated）",
+    Domain.COMPLEX: "复杂（Complex）",
+    Domain.CHAOTIC: "混沌（Chaotic）",
+    Domain.DISORDER: "不明（Disorder）",
+}
+
+# 域 → 视图深度档位
+_DEPTH_TIERS: dict[Domain, tuple[str, str]] = {
+    Domain.CLEAR: ("minimal", "2-4 个（OV-1 + CV-1）"),
+    Domain.COMPLICATED: ("core", "12-17 个（P0 核心）"),
+    Domain.COMPLEX: ("extended", "P0+P1 + 行为三件套"),
+    Domain.CHAOTIC: ("full", "全量 + Fusion Views + 实时模拟"),
+    Domain.DISORDER: ("none", "不推荐视图集，先完成需求澄清"),
+}
 
 
 @dataclass
-class ComplexityDimension:
-    """复杂度评估维度"""
-    name: str
-    value: str  # "simple" / "medium" / "complex"
-    weight: float = 1.0  # 权重，可动态调整
-    evidence: list[str] = field(default_factory=list)  # 评估证据
+class DimensionVote:
+    """一个维度的投票结果。tendency=None 表示弃权（证据不足或平票）。"""
+    dimension_id: str
+    tendency: Optional[Tendency]
+    evidence: list[str] = field(default_factory=list)
+    source: str = "derived"  # derived | user
+
+    @property
+    def informed(self) -> bool:
+        """该维度是否携带可依据的信息（证据或用户显式赋值）。"""
+        return bool(self.evidence) or (self.source == "user" and self.tendency is not None)
+
+
+@dataclass
+class ScaleProfile:
+    """规模剖面：工作量/广度信号，不参与域判定。"""
+    systems: Optional[int] = None
+    time_span: Optional[str] = None       # short | medium | long
+    stakeholders: Optional[int] = None
 
 
 @dataclass
 class ComplexityAssessment:
     """复杂度评估结果"""
-    domain: CynefinDomain
-    confidence: float  # 0.0 - 1.0
-    dimensions: list[ComplexityDimension]
-    reasoning: str
-    recommended_view_count: str
+    domain: Domain
+    confidence: float
+    votes: list[DimensionVote]
     reasoning_details: str
+    depth_tier: str
+    depth_guidance: str
+    needs_clarification: bool = False
+    crisis: bool = False
+    scale_profile: Optional[ScaleProfile] = None
+    confidence_breakdown: dict = field(default_factory=dict)
 
     @property
     def domain_label(self) -> str:
-        labels = {
-            CynefinDomain.CLEAR: "明晰（Simple）",
-            CynefinDomain.COMPLICATED: "繁杂（Complicated）",
-            CynefinDomain.COMPLEX: "复杂（Complex）",
-            CynefinDomain.CHAOTIC: "混沌（Chaotic）",
+        return _DOMAIN_LABELS.get(self.domain, "未知")
+
+    def to_dict(self) -> dict:
+        """序列化为结构化 JSON（CLI --json 与 analysis-state 持久化共用）。"""
+        scale = self.scale_profile
+        return {
+            "domain": self.domain.value,
+            "domain_label": self.domain_label,
+            "confidence": self.confidence,
+            "confidence_breakdown": dict(self.confidence_breakdown),
+            "crisis": self.crisis,
+            "needs_clarification": self.needs_clarification,
+            "depth_tier": self.depth_tier,
+            "depth_guidance": self.depth_guidance,
+            "dimensions": [
+                {
+                    "id": v.dimension_id,
+                    "tendency": v.tendency.value if v.tendency else None,
+                    "evidence": list(v.evidence),
+                    "source": v.source,
+                }
+                for v in self.votes
+            ],
+            "scale_profile": {
+                "systems": scale.systems if scale else None,
+                "time_span": scale.time_span if scale else None,
+                "stakeholders": scale.stakeholders if scale else None,
+            },
+            "reasoning": self.reasoning_details,
         }
-        return labels.get(self.domain, "未知")
 
 
 class CynefinAnalyzer:
-    """动态 Cynefin 复杂度分析器"""
+    """Cynefin 域解析器：维度投票 + 硬触发 + 加权带。"""
 
-    # 默认评估维度及其权重
-    DEFAULT_DIMENSIONS = [
-        ("system_count", "系统数量", 1.0),
-        ("time_span", "时间跨度", 0.8),
-        ("stakeholders", "干系人", 1.0),
-        ("uncertainty", "不确定性", 1.2),  # 不确定性权重稍高
-        ("rule_complexity", "规则复杂度", 1.0),
-    ]
-
-    # 域判定阈值（加权分数）
-    DOMAIN_THRESHOLDS = {
-        CynefinDomain.CLEAR: (0, 2.0),
-        CynefinDomain.COMPLICATED: (2.0, 3.5),
-        CynefinDomain.COMPLEX: (3.5, 5.0),
-        CynefinDomain.CHAOTIC: (5.0, float('inf')),
-    }
-
-    def __init__(self, custom_dimensions: list[tuple[str, str, float]] = None):
-        """
-        初始化分析器
-
-        Args:
-            custom_dimensions: 自定义维度 [(id, name, weight), ...]
-        """
-        if custom_dimensions:
-            self.dimensions_config = custom_dimensions
-        else:
-            self.dimensions_config = self.DEFAULT_DIMENSIONS
+    def __init__(self, weights: Optional[dict[str, float]] = None):
+        self.weights = dict(DEFAULT_DIMENSION_WEIGHTS)
+        if weights:
+            unknown = set(weights) - set(DIMENSION_IDS)
+            if unknown:
+                raise ValueError(f"未知维度 ID: {sorted(unknown)}")
+            self.weights.update(weights)
 
     def assess(
         self,
-        dimension_values: dict[str, str],
-        evidence: dict[str, list[str]] = None,
-        context: str = ""
+        votes: list[DimensionVote],
+        crisis: bool = False,
+        scale: Optional[ScaleProfile] = None,
+        context: str = "",
     ) -> ComplexityAssessment:
         """
-        评估复杂度
+        解析 Cynefin 域。
 
         Args:
-            dimension_values: {维度ID: "simple"/"medium"/"complex"}
-            evidence: {维度ID: [证据列表]}
-            context: 额外上下文信息
-
-        Returns:
-            ComplexityAssessment
+            votes: 各维度投票（可少于 5 个；缺失维度按弃权处理）
+            crisis: 危机信号（一票进 Chaotic）
+            scale: 规模剖面（仅随结果报告）
+            context: 附加上下文，写入理由文本
         """
-        dimensions = []
-        total_weighted_score = 0.0
-        total_weight = 0.0
+        self._validate_votes(votes)
+        by_id = {v.dimension_id: v for v in votes}
+        ordered = [by_id[dim_id] for dim_id in DIMENSION_IDS if dim_id in by_id]
 
-        for dim_id, dim_name, weight in self.dimensions_config:
-            value = dimension_values.get(dim_id, "medium")
-            dim_evidence = evidence.get(dim_id, []) if evidence else []
+        # 1. 危机否决
+        if crisis:
+            domain = Domain.CHAOTIC
+        else:
+            domain = self._resolve_domain(ordered)
 
-            # 转换维度值为分数
-            score = self._value_to_score(value)
+        breakdown = self._confidence_breakdown(ordered)
+        confidence = self._compute_confidence(breakdown)
+        needs_clarification = domain == Domain.DISORDER
+        depth_tier, depth_guidance = _DEPTH_TIERS[domain]
 
-            dimensions.append(ComplexityDimension(
-                name=dim_name,
-                value=value,
-                weight=weight,
-                evidence=dim_evidence,
-            ))
-
-            total_weighted_score += score * weight
-            total_weight += weight
-
-        # 计算加权平均分数
-        avg_score = total_weighted_score / total_weight if total_weight > 0 else 0
-
-        # 判定域
-        domain = self._score_to_domain(avg_score)
-
-        # 生成理由
-        reasoning = self._generate_reasoning(dimensions, domain, context)
-
-        # 推荐视图数量
-        view_count = self._get_recommended_view_count(domain)
+        reasoning = self._generate_reasoning(
+            ordered, domain, confidence, breakdown, crisis, context
+        )
 
         return ComplexityAssessment(
             domain=domain,
-            confidence=0.85,  # 固定置信度，可根据证据量调整
-            dimensions=dimensions,
-            reasoning=f"基于 {len(dimensions)} 个维度评估，判定为「{domain.value}」域",
-            recommended_view_count=view_count,
+            confidence=confidence,
+            votes=ordered,
             reasoning_details=reasoning,
+            depth_tier=depth_tier,
+            depth_guidance=depth_guidance,
+            needs_clarification=needs_clarification,
+            crisis=crisis,
+            scale_profile=scale,
+            confidence_breakdown=breakdown,
         )
 
-    def _value_to_score(self, value: str) -> float:
-        """将维度值转换为分数"""
-        mapping = {
-            "simple": 1.0,
-            "medium": 2.0,
-            "complex": 3.0,
+    # ── 域解析 ─────────────────────────────────────────────────────────
+    @staticmethod
+    def _validate_votes(votes: list[DimensionVote]) -> None:
+        ids = [v.dimension_id for v in votes]
+        unknown = set(ids) - set(DIMENSION_IDS)
+        if unknown:
+            raise ValueError(f"未知维度 ID: {sorted(unknown)}")
+        if len(ids) != len(set(ids)):
+            raise ValueError("维度投票存在重复 ID")
+        for v in votes:
+            if v.source not in ("derived", "user"):
+                raise ValueError(f"未知 vote source: {v.source}")
+
+    def _resolve_domain(self, votes: list[DimensionVote]) -> Domain:
+        voting = [v for v in votes if v.tendency is not None]
+        informed = [v for v in votes if v.informed]
+        tendencies = [v.tendency for v in voting]
+
+        # 2. 完全无依据：Disorder
+        if len(voting) == 0:
+            return Domain.DISORDER
+
+        # 3. 低证据 + 跨域矛盾：Disorder
+        if len(informed) < MIN_INFORMED_DIMENSIONS and self._cross_domain_split(tendencies):
+            return Domain.DISORDER
+
+        # 4. complex 硬触发
+        complex_votes = sum(1 for t in tendencies if t == Tendency.COMPLEX)
+        if complex_votes >= COMPLEX_HARD_TRIGGER:
+            return Domain.COMPLEX
+
+        # 5. 加权带（弃权维度不进分子分母）
+        weighted_sum = sum(
+            TENDENCY_SCORES[t.value] * self.weights[v.dimension_id]
+            for v, t in ((v, v.tendency) for v in voting)
+        )
+        total_weight = sum(self.weights[v.dimension_id] for v in voting)
+        avg = weighted_sum / total_weight if total_weight else 0.0
+
+        if avg < BAND_CLEAR_MAX:
+            return Domain.CLEAR
+        if avg < BAND_COMPLICATED_MAX:
+            return Domain.COMPLICATED
+        return Domain.COMPLEX
+
+    @staticmethod
+    def _cross_domain_split(tendencies: list[Tendency]) -> bool:
+        """票中同时含 clear 与 complex，或三档齐备。"""
+        values = {t.value for t in tendencies}
+        return ("clear" in values and "complex" in values) or len(values) == 3
+
+    # ── 置信度 ─────────────────────────────────────────────────────────
+    @staticmethod
+    def _confidence_breakdown(votes: list[DimensionVote]) -> dict:
+        informed = sum(1 for v in votes if v.informed)
+        coverage = informed / len(DIMENSION_IDS)
+
+        voting_tendencies = [v.tendency for v in votes if v.tendency is not None]
+        if not voting_tendencies:
+            agreement = 0.0
+        else:
+            dispersion = (len({t.value for t in voting_tendencies}) - 1) / 2
+            agreement = max(0.0, 1.0 - dispersion)
+
+        return {
+            "coverage": round(coverage, 4),
+            "agreement": round(agreement, 4),
+            "informed_dimensions": informed,
+            "voting_dimensions": len(voting_tendencies),
         }
-        return mapping.get(value.lower(), 2.0)
 
-    def _score_to_domain(self, avg_score: float) -> CynefinDomain:
-        """根据平均分数判定域"""
-        for domain, (lower, upper) in self.DOMAIN_THRESHOLDS.items():
-            if lower <= avg_score < upper:
-                return domain
-        return CynefinDomain.COMPLEX
+    @staticmethod
+    def _compute_confidence(breakdown: dict) -> float:
+        confidence = (
+            CONFIDENCE_BASE
+            + CONFIDENCE_COVERAGE_WEIGHT * breakdown["coverage"]
+            + CONFIDENCE_AGREEMENT_WEIGHT * breakdown["agreement"]
+        )
+        return round(
+            min(CONFIDENCE_CEILING, max(CONFIDENCE_FLOOR, confidence)), 4
+        )
 
+    # ── 理由文本 ───────────────────────────────────────────────────────
     def _generate_reasoning(
         self,
-        dimensions: list[ComplexityDimension],
-        domain: CynefinDomain,
-        context: str
+        votes: list[DimensionVote],
+        domain: Domain,
+        confidence: float,
+        breakdown: dict,
+        crisis: bool,
+        context: str,
     ) -> str:
-        """生成详细的评估理由"""
-        lines = [f"复杂度评估（{domain.value}域）："]
+        lines = [f"复杂度评估（{_DOMAIN_LABELS[domain]}）："]
 
-        high_impact_dims = [d for d in dimensions if d.value == "complex" and d.weight >= 1.0]
-        if high_impact_dims:
-            lines.append("高影响维度：")
-            for d in high_impact_dims:
-                lines.append(f"  - {d.name}（复杂，权重 {d.weight}）")
-                if d.evidence:
-                    for e in d.evidence[:2]:  # 最多显示2条证据
-                        lines.append(f"    证据：{e}")
+        if crisis:
+            lines.append("  ⚠ 危机信号触发：应急/失控/中断等情景，一票判定为混沌域")
 
-        lines.append(f"加权平均分数：{sum(d.weight * self._value_to_score(d.value) for d in dimensions) / sum(d.weight for d in dimensions):.2f}")
+        for v in votes:
+            label = DIMENSION_LABELS.get(v.dimension_id, v.dimension_id)
+            if v.tendency is None:
+                lines.append(f"  - {label}：弃权（证据不足或倾向平票）")
+            else:
+                src = "用户指定" if v.source == "user" else "文本推导"
+                lines.append(f"  - {label}：{v.tendency.value}（{src}）")
+            for e in v.evidence[:3]:
+                lines.append(f"      证据：{e}")
+
+        lines.append(
+            f"评估置信度：{confidence:.0%}"
+            f"（证据覆盖 {breakdown['coverage']:.0%}，"
+            f"维度一致度 {breakdown['agreement']:.0%}）"
+        )
+
+        if domain == Domain.DISORDER:
+            lines.append("  → 证据不足且维度间跨域矛盾（或完全无依据），请先回答澄清问题再选视图。")
 
         if context:
             lines.append(f"上下文：{context[:100]}")
 
         return "\n".join(lines)
-
-    def _get_recommended_view_count(self, domain: CynefinDomain) -> str:
-        """根据域获取推荐视图数量"""
-        mapping = {
-            CynefinDomain.CLEAR: "2-4 个（OV-1 + CV-1）",
-            CynefinDomain.COMPLICATED: "12-17 个（P0 核心）",
-            CynefinDomain.COMPLEX: "38+ 个（P0+P1）+ 行为三件套",
-            CynefinDomain.CHAOTIC: "全量 + Fusion Views + 实时模拟",
-        }
-        return mapping.get(domain, "未知")
-
-    def get_dynamic_thresholds(
-        self,
-        domain: CynefinDomain,
-        adjustment: float = 0.0
-    ) -> tuple[float, float]:
-        """
-        获取动态阈值（用于调整评估严格度）
-
-        Args:
-            domain: 目标域
-            adjustment: 调整值（正数使评估更严格，负数使评估更容易）
-
-        Returns:
-            (下限, 上限)
-        """
-        lower, upper = self.DOMAIN_THRESHOLDS[domain]
-        return lower + adjustment, upper + adjustment
-
-
-@dataclass
-class DynamicComplexityConfig:
-    """动态复杂度配置"""
-    enable_dynamic_weights: bool = True  # 是否启用动态权重
-    enable_context_aware: bool = True   # 是否启用上下文感知
-    enable_evidence_weighting: bool = True  # 是否启用证据加权
-
-    # 上下文敏感的维度权重调整
-    CONTEXT_WEIGHT_ADJUSTMENTS = {
-        "security": {"uncertainty": 1.3, "rule_complexity": 1.2},
-        "ai": {"uncertainty": 1.4, "system_count": 1.1},
-        "compliance": {"rule_complexity": 1.3, "stakeholders": 1.1},
-    }
-
-    def get_adjusted_weights(
-        self,
-        base_dimensions: list[tuple[str, str, float]],
-        context: str
-    ) -> list[tuple[str, str, float]]:
-        """根据上下文调整维度权重"""
-        if not self.enable_dynamic_weights:
-            return base_dimensions
-
-        adjusted = []
-        context_lower = context.lower()
-
-        # 检查匹配的上下文
-        matched_context = None
-        for key in self.CONTEXT_WEIGHT_ADJUSTMENTS:
-            if key in context_lower:
-                matched_context = key
-                break
-
-        if matched_context:
-            weight_adjs = self.CONTEXT_WEIGHT_ADJUSTMENTS[matched_context]
-            for dim_id, dim_name, weight in base_dimensions:
-                adj_weight = weight * weight_adjs.get(dim_id, 1.0)
-                adjusted.append((dim_id, dim_name, adj_weight))
-        else:
-            adjusted = base_dimensions
-
-        return adjusted
-
-
-if __name__ == "__main__":
-    # 测试
-    analyzer = CynefinAnalyzer()
-
-    test_cases = [
-        {
-            "name": "简单单系统",
-            "values": {
-                "system_count": "simple",
-                "time_span": "simple",
-                "stakeholders": "simple",
-                "uncertainty": "simple",
-                "rule_complexity": "simple",
-            },
-            "context": "单一系统部署"
-        },
-        {
-            "name": "等保三级医院",
-            "values": {
-                "system_count": "complex",
-                "time_span": "medium",
-                "stakeholders": "complex",
-                "uncertainty": "medium",
-                "rule_complexity": "complex",
-            },
-            "context": "医院信息安全等保三级"
-        },
-        {
-            "name": "AI系统复杂评估",
-            "values": {
-                "system_count": "medium",
-                "time_span": "medium",
-                "stakeholders": "medium",
-                "uncertainty": "complex",
-                "rule_complexity": "medium",
-            },
-            "context": "AI安全评估"
-        },
-    ]
-
-    for case in test_cases:
-        result = analyzer.assess(case["values"], context=case["context"])
-        print(f"\n{'='*50}")
-        print(f"测试：{case['name']}")
-        print(f"域：{result.domain_label}")
-        print(f"推荐视图数：{result.recommended_view_count}")
-        print(f"理由：\n{result.reasoning_details}")

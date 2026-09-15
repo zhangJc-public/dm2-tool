@@ -77,30 +77,32 @@ What system would you like to model?
 ```
 ## Cynefin Complexity Assessment
 
-Cynefin helps us understand how complex your system is. This determines which DoDAF views are most appropriate.
+Cynefin helps us understand how knowable the cause-and-effect of your system is. This determines which DoDAF views are most appropriate.
 
-- **简单（Clear）**: Simple, well-understood systems → fewer views needed
-- **繁杂（Complicated）**: Requires expert analysis → moderate view count
-- **复杂（Complex）**: Emergent behavior, many interdependencies → comprehensive view set
-- **混沌（Chaotic）**: Highly unstable → start with high-level views first
+- **明晰（Clear）**: Best practice exists, requirements stable → minimal view set
+- **繁杂（Complicated）**: Needs expert analysis, multiple good answers → P0 core views
+- **复杂（Complex）**: Emergent requirements, no precedent, goal conflict → P0+P1 + behavior views
+- **混沌（Chaotic）**: Crisis / loss of control → act to stabilize first, full view set
+- **不明（Disorder）**: Insufficient or conflicting evidence → clarify before choosing views
 ```
 
 **DO:**
 ```bash
-python3 -m dm2.cli.main cynefin "<description>" --json
+python3 -m dm2.cli.main cynefin -d "<description>" --json
 ```
 
 **SHOW:**
 Parse and display the result:
 ```
-**Domain:** <domain>
+**Domain:** <domain_label>
 **Confidence:** <confidence>%
-**Recommended Views:** <recommended_view_count>
+**View depth:** <depth_tier> — <depth_guidance>
+**Key evidence:** <top matched terms per dimension>
 
 **Reasoning:** <brief explanation>
-
-This tells us how to approach the modeling.
 ```
+
+If `needs_clarification` is true, say so honestly and ask a clarifying question rather than pretending the domain is known.
 
 **PAUSE** — Wait for acknowledgment.
 
