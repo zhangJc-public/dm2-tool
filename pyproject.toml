@@ -35,7 +35,7 @@ include = ["dm2*"]
 dm2 = ["dm2-reference/core/**/*"]
 
 [tool.setuptools.exclude-package-data]
-"*" = ["dm2-reference/reference/**", "dm2-reference/examples/**"]
+"*" = ["dm2-reference/reference/**"]
 
 [tool.ruff]
 line-length = 100
