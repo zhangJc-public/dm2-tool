@@ -18,6 +18,7 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass, field
 from functools import lru_cache
+from pathlib import Path
 from typing import Optional
 
 import yaml
@@ -48,13 +49,24 @@ class Derivation:
     crisis_evidence: list[str] = field(default_factory=list)
 
 
+def _package_keyword_candidates() -> list[Path]:
+    """包内置词库候选（editable/仓库检出可用；wheel 安装另需打包修复）。"""
+    base = Path(__file__).resolve().parents[3] / "dm2-reference"
+    return [base / "core" / KEYWORDS_FILENAME, base / KEYWORDS_FILENAME]
+
+
 @lru_cache(maxsize=1)
 def load_cynefin_keywords() -> dict:
-    """加载外部词库 YAML（本地 .dm2/reference 优先，包内置 core 回退）。"""
+    """加载外部词库 YAML：项目本地 .dm2/reference 优先，包内置 core 回退。
+
+    老工程的本地参考库可能没有词库文件（升级前创建），此时必须回退到
+    包内置副本，而不是因为本地目录存在就直接报错。
+    """
     ref = get_reference_path()
     candidates = [
         ref / KEYWORDS_FILENAME,
         ref.parent / KEYWORDS_FILENAME,
+        *_package_keyword_candidates(),
     ]
     for path in candidates:
         if path.exists():

@@ -175,12 +175,27 @@ class TestExternalizedLexicon:
 
         empty = tmp_path / "empty"
         empty.mkdir()
-        # get_reference_path 在 deriver 模块内以 from-import 绑定，须打该命名空间
+        # get_reference_path 在 deriver 模块内以 from-import 绑定，须打该命名空间；
+        # 同时屏蔽包内置回退，才能模拟词库彻底缺失
         monkeypatch.setattr(mod, "get_reference_path", lambda: empty / "core")
+        monkeypatch.setattr(mod, "_package_keyword_candidates", lambda: [])
         mod.load_cynefin_keywords.cache_clear()
         with pytest.raises(CynefinKeywordsError):
             mod.load_cynefin_keywords()
         mod.load_cynefin_keywords.cache_clear()  # 还原 lru_cache
+
+    def test_falls_back_to_packaged_lexicon(self, monkeypatch, tmp_path):
+        """老工程本地 .dm2/reference 缺词库时，回退到包内置副本而非报错。"""
+        import dm2.cognitive.cynefin_deriver as mod
+
+        empty = tmp_path / "stale-project" / ".dm2" / "reference"
+        empty.mkdir(parents=True)
+        monkeypatch.setattr(mod, "get_reference_path", lambda: empty)
+        mod.load_cynefin_keywords.cache_clear()
+        data = mod.load_cynefin_keywords()
+        assert "dimensions" in data
+        assert "requirement_knowability" in data["dimensions"]
+        mod.load_cynefin_keywords.cache_clear()
 
 
 class TestUserVotes:
