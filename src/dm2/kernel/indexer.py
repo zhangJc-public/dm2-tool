@@ -72,6 +72,9 @@ class DM2Term:
     source: str = ""
     groups: list[str] = field(default_factory=list)
     file_path: str = ""
+    # 派生索引（terms.json，源自 DM2 数据字典）字段
+    curie_id: str = ""          # dodaf:<Term> CURIE
+    association: bool = False   # 是否为关联/元组术语
 
 
 @dataclass
@@ -153,23 +156,26 @@ class DM2KnowledgeIndexer:
         _diag(f"[DM2 Indexer] Loaded: {len(self._terms_cache)} terms, {len(self._concepts_cache)} concepts")
 
     def _load_terms_from_json(self):
-        """从 _dm2_v202_extract.json 加载术语"""
-        json_path = self.reference_root / "_dm2_v202_extract.json"
+        """从 terms.json 加载术语（由 scripts/build_knowledge_indexes.py 派生）"""
+        json_path = self.reference_root / "terms.json"
         if not json_path.exists():
-            print(f"[DM2 Indexer] Warning: {json_path} not found", file=sys.stderr)
+            _diag(f"[DM2 Indexer] Warning: {json_path} not found")
             return
 
         with open(json_path, 'r', encoding='utf-8') as f:
             data = json.load(f)
 
         for item in data:
+            aliases = item.get("aliases") or []
             term = DM2Term(
                 term=item.get("term", ""),
                 definition=item.get("definition", ""),
-                alias=item.get("alias", "").split(", ") if item.get("alias") else [],
-                source=item.get("source", ""),
+                alias=aliases if isinstance(aliases, list) else str(aliases).split(", "),
+                source="",
                 groups=item.get("groups", []),
-                file_path=str(json_path)
+                file_path=str(json_path),
+                curie_id=item.get("id", ""),
+                association=bool(item.get("association")),
             )
             self._terms_cache[term.term] = term
 
@@ -311,6 +317,8 @@ class DM2KnowledgeIndexer:
         results = []
         for t in self._terms_cache.values():
             if q in t.term.lower() or q in t.definition.lower():
+                results.append(t)
+            elif any(q in str(a).lower() for a in t.alias):
                 results.append(t)
             elif any(q_nospace in g.lower().replace(" ", "") for g in t.groups):
                 results.append(t)

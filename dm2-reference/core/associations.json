@@ -1,0 +1,1589 @@
+[
+  {
+    "label": "RuleConstraintsActivity",
+    "endpoints": [
+      {
+        "type": "Rule",
+        "ideas_role": "place2Type",
+        "domain_role": "constrainer",
+        "multiplicity": ""
+      },
+      {
+        "type": "Activity",
+        "ideas_role": "place1Type",
+        "domain_role": "constrained-target",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "performer"
+    ]
+  },
+  {
+    "label": "activityConsumesResource",
+    "endpoints": [
+      {
+        "type": "Activity",
+        "ideas_role": "place1Type",
+        "domain_role": "consumer",
+        "multiplicity": ""
+      },
+      {
+        "type": "Resource",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "reification_levels",
+      "capability",
+      "rules",
+      "services",
+      "information_and_data",
+      "information_pedigree",
+      "pedigree",
+      "project",
+      "resource_flow"
+    ]
+  },
+  {
+    "label": "activityMapsToCapabilityType",
+    "endpoints": [
+      {
+        "type": "Activity",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "CapabilityType",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "capability"
+    ]
+  },
+  {
+    "label": "activityPartOfCapability",
+    "endpoints": [
+      {
+        "type": "Activity",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "Capability",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "capability"
+    ]
+  },
+  {
+    "label": "activityPartOfProjectType",
+    "endpoints": [
+      {
+        "type": "Activity",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "ProjectType",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "reification_levels",
+      "project"
+    ]
+  },
+  {
+    "label": "activityPerformableUnderCondition",
+    "endpoints": [
+      {
+        "type": "Activity",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "Condition",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "performer",
+      "foundation_for_associations",
+      "capability",
+      "rules",
+      "services",
+      "pedigree",
+      "project",
+      "resource_flow"
+    ]
+  },
+  {
+    "label": "activityPerformedByPerformer",
+    "endpoints": [
+      {
+        "type": "Performer",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "Activity",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "performer",
+      "foundation_for_associations",
+      "reification_levels",
+      "capability",
+      "rules",
+      "services",
+      "information_pedigree",
+      "pedigree",
+      "project",
+      "resource_flow"
+    ]
+  },
+  {
+    "label": "activityProducesResource",
+    "endpoints": [
+      {
+        "type": "Activity",
+        "ideas_role": "before",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "Resource",
+        "ideas_role": "place1Type",
+        "domain_role": "producer",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "reification_levels",
+      "capability",
+      "rules",
+      "services",
+      "information_and_data",
+      "information_pedigree",
+      "pedigree",
+      "project",
+      "resource_flow"
+    ]
+  },
+  {
+    "label": "associationOfInformation",
+    "endpoints": [],
+    "homes": [
+      "foundation_for_associations",
+      "information_and_data"
+    ]
+  },
+  {
+    "label": "axesDescribedBy",
+    "endpoints": [
+      {
+        "type": "Point",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "PositionReferenceFrame",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "location"
+    ]
+  },
+  {
+    "label": "beforeAfter",
+    "endpoints": [
+      {
+        "type": "Individual",
+        "ideas_role": "place1Type",
+        "domain_role": "before",
+        "multiplicity": ""
+      },
+      {
+        "type": "Individual",
+        "ideas_role": "place2Type",
+        "domain_role": "after",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "common_patterns"
+    ]
+  },
+  {
+    "label": "capabilityOfPerformer",
+    "endpoints": [
+      {
+        "type": "Capability",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "Performer",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "capability",
+      "measure",
+      "services"
+    ]
+  },
+  {
+    "label": "coordinateCenterDescribedBy",
+    "endpoints": [
+      {
+        "type": "Point",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "PositionReferenceFrame",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "location"
+    ]
+  },
+  {
+    "label": "couple",
+    "endpoints": [
+      {
+        "type": "tuple",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "Thing",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "common_patterns",
+      "foundation_for_associations",
+      "naming_and_description",
+      "information_and_data"
+    ]
+  },
+  {
+    "label": "describedBy",
+    "endpoints": [
+      {
+        "type": "Thing",
+        "ideas_role": "place1Type",
+        "domain_role": "thingDescribed",
+        "multiplicity": ""
+      },
+      {
+        "type": "Information",
+        "ideas_role": "place2Type",
+        "domain_role": "description",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "reification_levels",
+      "naming_and_description",
+      "location",
+      "services",
+      "information_and_data",
+      "pedigree"
+    ]
+  },
+  {
+    "label": "descriptionSchemeInstance",
+    "endpoints": [
+      {
+        "type": "DescriptionScheme",
+        "ideas_role": "type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "Information",
+        "ideas_role": "instance",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "naming_and_description"
+    ]
+  },
+  {
+    "label": "desireMeasure",
+    "endpoints": [
+      {
+        "type": "Measure",
+        "ideas_role": "place1Type",
+        "domain_role": "howMuchDesired",
+        "multiplicity": ""
+      },
+      {
+        "type": "MeasureOfDesire",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "capability",
+      "measure",
+      "project"
+    ]
+  },
+  {
+    "label": "desiredEffect",
+    "endpoints": [
+      {
+        "type": "Resource",
+        "ideas_role": "place1Type",
+        "domain_role": "desirerFutureResourceState",
+        "multiplicity": ""
+      },
+      {
+        "type": "Performer",
+        "ideas_role": "place2Type",
+        "domain_role": "desirer",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "capability",
+      "project"
+    ]
+  },
+  {
+    "label": "desiredEffectDirectsActivity",
+    "endpoints": [
+      {
+        "type": "Resource",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "Activity",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "project"
+    ]
+  },
+  {
+    "label": "desiredEffectIsRealizedByProjectType",
+    "endpoints": [
+      {
+        "type": "ProjectType",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "Resource",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "project"
+    ]
+  },
+  {
+    "label": "desiredEffectOfCapability",
+    "endpoints": [
+      {
+        "type": "desiredEffect",
+        "ideas_role": "place2Type",
+        "domain_role": "desiredFutureResourceState",
+        "multiplicity": ""
+      },
+      {
+        "type": "Capability",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "capability"
+    ]
+  },
+  {
+    "label": "discribedBy",
+    "endpoints": [
+      {
+        "type": "Thing",
+        "ideas_role": "place1Type",
+        "domain_role": "thingDescribed",
+        "multiplicity": ""
+      },
+      {
+        "type": "Information",
+        "ideas_role": "place2Type",
+        "domain_role": "description",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "information_pedigree"
+    ]
+  },
+  {
+    "label": "effectMeasure",
+    "endpoints": [
+      {
+        "type": "MeasureOfEffect",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "Resource",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "capability",
+      "measure",
+      "project"
+    ]
+  },
+  {
+    "label": "endBoundary",
+    "endpoints": [],
+    "homes": [
+      "temporal_part_and_boundaries"
+    ]
+  },
+  {
+    "label": "facilityPartOfSite",
+    "endpoints": [
+      {
+        "type": "Facility",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "Site",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "location"
+    ]
+  },
+  {
+    "label": "individualPersonRolePartOfIndividualPerformer",
+    "endpoints": [
+      {
+        "type": "IndividualPerformer",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "IndividualPersonRole",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "organizational_structure"
+    ]
+  },
+  {
+    "label": "individualResourceInLocation",
+    "endpoints": [
+      {
+        "type": "IndividualResource",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "Location",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "location"
+    ]
+  },
+  {
+    "label": "information",
+    "endpoints": [],
+    "homes": [
+      "information_and_data"
+    ]
+  },
+  {
+    "label": "informationPedigree",
+    "endpoints": [],
+    "homes": [
+      "foundation_for_associations",
+      "information_pedigree"
+    ]
+  },
+  {
+    "label": "jointAction",
+    "endpoints": [
+      {
+        "type": "Activity",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "Activity",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "resource_flow"
+    ]
+  },
+  {
+    "label": "linePartOfPlanarSurface",
+    "endpoints": [
+      {
+        "type": "Line",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "PlanarSurface",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "location"
+    ]
+  },
+  {
+    "label": "locationNamedByAddress",
+    "endpoints": [
+      {
+        "type": "Location",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "Address",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "location"
+    ]
+  },
+  {
+    "label": "materielPartOfPerformer",
+    "endpoints": [
+      {
+        "type": "Materiel",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "Performer",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "performer",
+      "foundation_for_associations"
+    ]
+  },
+  {
+    "label": "measureOfIndividual",
+    "endpoints": [
+      {
+        "type": "Measure",
+        "ideas_role": "",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "Point",
+        "ideas_role": "",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "location",
+      "measure",
+      "pedigree"
+    ]
+  },
+  {
+    "label": "measureOfIndividualEndBoundary",
+    "endpoints": [
+      {
+        "type": "Measure",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "Individual",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "temporal_part_and_boundaries"
+    ]
+  },
+  {
+    "label": "measureOfIndividualPoint",
+    "endpoints": [
+      {
+        "type": "Point",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "Measure",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "location",
+      "measure"
+    ]
+  },
+  {
+    "label": "measureOfIndividualStartBoundary",
+    "endpoints": [
+      {
+        "type": "Measure",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "Individual",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "temporal_part_and_boundaries"
+    ]
+  },
+  {
+    "label": "measureOfType",
+    "endpoints": [],
+    "homes": [
+      "foundation_for_associations",
+      "measure"
+    ]
+  },
+  {
+    "label": "measureOfTypeActivity",
+    "endpoints": [
+      {
+        "type": "Measure",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "Activity",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "performer",
+      "foundation_for_associations",
+      "reification_levels",
+      "capability",
+      "measure",
+      "services",
+      "information_pedigree",
+      "pedigree",
+      "project",
+      "resource_flow"
+    ]
+  },
+  {
+    "label": "measureOfTypeCondition",
+    "endpoints": [
+      {
+        "type": "Measure",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "Condition",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "performer",
+      "foundation_for_associations",
+      "capability",
+      "measure",
+      "services",
+      "project",
+      "resource_flow"
+    ]
+  },
+  {
+    "label": "measureOfTypeEndBoundaryType",
+    "endpoints": [
+      {
+        "type": "Measure",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "EndBoundaryType",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "temporal_part_and_boundaries"
+    ]
+  },
+  {
+    "label": "measureOfTypeProjectType",
+    "endpoints": [
+      {
+        "type": "Measure",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "ProjectType",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "measure",
+      "project"
+    ]
+  },
+  {
+    "label": "measureOfTypeResource",
+    "endpoints": [
+      {
+        "type": "Measure",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "Resource",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "performer",
+      "foundation_for_associations",
+      "reification_levels",
+      "capability",
+      "measure",
+      "services",
+      "information_pedigree",
+      "pedigree",
+      "project",
+      "resource_flow"
+    ]
+  },
+  {
+    "label": "measureOfTypeStartBoundaryType",
+    "endpoints": [
+      {
+        "type": "Measure",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "StartBoundaryType",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "temporal_part_and_boundaries"
+    ]
+  },
+  {
+    "label": "measureOfTypeWholePartType",
+    "endpoints": [],
+    "homes": [
+      "foundation_for_associations",
+      "measure"
+    ]
+  },
+  {
+    "label": "measureTypeApplicableToActivity",
+    "endpoints": [
+      {
+        "type": "MeasureType",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "Activity",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "measure",
+      "rules"
+    ]
+  },
+  {
+    "label": "measureableSkillOfPersonRoleType",
+    "endpoints": [],
+    "homes": [
+      "performer",
+      "foundation_for_associations",
+      "measure"
+    ]
+  },
+  {
+    "label": "namedBy",
+    "endpoints": [
+      {
+        "type": "Thing",
+        "ideas_role": "place1Type",
+        "domain_role": "named-entity",
+        "multiplicity": ""
+      },
+      {
+        "type": "Name",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "naming_and_description",
+      "location"
+    ]
+  },
+  {
+    "label": "namingSchemeInstance",
+    "endpoints": [
+      {
+        "type": "NamingScheme",
+        "ideas_role": "type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "Name",
+        "ideas_role": "instance",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "naming_and_description"
+    ]
+  },
+  {
+    "label": "organizationPartOfResource",
+    "endpoints": [],
+    "homes": [
+      "foundation_for_associations"
+    ]
+  },
+  {
+    "label": "overlap",
+    "endpoints": [
+      {
+        "type": "Individual",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "Individual",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "common_patterns",
+      "organizational_structure"
+    ]
+  },
+  {
+    "label": "partiesToAnAgreement",
+    "endpoints": [
+      {
+        "type": "Performer",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "Agreement",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "reification_levels",
+      "rules"
+    ]
+  },
+  {
+    "label": "personRoleTypePartOfPerformer",
+    "endpoints": [
+      {
+        "type": "PersonRoleType",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "Performer",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "performer",
+      "foundation_for_associations",
+      "organizational_structure"
+    ]
+  },
+  {
+    "label": "pointPartOfLine",
+    "endpoints": [
+      {
+        "type": "Point",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "Line",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "location"
+    ]
+  },
+  {
+    "label": "pointPartOfPlanarSurface",
+    "endpoints": [
+      {
+        "type": "Point",
+        "ideas_role": "",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "PlanarSurface",
+        "ideas_role": "",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "location"
+    ]
+  },
+  {
+    "label": "portPartOfPerformer",
+    "endpoints": [
+      {
+        "type": "Port",
+        "ideas_role": "",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "Performer",
+        "ideas_role": "1..*",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "services"
+    ]
+  },
+  {
+    "label": "powertypeInstance",
+    "endpoints": [
+      {
+        "type": "Individual",
+        "ideas_role": "powertypeInstance",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "Type",
+        "ideas_role": "powertype",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "common_patterns",
+      "foundation_for_associations"
+    ]
+  },
+  {
+    "label": "propertyOfIndividual",
+    "endpoints": [
+      {
+        "type": "Property",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "Individual",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "measure",
+      "pedigree"
+    ]
+  },
+  {
+    "label": "propertyOfType",
+    "endpoints": [
+      {
+        "type": "IndividualType",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "Property",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "measure",
+      "pedigree"
+    ]
+  },
+  {
+    "label": "regionOfCountryPartOfCountry",
+    "endpoints": [
+      {
+        "type": "RegionOfCountry",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "Country",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "location"
+    ]
+  },
+  {
+    "label": "representationSchemeInstance",
+    "endpoints": [
+      {
+        "type": "RepresentationScheme",
+        "ideas_role": "type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "Representation",
+        "ideas_role": "instance",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "naming_and_description"
+    ]
+  },
+  {
+    "label": "representedBy",
+    "endpoints": [
+      {
+        "type": "Thing",
+        "ideas_role": "place1Type",
+        "domain_role": "represented-entity",
+        "multiplicity": ""
+      },
+      {
+        "type": "Representation",
+        "ideas_role": "place2Type",
+        "domain_role": "Representation",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "naming_and_description",
+      "information_and_data"
+    ]
+  },
+  {
+    "label": "resourceInLocationType",
+    "endpoints": [
+      {
+        "type": "Resource",
+        "ideas_role": "place1Type",
+        "domain_role": "partType",
+        "multiplicity": ""
+      },
+      {
+        "type": "LocationType",
+        "ideas_role": "place2Type",
+        "domain_role": "wholePartType",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "performer",
+      "foundation_for_associations",
+      "reification_levels",
+      "information_pedigree",
+      "pedigree",
+      "resource_flow"
+    ]
+  },
+  {
+    "label": "ruleConstrainsActivity",
+    "endpoints": [
+      {
+        "type": "Activity",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "Rule",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "reification_levels",
+      "capability",
+      "rules",
+      "services",
+      "information_and_data",
+      "information_pedigree",
+      "pedigree",
+      "project",
+      "resource_flow"
+    ]
+  },
+  {
+    "label": "rulePartOfMeasureType",
+    "endpoints": [
+      {
+        "type": "Rule",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "MeasureType",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "capability",
+      "measure",
+      "rules"
+    ]
+  },
+  {
+    "label": "serviceEnablesAccessToResource",
+    "endpoints": [
+      {
+        "type": "Service",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "Resource",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "services"
+    ]
+  },
+  {
+    "label": "servicePortDescribedBy",
+    "endpoints": [
+      {
+        "type": "ServicePort",
+        "ideas_role": "place1Type",
+        "domain_role": "ServicePortBeingDescribed",
+        "multiplicity": 1
+      },
+      {
+        "type": "ServiceDescription",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "services"
+    ]
+  },
+  {
+    "label": "sitePartOfInstallation",
+    "endpoints": [
+      {
+        "type": "Site",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "Installation",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "location"
+    ]
+  },
+  {
+    "label": "skillOfPersonRoleType",
+    "endpoints": [
+      {
+        "type": "Skill",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "PersonRoleType",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "performer",
+      "foundation_for_associations",
+      "measure",
+      "pedigree",
+      "organizational_structure"
+    ]
+  },
+  {
+    "label": "startBoundary",
+    "endpoints": [],
+    "homes": [
+      "temporal_part_and_boundaries"
+    ]
+  },
+  {
+    "label": "superSubType",
+    "endpoints": [],
+    "homes": [
+      "foundation_for_associations"
+    ]
+  },
+  {
+    "label": "superSubtype",
+    "endpoints": [
+      {
+        "type": "Type",
+        "ideas_role": "subtype",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "Type",
+        "ideas_role": "supertype",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "common_patterns"
+    ]
+  },
+  {
+    "label": "temporalBoundary",
+    "endpoints": [],
+    "homes": [
+      "temporal_part_and_boundaries"
+    ]
+  },
+  {
+    "label": "temporalWholePart",
+    "endpoints": [
+      {
+        "type": "Individual",
+        "ideas_role": "temporalWhole",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "Individual",
+        "ideas_role": "temporalPart",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "common_patterns",
+      "temporal_part_and_boundaries"
+    ]
+  },
+  {
+    "label": "tuple",
+    "endpoints": [],
+    "homes": [
+      "foundation_for_associations",
+      "information_and_data"
+    ]
+  },
+  {
+    "label": "tuple（元组）",
+    "endpoints": [
+      {
+        "type": "Thing",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "Thing",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "ideas_toplevel",
+      "common_patterns"
+    ]
+  },
+  {
+    "label": "typeInstance",
+    "endpoints": [
+      {
+        "type": "Individual",
+        "ideas_role": "instance",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "Type",
+        "ideas_role": "type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "common_patterns",
+      "foundation_for_associations"
+    ]
+  },
+  {
+    "label": "visionIsRealizedByDesiredEffect",
+    "endpoints": [
+      {
+        "type": "Vision",
+        "ideas_role": "place1Type",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "Resource",
+        "ideas_role": "place2Type",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "foundation_for_associations",
+      "project"
+    ]
+  },
+  {
+    "label": "wholePart",
+    "endpoints": [
+      {
+        "type": "Individual",
+        "ideas_role": "part",
+        "domain_role": "",
+        "multiplicity": ""
+      },
+      {
+        "type": "Individual",
+        "ideas_role": "whole",
+        "domain_role": "",
+        "multiplicity": ""
+      }
+    ],
+    "homes": [
+      "common_patterns",
+      "foundation_for_associations",
+      "temporal_part_and_boundaries",
+      "organizational_structure"
+    ]
+  }
+]

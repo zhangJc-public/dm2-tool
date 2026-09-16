@@ -5,10 +5,16 @@ name: null
 definition: null
 synonyms: []
 relationships:
-  typeOf: []
-  instanceOf: []
-  bridges: []
-  abstractLevel: ''
+  activityConsumesResource: []
+  activityPartOfProjectType: []
+  activityPerformedByPerformer: []
+  activityProducesResource: []
+  describedBy: []
+  measureOfTypeActivity: []
+  measureOfTypeResource: []
+  partiesToAnAgreement: []
+  resourceInLocationType: []
+  ruleConstrainsActivity: []
 pedigree:
   source: ''
   derivedFrom: []
@@ -39,6 +45,19 @@ tags:
 - dm2/meta
 相关分析: '[[Reification详细分析]]'
 ---
+
+## DM2 关联清单（元模型权威）
+> 本组权威关联（来自 dm2-metamodel-2.02.yaml 关联目录）：
+> - activityConsumesResource: Activity ─▶ Resource
+> - activityPartOfProjectType: Activity ─▶ ProjectType
+> - activityPerformedByPerformer: Performer ─▶ Activity
+> - activityProducesResource: Activity ─▶ Resource
+> - describedBy: Thing ─▶ Information
+> - measureOfTypeActivity: Measure ─▶ Activity
+> - measureOfTypeResource: Measure ─▶ Resource
+> - partiesToAnAgreement: Performer ─▶ Agreement
+> - resourceInLocationType: Resource ─▶ LocationType
+> - ruleConstrainsActivity: Activity ─▶ Rule
 
 # Reification
 

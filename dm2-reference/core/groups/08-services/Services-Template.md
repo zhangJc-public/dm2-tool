@@ -5,11 +5,19 @@ name: ''
 definition: ''
 synonyms: []
 relationships:
-  providedBy: []
-  accessedBy: []
-  operatesOn: []
-  hasPort: []
-  governedBy: []
+  activityConsumesResource: []
+  activityPerformableUnderCondition: []
+  activityPerformedByPerformer: []
+  activityProducesResource: []
+  capabilityOfPerformer: []
+  describedBy: []
+  measureOfTypeActivity: []
+  measureOfTypeCondition: []
+  measureOfTypeResource: []
+  portPartOfPerformer: []
+  ruleConstrainsActivity: []
+  serviceEnablesAccessToResource: []
+  servicePortDescribedBy: []
 pedigree:
   source: ''
   derivedFrom: []
@@ -54,6 +62,22 @@ tags:
 - dm2/individual
 相关分析: '[[../详细分析/DM2-Services详细分析]]'
 ---
+
+## DM2 关联清单（元模型权威）
+> 本组权威关联（来自 dm2-metamodel-2.02.yaml 关联目录）：
+> - activityConsumesResource: Activity ─▶ Resource
+> - activityPerformableUnderCondition: Activity ─▶ Condition
+> - activityPerformedByPerformer: Performer ─▶ Activity
+> - activityProducesResource: Activity ─▶ Resource
+> - capabilityOfPerformer: Capability ─▶ Performer
+> - describedBy: Thing ─▶ Information
+> - measureOfTypeActivity: Measure ─▶ Activity
+> - measureOfTypeCondition: Measure ─▶ Condition
+> - measureOfTypeResource: Measure ─▶ Resource
+> - portPartOfPerformer: Port ─▶ Performer
+> - ruleConstrainsActivity: Activity ─▶ Rule
+> - serviceEnablesAccessToResource: Service ─▶ Resource
+> - servicePortDescribedBy: ServicePort ─▶ ServiceDescription
 
 # {服务名称}
 

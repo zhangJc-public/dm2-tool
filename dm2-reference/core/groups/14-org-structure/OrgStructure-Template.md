@@ -5,11 +5,11 @@ name: null
 definition: null
 synonyms: []
 relationships:
-  hasLevel: []
-  reportsTo: []
-  hasStakeholder: []
-  hasResponsibility: []
-  coordinatesWith: []
+  individualPersonRolePartOfIndividualPerformer: []
+  overlap: []
+  personRoleTypePartOfPerformer: []
+  skillOfPersonRoleType: []
+  wholePart: []
 pedigree:
   source: ''
   derivedFrom: []
@@ -42,6 +42,14 @@ tags:
 - dm2/individual
 相关分析: '[[OrgStructure详细分析]]'
 ---
+
+## DM2 关联清单（元模型权威）
+> 本组权威关联（来自 dm2-metamodel-2.02.yaml 关联目录）：
+> - individualPersonRolePartOfIndividualPerformer: IndividualPerformer ─▶ IndividualPersonRole
+> - overlap: Individual ─▶ Individual
+> - personRoleTypePartOfPerformer: PersonRoleType ─▶ Performer
+> - skillOfPersonRoleType: Skill ─▶ PersonRoleType
+> - wholePart: Individual ─▶ Individual
 
 # {名称}
 

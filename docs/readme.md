@@ -52,14 +52,19 @@ my-project/
     config.yaml           ← 项目配置
     reference/            ← 参考知识库本地副本（dm2 init 自动复制）
       views.yaml          ← 52 个 DoDAF 视图定义（含依赖关系）
-      _dm2_v202_extract.json ← ~277 个 DM2 术语定义
+      terms.json          ← 279 个 DM2 术语（派生索引，源自数据字典）
+      associations.json   ← 67 条二元关联（端点类型 + IDEAS/领域角色）
+      taxonomy.json       ← super-subtype 层次 + powertype 配对
+      view-content-spec.json ← 52 视图必要术语/必要关联（怪物矩阵×元模型）
       group-to-views.yaml ← 数据组到视图的映射
       groups/             ← 17 个数据组 Markdown 模板
     view-state.yaml       ← 视图生命周期状态（ViewManager 管理）
     analysis-state.yaml   ← 分析结果持久化（cynefin/analyze）
   .claude/
-    skills/               ← Claude Code AI 技能（dm2 init 从 Python 模板动态生成）
+    skills/               ← Claude Code AI 技能（dm2 init 默认，从 Python 模板动态生成）
     commands/             ← Claude Code 斜杠命令（含 generatedBy 版本元数据）
+  .dsh/                    ← 仅当 dm2 init --tool dsh
+    skills/               ← DeepSeek Harness 项目技能（无 commands 目录）
   dm2-changes/            ← 架构变更（每个变更一个子目录）
     <name>/
       analysis/           ← AI Agent 分析产物（可选，用于审计）
@@ -382,15 +387,21 @@ dm2 version --json                # JSON 格式
 提供对 DM2 参考知识库的结构化查询，供 AI Agent 在生成和分析时检索 DM2 术语、概念和视图。
 
 ```bash
-dm2 knowledge search "capability"       # 搜索术语
+dm2 knowledge search "capability"       # 搜索术语（名称/别名/定义）
 dm2 knowledge concept Capability        # 查看概念详情
+dm2 knowledge term Performer            # 术语详情（定义/别名/数据组/必要视图/关联端点）
+dm2 knowledge taxonomy Performer        # 类型分类学（父类/子类/Type-Individual 配对）
+dm2 knowledge associations              # 全部二元关联（端点类型 + 角色）
+dm2 knowledge associations -t Performer # 按端点类型过滤（分类学感知，System 归入 Performer）
+dm2 knowledge associations -g 01-performer  # 按数据组过滤
+dm2 knowledge content OV-5b             # 视图内容规范（必要术语/必要关联）
 dm2 knowledge views                     # 列出所有 52 个视图
 dm2 knowledge views --type OV           # 按视点过滤
 dm2 knowledge view OV-1                 # 查看单个视图元数据
 dm2 knowledge stats                     # 知识库统计
 ```
 
-所有子命令支持 `--json` 输出。
+所有子命令支持 `--json` 输出。`term`/`taxonomy`/`associations`/`content` 四个子命令基于元模型派生索引（关联目录 + 分类学 + 视图内容规范），回答"这个视图该有什么内容"和"这两个类型怎么连"两类问题。
 
 ### `dm2 change` — 架构变更管理（AI Agent 接口）
 
@@ -676,9 +687,12 @@ dm2:
 
 `dm2-reference/` 目录包含 DM2 2.02 规范的参考数据：
 
-- `_dm2_v202_extract.json` — ~277 个 DM2 术语定义
+- `dm2-data-dictionary.yaml` / `dm2-metamodel-2.02.yaml` - 权威源：DM2 数据字典（279 术语 + 怪物矩阵 n/o 视图标记）与逻辑数据模型（19 子模型 / 621 类 / 242 Tuple）
+- `core/terms.json` / `core/associations.json` / `core/taxonomy.json` / `core/view-content-spec.json` - 派生索引（由 `scripts/build_knowledge_indexes.py` 生成，运行时加载）
 - `views.yaml` — 52 个 DoDAF 视图的完整定义（含依赖关系、优先级、所需数据）
 - `00-基础模式/` ~ `16-InformationAndData/` — 17 个数据组的 Markdown 参考文档
 - `详细分析/` — 深度分析报告和视图全集映射
 
 运行 `dm2 init` 时，参考知识库会自动复制到项目的 `.dm2/reference/` 目录，Claude Code 技能和命令从 Python 模板动态生成到 `.claude/`。项目完全自包含——AI Agent 可直接读取本地副本，无需通过 CLI 查询。用户也可按项目自定义 `views.yaml` 中的视图依赖关系。CLI 命令会优先使用项目本地副本，不存在时回退到包内置版本。
+
+**索引再生成**：修改任一权威源后运行 `python3 scripts/build_knowledge_indexes.py`（`--check-templates` 校验组模板 relationships 同步、`--fix-templates` 从关联目录投影重写模板 `relationships:` 块）。运行时不解析 840KB 源 YAML，只加载紧凑 JSON，符合「模板生成而非运行时配置」的项目约定。

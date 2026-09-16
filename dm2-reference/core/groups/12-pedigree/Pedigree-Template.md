@@ -5,11 +5,19 @@ name: null
 definition: null
 synonyms: []
 relationships:
-  derivedFrom: []
-  hasDerivative: []
-  hasConfidence: ''
-  verifiedBy: []
-  lastModified: ''
+  activityConsumesResource: []
+  activityPerformableUnderCondition: []
+  activityPerformedByPerformer: []
+  activityProducesResource: []
+  describedBy: []
+  measureOfIndividual: []
+  measureOfTypeActivity: []
+  measureOfTypeResource: []
+  propertyOfIndividual: []
+  propertyOfType: []
+  resourceInLocationType: []
+  ruleConstrainsActivity: []
+  skillOfPersonRoleType: []
 pedigree:
   source: ''
   derivedFrom: []
@@ -41,6 +49,22 @@ tags:
 - dm2/meta
 相关分析: '[[Pedigree详细分析]]'
 ---
+
+## DM2 关联清单（元模型权威）
+> 本组权威关联（来自 dm2-metamodel-2.02.yaml 关联目录）：
+> - activityConsumesResource: Activity ─▶ Resource
+> - activityPerformableUnderCondition: Activity ─▶ Condition
+> - activityPerformedByPerformer: Performer ─▶ Activity
+> - activityProducesResource: Activity ─▶ Resource
+> - describedBy: Thing ─▶ Information
+> - measureOfIndividual: Measure ─▶ Point
+> - measureOfTypeActivity: Measure ─▶ Activity
+> - measureOfTypeResource: Measure ─▶ Resource
+> - propertyOfIndividual: Property ─▶ Individual
+> - propertyOfType: IndividualType ─▶ Property
+> - resourceInLocationType: Resource ─▶ LocationType
+> - ruleConstrainsActivity: Activity ─▶ Rule
+> - skillOfPersonRoleType: Skill ─▶ PersonRoleType
 
 # Pedigree
 

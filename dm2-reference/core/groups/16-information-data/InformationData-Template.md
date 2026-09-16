@@ -5,11 +5,12 @@ name: null
 definition: null
 synonyms: []
 relationships:
-  structures: []
-  dataElementOf: []
-  hasDataType: ''
-  hasDataFormat: ''
-  storedIn: []
+  activityConsumesResource: []
+  activityProducesResource: []
+  couple: []
+  describedBy: []
+  representedBy: []
+  ruleConstrainsActivity: []
 pedigree:
   source: ''
   derivedFrom: []
@@ -47,6 +48,15 @@ tags:
 - dm2/individual
 相关分析: '[[InformationData详细分析]]'
 ---
+
+## DM2 关联清单（元模型权威）
+> 本组权威关联（来自 dm2-metamodel-2.02.yaml 关联目录）：
+> - activityConsumesResource: Activity ─▶ Resource
+> - activityProducesResource: Activity ─▶ Resource
+> - couple: tuple ─▶ Thing
+> - describedBy: Thing ─▶ Information
+> - representedBy: Thing ─▶ Representation
+> - ruleConstrainsActivity: Activity ─▶ Rule
 
 # {名称}
 

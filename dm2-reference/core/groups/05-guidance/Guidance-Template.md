@@ -9,10 +9,9 @@ source: ''
 effectiveDate: ''
 appliesTo: []
 relationships:
-  constrains: []
-  derivedFrom: []
-  relatedTo: []
-  measuredBy: []
+  partiesToAnAgreement: []
+  ruleConstrainsActivity: []
+  rulePartOfMeasureType: []
 pedigree:
   source: ''
   derivedFrom: []
@@ -48,6 +47,12 @@ tags:
 - dm2/regulation
 相关分析: '[[../详细分析/DM2-Rules详细分析]]'
 ---
+
+## DM2 关联清单（元模型权威）
+> 本组权威关联（来自 dm2-metamodel-2.02.yaml 关联目录）：
+> - partiesToAnAgreement: Performer ─▶ Agreement
+> - ruleConstrainsActivity: Activity ─▶ Rule
+> - rulePartOfMeasureType: Rule ─▶ MeasureType
 
 # {名称}
 
@@ -92,7 +97,7 @@ tags:
 
 ## 层级关系
 
-### derivedFrom（来源于）
+### superSubtype（来源于）
 - [[Parent-Standard-1]]
 - [[Regulation-1]]
 

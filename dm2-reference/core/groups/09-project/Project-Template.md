@@ -5,12 +5,22 @@ name: ''
 definition: ''
 synonyms: []
 relationships:
-  realizesCapability: []
-  performedBy: []
-  composedOfPhase: []
-  governedBy: []
-  measuredBy: []
-  hasMilestone: []
+  activityConsumesResource: []
+  activityPartOfProjectType: []
+  activityPerformableUnderCondition: []
+  activityPerformedByPerformer: []
+  activityProducesResource: []
+  desireMeasure: []
+  desiredEffect: []
+  desiredEffectDirectsActivity: []
+  desiredEffectIsRealizedByProjectType: []
+  effectMeasure: []
+  measureOfTypeActivity: []
+  measureOfTypeCondition: []
+  measureOfTypeProjectType: []
+  measureOfTypeResource: []
+  ruleConstrainsActivity: []
+  visionIsRealizedByDesiredEffect: []
 pedigree:
   source: ''
   derivedFrom: []
@@ -45,6 +55,25 @@ tags:
 - dm2/individual
 相关分析: '[[../详细分析/DM2-Project详细分析]]'
 ---
+
+## DM2 关联清单（元模型权威）
+> 本组权威关联（来自 dm2-metamodel-2.02.yaml 关联目录）：
+> - activityConsumesResource: Activity ─▶ Resource
+> - activityPartOfProjectType: Activity ─▶ ProjectType
+> - activityPerformableUnderCondition: Activity ─▶ Condition
+> - activityPerformedByPerformer: Performer ─▶ Activity
+> - activityProducesResource: Activity ─▶ Resource
+> - desireMeasure: Measure ─▶ MeasureOfDesire
+> - desiredEffect: Resource ─▶ Performer
+> - desiredEffectDirectsActivity: Resource ─▶ Activity
+> - desiredEffectIsRealizedByProjectType: ProjectType ─▶ Resource
+> - effectMeasure: MeasureOfEffect ─▶ Resource
+> - measureOfTypeActivity: Measure ─▶ Activity
+> - measureOfTypeCondition: Measure ─▶ Condition
+> - measureOfTypeProjectType: Measure ─▶ ProjectType
+> - measureOfTypeResource: Measure ─▶ Resource
+> - ruleConstrainsActivity: Activity ─▶ Rule
+> - visionIsRealizedByDesiredEffect: Vision ─▶ Resource
 
 # {项目名称}
 

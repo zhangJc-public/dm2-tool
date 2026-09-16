@@ -5,11 +5,14 @@ name: null
 definition: null
 synonyms: []
 relationships:
-  derivedFromInfo: []
-  aggregatedFrom: []
-  transformedBy: []
-  hasLineageDepth: 0
-  qualityScore: 0.0
+  activityConsumesResource: []
+  activityPerformedByPerformer: []
+  activityProducesResource: []
+  discribedBy: []
+  measureOfTypeActivity: []
+  measureOfTypeResource: []
+  resourceInLocationType: []
+  ruleConstrainsActivity: []
 pedigree:
   source: ''
   derivedFrom: []
@@ -42,6 +45,17 @@ tags:
 - dm2/individual
 相关分析: '[[InformationPedigree详细分析]]'
 ---
+
+## DM2 关联清单（元模型权威）
+> 本组权威关联（来自 dm2-metamodel-2.02.yaml 关联目录）：
+> - activityConsumesResource: Activity ─▶ Resource
+> - activityPerformedByPerformer: Performer ─▶ Activity
+> - activityProducesResource: Activity ─▶ Resource
+> - discribedBy: Thing ─▶ Information
+> - measureOfTypeActivity: Measure ─▶ Activity
+> - measureOfTypeResource: Measure ─▶ Resource
+> - resourceInLocationType: Resource ─▶ LocationType
+> - ruleConstrainsActivity: Activity ─▶ Rule
 
 # {名称}
 

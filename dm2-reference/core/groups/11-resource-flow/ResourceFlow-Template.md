@@ -5,11 +5,16 @@ name: null
 definition: null
 synonyms: []
 relationships:
-  source: []
-  target: []
-  carriesResource: []
-  viaInterface: []
-  hasProtocol: []
+  activityConsumesResource: []
+  activityPerformableUnderCondition: []
+  activityPerformedByPerformer: []
+  activityProducesResource: []
+  jointAction: []
+  measureOfTypeActivity: []
+  measureOfTypeCondition: []
+  measureOfTypeResource: []
+  resourceInLocationType: []
+  ruleConstrainsActivity: []
 pedigree:
   source: ''
   derivedFrom: []
@@ -47,6 +52,19 @@ tags:
 - dm2/individual
 相关分析: '[[ResourceFlow详细分析]]'
 ---
+
+## DM2 关联清单（元模型权威）
+> 本组权威关联（来自 dm2-metamodel-2.02.yaml 关联目录）：
+> - activityConsumesResource: Activity ─▶ Resource
+> - activityPerformableUnderCondition: Activity ─▶ Condition
+> - activityPerformedByPerformer: Performer ─▶ Activity
+> - activityProducesResource: Activity ─▶ Resource
+> - jointAction: Activity ─▶ Activity
+> - measureOfTypeActivity: Measure ─▶ Activity
+> - measureOfTypeCondition: Measure ─▶ Condition
+> - measureOfTypeResource: Measure ─▶ Resource
+> - resourceInLocationType: Resource ─▶ LocationType
+> - ruleConstrainsActivity: Activity ─▶ Rule
 
 # {名称}
 

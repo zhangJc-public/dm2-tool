@@ -1,0 +1,4489 @@
+{
+  "AV-1": {
+    "necessary_terms": [
+      "Activity",
+      "ArchitecturalDescription",
+      "IndividualActivity",
+      "PhysicalMeasure",
+      "Project",
+      "ProjectType",
+      "TemporalMeasure"
+    ],
+    "optional_terms": [
+      "ActivityType",
+      "Address",
+      "AddressType",
+      "Agreement",
+      "AgreementType",
+      "ArchitecturalDescriptionType",
+      "Condition",
+      "ConditionType",
+      "Facility",
+      "FacilityType",
+      "FacilityTypeType",
+      "IndividualPersonRole",
+      "MaintainabilityMeasure",
+      "MaintainabilityMeasureType",
+      "MeasureOfEffect",
+      "MeasureOfEffectType",
+      "NeedsSatisfactionMeasure",
+      "NeedsSatisfactionMeasureType",
+      "Organization",
+      "OrganizationalMeasure",
+      "OrganizationalMeasureType",
+      "PerformanceMeasure",
+      "PerformanceMeasureType",
+      "PersonRoleType",
+      "PersonRoleTypeType",
+      "PhysicalMeasureType",
+      "ProjectTypeType",
+      "SingletonActivity",
+      "Site",
+      "System"
+    ],
+    "necessary_associations": [
+      {
+        "label": "desiredEffect",
+        "endpoint_types": [
+          "Resource",
+          "Performer"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "desirerFutureResourceState"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": "desirer"
+          }
+        ]
+      },
+      {
+        "label": "effectMeasure",
+        "endpoint_types": [
+          "MeasureOfEffect",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      }
+    ]
+  },
+  "AV-2": {
+    "necessary_terms": [],
+    "optional_terms": [
+      "Activity",
+      "ActivityType",
+      "AdaptabilityMeasure",
+      "AdaptabilityMeasureType",
+      "Agreement",
+      "AgreementType",
+      "ArchitecturalDescription",
+      "ArchitecturalDescriptionType",
+      "Capability",
+      "Condition",
+      "ConditionType",
+      "Country",
+      "Data",
+      "DomainInformation",
+      "DomainInformationType",
+      "Facility",
+      "FacilityType",
+      "FacilityTypeType",
+      "FunctionalStandard",
+      "FunctionalStandardType",
+      "GeoFeature",
+      "GeoFeatureType",
+      "GeoFeatureTypeType",
+      "IndividualPersonRole",
+      "Installation",
+      "InstallationType",
+      "InstallationTypeType",
+      "Line",
+      "LineType",
+      "LineTypeType"
+    ],
+    "necessary_associations": []
+  },
+  "CV-1": {
+    "necessary_terms": [
+      "Activity",
+      "Capability",
+      "Condition",
+      "MeasureOfDesire",
+      "MeasureOfEffect"
+    ],
+    "optional_terms": [
+      "ActivityType",
+      "AdaptabilityMeasure",
+      "AdaptabilityMeasureType",
+      "CapabilityType",
+      "ConditionType",
+      "DomainInformation",
+      "DomainInformationType",
+      "MaintainabilityMeasure",
+      "MaintainabilityMeasureType",
+      "MeasureOfDesireType",
+      "MeasureOfEffectType",
+      "NeedsSatisfactionMeasure",
+      "NeedsSatisfactionMeasureType",
+      "OrganizationalMeasure",
+      "OrganizationalMeasureType",
+      "PerformanceMeasure",
+      "PerformanceMeasureType",
+      "PhysicalMeasure",
+      "PhysicalMeasureType",
+      "Service",
+      "ServiceDescription",
+      "ServiceDescriptionType",
+      "ServiceType",
+      "SingletonActivity",
+      "TemporalMeasure",
+      "TemporalMeasureType",
+      "Vision",
+      "VisionType",
+      "activityMapsToCapabilityType",
+      "desireMeasure"
+    ],
+    "necessary_associations": [
+      {
+        "label": "activityPartOfCapability",
+        "endpoint_types": [
+          "Activity",
+          "Capability"
+        ],
+        "roles": [
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityPerformableUnderCondition",
+        "endpoint_types": [
+          "Activity",
+          "Condition"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "desiredEffect",
+        "endpoint_types": [
+          "Resource",
+          "Performer"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "desirerFutureResourceState"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": "desirer"
+          }
+        ]
+      },
+      {
+        "label": "desiredEffectOfCapability",
+        "endpoint_types": [
+          "desiredEffect",
+          "Capability"
+        ],
+        "roles": [
+          {
+            "ideas": "place2Type",
+            "domain": "desiredFutureResourceState"
+          },
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "effectMeasure",
+        "endpoint_types": [
+          "MeasureOfEffect",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "measureOfTypeCondition",
+        "endpoint_types": [
+          "Measure",
+          "Condition"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      }
+    ]
+  },
+  "CV-2": {
+    "necessary_terms": [
+      "Activity",
+      "Capability",
+      "CapabilityType",
+      "Condition",
+      "MeasureOfDesire",
+      "MeasureOfEffect"
+    ],
+    "optional_terms": [
+      "ActivityType",
+      "AdaptabilityMeasure",
+      "AdaptabilityMeasureType",
+      "ConditionType",
+      "DomainInformation",
+      "DomainInformationType",
+      "FunctionalStandard",
+      "FunctionalStandardType",
+      "IndividualPersonRole",
+      "MaintainabilityMeasure",
+      "MaintainabilityMeasureType",
+      "MeasureOfDesireType",
+      "MeasureOfEffectType",
+      "MeasureableSkill",
+      "MeasureableSkillType",
+      "NeedsSatisfactionMeasure",
+      "NeedsSatisfactionMeasureType",
+      "OrganizationalMeasure",
+      "OrganizationalMeasureType",
+      "PerformanceMeasure",
+      "PerformanceMeasureType",
+      "PersonRoleType",
+      "PersonRoleTypeType",
+      "PhysicalMeasure",
+      "PhysicalMeasureType",
+      "Service",
+      "ServiceDescription",
+      "ServiceDescriptionType",
+      "ServiceType",
+      "SingletonActivity"
+    ],
+    "necessary_associations": [
+      {
+        "label": "activityMapsToCapabilityType",
+        "endpoint_types": [
+          "Activity",
+          "CapabilityType"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityPartOfCapability",
+        "endpoint_types": [
+          "Activity",
+          "Capability"
+        ],
+        "roles": [
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityPerformableUnderCondition",
+        "endpoint_types": [
+          "Activity",
+          "Condition"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "desiredEffect",
+        "endpoint_types": [
+          "Resource",
+          "Performer"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "desirerFutureResourceState"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": "desirer"
+          }
+        ]
+      },
+      {
+        "label": "desiredEffectOfCapability",
+        "endpoint_types": [
+          "desiredEffect",
+          "Capability"
+        ],
+        "roles": [
+          {
+            "ideas": "place2Type",
+            "domain": "desiredFutureResourceState"
+          },
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "effectMeasure",
+        "endpoint_types": [
+          "MeasureOfEffect",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "measureOfTypeCondition",
+        "endpoint_types": [
+          "Measure",
+          "Condition"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "measureOfTypeWholePartType"
+      },
+      {
+        "label": "measureTypeApplicableToActivity",
+        "endpoint_types": [
+          "MeasureType",
+          "Activity"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      }
+    ]
+  },
+  "CV-3": {
+    "necessary_terms": [
+      "Activity",
+      "ArchitecturalDescription",
+      "Capability",
+      "Condition",
+      "MeasureOfDesire",
+      "MeasureOfEffect",
+      "Performer",
+      "PerformerType",
+      "PhysicalMeasure",
+      "ProjectType",
+      "TemporalMeasure"
+    ],
+    "optional_terms": [
+      "ActivityType",
+      "AdaptabilityMeasure",
+      "AdaptabilityMeasureType",
+      "Agreement",
+      "AgreementType",
+      "ArchitecturalDescriptionType",
+      "CapabilityType",
+      "CircularArea",
+      "CircularAreaType",
+      "CircularAreaTypeType",
+      "ConditionType",
+      "Country",
+      "CountryType",
+      "CountryTypeType",
+      "Data",
+      "DomainInformation",
+      "DomainInformationType",
+      "EllipticalArea",
+      "EllipticalAreaType",
+      "EllipticalAreaTypeType",
+      "Facility",
+      "FacilityType",
+      "FacilityTypeType",
+      "FunctionalStandard",
+      "FunctionalStandardType",
+      "GeoFeature",
+      "GeoFeatureType",
+      "GeoFeatureTypeType",
+      "GeoStationaryPoint",
+      "GeoStationaryPointType"
+    ],
+    "necessary_associations": [
+      {
+        "label": "activityPartOfCapability",
+        "endpoint_types": [
+          "Activity",
+          "Capability"
+        ],
+        "roles": [
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityPartOfProjectType",
+        "endpoint_types": [
+          "Activity",
+          "ProjectType"
+        ],
+        "roles": [
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityPerformableUnderCondition",
+        "endpoint_types": [
+          "Activity",
+          "Condition"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "desiredEffect",
+        "endpoint_types": [
+          "Resource",
+          "Performer"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "desirerFutureResourceState"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": "desirer"
+          }
+        ]
+      },
+      {
+        "label": "desiredEffectOfCapability",
+        "endpoint_types": [
+          "desiredEffect",
+          "Capability"
+        ],
+        "roles": [
+          {
+            "ideas": "place2Type",
+            "domain": "desiredFutureResourceState"
+          },
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "effectMeasure",
+        "endpoint_types": [
+          "MeasureOfEffect",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "measureOfTypeCondition",
+        "endpoint_types": [
+          "Measure",
+          "Condition"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      }
+    ]
+  },
+  "CV-4": {
+    "necessary_terms": [
+      "Activity",
+      "Capability",
+      "Condition",
+      "MeasureOfDesire",
+      "MeasureOfEffect",
+      "PhysicalMeasure",
+      "TemporalMeasure"
+    ],
+    "optional_terms": [
+      "ActivityType",
+      "AdaptabilityMeasure",
+      "AdaptabilityMeasureType",
+      "Agreement",
+      "AgreementType",
+      "CapabilityType",
+      "ConditionType",
+      "Data",
+      "DomainInformation",
+      "DomainInformationType",
+      "FunctionalStandard",
+      "FunctionalStandardType",
+      "IndividualPersonRole",
+      "MaintainabilityMeasure",
+      "MaintainabilityMeasureType",
+      "Materiel",
+      "MaterielType",
+      "MeasureOfDesireType",
+      "MeasureOfEffectType",
+      "MeasureableSkill",
+      "MeasureableSkillType",
+      "NeedsSatisfactionMeasure",
+      "NeedsSatisfactionMeasureType",
+      "Organization",
+      "OrganizationType",
+      "OrganizationTypeType",
+      "OrganizationalMeasure",
+      "OrganizationalMeasureType",
+      "PerformanceMeasure",
+      "PerformanceMeasureType"
+    ],
+    "necessary_associations": [
+      {
+        "label": "activityPartOfCapability",
+        "endpoint_types": [
+          "Activity",
+          "Capability"
+        ],
+        "roles": [
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityPerformableUnderCondition",
+        "endpoint_types": [
+          "Activity",
+          "Condition"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "desiredEffect",
+        "endpoint_types": [
+          "Resource",
+          "Performer"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "desirerFutureResourceState"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": "desirer"
+          }
+        ]
+      },
+      {
+        "label": "desiredEffectOfCapability",
+        "endpoint_types": [
+          "desiredEffect",
+          "Capability"
+        ],
+        "roles": [
+          {
+            "ideas": "place2Type",
+            "domain": "desiredFutureResourceState"
+          },
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "effectMeasure",
+        "endpoint_types": [
+          "MeasureOfEffect",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "measureOfTypeCondition",
+        "endpoint_types": [
+          "Measure",
+          "Condition"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "measureOfTypeWholePartType"
+      },
+      {
+        "label": "measureTypeApplicableToActivity",
+        "endpoint_types": [
+          "MeasureType",
+          "Activity"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      }
+    ]
+  },
+  "CV-5": {
+    "necessary_terms": [
+      "Activity",
+      "ArchitecturalDescription",
+      "Capability",
+      "Condition",
+      "MeasureOfDesire",
+      "MeasureOfEffect",
+      "PhysicalMeasure",
+      "ProjectType",
+      "TemporalMeasure"
+    ],
+    "optional_terms": [
+      "ActivityType",
+      "AdaptabilityMeasure",
+      "AdaptabilityMeasureType",
+      "Agreement",
+      "AgreementType",
+      "ArchitecturalDescriptionType",
+      "CircularArea",
+      "CircularAreaType",
+      "CircularAreaTypeType",
+      "ConditionType",
+      "Country",
+      "CountryType",
+      "CountryTypeType",
+      "Data",
+      "DomainInformation",
+      "DomainInformationType",
+      "EllipticalArea",
+      "EllipticalAreaType",
+      "EllipticalAreaTypeType",
+      "Facility",
+      "FacilityType",
+      "FacilityTypeType",
+      "FunctionalStandard",
+      "FunctionalStandardType",
+      "GeoFeature",
+      "GeoFeatureType",
+      "GeoFeatureTypeType",
+      "GeoStationaryPoint",
+      "GeoStationaryPointType",
+      "GeoStationaryPointTypeType"
+    ],
+    "necessary_associations": [
+      {
+        "label": "activityPartOfCapability",
+        "endpoint_types": [
+          "Activity",
+          "Capability"
+        ],
+        "roles": [
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityPartOfProjectType",
+        "endpoint_types": [
+          "Activity",
+          "ProjectType"
+        ],
+        "roles": [
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityPerformableUnderCondition",
+        "endpoint_types": [
+          "Activity",
+          "Condition"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "desiredEffect",
+        "endpoint_types": [
+          "Resource",
+          "Performer"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "desirerFutureResourceState"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": "desirer"
+          }
+        ]
+      },
+      {
+        "label": "desiredEffectOfCapability",
+        "endpoint_types": [
+          "desiredEffect",
+          "Capability"
+        ],
+        "roles": [
+          {
+            "ideas": "place2Type",
+            "domain": "desiredFutureResourceState"
+          },
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "effectMeasure",
+        "endpoint_types": [
+          "MeasureOfEffect",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "measureOfTypeCondition",
+        "endpoint_types": [
+          "Measure",
+          "Condition"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      }
+    ]
+  },
+  "CV-6": {
+    "necessary_terms": [
+      "Activity",
+      "Capability",
+      "CapabilityType",
+      "Condition",
+      "MeasureOfDesire",
+      "MeasureOfEffect"
+    ],
+    "optional_terms": [
+      "ActivityType",
+      "AdaptabilityMeasure",
+      "AdaptabilityMeasureType",
+      "ConditionType",
+      "DomainInformation",
+      "DomainInformationType",
+      "IndividualPersonRole",
+      "MaintainabilityMeasure",
+      "MaintainabilityMeasureType",
+      "MeasureOfDesireType",
+      "MeasureOfEffectType",
+      "MeasureableSkill",
+      "MeasureableSkillType",
+      "NeedsSatisfactionMeasure",
+      "NeedsSatisfactionMeasureType",
+      "OrganizationalMeasure",
+      "OrganizationalMeasureType",
+      "PerformanceMeasure",
+      "PerformanceMeasureType",
+      "PersonRoleType",
+      "PersonRoleTypeType",
+      "PhysicalMeasure",
+      "PhysicalMeasureType",
+      "Service",
+      "ServiceType",
+      "SingletonActivity",
+      "Skill",
+      "SkillType",
+      "System",
+      "SystemType"
+    ],
+    "necessary_associations": [
+      {
+        "label": "activityMapsToCapabilityType",
+        "endpoint_types": [
+          "Activity",
+          "CapabilityType"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityPartOfCapability",
+        "endpoint_types": [
+          "Activity",
+          "Capability"
+        ],
+        "roles": [
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityPerformableUnderCondition",
+        "endpoint_types": [
+          "Activity",
+          "Condition"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "desiredEffect",
+        "endpoint_types": [
+          "Resource",
+          "Performer"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "desirerFutureResourceState"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": "desirer"
+          }
+        ]
+      },
+      {
+        "label": "desiredEffectOfCapability",
+        "endpoint_types": [
+          "desiredEffect",
+          "Capability"
+        ],
+        "roles": [
+          {
+            "ideas": "place2Type",
+            "domain": "desiredFutureResourceState"
+          },
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "effectMeasure",
+        "endpoint_types": [
+          "MeasureOfEffect",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "measureOfTypeCondition",
+        "endpoint_types": [
+          "Measure",
+          "Condition"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "measureOfTypeWholePartType"
+      }
+    ]
+  },
+  "CV-7": {
+    "necessary_terms": [
+      "Activity",
+      "Capability",
+      "Condition",
+      "MeasureOfDesire",
+      "MeasureOfEffect",
+      "Service",
+      "ServiceDescription"
+    ],
+    "optional_terms": [
+      "ActivityType",
+      "AdaptabilityMeasure",
+      "AdaptabilityMeasureType",
+      "CircularArea",
+      "CircularAreaType",
+      "CircularAreaTypeType",
+      "ConditionType",
+      "Country",
+      "CountryType",
+      "CountryTypeType",
+      "Data",
+      "DomainInformation",
+      "DomainInformationType",
+      "EllipticalArea",
+      "EllipticalAreaType",
+      "EllipticalAreaTypeType",
+      "Facility",
+      "FacilityType",
+      "FacilityTypeType",
+      "FunctionalStandard",
+      "FunctionalStandardType",
+      "GeoFeature",
+      "GeoFeatureType",
+      "GeoFeatureTypeType",
+      "GeoStationaryPoint",
+      "GeoStationaryPointType",
+      "GeoStationaryPointTypeType",
+      "IndividualPersonRole",
+      "Installation",
+      "InstallationType"
+    ],
+    "necessary_associations": [
+      {
+        "label": "activityPerformableUnderCondition",
+        "endpoint_types": [
+          "Activity",
+          "Condition"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityPerformedByPerformer",
+        "endpoint_types": [
+          "Performer",
+          "Activity"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "capabilityOfPerformer",
+        "endpoint_types": [
+          "Capability",
+          "Performer"
+        ],
+        "roles": [
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "desiredEffect",
+        "endpoint_types": [
+          "Resource",
+          "Performer"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "desirerFutureResourceState"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": "desirer"
+          }
+        ]
+      },
+      {
+        "label": "desiredEffectOfCapability",
+        "endpoint_types": [
+          "desiredEffect",
+          "Capability"
+        ],
+        "roles": [
+          {
+            "ideas": "place2Type",
+            "domain": "desiredFutureResourceState"
+          },
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "effectMeasure",
+        "endpoint_types": [
+          "MeasureOfEffect",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "measureOfTypeWholePartType"
+      },
+      {
+        "label": "serviceEnablesAccessToResource",
+        "endpoint_types": [
+          "Service",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "servicePortDescribedBy",
+        "endpoint_types": [
+          "ServicePort",
+          "ServiceDescription"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "ServicePortBeingDescribed"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      }
+    ]
+  },
+  "DIV-1": {
+    "necessary_terms": [
+      "DomainInformation"
+    ],
+    "optional_terms": [
+      "DomainInformationType",
+      "TechnicalStandard",
+      "TechnicalStandardType",
+      "associationOfInformation",
+      "measureOfTypeResource"
+    ],
+    "necessary_associations": []
+  },
+  "DIV-2": {
+    "necessary_terms": [
+      "Data",
+      "DataType"
+    ],
+    "optional_terms": [
+      "Activity",
+      "ActivityType",
+      "DomainInformation",
+      "DomainInformationType",
+      "Organization",
+      "OrganizationType",
+      "OrganizationTypeType",
+      "SingletonActivity",
+      "TechnicalStandard",
+      "TechnicalStandardType",
+      "activityConsumesResource",
+      "activityProducesResource",
+      "jointAction",
+      "measureOfTypeResource",
+      "partiesToAnAgreement"
+    ],
+    "necessary_associations": [
+      {
+        "label": "associationOfInformation"
+      }
+    ]
+  },
+  "DIV-3": {
+    "necessary_terms": [
+      "Data",
+      "DataType"
+    ],
+    "optional_terms": [
+      "Activity",
+      "ActivityType",
+      "Condition",
+      "ConditionType",
+      "DomainInformation",
+      "DomainInformationType",
+      "Organization",
+      "OrganizationType",
+      "OrganizationTypeType",
+      "PortType",
+      "Service",
+      "ServiceDescription",
+      "ServiceDescriptionType",
+      "ServicePort",
+      "ServicePortType",
+      "ServiceType",
+      "SingletonActivity",
+      "System",
+      "SystemType",
+      "TechnicalStandard",
+      "TechnicalStandardType",
+      "activityConsumesResource",
+      "activityPerformableUnderCondition",
+      "activityPerformedByPerformer",
+      "activityProducesResource",
+      "jointAction",
+      "partiesToAnAgreement",
+      "portPartOfPerformer",
+      "servicePortDescribedBy"
+    ],
+    "necessary_associations": [
+      {
+        "label": "associationOfInformation"
+      }
+    ]
+  },
+  "OV-1": {
+    "necessary_terms": [
+      "ArchitecturalDescription"
+    ],
+    "optional_terms": [
+      "ArchitecturalDescriptionType"
+    ],
+    "necessary_associations": []
+  },
+  "OV-2": {
+    "necessary_terms": [
+      "Activity"
+    ],
+    "optional_terms": [
+      "ActivityType",
+      "Condition",
+      "ConditionType",
+      "IndividualPersonRole",
+      "Organization",
+      "OrganizationType",
+      "OrganizationTypeType",
+      "PersonRoleType",
+      "PersonRoleTypeType",
+      "SingletonActivity",
+      "activityPerformableUnderCondition",
+      "individualPersonRolePartOfIndividualPerformer",
+      "jointAction",
+      "measureOfTypeResource",
+      "partiesToAnAgreement"
+    ],
+    "necessary_associations": [
+      {
+        "label": "activityConsumesResource",
+        "endpoint_types": [
+          "Activity",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "consumer"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityPerformedByPerformer",
+        "endpoint_types": [
+          "Performer",
+          "Activity"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityProducesResource",
+        "endpoint_types": [
+          "Activity",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "before",
+            "domain": ""
+          },
+          {
+            "ideas": "place1Type",
+            "domain": "producer"
+          }
+        ]
+      }
+    ]
+  },
+  "OV-3": {
+    "necessary_terms": [
+      "Activity",
+      "NeedsSatisfactionMeasure",
+      "PerformanceMeasure",
+      "PhysicalMeasure",
+      "TemporalMeasure"
+    ],
+    "optional_terms": [
+      "ActivityType",
+      "AdaptabilityMeasure",
+      "AdaptabilityMeasureType",
+      "Condition",
+      "ConditionType",
+      "FunctionalStandard",
+      "FunctionalStandardType",
+      "IndividualPersonRole",
+      "MaintainabilityMeasure",
+      "MaintainabilityMeasureType",
+      "MeasureOfEffect",
+      "MeasureOfEffectType",
+      "MeasureableSkill",
+      "MeasureableSkillType",
+      "NeedsSatisfactionMeasureType",
+      "Organization",
+      "OrganizationType",
+      "OrganizationTypeType",
+      "OrganizationalMeasure",
+      "OrganizationalMeasureType",
+      "PerformanceMeasureType",
+      "PersonRoleType",
+      "PersonRoleTypeType",
+      "PhysicalMeasureType",
+      "SingletonActivity",
+      "Skill",
+      "SkillType",
+      "TechnicalStandard",
+      "TechnicalStandardType",
+      "TemporalMeasureType"
+    ],
+    "necessary_associations": [
+      {
+        "label": "activityConsumesResource",
+        "endpoint_types": [
+          "Activity",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "consumer"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityPerformedByPerformer",
+        "endpoint_types": [
+          "Performer",
+          "Activity"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityProducesResource",
+        "endpoint_types": [
+          "Activity",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "before",
+            "domain": ""
+          },
+          {
+            "ideas": "place1Type",
+            "domain": "producer"
+          }
+        ]
+      },
+      {
+        "label": "ruleConstrainsActivity",
+        "endpoint_types": [
+          "Activity",
+          "Rule"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      }
+    ]
+  },
+  "OV-4": {
+    "necessary_terms": [],
+    "optional_terms": [
+      "IndividualPersonRole",
+      "Organization",
+      "OrganizationType",
+      "OrganizationTypeType",
+      "PersonRoleType",
+      "PersonRoleTypeType",
+      "individualPersonRolePartOfIndividualPerformer"
+    ],
+    "necessary_associations": []
+  },
+  "OV-5a": {
+    "necessary_terms": [
+      "Activity"
+    ],
+    "optional_terms": [
+      "ActivityType",
+      "SingletonActivity"
+    ],
+    "necessary_associations": []
+  },
+  "OV-5b": {
+    "necessary_terms": [
+      "Activity",
+      "DomainInformation"
+    ],
+    "optional_terms": [
+      "ActivityType",
+      "AdaptabilityMeasure",
+      "AdaptabilityMeasureType",
+      "Agreement",
+      "AgreementType",
+      "Condition",
+      "ConditionType",
+      "DomainInformationType",
+      "FunctionalStandard",
+      "FunctionalStandardType",
+      "IndividualPersonRole",
+      "MaintainabilityMeasure",
+      "MaintainabilityMeasureType",
+      "MeasureOfEffect",
+      "MeasureOfEffectType",
+      "MeasureableSkill",
+      "MeasureableSkillType",
+      "NeedsSatisfactionMeasure",
+      "NeedsSatisfactionMeasureType",
+      "Organization",
+      "OrganizationType",
+      "OrganizationTypeType",
+      "OrganizationalMeasure",
+      "OrganizationalMeasureType",
+      "PerformanceMeasure",
+      "PerformanceMeasureType",
+      "PersonRoleType",
+      "PersonRoleTypeType",
+      "PhysicalMeasure",
+      "PhysicalMeasureType"
+    ],
+    "necessary_associations": [
+      {
+        "label": "activityConsumesResource",
+        "endpoint_types": [
+          "Activity",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "consumer"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityPerformedByPerformer",
+        "endpoint_types": [
+          "Performer",
+          "Activity"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityProducesResource",
+        "endpoint_types": [
+          "Activity",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "before",
+            "domain": ""
+          },
+          {
+            "ideas": "place1Type",
+            "domain": "producer"
+          }
+        ]
+      }
+    ]
+  },
+  "OV-6a": {
+    "necessary_terms": [],
+    "optional_terms": [
+      "Activity",
+      "ActivityType",
+      "AdaptabilityMeasure",
+      "AdaptabilityMeasureType",
+      "Agreement",
+      "AgreementType",
+      "CircularArea",
+      "CircularAreaType",
+      "CircularAreaTypeType",
+      "Condition",
+      "ConditionType",
+      "Country",
+      "CountryType",
+      "CountryTypeType",
+      "EllipticalArea",
+      "EllipticalAreaType",
+      "EllipticalAreaTypeType",
+      "Facility",
+      "FacilityType",
+      "FacilityTypeType",
+      "GeoFeature",
+      "GeoFeatureType",
+      "GeoFeatureTypeType",
+      "GeoStationaryPoint",
+      "GeoStationaryPointType",
+      "GeoStationaryPointTypeType",
+      "IndividualPersonRole",
+      "Installation",
+      "InstallationType",
+      "InstallationTypeType"
+    ],
+    "necessary_associations": []
+  },
+  "OV-6b": {
+    "necessary_terms": [
+      "Activity",
+      "PhysicalMeasure",
+      "TemporalMeasure"
+    ],
+    "optional_terms": [
+      "ActivityType",
+      "AdaptabilityMeasure",
+      "AdaptabilityMeasureType",
+      "Agreement",
+      "AgreementType",
+      "Condition",
+      "ConditionType",
+      "DomainInformation",
+      "DomainInformationType",
+      "IndividualPersonRole",
+      "MaintainabilityMeasure",
+      "MaintainabilityMeasureType",
+      "MeasureOfEffect",
+      "MeasureOfEffectType",
+      "MeasureableSkill",
+      "MeasureableSkillType",
+      "NeedsSatisfactionMeasure",
+      "NeedsSatisfactionMeasureType",
+      "Organization",
+      "OrganizationType",
+      "OrganizationTypeType",
+      "OrganizationalMeasure",
+      "OrganizationalMeasureType",
+      "PerformanceMeasure",
+      "PerformanceMeasureType",
+      "PersonRoleType",
+      "PersonRoleTypeType",
+      "PhysicalMeasureType",
+      "SingletonActivity",
+      "Skill"
+    ],
+    "necessary_associations": [
+      {
+        "label": "activityConsumesResource",
+        "endpoint_types": [
+          "Activity",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "consumer"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityPerformedByPerformer",
+        "endpoint_types": [
+          "Performer",
+          "Activity"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityProducesResource",
+        "endpoint_types": [
+          "Activity",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "before",
+            "domain": ""
+          },
+          {
+            "ideas": "place1Type",
+            "domain": "producer"
+          }
+        ]
+      }
+    ]
+  },
+  "OV-6c": {
+    "necessary_terms": [
+      "Activity",
+      "PhysicalMeasure",
+      "TemporalMeasure"
+    ],
+    "optional_terms": [
+      "ActivityType",
+      "AdaptabilityMeasure",
+      "AdaptabilityMeasureType",
+      "Agreement",
+      "AgreementType",
+      "Condition",
+      "ConditionType",
+      "IndividualPersonRole",
+      "MaintainabilityMeasure",
+      "MaintainabilityMeasureType",
+      "MeasureOfEffect",
+      "MeasureOfEffectType",
+      "MeasureableSkill",
+      "MeasureableSkillType",
+      "NeedsSatisfactionMeasure",
+      "NeedsSatisfactionMeasureType",
+      "Organization",
+      "OrganizationType",
+      "OrganizationTypeType",
+      "OrganizationalMeasure",
+      "OrganizationalMeasureType",
+      "PerformanceMeasure",
+      "PerformanceMeasureType",
+      "PersonRoleType",
+      "PersonRoleTypeType",
+      "PhysicalMeasureType",
+      "SingletonActivity",
+      "Skill",
+      "SkillType",
+      "TemporalMeasureType"
+    ],
+    "necessary_associations": [
+      {
+        "label": "activityConsumesResource",
+        "endpoint_types": [
+          "Activity",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "consumer"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityPerformedByPerformer",
+        "endpoint_types": [
+          "Performer",
+          "Activity"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityProducesResource",
+        "endpoint_types": [
+          "Activity",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "before",
+            "domain": ""
+          },
+          {
+            "ideas": "place1Type",
+            "domain": "producer"
+          }
+        ]
+      }
+    ]
+  },
+  "PV-1": {
+    "necessary_terms": [
+      "Activity",
+      "Condition",
+      "Organization",
+      "Project",
+      "ProjectType"
+    ],
+    "optional_terms": [
+      "ActivityType",
+      "Agreement",
+      "AgreementType",
+      "ConditionType",
+      "IndividualPersonRole",
+      "MaintainabilityMeasure",
+      "MaintainabilityMeasureType",
+      "MeasureOfDesire",
+      "MeasureOfDesireType",
+      "MeasureOfEffect",
+      "MeasureOfEffectType",
+      "MeasureableSkill",
+      "MeasureableSkillType",
+      "NeedsSatisfactionMeasure",
+      "NeedsSatisfactionMeasureType",
+      "OrganizationType",
+      "OrganizationTypeType",
+      "OrganizationalMeasure",
+      "OrganizationalMeasureType",
+      "PerformanceMeasure",
+      "PerformanceMeasureType",
+      "PersonRoleType",
+      "PersonRoleTypeType",
+      "PhysicalMeasure",
+      "PhysicalMeasureType",
+      "ProjectTypeType",
+      "SingletonActivity",
+      "Skill",
+      "SkillType",
+      "System"
+    ],
+    "necessary_associations": [
+      {
+        "label": "activityConsumesResource",
+        "endpoint_types": [
+          "Activity",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "consumer"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityPerformableUnderCondition",
+        "endpoint_types": [
+          "Activity",
+          "Condition"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityPerformedByPerformer",
+        "endpoint_types": [
+          "Performer",
+          "Activity"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityProducesResource",
+        "endpoint_types": [
+          "Activity",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "before",
+            "domain": ""
+          },
+          {
+            "ideas": "place1Type",
+            "domain": "producer"
+          }
+        ]
+      }
+    ]
+  },
+  "PV-2": {
+    "necessary_terms": [
+      "Activity",
+      "Condition",
+      "IndividualActivity",
+      "MeasureableSkill",
+      "PersonRoleType",
+      "PhysicalMeasure",
+      "Project",
+      "ProjectType",
+      "Skill",
+      "TemporalMeasure"
+    ],
+    "optional_terms": [
+      "ActivityType",
+      "ConditionType",
+      "IndividualPersonRole",
+      "MaintainabilityMeasure",
+      "MaintainabilityMeasureType",
+      "Materiel",
+      "MaterielType",
+      "MeasureOfDesire",
+      "MeasureOfDesireType",
+      "MeasureOfEffect",
+      "MeasureOfEffectType",
+      "MeasureableSkillType",
+      "NeedsSatisfactionMeasure",
+      "NeedsSatisfactionMeasureType",
+      "Organization",
+      "OrganizationType",
+      "OrganizationTypeType",
+      "OrganizationalMeasure",
+      "OrganizationalMeasureType",
+      "PerformanceMeasure",
+      "PerformanceMeasureType",
+      "PersonRoleTypeType",
+      "PhysicalMeasureType",
+      "PortType",
+      "ProjectTypeType",
+      "Service",
+      "ServiceDescription",
+      "ServiceDescriptionType",
+      "ServicePort",
+      "ServicePortType"
+    ],
+    "necessary_associations": [
+      {
+        "label": "activityPerformableUnderCondition",
+        "endpoint_types": [
+          "Activity",
+          "Condition"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "measureOfTypeWholePartType"
+      },
+      {
+        "label": "measureTypeApplicableToActivity",
+        "endpoint_types": [
+          "MeasureType",
+          "Activity"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "measureableSkillOfPersonRoleType"
+      },
+      {
+        "label": "skillOfPersonRoleType",
+        "endpoint_types": [
+          "Skill",
+          "PersonRoleType"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      }
+    ]
+  },
+  "PV-3": {
+    "necessary_terms": [
+      "Activity",
+      "Capability",
+      "Condition",
+      "MeasureOfDesire",
+      "MeasureOfEffect",
+      "MeasureableSkill",
+      "PersonRoleType",
+      "Project",
+      "ProjectType",
+      "Skill"
+    ],
+    "optional_terms": [
+      "ActivityType",
+      "AdaptabilityMeasure",
+      "AdaptabilityMeasureType",
+      "ConditionType",
+      "DomainInformation",
+      "DomainInformationType",
+      "IndividualActivity",
+      "IndividualPersonRole",
+      "MaintainabilityMeasure",
+      "MaintainabilityMeasureType",
+      "MeasureOfDesireType",
+      "MeasureOfEffectType",
+      "MeasureableSkillType",
+      "NeedsSatisfactionMeasure",
+      "NeedsSatisfactionMeasureType",
+      "OrganizationalMeasure",
+      "OrganizationalMeasureType",
+      "PerformanceMeasure",
+      "PerformanceMeasureType",
+      "PersonRoleTypeType",
+      "PhysicalMeasure",
+      "PhysicalMeasureType",
+      "PortType",
+      "ProjectTypeType",
+      "Service",
+      "ServiceType",
+      "SingletonActivity",
+      "SkillType",
+      "System",
+      "SystemType"
+    ],
+    "necessary_associations": [
+      {
+        "label": "activityConsumesResource",
+        "endpoint_types": [
+          "Activity",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "consumer"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityPartOfCapability",
+        "endpoint_types": [
+          "Activity",
+          "Capability"
+        ],
+        "roles": [
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityPerformableUnderCondition",
+        "endpoint_types": [
+          "Activity",
+          "Condition"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityProducesResource",
+        "endpoint_types": [
+          "Activity",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "before",
+            "domain": ""
+          },
+          {
+            "ideas": "place1Type",
+            "domain": "producer"
+          }
+        ]
+      },
+      {
+        "label": "desiredEffect",
+        "endpoint_types": [
+          "Resource",
+          "Performer"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "desirerFutureResourceState"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": "desirer"
+          }
+        ]
+      },
+      {
+        "label": "desiredEffectOfCapability",
+        "endpoint_types": [
+          "desiredEffect",
+          "Capability"
+        ],
+        "roles": [
+          {
+            "ideas": "place2Type",
+            "domain": "desiredFutureResourceState"
+          },
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "effectMeasure",
+        "endpoint_types": [
+          "MeasureOfEffect",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "measureOfTypeCondition",
+        "endpoint_types": [
+          "Measure",
+          "Condition"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "measureOfTypeWholePartType"
+      },
+      {
+        "label": "measureTypeApplicableToActivity",
+        "endpoint_types": [
+          "MeasureType",
+          "Activity"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "measureableSkillOfPersonRoleType"
+      },
+      {
+        "label": "skillOfPersonRoleType",
+        "endpoint_types": [
+          "Skill",
+          "PersonRoleType"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      }
+    ]
+  },
+  "SV-1": {
+    "necessary_terms": [
+      "Activity",
+      "System"
+    ],
+    "optional_terms": [
+      "ActivityType",
+      "AdaptabilityMeasure",
+      "AdaptabilityMeasureType",
+      "Address",
+      "AddressType",
+      "CircularArea",
+      "CircularAreaType",
+      "CircularAreaTypeType",
+      "Condition",
+      "ConditionType",
+      "Country",
+      "CountryType",
+      "CountryTypeType",
+      "EllipticalArea",
+      "EllipticalAreaType",
+      "EllipticalAreaTypeType",
+      "Facility",
+      "FacilityType",
+      "FacilityTypeType",
+      "FunctionalStandard",
+      "FunctionalStandardType",
+      "GeoFeature",
+      "GeoFeatureType",
+      "GeoFeatureTypeType",
+      "GeoStationaryPoint",
+      "GeoStationaryPointType",
+      "GeoStationaryPointTypeType",
+      "IndividualPersonRole",
+      "Installation",
+      "InstallationType"
+    ],
+    "necessary_associations": [
+      {
+        "label": "activityConsumesResource",
+        "endpoint_types": [
+          "Activity",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "consumer"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityPerformedByPerformer",
+        "endpoint_types": [
+          "Performer",
+          "Activity"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityProducesResource",
+        "endpoint_types": [
+          "Activity",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "before",
+            "domain": ""
+          },
+          {
+            "ideas": "place1Type",
+            "domain": "producer"
+          }
+        ]
+      }
+    ]
+  },
+  "SV-10a": {
+    "necessary_terms": [
+      "System"
+    ],
+    "optional_terms": [
+      "Activity",
+      "ActivityType",
+      "AdaptabilityMeasure",
+      "AdaptabilityMeasureType",
+      "Address",
+      "AddressType",
+      "CircularArea",
+      "CircularAreaType",
+      "CircularAreaTypeType",
+      "Condition",
+      "ConditionType",
+      "Country",
+      "CountryType",
+      "CountryTypeType",
+      "Data",
+      "EllipticalArea",
+      "EllipticalAreaType",
+      "EllipticalAreaTypeType",
+      "Facility",
+      "FacilityType",
+      "FacilityTypeType",
+      "FunctionalStandard",
+      "FunctionalStandardType",
+      "GeoFeature",
+      "GeoFeatureType",
+      "GeoFeatureTypeType",
+      "GeoStationaryPoint",
+      "GeoStationaryPointType",
+      "GeoStationaryPointTypeType",
+      "IndividualPersonRole"
+    ],
+    "necessary_associations": []
+  },
+  "SV-10b": {
+    "necessary_terms": [
+      "Activity",
+      "System"
+    ],
+    "optional_terms": [
+      "ActivityType",
+      "AdaptabilityMeasure",
+      "AdaptabilityMeasureType",
+      "Address",
+      "AddressType",
+      "Condition",
+      "ConditionType",
+      "Data",
+      "IndividualPersonRole",
+      "MaintainabilityMeasure",
+      "MaintainabilityMeasureType",
+      "MeasureOfEffect",
+      "MeasureOfEffectType",
+      "MeasureableSkill",
+      "MeasureableSkillType",
+      "NeedsSatisfactionMeasure",
+      "NeedsSatisfactionMeasureType",
+      "PerformanceMeasure",
+      "PerformanceMeasureType",
+      "PersonRoleType",
+      "PersonRoleTypeType",
+      "PhysicalMeasure",
+      "PhysicalMeasureType",
+      "SingletonActivity",
+      "Skill",
+      "SkillType",
+      "SystemType",
+      "TemporalMeasure",
+      "TemporalMeasureType",
+      "activityPerformableUnderCondition"
+    ],
+    "necessary_associations": [
+      {
+        "label": "activityConsumesResource",
+        "endpoint_types": [
+          "Activity",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "consumer"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityProducesResource",
+        "endpoint_types": [
+          "Activity",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "before",
+            "domain": ""
+          },
+          {
+            "ideas": "place1Type",
+            "domain": "producer"
+          }
+        ]
+      }
+    ]
+  },
+  "SV-10c": {
+    "necessary_terms": [
+      "Activity",
+      "PhysicalMeasure",
+      "PhysicalMeasureType",
+      "System",
+      "TemporalMeasure"
+    ],
+    "optional_terms": [
+      "ActivityType",
+      "AdaptabilityMeasure",
+      "AdaptabilityMeasureType",
+      "Condition",
+      "ConditionType",
+      "Data",
+      "IndividualPersonRole",
+      "MaintainabilityMeasure",
+      "MaintainabilityMeasureType",
+      "MeasureOfEffect",
+      "MeasureOfEffectType",
+      "MeasureableSkill",
+      "MeasureableSkillType",
+      "NeedsSatisfactionMeasure",
+      "NeedsSatisfactionMeasureType",
+      "PerformanceMeasure",
+      "PerformanceMeasureType",
+      "PersonRoleType",
+      "PersonRoleTypeType",
+      "SingletonActivity",
+      "Skill",
+      "SkillType",
+      "SystemType",
+      "TemporalMeasureType",
+      "activityPerformableUnderCondition",
+      "activityPerformedByPerformer",
+      "associationOfInformation",
+      "individualPersonRolePartOfIndividualPerformer",
+      "jointAction",
+      "measureOfTypeActivity"
+    ],
+    "necessary_associations": [
+      {
+        "label": "activityConsumesResource",
+        "endpoint_types": [
+          "Activity",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "consumer"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityProducesResource",
+        "endpoint_types": [
+          "Activity",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "before",
+            "domain": ""
+          },
+          {
+            "ideas": "place1Type",
+            "domain": "producer"
+          }
+        ]
+      }
+    ]
+  },
+  "SV-2": {
+    "necessary_terms": [
+      "Activity",
+      "System",
+      "TechnicalStandard"
+    ],
+    "optional_terms": [
+      "ActivityType",
+      "AdaptabilityMeasure",
+      "AdaptabilityMeasureType",
+      "Address",
+      "AddressType",
+      "CircularArea",
+      "CircularAreaType",
+      "CircularAreaTypeType",
+      "Country",
+      "CountryType",
+      "CountryTypeType",
+      "EllipticalArea",
+      "EllipticalAreaType",
+      "EllipticalAreaTypeType",
+      "Facility",
+      "FacilityType",
+      "FacilityTypeType",
+      "FunctionalStandard",
+      "FunctionalStandardType",
+      "GeoFeature",
+      "GeoFeatureType",
+      "GeoFeatureTypeType",
+      "GeoStationaryPoint",
+      "GeoStationaryPointType",
+      "GeoStationaryPointTypeType",
+      "IndividualPersonRole",
+      "Installation",
+      "InstallationType",
+      "InstallationTypeType",
+      "Line"
+    ],
+    "necessary_associations": [
+      {
+        "label": "activityConsumesResource",
+        "endpoint_types": [
+          "Activity",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "consumer"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityPerformedByPerformer",
+        "endpoint_types": [
+          "Performer",
+          "Activity"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityProducesResource",
+        "endpoint_types": [
+          "Activity",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "before",
+            "domain": ""
+          },
+          {
+            "ideas": "place1Type",
+            "domain": "producer"
+          }
+        ]
+      },
+      {
+        "label": "portPartOfPerformer",
+        "endpoint_types": [
+          "Port",
+          "Performer"
+        ],
+        "roles": [
+          {
+            "ideas": "",
+            "domain": ""
+          },
+          {
+            "ideas": "1..*",
+            "domain": ""
+          }
+        ]
+      }
+    ]
+  },
+  "SV-3": {
+    "necessary_terms": [
+      "Activity",
+      "System"
+    ],
+    "optional_terms": [
+      "ActivityType",
+      "AdaptabilityMeasure",
+      "AdaptabilityMeasureType",
+      "IndividualPersonRole",
+      "MaintainabilityMeasure",
+      "MaintainabilityMeasureType",
+      "MeasureOfEffect",
+      "MeasureOfEffectType",
+      "MeasureableSkill",
+      "MeasureableSkillType",
+      "NeedsSatisfactionMeasure",
+      "NeedsSatisfactionMeasureType",
+      "PerformanceMeasure",
+      "PerformanceMeasureType",
+      "PersonRoleType",
+      "PersonRoleTypeType",
+      "PhysicalMeasure",
+      "PhysicalMeasureType",
+      "SingletonActivity",
+      "Skill",
+      "SkillType",
+      "SystemType",
+      "TemporalMeasure",
+      "TemporalMeasureType",
+      "individualPersonRolePartOfIndividualPerformer",
+      "jointAction",
+      "measureOfTypeActivity",
+      "measureOfTypeResource",
+      "measureOfTypeWholePartType",
+      "measureTypeApplicableToActivity"
+    ],
+    "necessary_associations": [
+      {
+        "label": "activityConsumesResource",
+        "endpoint_types": [
+          "Activity",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "consumer"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityProducesResource",
+        "endpoint_types": [
+          "Activity",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "before",
+            "domain": ""
+          },
+          {
+            "ideas": "place1Type",
+            "domain": "producer"
+          }
+        ]
+      }
+    ]
+  },
+  "SV-4": {
+    "necessary_terms": [
+      "Activity",
+      "Data"
+    ],
+    "optional_terms": [
+      "ActivityType",
+      "AdaptabilityMeasure",
+      "AdaptabilityMeasureType",
+      "Condition",
+      "ConditionType",
+      "FunctionalStandard",
+      "FunctionalStandardType",
+      "IndividualPersonRole",
+      "MaintainabilityMeasure",
+      "MaintainabilityMeasureType",
+      "MeasureOfEffect",
+      "MeasureOfEffectType",
+      "MeasureableSkill",
+      "MeasureableSkillType",
+      "NeedsSatisfactionMeasure",
+      "NeedsSatisfactionMeasureType",
+      "PerformanceMeasure",
+      "PerformanceMeasureType",
+      "PersonRoleType",
+      "PersonRoleTypeType",
+      "PhysicalMeasure",
+      "PhysicalMeasureType",
+      "PortType",
+      "SingletonActivity",
+      "Skill",
+      "SkillType",
+      "System",
+      "SystemType",
+      "TechnicalStandard",
+      "TechnicalStandardType"
+    ],
+    "necessary_associations": [
+      {
+        "label": "activityConsumesResource",
+        "endpoint_types": [
+          "Activity",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "consumer"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityPerformedByPerformer",
+        "endpoint_types": [
+          "Performer",
+          "Activity"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityProducesResource",
+        "endpoint_types": [
+          "Activity",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "before",
+            "domain": ""
+          },
+          {
+            "ideas": "place1Type",
+            "domain": "producer"
+          }
+        ]
+      }
+    ]
+  },
+  "SV-5a": {
+    "necessary_terms": [
+      "Activity"
+    ],
+    "optional_terms": [
+      "ActivityType",
+      "Condition",
+      "ConditionType",
+      "SingletonActivity",
+      "activityPerformableUnderCondition",
+      "activityPerformedByPerformer",
+      "measureOfTypeResource",
+      "ruleConstrainsActivity"
+    ],
+    "necessary_associations": []
+  },
+  "SV-5b": {
+    "necessary_terms": [
+      "System"
+    ],
+    "optional_terms": [
+      "Activity",
+      "ActivityType",
+      "Capability",
+      "Condition",
+      "ConditionType",
+      "SingletonActivity",
+      "SystemType",
+      "TechnicalStandard",
+      "TechnicalStandardType",
+      "activityPartOfCapability",
+      "activityPerformableUnderCondition",
+      "activityPerformedByPerformer",
+      "capabilityOfPerformer",
+      "measureOfTypeActivity",
+      "measureOfTypeCondition"
+    ],
+    "necessary_associations": []
+  },
+  "SV-6": {
+    "necessary_terms": [
+      "Activity",
+      "Data",
+      "NeedsSatisfactionMeasure",
+      "PerformanceMeasure",
+      "PhysicalMeasure",
+      "System",
+      "TechnicalStandard",
+      "TemporalMeasure"
+    ],
+    "optional_terms": [
+      "ActivityType",
+      "AdaptabilityMeasure",
+      "AdaptabilityMeasureType",
+      "Address",
+      "AddressType",
+      "Condition",
+      "ConditionType",
+      "IndividualPersonRole",
+      "MaintainabilityMeasure",
+      "MaintainabilityMeasureType",
+      "MeasureOfEffect",
+      "MeasureOfEffectType",
+      "MeasureableSkill",
+      "MeasureableSkillType",
+      "NeedsSatisfactionMeasureType",
+      "PerformanceMeasureType",
+      "PersonRoleType",
+      "PersonRoleTypeType",
+      "PhysicalMeasureType",
+      "PortType",
+      "SingletonActivity",
+      "Skill",
+      "SkillType",
+      "SystemType",
+      "TechnicalStandardType",
+      "TemporalMeasureType",
+      "activityPerformableUnderCondition",
+      "associationOfInformation",
+      "individualPersonRolePartOfIndividualPerformer",
+      "jointAction"
+    ],
+    "necessary_associations": [
+      {
+        "label": "activityConsumesResource",
+        "endpoint_types": [
+          "Activity",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "consumer"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityPerformedByPerformer",
+        "endpoint_types": [
+          "Performer",
+          "Activity"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityProducesResource",
+        "endpoint_types": [
+          "Activity",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "before",
+            "domain": ""
+          },
+          {
+            "ideas": "place1Type",
+            "domain": "producer"
+          }
+        ]
+      },
+      {
+        "label": "measureOfTypeWholePartType"
+      },
+      {
+        "label": "measureTypeApplicableToActivity",
+        "endpoint_types": [
+          "MeasureType",
+          "Activity"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      }
+    ]
+  },
+  "SV-7": {
+    "necessary_terms": [
+      "Activity",
+      "MeasureableSkill",
+      "PerformanceMeasure",
+      "PersonRoleType",
+      "Skill",
+      "System"
+    ],
+    "optional_terms": [
+      "ActivityType",
+      "AdaptabilityMeasure",
+      "AdaptabilityMeasureType",
+      "Condition",
+      "ConditionType",
+      "IndividualPersonRole",
+      "MaintainabilityMeasure",
+      "MaintainabilityMeasureType",
+      "MeasureOfEffect",
+      "MeasureOfEffectType",
+      "MeasureableSkillType",
+      "NeedsSatisfactionMeasure",
+      "NeedsSatisfactionMeasureType",
+      "PerformanceMeasureType",
+      "PersonRoleTypeType",
+      "PhysicalMeasure",
+      "PhysicalMeasureType",
+      "SingletonActivity",
+      "SkillType",
+      "SystemType",
+      "TemporalMeasure",
+      "TemporalMeasureType",
+      "activityPerformableUnderCondition",
+      "activityPerformedByPerformer",
+      "individualPersonRolePartOfIndividualPerformer",
+      "measureOfTypeActivity",
+      "measureOfTypeCondition",
+      "measureOfTypeResource",
+      "ruleConstrainsActivity",
+      "rulePartOfMeasureType"
+    ],
+    "necessary_associations": [
+      {
+        "label": "measureOfTypeWholePartType"
+      },
+      {
+        "label": "measureTypeApplicableToActivity",
+        "endpoint_types": [
+          "MeasureType",
+          "Activity"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "measureableSkillOfPersonRoleType"
+      },
+      {
+        "label": "skillOfPersonRoleType",
+        "endpoint_types": [
+          "Skill",
+          "PersonRoleType"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      }
+    ]
+  },
+  "SV-8": {
+    "necessary_terms": [
+      "System"
+    ],
+    "optional_terms": [
+      "Activity",
+      "ActivityType",
+      "AdaptabilityMeasure",
+      "AdaptabilityMeasureType",
+      "Condition",
+      "ConditionType",
+      "Data",
+      "FunctionalStandard",
+      "FunctionalStandardType",
+      "IndividualPersonRole",
+      "MaintainabilityMeasure",
+      "MaintainabilityMeasureType",
+      "Materiel",
+      "MaterielType",
+      "MeasureOfDesire",
+      "MeasureOfDesireType",
+      "MeasureOfEffect",
+      "MeasureOfEffectType",
+      "MeasureableSkill",
+      "MeasureableSkillType",
+      "NeedsSatisfactionMeasure",
+      "NeedsSatisfactionMeasureType",
+      "PerformanceMeasure",
+      "PerformanceMeasureType",
+      "PersonRoleType",
+      "PersonRoleTypeType",
+      "PhysicalMeasure",
+      "PhysicalMeasureType",
+      "SingletonActivity",
+      "Skill"
+    ],
+    "necessary_associations": []
+  },
+  "SV-9": {
+    "necessary_terms": [
+      "System"
+    ],
+    "optional_terms": [
+      "Activity",
+      "ActivityType",
+      "AdaptabilityMeasure",
+      "AdaptabilityMeasureType",
+      "Condition",
+      "ConditionType",
+      "IndividualPersonRole",
+      "MaintainabilityMeasure",
+      "MaintainabilityMeasureType",
+      "Materiel",
+      "MaterielType",
+      "MeasureOfDesire",
+      "MeasureOfDesireType",
+      "MeasureOfEffect",
+      "MeasureOfEffectType",
+      "MeasureableSkill",
+      "MeasureableSkillType",
+      "NeedsSatisfactionMeasure",
+      "NeedsSatisfactionMeasureType",
+      "PerformanceMeasure",
+      "PerformanceMeasureType",
+      "PersonRoleType",
+      "PersonRoleTypeType",
+      "PhysicalMeasure",
+      "PhysicalMeasureType",
+      "SingletonActivity",
+      "Skill",
+      "SkillType",
+      "SystemType",
+      "TechnicalStandard"
+    ],
+    "necessary_associations": []
+  },
+  "StdV-1": {
+    "necessary_terms": [
+      "Activity",
+      "Condition",
+      "TechnicalStandard"
+    ],
+    "optional_terms": [
+      "ActivityType",
+      "Agreement",
+      "AgreementType",
+      "ConditionType",
+      "Data",
+      "FunctionalStandard",
+      "FunctionalStandardType",
+      "IndividualPersonRole",
+      "MeasureableSkill",
+      "MeasureableSkillType",
+      "Organization",
+      "OrganizationType",
+      "OrganizationTypeType",
+      "PersonRoleType",
+      "PersonRoleTypeType",
+      "PortType",
+      "Service",
+      "ServiceDescription",
+      "ServiceDescriptionType",
+      "ServicePort",
+      "ServicePortType",
+      "ServiceType",
+      "SingletonActivity",
+      "Skill",
+      "SkillType",
+      "System",
+      "SystemType",
+      "TechnicalStandardType",
+      "individualPersonRolePartOfIndividualPerformer",
+      "measureOfTypeCondition"
+    ],
+    "necessary_associations": [
+      {
+        "label": "activityPerformableUnderCondition",
+        "endpoint_types": [
+          "Activity",
+          "Condition"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityPerformedByPerformer",
+        "endpoint_types": [
+          "Performer",
+          "Activity"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      }
+    ]
+  },
+  "StdV-2": {
+    "necessary_terms": [
+      "Activity",
+      "Condition",
+      "TechnicalStandard"
+    ],
+    "optional_terms": [
+      "ActivityType",
+      "Agreement",
+      "AgreementType",
+      "ConditionType",
+      "Data",
+      "FunctionalStandard",
+      "FunctionalStandardType",
+      "IndividualPersonRole",
+      "MeasureableSkill",
+      "MeasureableSkillType",
+      "Organization",
+      "OrganizationType",
+      "OrganizationTypeType",
+      "PersonRoleType",
+      "PersonRoleTypeType",
+      "PortType",
+      "Service",
+      "ServiceDescription",
+      "ServiceDescriptionType",
+      "ServicePort",
+      "ServicePortType",
+      "ServiceType",
+      "SingletonActivity",
+      "Skill",
+      "SkillType",
+      "System",
+      "SystemType",
+      "TechnicalStandardType",
+      "Vision",
+      "VisionType"
+    ],
+    "necessary_associations": [
+      {
+        "label": "activityPerformableUnderCondition",
+        "endpoint_types": [
+          "Activity",
+          "Condition"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityPerformedByPerformer",
+        "endpoint_types": [
+          "Performer",
+          "Activity"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      }
+    ]
+  },
+  "SvcV-1": {
+    "necessary_terms": [
+      "Activity",
+      "Service",
+      "ServiceDescription",
+      "ServicePort"
+    ],
+    "optional_terms": [
+      "ActivityType",
+      "AdaptabilityMeasure",
+      "AdaptabilityMeasureType",
+      "Address",
+      "AddressType",
+      "CircularArea",
+      "CircularAreaType",
+      "CircularAreaTypeType",
+      "Country",
+      "CountryType",
+      "CountryTypeType",
+      "EllipticalArea",
+      "EllipticalAreaType",
+      "EllipticalAreaTypeType",
+      "Facility",
+      "FacilityType",
+      "FacilityTypeType",
+      "FunctionalStandard",
+      "FunctionalStandardType",
+      "GeoFeature",
+      "GeoFeatureType",
+      "GeoFeatureTypeType",
+      "GeoStationaryPoint",
+      "GeoStationaryPointType",
+      "GeoStationaryPointTypeType",
+      "IndividualPersonRole",
+      "Installation",
+      "InstallationType",
+      "InstallationTypeType",
+      "Line"
+    ],
+    "necessary_associations": [
+      {
+        "label": "activityConsumesResource",
+        "endpoint_types": [
+          "Activity",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "consumer"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityPerformedByPerformer",
+        "endpoint_types": [
+          "Performer",
+          "Activity"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityProducesResource",
+        "endpoint_types": [
+          "Activity",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "before",
+            "domain": ""
+          },
+          {
+            "ideas": "place1Type",
+            "domain": "producer"
+          }
+        ]
+      },
+      {
+        "label": "servicePortDescribedBy",
+        "endpoint_types": [
+          "ServicePort",
+          "ServiceDescription"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "ServicePortBeingDescribed"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      }
+    ]
+  },
+  "SvcV-10a": {
+    "necessary_terms": [
+      "Service",
+      "ServiceDescription",
+      "ServicePort"
+    ],
+    "optional_terms": [
+      "Activity",
+      "ActivityType",
+      "AdaptabilityMeasure",
+      "AdaptabilityMeasureType",
+      "Address",
+      "AddressType",
+      "CircularArea",
+      "CircularAreaType",
+      "CircularAreaTypeType",
+      "Condition",
+      "ConditionType",
+      "Country",
+      "CountryType",
+      "CountryTypeType",
+      "Data",
+      "EllipticalArea",
+      "EllipticalAreaType",
+      "EllipticalAreaTypeType",
+      "Facility",
+      "FacilityType",
+      "FacilityTypeType",
+      "FunctionalStandard",
+      "FunctionalStandardType",
+      "GeoFeature",
+      "GeoFeatureType",
+      "GeoFeatureTypeType",
+      "GeoStationaryPoint",
+      "GeoStationaryPointType",
+      "GeoStationaryPointTypeType",
+      "IndividualPersonRole"
+    ],
+    "necessary_associations": [
+      {
+        "label": "servicePortDescribedBy",
+        "endpoint_types": [
+          "ServicePort",
+          "ServiceDescription"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "ServicePortBeingDescribed"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      }
+    ]
+  },
+  "SvcV-10b": {
+    "necessary_terms": [
+      "Activity",
+      "PhysicalMeasure",
+      "Service",
+      "ServiceDescription",
+      "ServicePort",
+      "TemporalMeasure"
+    ],
+    "optional_terms": [
+      "ActivityType",
+      "AdaptabilityMeasure",
+      "AdaptabilityMeasureType",
+      "Address",
+      "AddressType",
+      "Condition",
+      "ConditionType",
+      "Data",
+      "IndividualPersonRole",
+      "MaintainabilityMeasure",
+      "MaintainabilityMeasureType",
+      "MeasureOfEffect",
+      "MeasureOfEffectType",
+      "MeasureableSkill",
+      "MeasureableSkillType",
+      "NeedsSatisfactionMeasure",
+      "NeedsSatisfactionMeasureType",
+      "Organization",
+      "OrganizationType",
+      "OrganizationTypeType",
+      "OrganizationalMeasure",
+      "OrganizationalMeasureType",
+      "PerformanceMeasure",
+      "PerformanceMeasureType",
+      "PersonRoleType",
+      "PersonRoleTypeType",
+      "PhysicalMeasureType",
+      "PortType",
+      "ServiceDescriptionType",
+      "ServicePortType"
+    ],
+    "necessary_associations": [
+      {
+        "label": "activityConsumesResource",
+        "endpoint_types": [
+          "Activity",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "consumer"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityProducesResource",
+        "endpoint_types": [
+          "Activity",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "before",
+            "domain": ""
+          },
+          {
+            "ideas": "place1Type",
+            "domain": "producer"
+          }
+        ]
+      },
+      {
+        "label": "servicePortDescribedBy",
+        "endpoint_types": [
+          "ServicePort",
+          "ServiceDescription"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "ServicePortBeingDescribed"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      }
+    ]
+  },
+  "SvcV-10c": {
+    "necessary_terms": [
+      "Activity",
+      "PhysicalMeasure",
+      "Service",
+      "ServiceDescription",
+      "ServicePort",
+      "TemporalMeasure"
+    ],
+    "optional_terms": [
+      "ActivityType",
+      "AdaptabilityMeasure",
+      "AdaptabilityMeasureType",
+      "Condition",
+      "ConditionType",
+      "Data",
+      "IndividualPersonRole",
+      "MaintainabilityMeasure",
+      "MaintainabilityMeasureType",
+      "MeasureOfEffect",
+      "MeasureOfEffectType",
+      "MeasureableSkill",
+      "MeasureableSkillType",
+      "NeedsSatisfactionMeasure",
+      "NeedsSatisfactionMeasureType",
+      "Organization",
+      "OrganizationType",
+      "OrganizationTypeType",
+      "OrganizationalMeasure",
+      "OrganizationalMeasureType",
+      "PerformanceMeasure",
+      "PerformanceMeasureType",
+      "PersonRoleType",
+      "PersonRoleTypeType",
+      "PhysicalMeasureType",
+      "PortType",
+      "ServiceDescriptionType",
+      "ServicePortType",
+      "ServiceType",
+      "SingletonActivity"
+    ],
+    "necessary_associations": [
+      {
+        "label": "activityConsumesResource",
+        "endpoint_types": [
+          "Activity",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "consumer"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityProducesResource",
+        "endpoint_types": [
+          "Activity",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "before",
+            "domain": ""
+          },
+          {
+            "ideas": "place1Type",
+            "domain": "producer"
+          }
+        ]
+      },
+      {
+        "label": "servicePortDescribedBy",
+        "endpoint_types": [
+          "ServicePort",
+          "ServiceDescription"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "ServicePortBeingDescribed"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      }
+    ]
+  },
+  "SvcV-2": {
+    "necessary_terms": [
+      "Activity",
+      "Service",
+      "ServiceDescription",
+      "ServicePort",
+      "TechnicalStandard"
+    ],
+    "optional_terms": [
+      "ActivityType",
+      "AdaptabilityMeasure",
+      "AdaptabilityMeasureType",
+      "Address",
+      "AddressType",
+      "CircularArea",
+      "CircularAreaType",
+      "CircularAreaTypeType",
+      "Country",
+      "CountryType",
+      "CountryTypeType",
+      "EllipticalArea",
+      "EllipticalAreaType",
+      "EllipticalAreaTypeType",
+      "Facility",
+      "FacilityType",
+      "FacilityTypeType",
+      "FunctionalStandard",
+      "FunctionalStandardType",
+      "GeoFeature",
+      "GeoFeatureType",
+      "GeoFeatureTypeType",
+      "GeoStationaryPoint",
+      "GeoStationaryPointType",
+      "GeoStationaryPointTypeType",
+      "IndividualPersonRole",
+      "Installation",
+      "InstallationType",
+      "InstallationTypeType",
+      "Line"
+    ],
+    "necessary_associations": [
+      {
+        "label": "activityConsumesResource",
+        "endpoint_types": [
+          "Activity",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "consumer"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityPerformedByPerformer",
+        "endpoint_types": [
+          "Performer",
+          "Activity"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityProducesResource",
+        "endpoint_types": [
+          "Activity",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "before",
+            "domain": ""
+          },
+          {
+            "ideas": "place1Type",
+            "domain": "producer"
+          }
+        ]
+      },
+      {
+        "label": "portPartOfPerformer",
+        "endpoint_types": [
+          "Port",
+          "Performer"
+        ],
+        "roles": [
+          {
+            "ideas": "",
+            "domain": ""
+          },
+          {
+            "ideas": "1..*",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "servicePortDescribedBy",
+        "endpoint_types": [
+          "ServicePort",
+          "ServiceDescription"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "ServicePortBeingDescribed"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      }
+    ]
+  },
+  "SvcV-3a": {
+    "necessary_terms": [
+      "Activity",
+      "Service",
+      "ServiceDescription",
+      "ServicePort",
+      "System"
+    ],
+    "optional_terms": [
+      "ActivityType",
+      "AdaptabilityMeasure",
+      "AdaptabilityMeasureType",
+      "FunctionalStandard",
+      "FunctionalStandardType",
+      "IndividualPersonRole",
+      "MaintainabilityMeasure",
+      "MaintainabilityMeasureType",
+      "MeasureOfEffect",
+      "MeasureOfEffectType",
+      "MeasureableSkill",
+      "MeasureableSkillType",
+      "NeedsSatisfactionMeasure",
+      "NeedsSatisfactionMeasureType",
+      "Organization",
+      "OrganizationType",
+      "OrganizationTypeType",
+      "OrganizationalMeasure",
+      "OrganizationalMeasureType",
+      "PerformanceMeasure",
+      "PerformanceMeasureType",
+      "PersonRoleType",
+      "PersonRoleTypeType",
+      "PhysicalMeasure",
+      "PhysicalMeasureType",
+      "PortType",
+      "ServiceDescriptionType",
+      "ServicePortType",
+      "ServiceType",
+      "SingletonActivity"
+    ],
+    "necessary_associations": [
+      {
+        "label": "activityConsumesResource",
+        "endpoint_types": [
+          "Activity",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "consumer"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityProducesResource",
+        "endpoint_types": [
+          "Activity",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "before",
+            "domain": ""
+          },
+          {
+            "ideas": "place1Type",
+            "domain": "producer"
+          }
+        ]
+      },
+      {
+        "label": "servicePortDescribedBy",
+        "endpoint_types": [
+          "ServicePort",
+          "ServiceDescription"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "ServicePortBeingDescribed"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      }
+    ]
+  },
+  "SvcV-3b": {
+    "necessary_terms": [
+      "Activity",
+      "Data",
+      "Service",
+      "ServiceDescription",
+      "ServicePort"
+    ],
+    "optional_terms": [
+      "ActivityType",
+      "AdaptabilityMeasure",
+      "AdaptabilityMeasureType",
+      "Condition",
+      "ConditionType",
+      "FunctionalStandard",
+      "FunctionalStandardType",
+      "IndividualPersonRole",
+      "MaintainabilityMeasure",
+      "MaintainabilityMeasureType",
+      "MeasureOfEffect",
+      "MeasureOfEffectType",
+      "MeasureableSkill",
+      "MeasureableSkillType",
+      "NeedsSatisfactionMeasure",
+      "NeedsSatisfactionMeasureType",
+      "Organization",
+      "OrganizationType",
+      "OrganizationTypeType",
+      "OrganizationalMeasure",
+      "OrganizationalMeasureType",
+      "PerformanceMeasure",
+      "PerformanceMeasureType",
+      "PersonRoleType",
+      "PersonRoleTypeType",
+      "PhysicalMeasure",
+      "PhysicalMeasureType",
+      "PortType",
+      "ServiceDescriptionType",
+      "ServicePortType"
+    ],
+    "necessary_associations": [
+      {
+        "label": "activityConsumesResource",
+        "endpoint_types": [
+          "Activity",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "consumer"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityProducesResource",
+        "endpoint_types": [
+          "Activity",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "before",
+            "domain": ""
+          },
+          {
+            "ideas": "place1Type",
+            "domain": "producer"
+          }
+        ]
+      },
+      {
+        "label": "servicePortDescribedBy",
+        "endpoint_types": [
+          "ServicePort",
+          "ServiceDescription"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "ServicePortBeingDescribed"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      }
+    ]
+  },
+  "SvcV-4": {
+    "necessary_terms": [
+      "Activity",
+      "Service",
+      "ServiceDescription",
+      "ServicePort"
+    ],
+    "optional_terms": [
+      "ActivityType",
+      "Capability",
+      "Condition",
+      "ConditionType",
+      "FunctionalStandard",
+      "FunctionalStandardType",
+      "Organization",
+      "OrganizationType",
+      "OrganizationTypeType",
+      "PortType",
+      "ServiceDescriptionType",
+      "ServicePortType",
+      "ServiceType",
+      "SingletonActivity",
+      "activityPartOfCapability",
+      "activityPerformableUnderCondition",
+      "activityPerformedByPerformer",
+      "measureOfTypeActivity",
+      "measureOfTypeCondition",
+      "ruleConstrainsActivity",
+      "serviceEnablesAccessToResource"
+    ],
+    "necessary_associations": [
+      {
+        "label": "servicePortDescribedBy",
+        "endpoint_types": [
+          "ServicePort",
+          "ServiceDescription"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "ServicePortBeingDescribed"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      }
+    ]
+  },
+  "SvcV-5": {
+    "necessary_terms": [
+      "Service",
+      "ServiceDescription",
+      "ServicePort"
+    ],
+    "optional_terms": [
+      "Activity",
+      "ActivityType",
+      "Organization",
+      "OrganizationType",
+      "OrganizationTypeType",
+      "PortType",
+      "ServiceDescriptionType",
+      "ServicePortType",
+      "ServiceType",
+      "SingletonActivity",
+      "TechnicalStandard",
+      "TechnicalStandardType",
+      "serviceEnablesAccessToResource"
+    ],
+    "necessary_associations": [
+      {
+        "label": "servicePortDescribedBy",
+        "endpoint_types": [
+          "ServicePort",
+          "ServiceDescription"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "ServicePortBeingDescribed"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      }
+    ]
+  },
+  "SvcV-6": {
+    "necessary_terms": [
+      "Activity",
+      "Data",
+      "NeedsSatisfactionMeasure",
+      "PerformanceMeasure",
+      "PhysicalMeasure",
+      "Service",
+      "ServiceDescription",
+      "ServicePort",
+      "TechnicalStandard",
+      "TemporalMeasure"
+    ],
+    "optional_terms": [
+      "ActivityType",
+      "AdaptabilityMeasure",
+      "AdaptabilityMeasureType",
+      "Address",
+      "AddressType",
+      "Condition",
+      "ConditionType",
+      "FunctionalStandard",
+      "FunctionalStandardType",
+      "IndividualPersonRole",
+      "MaintainabilityMeasure",
+      "MaintainabilityMeasureType",
+      "MeasureOfEffect",
+      "MeasureOfEffectType",
+      "MeasureableSkill",
+      "MeasureableSkillType",
+      "NeedsSatisfactionMeasureType",
+      "Organization",
+      "OrganizationType",
+      "OrganizationTypeType",
+      "OrganizationalMeasure",
+      "OrganizationalMeasureType",
+      "PerformanceMeasureType",
+      "PersonRoleType",
+      "PersonRoleTypeType",
+      "PhysicalMeasureType",
+      "PortType",
+      "ServiceDescriptionType",
+      "ServicePortType",
+      "ServiceType"
+    ],
+    "necessary_associations": [
+      {
+        "label": "activityConsumesResource",
+        "endpoint_types": [
+          "Activity",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "consumer"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityPerformedByPerformer",
+        "endpoint_types": [
+          "Performer",
+          "Activity"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "activityProducesResource",
+        "endpoint_types": [
+          "Activity",
+          "Resource"
+        ],
+        "roles": [
+          {
+            "ideas": "before",
+            "domain": ""
+          },
+          {
+            "ideas": "place1Type",
+            "domain": "producer"
+          }
+        ]
+      },
+      {
+        "label": "measureOfTypeWholePartType"
+      },
+      {
+        "label": "measureTypeApplicableToActivity",
+        "endpoint_types": [
+          "MeasureType",
+          "Activity"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "servicePortDescribedBy",
+        "endpoint_types": [
+          "ServicePort",
+          "ServiceDescription"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "ServicePortBeingDescribed"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      }
+    ]
+  },
+  "SvcV-7": {
+    "necessary_terms": [
+      "Activity",
+      "MaintainabilityMeasure",
+      "MeasureableSkill",
+      "PerformanceMeasure",
+      "PersonRoleType",
+      "Service",
+      "ServiceDescription",
+      "ServicePort",
+      "Skill"
+    ],
+    "optional_terms": [
+      "ActivityType",
+      "AdaptabilityMeasure",
+      "AdaptabilityMeasureType",
+      "Condition",
+      "ConditionType",
+      "FunctionalStandard",
+      "FunctionalStandardType",
+      "IndividualPersonRole",
+      "MaintainabilityMeasureType",
+      "MeasureOfEffect",
+      "MeasureOfEffectType",
+      "MeasureableSkillType",
+      "NeedsSatisfactionMeasure",
+      "NeedsSatisfactionMeasureType",
+      "Organization",
+      "OrganizationType",
+      "OrganizationTypeType",
+      "OrganizationalMeasure",
+      "OrganizationalMeasureType",
+      "PerformanceMeasureType",
+      "PersonRoleTypeType",
+      "PhysicalMeasure",
+      "PhysicalMeasureType",
+      "PortType",
+      "ServiceDescriptionType",
+      "ServicePortType",
+      "ServiceType",
+      "SingletonActivity",
+      "SkillType",
+      "System"
+    ],
+    "necessary_associations": [
+      {
+        "label": "measureOfTypeWholePartType"
+      },
+      {
+        "label": "measureTypeApplicableToActivity",
+        "endpoint_types": [
+          "MeasureType",
+          "Activity"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "measureableSkillOfPersonRoleType"
+      },
+      {
+        "label": "servicePortDescribedBy",
+        "endpoint_types": [
+          "ServicePort",
+          "ServiceDescription"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "ServicePortBeingDescribed"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      },
+      {
+        "label": "skillOfPersonRoleType",
+        "endpoint_types": [
+          "Skill",
+          "PersonRoleType"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": ""
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      }
+    ]
+  },
+  "SvcV-8": {
+    "necessary_terms": [
+      "Service",
+      "ServiceDescription",
+      "ServicePort"
+    ],
+    "optional_terms": [
+      "Activity",
+      "ActivityType",
+      "AdaptabilityMeasure",
+      "AdaptabilityMeasureType",
+      "Condition",
+      "ConditionType",
+      "Data",
+      "FunctionalStandard",
+      "FunctionalStandardType",
+      "IndividualPersonRole",
+      "MaintainabilityMeasure",
+      "MaintainabilityMeasureType",
+      "Materiel",
+      "MaterielType",
+      "MeasureOfDesire",
+      "MeasureOfDesireType",
+      "MeasureOfEffect",
+      "MeasureOfEffectType",
+      "MeasureableSkill",
+      "MeasureableSkillType",
+      "NeedsSatisfactionMeasure",
+      "NeedsSatisfactionMeasureType",
+      "Organization",
+      "OrganizationType",
+      "OrganizationTypeType",
+      "OrganizationalMeasure",
+      "OrganizationalMeasureType",
+      "PerformanceMeasure",
+      "PerformanceMeasureType",
+      "PersonRoleType"
+    ],
+    "necessary_associations": [
+      {
+        "label": "servicePortDescribedBy",
+        "endpoint_types": [
+          "ServicePort",
+          "ServiceDescription"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "ServicePortBeingDescribed"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      }
+    ]
+  },
+  "SvcV-9": {
+    "necessary_terms": [
+      "Service",
+      "ServiceDescription",
+      "ServicePort"
+    ],
+    "optional_terms": [
+      "Activity",
+      "ActivityType",
+      "AdaptabilityMeasure",
+      "AdaptabilityMeasureType",
+      "Condition",
+      "ConditionType",
+      "FunctionalStandard",
+      "FunctionalStandardType",
+      "IndividualPersonRole",
+      "MaintainabilityMeasure",
+      "MaintainabilityMeasureType",
+      "Materiel",
+      "MaterielType",
+      "MeasureOfDesire",
+      "MeasureOfDesireType",
+      "MeasureOfEffect",
+      "MeasureOfEffectType",
+      "MeasureableSkill",
+      "MeasureableSkillType",
+      "NeedsSatisfactionMeasure",
+      "NeedsSatisfactionMeasureType",
+      "Organization",
+      "OrganizationType",
+      "OrganizationTypeType",
+      "OrganizationalMeasure",
+      "OrganizationalMeasureType",
+      "PerformanceMeasure",
+      "PerformanceMeasureType",
+      "PersonRoleType",
+      "PersonRoleTypeType"
+    ],
+    "necessary_associations": [
+      {
+        "label": "servicePortDescribedBy",
+        "endpoint_types": [
+          "ServicePort",
+          "ServiceDescription"
+        ],
+        "roles": [
+          {
+            "ideas": "place1Type",
+            "domain": "ServicePortBeingDescribed"
+          },
+          {
+            "ideas": "place2Type",
+            "domain": ""
+          }
+        ]
+      }
+    ]
+  }
+}

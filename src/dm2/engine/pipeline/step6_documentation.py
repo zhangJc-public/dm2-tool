@@ -239,6 +239,7 @@ class Step6Documentation:
                 },
                 "rules": instr.rules,
                 "template": instr.template,
+                "association_manifest": instr.association_manifest,
                 "output_path": instr.output_path,
             })
         return instructions

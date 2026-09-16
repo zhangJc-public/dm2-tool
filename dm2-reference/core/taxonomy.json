@@ -1,0 +1,1060 @@
+{
+  "parents": {
+    "Activity": [
+      "IndividualType",
+      "Thing"
+    ],
+    "AdaptabilityMeasure": [
+      "ServiceLevel"
+    ],
+    "Address": [
+      "Name"
+    ],
+    "Agreement": [
+      "Rule"
+    ],
+    "ArchitecturalDescription": [
+      "Information"
+    ],
+    "BeforeAfterType": [
+      "CoupleType"
+    ],
+    "Capability": [
+      "IndividualType"
+    ],
+    "CircularArea": [
+      "EllipticalArea"
+    ],
+    "CircularAreaType": [
+      "EllipticalAreaType"
+    ],
+    "Condition": [
+      "IndividualType",
+      "Thing"
+    ],
+    "Constraint": [
+      "Rule"
+    ],
+    "ConsumingPartOfActivity": [
+      "IndividualType"
+    ],
+    "Country": [
+      "GeoPoliticalExtent"
+    ],
+    "CountryType": [
+      "GeoPoliticalExtentType"
+    ],
+    "CoupleType": [
+      "TupleType"
+    ],
+    "Data": [
+      "Information"
+    ],
+    "DataType": [
+      "InformationType"
+    ],
+    "DescriptionScheme": [
+      "Information",
+      "RepresentationScheme"
+    ],
+    "DesiredEffect": [
+      "IndividualType"
+    ],
+    "DomainInformation": [
+      "Information"
+    ],
+    "EffectsMeasure": [
+      "MeasureType"
+    ],
+    "EllipticalArea": [
+      "PlanarSurface"
+    ],
+    "EllipticalAreaType": [
+      "LocationType"
+    ],
+    "EndBoundaryType": [
+      "TemporalBoundaryType"
+    ],
+    "Facility": [
+      "RealProperty"
+    ],
+    "FacilityType": [
+      "RealPropertyType"
+    ],
+    "FunctionalStandard": [
+      "Standard"
+    ],
+    "GeoFeature": [
+      "GeoPoliticalExtent"
+    ],
+    "GeoPoliticalExtent": [
+      "IndividualResource",
+      "Location"
+    ],
+    "GeoPoliticalExtentType": [
+      "LocationType",
+      "Resource"
+    ],
+    "GeoPrimaryPoint": [
+      "Location"
+    ],
+    "GeoStationaryPoint": [
+      "Point"
+    ],
+    "GeoStationaryPointType": [
+      "LocationType"
+    ],
+    "Guidance": [
+      "IndividualType",
+      "Thing"
+    ],
+    "Individual": [
+      "Thing"
+    ],
+    "IndividualActivity": [
+      "Individual"
+    ],
+    "IndividualDesiredEffect": [
+      "Individual"
+    ],
+    "IndividualPerformer": [
+      "IndividualResource"
+    ],
+    "IndividualPersonRole": [
+      "IndividualPerformer"
+    ],
+    "IndividualResource": [
+      "Individual"
+    ],
+    "IndividualType": [
+      "Type"
+    ],
+    "Information": [
+      "Representation",
+      "RepresentationType",
+      "Resource"
+    ],
+    "InformationType": [
+      "RepresentationType",
+      "Type"
+    ],
+    "Installation": [
+      "GeoPoliticalExtent"
+    ],
+    "InstallationType": [
+      "LocationType"
+    ],
+    "Line": [
+      "Location"
+    ],
+    "LineType": [
+      "LocationType"
+    ],
+    "Location": [
+      "Individual"
+    ],
+    "LocationType": [
+      "IndividualType"
+    ],
+    "MaintainabilityMeasure": [
+      "ServiceLevel"
+    ],
+    "Materiel": [
+      "Resource"
+    ],
+    "Measure": [
+      "IndividualType",
+      "Property"
+    ],
+    "MeasureOfDesire": [
+      "Measure"
+    ],
+    "MeasureOfEffect": [
+      "Measure"
+    ],
+    "MeasureType": [
+      "TupleType",
+      "Type"
+    ],
+    "MeasureTypeUnitsOfMeasure": [
+      "MeasureType"
+    ],
+    "MeasureableSkill": [
+      "Measure",
+      "Skill"
+    ],
+    "Name": [
+      "IndividualType",
+      "Representation"
+    ],
+    "NamingScheme": [
+      "Type"
+    ],
+    "NeedSatisfactionMeasure": [
+      "ServiceLevel"
+    ],
+    "NeedsSatisfactionMeasure": [
+      "ServiceLevel"
+    ],
+    "Organization": [
+      "IndividualPerformer"
+    ],
+    "OrganizationType": [
+      "Performer"
+    ],
+    "OrganizationalMeasure": [
+      "IndividualType",
+      "Measure"
+    ],
+    "OverlapType": [
+      "WholePartType"
+    ],
+    "PedigreeInformation": [
+      "Information"
+    ],
+    "PedigreeInformationType": [
+      "InformationType"
+    ],
+    "PerformanceMeasure": [
+      "ServiceLevel"
+    ],
+    "Performer": [
+      "Resource"
+    ],
+    "PersonRoleType": [
+      "Performer"
+    ],
+    "PhysicalMeasure": [
+      "Measure",
+      "MeasureType"
+    ],
+    "PlanarSurface": [
+      "Surface"
+    ],
+    "PlanarSurfaceType": [
+      "SurfaceType"
+    ],
+    "Point": [
+      "Location"
+    ],
+    "PointType": [
+      "LocationType"
+    ],
+    "PolygonArea": [
+      "PlanarSurface"
+    ],
+    "PolygonAreaType": [
+      "LocationType"
+    ],
+    "Port": [
+      "Performer"
+    ],
+    "PositionReferenceFrame": [
+      "Information"
+    ],
+    "Powertype": [
+      "Type"
+    ],
+    "ProducingPartOfActivity": [
+      "IndividualType"
+    ],
+    "Project": [
+      "Individual"
+    ],
+    "ProjectType": [
+      "IndividualType"
+    ],
+    "Property": [
+      "IndividualType"
+    ],
+    "RealProperty": [
+      "GeoPoliticalExtent"
+    ],
+    "RealPropertyType": [
+      "GeoPoliticalExtentType"
+    ],
+    "RectangleAreaType": [
+      "PolygonAreaType"
+    ],
+    "RectangularArea": [
+      "PolygonArea"
+    ],
+    "RegionOfCountry": [
+      "GeoPoliticalExtent"
+    ],
+    "RegionOfCountryType": [
+      "GeoPoliticalExtentType"
+    ],
+    "RegionOfWorld": [
+      "GeoPoliticalExtent"
+    ],
+    "Representation": [
+      "SignType"
+    ],
+    "RepresentationScheme": [
+      "RepresentationType"
+    ],
+    "RepresentationType": [
+      "Resource"
+    ],
+    "Resource": [
+      "IndividualType"
+    ],
+    "Rule": [
+      "Guidance"
+    ],
+    "SecurityAttributeGroup": [
+      "Guidance"
+    ],
+    "SecurityAttributesGroup": [
+      "Information"
+    ],
+    "Service": [
+      "Performer"
+    ],
+    "ServiceDescription": [
+      "ArchitecturalDescription",
+      "Information"
+    ],
+    "ServiceLevel": [
+      "Measure",
+      "MeasureType"
+    ],
+    "ServicePort": [
+      "Port"
+    ],
+    "SignType": [
+      "RepresentationType"
+    ],
+    "SingletonActivity": [
+      "Activity"
+    ],
+    "SingletonIndividualType": [
+      "IndividualType"
+    ],
+    "SingletonResource": [
+      "Resource"
+    ],
+    "Site": [
+      "RealProperty"
+    ],
+    "SiteType": [
+      "RealPropertyType"
+    ],
+    "Skill": [
+      "IndividualType",
+      "Property"
+    ],
+    "SolidVolume": [
+      "Location"
+    ],
+    "SolidVolumeType": [
+      "LocationType"
+    ],
+    "SpatialMeasure": [
+      "MeasureType",
+      "PhysicalMeasure"
+    ],
+    "Standard": [
+      "Rule"
+    ],
+    "StartBoundaryType": [
+      "TemporalBoundaryType"
+    ],
+    "Surface": [
+      "Location"
+    ],
+    "SurfaceType": [
+      "LocationType"
+    ],
+    "System": [
+      "Performer"
+    ],
+    "TechnicalStandard": [
+      "Standard"
+    ],
+    "TemporalBoundaryType": [
+      "IndividualType",
+      "TemporalWholePartType"
+    ],
+    "TemporalMeasure": [
+      "PhysicalMeasure"
+    ],
+    "TemporalWholePartType": [
+      "WholePartType"
+    ],
+    "TupleType": [
+      "Type"
+    ],
+    "Type": [
+      "Thing"
+    ],
+    "Vision": [
+      "IndividualType"
+    ],
+    "WholePartType": [
+      "CoupleType"
+    ],
+    "activityConsumesResource": [
+      "BeforeAfterType",
+      "OverlapType"
+    ],
+    "activityMapsToCapabilityType": [
+      "OverlapType"
+    ],
+    "activityPartOfCapability": [
+      "WholePartType"
+    ],
+    "activityPartOfProjectType": [
+      "WholePartType"
+    ],
+    "activityPerformableUnderCondition": [
+      "OverlapType"
+    ],
+    "activityPerformedByPerformer": [
+      "OverlapType"
+    ],
+    "activityProducesResource": [
+      "BeforeAfterType",
+      "OverlapType"
+    ],
+    "associationOfInformation": [
+      "tuple"
+    ],
+    "axesDescribedBy": [
+      "describedBy"
+    ],
+    "beforeAfter": [
+      "couple"
+    ],
+    "capabilityOfPerformer": [
+      "propertyOfType"
+    ],
+    "coordinateCenterDescribedBy": [
+      "describedBy"
+    ],
+    "couple": [
+      "tuple"
+    ],
+    "describedBy": [
+      "representedBy"
+    ],
+    "desireMeasure": [
+      "measureOfType"
+    ],
+    "desiredEffect": [
+      "OverlapType"
+    ],
+    "desiredEffectDirectsActivity": [
+      "BeforeAfterType",
+      "OverlapType"
+    ],
+    "desiredEffectIsRealizedByProjectType": [
+      "BeforeAfterType",
+      "OverlapType"
+    ],
+    "desiredEffectOfCapability": [
+      "WholePartType"
+    ],
+    "effectMeasure": [
+      "measureOfType"
+    ],
+    "facilityPartOfSite": [
+      "wholePart"
+    ],
+    "individualPersonRolePartOfIndividualPerformer": [
+      "wholePart"
+    ],
+    "individualResourceInLocation": [
+      "wholePart"
+    ],
+    "informationPedigree": [
+      "describedBy"
+    ],
+    "jointAction": [
+      "BeforeAfterType"
+    ],
+    "linePartOfPlanarSurface": [
+      "wholePart"
+    ],
+    "locationNamedByAddress": [
+      "namedBy"
+    ],
+    "materielPartOfPerformer": [
+      "WholePartType"
+    ],
+    "measureOfIndividual": [
+      "propertyOfIndividual"
+    ],
+    "measureOfIndividualEndBoundary": [
+      "measureOfIndividual"
+    ],
+    "measureOfIndividualPoint": [
+      "measureOfIndividual"
+    ],
+    "measureOfIndividualStartBoundary": [
+      "measureOfIndividual"
+    ],
+    "measureOfType": [
+      "propertyOfType"
+    ],
+    "measureOfTypeActivity": [
+      "measureOfType"
+    ],
+    "measureOfTypeCondition": [
+      "measureOfType"
+    ],
+    "measureOfTypeEndBoundaryType": [
+      "measureOfType"
+    ],
+    "measureOfTypeProjectType": [
+      "measureOfType"
+    ],
+    "measureOfTypeResource": [
+      "OverlapType",
+      "measureOfType"
+    ],
+    "measureOfTypeStartBoundaryType": [
+      "measureOfType"
+    ],
+    "measureOfTypeWholePartType": [
+      "measureOfType"
+    ],
+    "measureTypeApplicableToActivity": [
+      "typeInstance"
+    ],
+    "measureableSkillOfPersonRoleType": [
+      "measureOfType",
+      "skillOfPersonRoleType"
+    ],
+    "namedBy": [
+      "representedBy"
+    ],
+    "organizationPartOfResource": [
+      "WholePartType"
+    ],
+    "overlap": [
+      "wholePart"
+    ],
+    "partiesToAnAgreement": [
+      "OverlapType"
+    ],
+    "personRoleTypePartOfPerformer": [
+      "WholePartType"
+    ],
+    "pointPartOfLine": [
+      "wholePart"
+    ],
+    "pointPartOfPlanarSurface": [
+      "wholePart"
+    ],
+    "portPartOfPerformer": [
+      "WholePartType"
+    ],
+    "powertypeInstance": [
+      "couple",
+      "typeInstance"
+    ],
+    "propertyOfIndividual": [
+      "typeInstance"
+    ],
+    "propertyOfType": [
+      "superSubType"
+    ],
+    "regionOfCountryPartOfCountry": [
+      "wholePart"
+    ],
+    "representedBy": [
+      "couple"
+    ],
+    "resourceInLocationType": [
+      "WholePartType"
+    ],
+    "ruleConstrainsActivity": [
+      "superSubType"
+    ],
+    "rulePartOfMeasureType": [
+      "WholePartType"
+    ],
+    "serviceEnablesAccessToResource": [
+      "OverlapType"
+    ],
+    "servicePortDescribedBy": [
+      "describedBy"
+    ],
+    "sitePartOfInstallation": [
+      "wholePart"
+    ],
+    "skillOfPersonRoleType": [
+      "propertyOfType"
+    ],
+    "superSubType": [
+      "couple"
+    ],
+    "temporalWholePart": [
+      "wholePart"
+    ],
+    "tuple": [
+      "Thing"
+    ],
+    "typeInstance": [
+      "couple"
+    ],
+    "visionIsRealizedByDesiredEffect": [
+      "OverlapType"
+    ],
+    "wholePart": [
+      "couple"
+    ]
+  },
+  "children": {
+    "Activity": [
+      "SingletonActivity"
+    ],
+    "ArchitecturalDescription": [
+      "ServiceDescription"
+    ],
+    "BeforeAfterType": [
+      "activityConsumesResource",
+      "activityProducesResource",
+      "desiredEffectDirectsActivity",
+      "desiredEffectIsRealizedByProjectType",
+      "jointAction"
+    ],
+    "CoupleType": [
+      "BeforeAfterType",
+      "WholePartType"
+    ],
+    "EllipticalArea": [
+      "CircularArea"
+    ],
+    "EllipticalAreaType": [
+      "CircularAreaType"
+    ],
+    "GeoPoliticalExtent": [
+      "Country",
+      "GeoFeature",
+      "Installation",
+      "RealProperty",
+      "RegionOfCountry",
+      "RegionOfWorld"
+    ],
+    "GeoPoliticalExtentType": [
+      "CountryType",
+      "RealPropertyType",
+      "RegionOfCountryType"
+    ],
+    "Guidance": [
+      "Rule",
+      "SecurityAttributeGroup"
+    ],
+    "Individual": [
+      "IndividualActivity",
+      "IndividualDesiredEffect",
+      "IndividualResource",
+      "Location",
+      "Project"
+    ],
+    "IndividualPerformer": [
+      "IndividualPersonRole",
+      "Organization"
+    ],
+    "IndividualResource": [
+      "GeoPoliticalExtent",
+      "IndividualPerformer"
+    ],
+    "IndividualType": [
+      "Activity",
+      "Capability",
+      "Condition",
+      "ConsumingPartOfActivity",
+      "DesiredEffect",
+      "Guidance",
+      "LocationType",
+      "Measure",
+      "Name",
+      "OrganizationalMeasure",
+      "ProducingPartOfActivity",
+      "ProjectType",
+      "Property",
+      "Resource",
+      "SingletonIndividualType",
+      "Skill",
+      "TemporalBoundaryType",
+      "Vision"
+    ],
+    "Information": [
+      "ArchitecturalDescription",
+      "Data",
+      "DescriptionScheme",
+      "DomainInformation",
+      "PedigreeInformation",
+      "PositionReferenceFrame",
+      "SecurityAttributesGroup",
+      "ServiceDescription"
+    ],
+    "InformationType": [
+      "DataType",
+      "PedigreeInformationType"
+    ],
+    "Location": [
+      "GeoPoliticalExtent",
+      "GeoPrimaryPoint",
+      "Line",
+      "Point",
+      "SolidVolume",
+      "Surface"
+    ],
+    "LocationType": [
+      "EllipticalAreaType",
+      "GeoPoliticalExtentType",
+      "GeoStationaryPointType",
+      "InstallationType",
+      "LineType",
+      "PointType",
+      "PolygonAreaType",
+      "SolidVolumeType",
+      "SurfaceType"
+    ],
+    "Measure": [
+      "MeasureOfDesire",
+      "MeasureOfEffect",
+      "MeasureableSkill",
+      "OrganizationalMeasure",
+      "PhysicalMeasure",
+      "ServiceLevel"
+    ],
+    "MeasureType": [
+      "EffectsMeasure",
+      "MeasureTypeUnitsOfMeasure",
+      "PhysicalMeasure",
+      "ServiceLevel",
+      "SpatialMeasure"
+    ],
+    "Name": [
+      "Address"
+    ],
+    "OverlapType": [
+      "activityConsumesResource",
+      "activityMapsToCapabilityType",
+      "activityPerformableUnderCondition",
+      "activityPerformedByPerformer",
+      "activityProducesResource",
+      "desiredEffect",
+      "desiredEffectDirectsActivity",
+      "desiredEffectIsRealizedByProjectType",
+      "measureOfTypeResource",
+      "partiesToAnAgreement",
+      "serviceEnablesAccessToResource",
+      "visionIsRealizedByDesiredEffect"
+    ],
+    "Performer": [
+      "OrganizationType",
+      "PersonRoleType",
+      "Port",
+      "Service",
+      "System"
+    ],
+    "PhysicalMeasure": [
+      "SpatialMeasure",
+      "TemporalMeasure"
+    ],
+    "PlanarSurface": [
+      "EllipticalArea",
+      "PolygonArea"
+    ],
+    "Point": [
+      "GeoStationaryPoint"
+    ],
+    "PolygonArea": [
+      "RectangularArea"
+    ],
+    "PolygonAreaType": [
+      "RectangleAreaType"
+    ],
+    "Port": [
+      "ServicePort"
+    ],
+    "Property": [
+      "Measure",
+      "Skill"
+    ],
+    "RealProperty": [
+      "Facility",
+      "Site"
+    ],
+    "RealPropertyType": [
+      "FacilityType",
+      "SiteType"
+    ],
+    "Representation": [
+      "Information",
+      "Name"
+    ],
+    "RepresentationScheme": [
+      "DescriptionScheme"
+    ],
+    "RepresentationType": [
+      "Information",
+      "InformationType",
+      "RepresentationScheme",
+      "SignType"
+    ],
+    "Resource": [
+      "GeoPoliticalExtentType",
+      "Information",
+      "Materiel",
+      "Performer",
+      "RepresentationType",
+      "SingletonResource"
+    ],
+    "Rule": [
+      "Agreement",
+      "Constraint",
+      "Standard"
+    ],
+    "ServiceLevel": [
+      "AdaptabilityMeasure",
+      "MaintainabilityMeasure",
+      "NeedSatisfactionMeasure",
+      "NeedsSatisfactionMeasure",
+      "PerformanceMeasure"
+    ],
+    "SignType": [
+      "Representation"
+    ],
+    "Skill": [
+      "MeasureableSkill"
+    ],
+    "Standard": [
+      "FunctionalStandard",
+      "TechnicalStandard"
+    ],
+    "Surface": [
+      "PlanarSurface"
+    ],
+    "SurfaceType": [
+      "PlanarSurfaceType"
+    ],
+    "TemporalBoundaryType": [
+      "EndBoundaryType",
+      "StartBoundaryType"
+    ],
+    "TemporalWholePartType": [
+      "TemporalBoundaryType"
+    ],
+    "Thing": [
+      "Activity",
+      "Condition",
+      "Guidance",
+      "Individual",
+      "Type",
+      "tuple"
+    ],
+    "TupleType": [
+      "CoupleType",
+      "MeasureType"
+    ],
+    "Type": [
+      "IndividualType",
+      "InformationType",
+      "MeasureType",
+      "NamingScheme",
+      "Powertype",
+      "TupleType"
+    ],
+    "WholePartType": [
+      "OverlapType",
+      "TemporalWholePartType",
+      "activityPartOfCapability",
+      "activityPartOfProjectType",
+      "desiredEffectOfCapability",
+      "materielPartOfPerformer",
+      "organizationPartOfResource",
+      "personRoleTypePartOfPerformer",
+      "portPartOfPerformer",
+      "resourceInLocationType",
+      "rulePartOfMeasureType"
+    ],
+    "couple": [
+      "beforeAfter",
+      "powertypeInstance",
+      "representedBy",
+      "superSubType",
+      "typeInstance",
+      "wholePart"
+    ],
+    "describedBy": [
+      "axesDescribedBy",
+      "coordinateCenterDescribedBy",
+      "informationPedigree",
+      "servicePortDescribedBy"
+    ],
+    "measureOfIndividual": [
+      "measureOfIndividualEndBoundary",
+      "measureOfIndividualPoint",
+      "measureOfIndividualStartBoundary"
+    ],
+    "measureOfType": [
+      "desireMeasure",
+      "effectMeasure",
+      "measureOfTypeActivity",
+      "measureOfTypeCondition",
+      "measureOfTypeEndBoundaryType",
+      "measureOfTypeProjectType",
+      "measureOfTypeResource",
+      "measureOfTypeStartBoundaryType",
+      "measureOfTypeWholePartType",
+      "measureableSkillOfPersonRoleType"
+    ],
+    "namedBy": [
+      "locationNamedByAddress"
+    ],
+    "propertyOfIndividual": [
+      "measureOfIndividual"
+    ],
+    "propertyOfType": [
+      "capabilityOfPerformer",
+      "measureOfType",
+      "skillOfPersonRoleType"
+    ],
+    "representedBy": [
+      "describedBy",
+      "namedBy"
+    ],
+    "skillOfPersonRoleType": [
+      "measureableSkillOfPersonRoleType"
+    ],
+    "superSubType": [
+      "propertyOfType",
+      "ruleConstrainsActivity"
+    ],
+    "tuple": [
+      "associationOfInformation",
+      "couple"
+    ],
+    "typeInstance": [
+      "measureTypeApplicableToActivity",
+      "powertypeInstance",
+      "propertyOfIndividual"
+    ],
+    "wholePart": [
+      "facilityPartOfSite",
+      "individualPersonRolePartOfIndividualPerformer",
+      "individualResourceInLocation",
+      "linePartOfPlanarSurface",
+      "overlap",
+      "pointPartOfLine",
+      "pointPartOfPlanarSurface",
+      "regionOfCountryPartOfCountry",
+      "sitePartOfInstallation",
+      "temporalWholePart"
+    ]
+  },
+  "powertype_pairs": [
+    {
+      "individual": "BeforeAfterType",
+      "powertype": "TupleType"
+    },
+    {
+      "individual": "Capability",
+      "powertype": "CapabilityType"
+    },
+    {
+      "individual": "CoupleType",
+      "powertype": "TupleType"
+    },
+    {
+      "individual": "Data",
+      "powertype": "DataType"
+    },
+    {
+      "individual": "Individual",
+      "powertype": "IndividualType"
+    },
+    {
+      "individual": "IndividualActivity",
+      "powertype": "Activity"
+    },
+    {
+      "individual": "IndividualActivity",
+      "powertype": "SingletonActivity"
+    },
+    {
+      "individual": "IndividualPerformer",
+      "powertype": "Performer"
+    },
+    {
+      "individual": "IndividualPersonRole",
+      "powertype": "PersonRoleType"
+    },
+    {
+      "individual": "IndividualResource",
+      "powertype": "Resource"
+    },
+    {
+      "individual": "Information",
+      "powertype": "InformationType"
+    },
+    {
+      "individual": "Location",
+      "powertype": "LocationType"
+    },
+    {
+      "individual": "Measure",
+      "powertype": "MeasureType"
+    },
+    {
+      "individual": "Name",
+      "powertype": "NameType"
+    },
+    {
+      "individual": "Organization",
+      "powertype": "OrganizationType"
+    },
+    {
+      "individual": "OrganizationType",
+      "powertype": "Organization"
+    },
+    {
+      "individual": "OverlapType",
+      "powertype": "TupleType"
+    },
+    {
+      "individual": "PedigreeInformation",
+      "powertype": "PedigreeInformationType"
+    },
+    {
+      "individual": "Performer",
+      "powertype": "IndividualPerformer"
+    },
+    {
+      "individual": "PersonRoleType",
+      "powertype": "IndividualPersonRole"
+    },
+    {
+      "individual": "Project",
+      "powertype": "ProjectType"
+    },
+    {
+      "individual": "Representation",
+      "powertype": "RepresentationType"
+    },
+    {
+      "individual": "Resource",
+      "powertype": "IndividualResource"
+    },
+    {
+      "individual": "Sign",
+      "powertype": "SignType"
+    },
+    {
+      "individual": "TemporalWholePartType",
+      "powertype": "TupleType"
+    },
+    {
+      "individual": "WholePartType",
+      "powertype": "TupleType"
+    }
+  ]
+}

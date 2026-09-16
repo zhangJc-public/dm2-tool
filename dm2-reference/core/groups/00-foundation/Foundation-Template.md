@@ -5,9 +5,24 @@ name:
 definition:
 synonyms: []
 relationships:
-  describes: []           # All - 描述所有概念
-  classifies: []          # All - 分类学映射
-  definesPattern: []      # All - 模式定义
+  beforeAfter: []
+  couple: []
+  describedBy: []
+  descriptionSchemeInstance: []
+  measureOfIndividualEndBoundary: []
+  measureOfIndividualStartBoundary: []
+  measureOfTypeEndBoundaryType: []
+  measureOfTypeStartBoundaryType: []
+  namedBy: []
+  namingSchemeInstance: []
+  overlap: []
+  powertypeInstance: []
+  representationSchemeInstance: []
+  representedBy: []
+  superSubtype: []
+  temporalWholePart: []
+  typeInstance: []
+  wholePart: []
 pedigree:
   source: "IDEAS Group Foundational Ontology"
   derivedFrom: []
@@ -35,6 +50,27 @@ tags:
   - dm2/meta
 相关分析: "[[DM2-Foundation详细分析]]"
 ---
+
+## DM2 关联清单（元模型权威）
+> 本组权威关联（来自 dm2-metamodel-2.02.yaml 关联目录）：
+> - beforeAfter: Individual ─▶ Individual
+> - couple: tuple ─▶ Thing
+> - describedBy: Thing ─▶ Information
+> - descriptionSchemeInstance: DescriptionScheme ─▶ Information
+> - measureOfIndividualEndBoundary: Measure ─▶ Individual
+> - measureOfIndividualStartBoundary: Measure ─▶ Individual
+> - measureOfTypeEndBoundaryType: Measure ─▶ EndBoundaryType
+> - measureOfTypeStartBoundaryType: Measure ─▶ StartBoundaryType
+> - namedBy: Thing ─▶ Name
+> - namingSchemeInstance: NamingScheme ─▶ Name
+> - overlap: Individual ─▶ Individual
+> - powertypeInstance: Individual ─▶ Type
+> - representationSchemeInstance: RepresentationScheme ─▶ Representation
+> - representedBy: Thing ─▶ Representation
+> - superSubtype: Type ─▶ Type
+> - temporalWholePart: Individual ─▶ Individual
+> - typeInstance: Individual ─▶ Type
+> - wholePart: Individual ─▶ Individual
 
 # Foundation
 

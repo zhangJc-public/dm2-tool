@@ -8,14 +8,18 @@ synonyms: []
 format: ''
 sensitivity: public | internal | confidential | restricted
 relationships:
-  representedBy: []
-  consumedBy: []
-  producedBy: []
-  storedAt: []
-  flowsThrough: []
-  governedBy: []
-  accessedVia: []
-  locatedIn: []
+  activityConsumesResource: []
+  activityProducesResource: []
+  desiredEffect: []
+  desiredEffectDirectsActivity: []
+  desiredEffectIsRealizedByProjectType: []
+  effectMeasure: []
+  individualResourceInLocation: []
+  materielPartOfPerformer: []
+  measureOfTypeResource: []
+  resourceInLocationType: []
+  serviceEnablesAccessToResource: []
+  visionIsRealizedByDesiredEffect: []
 pedigree:
   source: ''
   derivedFrom: []
@@ -57,6 +61,21 @@ tags:
 - dm2/information
 相关分析: '[[../详细分析/DM2-InformationAndData详细分析]]'
 ---
+
+## DM2 关联清单（元模型权威）
+> 本组权威关联（来自 dm2-metamodel-2.02.yaml 关联目录）：
+> - activityConsumesResource: Activity ─▶ Resource
+> - activityProducesResource: Activity ─▶ Resource
+> - desiredEffect: Resource ─▶ Performer
+> - desiredEffectDirectsActivity: Resource ─▶ Activity
+> - desiredEffectIsRealizedByProjectType: ProjectType ─▶ Resource
+> - effectMeasure: MeasureOfEffect ─▶ Resource
+> - individualResourceInLocation: IndividualResource ─▶ Location
+> - materielPartOfPerformer: Materiel ─▶ Performer
+> - measureOfTypeResource: Measure ─▶ Resource
+> - resourceInLocationType: Resource ─▶ LocationType
+> - serviceEnablesAccessToResource: Service ─▶ Resource
+> - visionIsRealizedByDesiredEffect: Vision ─▶ Resource
 
 # {名称}
 

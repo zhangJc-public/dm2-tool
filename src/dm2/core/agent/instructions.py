@@ -1,7 +1,6 @@
 """Instructions Engine — generates structured AI agent instructions."""
 
 from dataclasses import dataclass, field
-from pathlib import Path
 from typing import Optional
 
 from dm2.core.artifacts.graph import ArtifactGraph
@@ -22,6 +21,12 @@ class Instructions:
     rules: list[str]
     template: dict
     output_path: str
+    # DM2 标准必要关联清单（源自怪物矩阵 × 元模型关联目录）
+    association_manifest: list[dict] = field(default_factory=list)
+
+
+# 关联清单条目上限（resolved 关联优先；超出时丢弃无端点定义的 label-only 条目）
+MANIFEST_MAX_ENTRIES = 12
 
 
 # DoDAF compliance rules per artifact type (fallback for old-format views)
@@ -132,6 +137,30 @@ class InstructionBuilder:
         """Check if the view has new metadata fields populated."""
         return bool(view.representation) if hasattr(view, 'representation') else False
 
+    def _build_association_manifest(self, view_id: str) -> list[dict]:
+        """Necessary DM2 associations for the view (monster matrix × metamodel).
+
+        Resolved associations (with endpoint types) come first; label-only
+        entries are dropped once the section exceeds MANIFEST_MAX_ENTRIES.
+        """
+        content = self.knowledge.get_view_content(view_id)
+        if not content:
+            return []
+        necessary = content.get("necessary_associations", [])
+        resolved = [a for a in necessary if a.get("endpoint_types")]
+        unresolved = [a for a in necessary if not a.get("endpoint_types")]
+        manifest = [
+            {
+                "label": a["label"],
+                "endpoint_types": a["endpoint_types"],
+                "roles": a.get("roles", []),
+            }
+            for a in resolved
+        ]
+        if len(manifest) < MANIFEST_MAX_ENTRIES:
+            manifest.extend({"label": a["label"]} for a in unresolved)
+        return manifest[:MANIFEST_MAX_ENTRIES]
+
     def _build_rules_from_metadata(self, view) -> list[str]:
         """Generate compliance rules dynamically from view metadata."""
         rules = []
@@ -227,6 +256,7 @@ class InstructionBuilder:
             template=template,
             output_path=(f"dm2-changes/{change_name}/views/{view_id}.{fmt}"
                          if change_name else f"output/{view_id}.{fmt}"),
+            association_manifest=self._build_association_manifest(view_id),
         )
 
     def build_step_instructions(self, step_id: str, description: str) -> Instructions:

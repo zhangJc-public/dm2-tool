@@ -1,0 +1,3521 @@
+[
+  {
+    "id": "dodaf:Activity",
+    "term": "Activity",
+    "definition": "Work, not specific to a single organization, weapon system or individual that transforms inputs (Resources) into outputs (Resources) or changes their state.",
+    "aliases": [
+      "Action",
+      "Process Operational Activity",
+      "Processes",
+      "Function",
+      "System Function",
+      "Operation",
+      "Task",
+      "Plan",
+      "Project"
+    ],
+    "groups": [
+      "01-performer",
+      "02-activity",
+      "03-capability",
+      "08-services",
+      "09-project",
+      "10-rules",
+      "11-resource-flow",
+      "12-pedigree",
+      "13-information-pedigree",
+      "15-reification",
+      "16-information-data"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:activityConsumesResource",
+    "term": "activityConsumesResource",
+    "definition": "Represents that an activity consumes a resource",
+    "aliases": [],
+    "groups": [
+      "02-activity",
+      "03-capability",
+      "04-resource",
+      "08-services",
+      "09-project",
+      "10-rules",
+      "11-resource-flow",
+      "12-pedigree",
+      "13-information-pedigree",
+      "15-reification",
+      "16-information-data"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:activityMapsToCapabilityType",
+    "term": "activityMapsToCapabilityType",
+    "definition": "Represents that an activity was / is / can-be/ must-be conducted under certain conditions with a spatiotemporal overlap of the activity with the condition.",
+    "aliases": [],
+    "groups": [
+      "02-activity",
+      "03-capability"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:activityPartOfCapability",
+    "term": "activityPartOfCapability",
+    "definition": "A disposition to manifest an Activity. An Activity to be performed to achieve a desired effect under specified [performance] standards and conditions through combinations of ways and means.",
+    "aliases": [],
+    "groups": [
+      "02-activity",
+      "03-capability"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:activityPartOfProjectType",
+    "term": "activityPartOfProjectType",
+    "definition": "A wholePart relationship between a Project and an Activity (Task) that is part of the Project",
+    "aliases": [],
+    "groups": [
+      "02-activity",
+      "09-project",
+      "15-reification",
+      "16-information-data"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:activityPerformableUnderCondition",
+    "term": "activityPerformableUnderCondition",
+    "definition": "Represents that an activity was / is / can-be/ must-be conducted under certain conditions with a spatiotemporal overlap of the activity with the condition.",
+    "aliases": [],
+    "groups": [
+      "01-performer",
+      "02-activity",
+      "03-capability",
+      "08-services",
+      "09-project",
+      "10-rules",
+      "11-resource-flow",
+      "12-pedigree"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:activityPerformedByPerformer",
+    "term": "activityPerformedByPerformer",
+    "definition": "An overlap between a Performer and an Activity that is non-specific as to whether:\n1. the Activity is solely performed by the Performer\n2. the Activity is performed by several Performers\n3. the Performer performs only this Activity\n4. the Performer performs other Activities",
+    "aliases": [],
+    "groups": [
+      "01-performer",
+      "02-activity",
+      "03-capability",
+      "08-services",
+      "09-project",
+      "10-rules",
+      "11-resource-flow",
+      "12-pedigree",
+      "13-information-pedigree",
+      "15-reification",
+      "16-information-data"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:activityProducesResource",
+    "term": "activityProducesResource",
+    "definition": "Represents that an activity produces a resource",
+    "aliases": [],
+    "groups": [
+      "02-activity",
+      "03-capability",
+      "04-resource",
+      "08-services",
+      "09-project",
+      "10-rules",
+      "11-resource-flow",
+      "12-pedigree",
+      "13-information-pedigree",
+      "15-reification",
+      "16-information-data"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:ActivityType",
+    "term": "ActivityType",
+    "definition": "Powertype of Activity",
+    "aliases": [],
+    "groups": [
+      "02-activity"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:AdaptabilityMeasure",
+    "term": "AdaptabilityMeasure",
+    "definition": "A measure of the ease with which Performers satisfy differing Constraints and Capability and Service needs.",
+    "aliases": [],
+    "groups": [
+      "06-measure"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:AdaptabilityMeasureType",
+    "term": "AdaptabilityMeasureType",
+    "definition": "The Powertype of AdaptabilityMeasure.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:Address",
+    "term": "Address",
+    "definition": "The name of a location along with the location-finding scheme that allows a location to be found from the name.  Examples include postal address, email address, URL, datalink address.",
+    "aliases": [],
+    "groups": [
+      "07-location"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:AddressType",
+    "term": "AddressType",
+    "definition": "The Powertype of Address.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:Agreement",
+    "term": "Agreement",
+    "definition": "A consent among parties regarding the terms and conditions of activities that said parties participate in.",
+    "aliases": [],
+    "groups": [
+      "01-performer",
+      "05-guidance",
+      "15-reification",
+      "16-information-data"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:AgreementType",
+    "term": "AgreementType",
+    "definition": "The Powertype of Agreement.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:ArchitecturalDescription",
+    "term": "ArchitecturalDescription",
+    "definition": "Information describing an architecture such as an OV-5 Activity Model document.",
+    "aliases": [],
+    "groups": [
+      "08-services",
+      "15-reification",
+      "16-information-data"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:ArchitecturalDescriptionType",
+    "term": "ArchitecturalDescriptionType",
+    "definition": "The Powertype of ArchitecturalDescription.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:associationOfInformation",
+    "term": "associationOfInformation",
+    "definition": "A relationship or association between two elements of  information.",
+    "aliases": [],
+    "groups": [
+      "16-information-data"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:axesDescribedBy",
+    "term": "axesDescribedBy",
+    "definition": "A relationship describing the straight lines about which bodies rotate",
+    "aliases": [],
+    "groups": [
+      "07-location"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:beforeAfter",
+    "term": "beforeAfter",
+    "definition": "A couple that represents that the temporal extent end time for the individual in place 1 is less than temporal extent start time for the individual in place 2.",
+    "aliases": [
+      "proceeds",
+      "succeeds"
+    ],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:BeforeAfterType",
+    "term": "BeforeAfterType",
+    "definition": "An association between two Individual Types signifying that the temporal end of all the Individuals of one Individual Type is before the temporal start of all the Individuals of the other Individual Type.",
+    "aliases": [],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:Capability",
+    "term": "Capability",
+    "definition": "The ability to achieve a Desired Effect under specified [performance] standards and conditions through combinations of ways and means [activities and resources] to perform a set of activities.",
+    "aliases": [],
+    "groups": [
+      "03-capability",
+      "08-services"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:capabilityOfPerformer",
+    "term": "capabilityOfPerformer",
+    "definition": "A couple that represents the capability that a performer manifests",
+    "aliases": [],
+    "groups": [
+      "03-capability",
+      "06-measure",
+      "08-services"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:CapabilityType",
+    "term": "CapabilityType",
+    "definition": "Category or type of capability",
+    "aliases": [],
+    "groups": [
+      "03-capability"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:CircularArea",
+    "term": "CircularArea",
+    "definition": "The space enclosed by a circle.",
+    "aliases": [],
+    "groups": [
+      "07-location"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:CircularAreaType",
+    "term": "CircularAreaType",
+    "definition": "Powertype Of CircularArea",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:CircularAreaTypeType",
+    "term": "CircularAreaTypeType",
+    "definition": "The Powertype of CircularAreaType.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:Condition",
+    "term": "Condition",
+    "definition": "The state of an environment or situation in which a Performer performs or is disposed to perform.",
+    "aliases": [],
+    "groups": [
+      "01-performer",
+      "03-capability",
+      "08-services",
+      "09-project",
+      "10-rules",
+      "11-resource-flow",
+      "12-pedigree"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:ConditionType",
+    "term": "ConditionType",
+    "definition": "The Powertype of Condition.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:coordinateCenterDescribedBy",
+    "term": "coordinateCenterDescribedBy",
+    "definition": "A relationship describing the mid point of a position reference frame",
+    "aliases": [],
+    "groups": [
+      "07-location"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:Country",
+    "term": "Country",
+    "definition": "A political state or nation or its territory.",
+    "aliases": [],
+    "groups": [
+      "07-location"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:CountryType",
+    "term": "CountryType",
+    "definition": "Powertype Of Country",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:CountryTypeType",
+    "term": "CountryTypeType",
+    "definition": "The Powertype of CountryType.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:couple",
+    "term": "couple",
+    "definition": "An ordered relationship (tuple) between two Things, i.e., that has two place positions.",
+    "aliases": [],
+    "groups": [
+      "00-foundation",
+      "16-information-data"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:CoupleType",
+    "term": "CoupleType",
+    "definition": "A couple in which the places are taken by Types only.",
+    "aliases": [
+      "entity relationship",
+      "class association"
+    ],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:Data",
+    "term": "Data",
+    "definition": "Representation of information in a formalized manner suitable for communication, interpretation, or processing by humans or by automatic means. Examples could be whole models, packages, entities, attributes, classes, domain values, enumeration values, records, tables, rows, columns, and fields.",
+    "aliases": [],
+    "groups": [
+      "11-resource-flow"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:DataType",
+    "term": "DataType",
+    "definition": "Powertype of Data",
+    "aliases": [],
+    "groups": [
+      "11-resource-flow",
+      "16-information-data"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:describedBy",
+    "term": "describedBy",
+    "definition": "A tuple that asserts that Information describes a Thing.",
+    "aliases": [],
+    "groups": [
+      "00-foundation",
+      "07-location",
+      "08-services",
+      "12-pedigree",
+      "13-information-pedigree",
+      "15-reification",
+      "16-information-data"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:DescriptionScheme",
+    "term": "DescriptionScheme",
+    "definition": "A RepresentationScheme and DescriptionType whose members are intentionally descriptions",
+    "aliases": [],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:descriptionSchemeInstance",
+    "term": "descriptionSchemeInstance",
+    "definition": "A representationSchemeInstance that asserts a Description is a member of a DescriptionScheme.",
+    "aliases": [],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:desiredEffect",
+    "term": "desiredEffect",
+    "definition": "A desired state of a Resource",
+    "aliases": [],
+    "groups": [
+      "03-capability",
+      "09-project"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:desiredEffectDirectsActivity",
+    "term": "desiredEffectDirectsActivity",
+    "definition": "The couple that represents how a desired effect directs an activity",
+    "aliases": [],
+    "groups": [
+      "09-project"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:desiredEffectIsRealizedByProjectType",
+    "term": "desiredEffectIsRealizedByProjectType",
+    "definition": "The couple that represents how a desired effect is realized by a project type",
+    "aliases": [],
+    "groups": [
+      "09-project"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:desiredEffectOfCapability",
+    "term": "desiredEffectOfCapability",
+    "definition": "A couple that represents the whole part relationship between a desired effect and a capability",
+    "aliases": [],
+    "groups": [
+      "03-capability"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:desireMeasure",
+    "term": "desireMeasure",
+    "definition": "A measureOfType that relates a DesiredEffect to a MeasureOfDesire",
+    "aliases": [],
+    "groups": [
+      "03-capability",
+      "06-measure",
+      "09-project"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:DomainInformation",
+    "term": "DomainInformation",
+    "definition": "Types of information within the scope or domain of the architecture.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:DomainInformationType",
+    "term": "DomainInformationType",
+    "definition": "The Powertype of DomainInformation.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:effectMeasure",
+    "term": "effectMeasure",
+    "definition": "A measureOfType that relates a DesiredEffect to a MeasureOfEffect",
+    "aliases": [],
+    "groups": [
+      "03-capability",
+      "06-measure",
+      "09-project"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:EllipticalArea",
+    "term": "EllipticalArea",
+    "definition": "The space enclosed by an ellipse.",
+    "aliases": [],
+    "groups": [
+      "07-location"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:EllipticalAreaType",
+    "term": "EllipticalAreaType",
+    "definition": "Powertype Of EllipticalArea",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:EllipticalAreaTypeType",
+    "term": "EllipticalAreaTypeType",
+    "definition": "The Powertype of EllipticalAreaType.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:endBoundary",
+    "term": "endBoundary",
+    "definition": "A temporal whole part couple that relates the temporal boundary to the whole.",
+    "aliases": [],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:EndBoundaryType",
+    "term": "EndBoundaryType",
+    "definition": "A temporal whole part couple that relates the temporal boundary to the whole taken over a Type.",
+    "aliases": [],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:Facility",
+    "term": "Facility",
+    "definition": "A real property entity consisting of underlying land and one or more of the following: a building, a structure (including linear structures), a utility system, or pavement.",
+    "aliases": [],
+    "groups": [
+      "07-location"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:facilityPartOfSite",
+    "term": "facilityPartOfSite",
+    "definition": "A whole part association between a Facility (part) and the Site (whole) in which it resides.",
+    "aliases": [
+      "project goals",
+      "objectives",
+      "desired outcomes"
+    ],
+    "groups": [
+      "07-location"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:FacilityType",
+    "term": "FacilityType",
+    "definition": "Powertype Of Facility",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:FacilityTypeType",
+    "term": "FacilityTypeType",
+    "definition": "The Powertype of FacilityType.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:FunctionalStandard",
+    "term": "FunctionalStandard",
+    "definition": "Functional standards set forth rules, conditions, guidelines, and characteristics.",
+    "aliases": [],
+    "groups": [
+      "05-guidance"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:FunctionalStandardType",
+    "term": "FunctionalStandardType",
+    "definition": "The Powertype of FunctionalStandard.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:GeoFeature",
+    "term": "GeoFeature",
+    "definition": "An object that encompasses meteorological, geographic, and control features mission significance",
+    "aliases": [],
+    "groups": [
+      "07-location"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:GeoFeatureType",
+    "term": "GeoFeatureType",
+    "definition": "Powertype Of GeoFeature",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:GeoFeatureTypeType",
+    "term": "GeoFeatureTypeType",
+    "definition": "The Powertype of GeoFeatureType.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:GeoPoliticalExtent",
+    "term": "GeoPoliticalExtent",
+    "definition": "A geospatial extent whose boundaries are by declaration or agreement by political parties.",
+    "aliases": [],
+    "groups": [
+      "00-foundation",
+      "07-location",
+      "11-resource-flow"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:GeoPoliticalExtentType",
+    "term": "GeoPoliticalExtentType",
+    "definition": "Powertype Of GeoPoliticalExtent",
+    "aliases": [],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:GeoPoliticalExtentTypeType",
+    "term": "GeoPoliticalExtentTypeType",
+    "definition": "The Powertype of GeoPoliticalExtentType.",
+    "aliases": [],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:GeoStationaryPoint",
+    "term": "GeoStationaryPoint",
+    "definition": "Unidimensional Individual (dimensionless in space, existant over all time)",
+    "aliases": [],
+    "groups": [
+      "07-location"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:GeoStationaryPointType",
+    "term": "GeoStationaryPointType",
+    "definition": "Powertype Of GeoStationaryPoint",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:GeoStationaryPointTypeType",
+    "term": "GeoStationaryPointTypeType",
+    "definition": "The Powertype of GeoStationaryPointType.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:Guidance",
+    "term": "Guidance",
+    "definition": "An authoritative statement intended to lead or steer the execution of actions.",
+    "aliases": [],
+    "groups": [
+      "00-foundation",
+      "05-guidance"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:GuidanceType",
+    "term": "GuidanceType",
+    "definition": "The Powertype of Guidance.",
+    "aliases": [],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:Individual",
+    "term": "Individual",
+    "definition": "A Thing that has spatio-temporal extent.  Note - this may be something that existed in the past, exists now, or may exist in some future possible world.",
+    "aliases": [],
+    "groups": [
+      "00-foundation",
+      "07-location",
+      "12-pedigree",
+      "14-org-structure"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:IndividualActivity",
+    "term": "IndividualActivity",
+    "definition": "Activities that are Individuals, i.e., that occur in space and time.",
+    "aliases": [],
+    "groups": [
+      "12-pedigree",
+      "15-reification",
+      "16-information-data"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:IndividualPerformer",
+    "term": "IndividualPerformer",
+    "definition": "A specific thing that can perform an action",
+    "aliases": [],
+    "groups": [
+      "00-foundation",
+      "01-performer",
+      "11-resource-flow",
+      "12-pedigree",
+      "14-org-structure",
+      "15-reification",
+      "16-information-data"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:IndividualPersonRole",
+    "term": "IndividualPersonRole",
+    "definition": "Person roles defined by the role or roles they share that are relevant to an architecture.  Includes assigned materiel.",
+    "aliases": [],
+    "groups": [
+      "01-performer",
+      "14-org-structure"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:individualPersonRolePartOfIndividualPerformer",
+    "term": "individualPersonRolePartOfIndividualPerformer",
+    "definition": "Whole part relationship between an individual person role and an individual performer",
+    "aliases": [],
+    "groups": [
+      "14-org-structure"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:IndividualResource",
+    "term": "IndividualResource",
+    "definition": "Any specific physical or virtual entity of limited availability",
+    "aliases": [],
+    "groups": [
+      "00-foundation",
+      "04-resource",
+      "07-location",
+      "11-resource-flow",
+      "12-pedigree",
+      "14-org-structure"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:individualResourceInLocation",
+    "term": "individualResourceInLocation",
+    "definition": "A wholePart that asserts an IndividualResourceState is in a Location",
+    "aliases": [],
+    "groups": [
+      "04-resource",
+      "07-location"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:IndividualType",
+    "term": "IndividualType",
+    "definition": "The powertype of Individual.",
+    "aliases": [],
+    "groups": [
+      "00-foundation",
+      "06-measure",
+      "12-pedigree",
+      "14-org-structure"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:IndividualTypeType",
+    "term": "IndividualTypeType",
+    "definition": "A PlaceableType that is the Powertype of IndividualType",
+    "aliases": [],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:Information",
+    "term": "Information",
+    "definition": "Information is the state of a something of interest that is materialized -- in any medium or form -- and communicated or received.",
+    "aliases": [],
+    "groups": [
+      "00-foundation",
+      "07-location",
+      "08-services",
+      "11-resource-flow",
+      "12-pedigree",
+      "13-information-pedigree",
+      "15-reification",
+      "16-information-data"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:InformationType",
+    "term": "InformationType",
+    "definition": "Category or type of information",
+    "aliases": [],
+    "groups": [
+      "00-foundation",
+      "08-services",
+      "11-resource-flow",
+      "12-pedigree",
+      "13-information-pedigree",
+      "15-reification",
+      "16-information-data"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:Installation",
+    "term": "Installation",
+    "definition": "A base, camp, post, station, yard, center, or other activity, including leased facilities, without regard to the duration of operational control. An installation may include one or more sites.",
+    "aliases": [],
+    "groups": [
+      "07-location"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:InstallationType",
+    "term": "InstallationType",
+    "definition": "Powertype Of Installation",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:InstallationTypeType",
+    "term": "InstallationTypeType",
+    "definition": "The Powertype of InstallationType.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:jointAction",
+    "term": "jointAction",
+    "definition": "Relating two parts of a joint action",
+    "aliases": [],
+    "groups": [
+      "11-resource-flow"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:Line",
+    "term": "Line",
+    "definition": "A geometric figure formed by a point moving along a fixed direction and the reverse direction.",
+    "aliases": [],
+    "groups": [
+      "07-location"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:linePartOfPlanarSurface",
+    "term": "linePartOfPlanarSurface",
+    "definition": "A couple that represents the whole part relationship between Line and PlanarSurface",
+    "aliases": [],
+    "groups": [
+      "07-location"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:LineType",
+    "term": "LineType",
+    "definition": "Powertype Of Line",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:LineTypeType",
+    "term": "LineTypeType",
+    "definition": "The Powertype of LineType.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:Location",
+    "term": "Location",
+    "definition": "A point or extent in space that may be referred to physically or logically.",
+    "aliases": [],
+    "groups": [
+      "00-foundation",
+      "07-location"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:locationNamedByAddress",
+    "term": "locationNamedByAddress",
+    "definition": "A relationship that represents a location being named by an address",
+    "aliases": [],
+    "groups": [
+      "07-location"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:LocationType",
+    "term": "LocationType",
+    "definition": "The powertype of Location",
+    "aliases": [],
+    "groups": [
+      "00-foundation",
+      "01-performer",
+      "07-location",
+      "11-resource-flow",
+      "12-pedigree",
+      "13-information-pedigree",
+      "15-reification",
+      "16-information-data"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:LocationTypeType",
+    "term": "LocationTypeType",
+    "definition": "The Powertype of LocationType.",
+    "aliases": [],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:MaintainabilityMeasure",
+    "term": "MaintainabilityMeasure",
+    "definition": "A category of measures of  the amount of time a Performer is able to conduct Activities over some time interval.",
+    "aliases": [],
+    "groups": [
+      "06-measure"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:MaintainabilityMeasureType",
+    "term": "MaintainabilityMeasureType",
+    "definition": "The Powertype of MaintainabilityMeasure.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:Materiel",
+    "term": "Materiel",
+    "definition": "Equipment, apparatus or supplies that are of interest, without distinction as to its application for administrative or combat purposes.",
+    "aliases": [],
+    "groups": [
+      "01-performer",
+      "04-resource",
+      "11-resource-flow"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:materielPartOfPerformer",
+    "term": "materielPartOfPerformer",
+    "definition": "A whole-part association between a Performer (whole) and the Materiel parts of the Performer.  (A Performer can have Personnel Type, System, Service, and Organizational components.)",
+    "aliases": [],
+    "groups": [
+      "01-performer",
+      "04-resource"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:MaterielType",
+    "term": "MaterielType",
+    "definition": "The Powertype of Materiel.",
+    "aliases": [],
+    "groups": [
+      "04-resource"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:Measure",
+    "term": "Measure",
+    "definition": "The magnitude of some attribute of an individual.",
+    "aliases": [],
+    "groups": [
+      "00-foundation",
+      "01-performer",
+      "03-capability",
+      "06-measure",
+      "07-location",
+      "08-services",
+      "09-project",
+      "11-resource-flow",
+      "12-pedigree",
+      "13-information-pedigree",
+      "15-reification",
+      "16-information-data"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:MeasureableSkill",
+    "term": "MeasureableSkill",
+    "definition": "A Skill that can be measured numerically",
+    "aliases": [],
+    "groups": [
+      "01-performer",
+      "06-measure"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:measureableSkillOfPersonRoleType",
+    "term": "measureableSkillOfPersonRoleType",
+    "definition": "skillPartOfPersonRoleType is a member of Measure",
+    "aliases": [],
+    "groups": [
+      "01-performer",
+      "06-measure"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:MeasureableSkillType",
+    "term": "MeasureableSkillType",
+    "definition": "The Powertype of MeasureableSkill.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:MeasureOfDesire",
+    "term": "MeasureOfDesire",
+    "definition": "DesiredEffect is a member of Measure",
+    "aliases": [],
+    "groups": [
+      "03-capability",
+      "06-measure",
+      "09-project"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:MeasureOfDesireType",
+    "term": "MeasureOfDesireType",
+    "definition": "The Powertype of MeasureOfDesire.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:MeasureOfEffect",
+    "term": "MeasureOfEffect",
+    "definition": "Category of measures on Effect Objects",
+    "aliases": [],
+    "groups": [
+      "03-capability",
+      "06-measure",
+      "09-project"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:MeasureOfEffectType",
+    "term": "MeasureOfEffectType",
+    "definition": "The Powertype of MeasureOfEffect.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:measureOfIndividual",
+    "term": "measureOfIndividual",
+    "definition": "A propertyOfIndividual that asserts an Individual is an instance of a Measure - i.e. the Individual \"has\" a property corresponding to the Measure.\r\n\r\nExamples:\r\n\r\nA laptop weighing 2.2kg\r\nA car travelling between 40 and 50 km/h",
+    "aliases": [],
+    "groups": [
+      "00-foundation",
+      "06-measure",
+      "12-pedigree"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:measureOfIndividualEndBoundary",
+    "term": "measureOfIndividualEndBoundary",
+    "definition": "endBoundary is a member of Measure",
+    "aliases": [],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:measureOfIndividualPoint",
+    "term": "measureOfIndividualPoint",
+    "definition": "Point is a member of Measure",
+    "aliases": [],
+    "groups": [
+      "06-measure",
+      "07-location"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:measureOfIndividualStartBoundary",
+    "term": "measureOfIndividualStartBoundary",
+    "definition": "startBoundary is a member of Measure",
+    "aliases": [],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:measureOfType",
+    "term": "measureOfType",
+    "definition": "A propertyOfType that asserts an IndividualType is a subtype of a Measure - i.e. it asserts all members of the Individual type have a property corresponding to the Measure \r\n\r\nExamples:\r\n\r\nAll Porsche 911 2.2S have a mass between 900 and 960 kg\r\nAll atoms of mercury have an atomic weight of 200.59 &thinsp;g·mol&minus;1",
+    "aliases": [],
+    "groups": [
+      "00-foundation",
+      "06-measure",
+      "12-pedigree"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:measureOfTypeActivity",
+    "term": "measureOfTypeActivity",
+    "definition": "A measureOfType that relates an Activity to a Measure",
+    "aliases": [],
+    "groups": [
+      "01-performer",
+      "03-capability",
+      "06-measure",
+      "08-services",
+      "09-project",
+      "11-resource-flow",
+      "12-pedigree",
+      "13-information-pedigree",
+      "15-reification",
+      "16-information-data"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:measureOfTypeCondition",
+    "term": "measureOfTypeCondition",
+    "definition": "Condition is a member of Measure",
+    "aliases": [],
+    "groups": [
+      "01-performer",
+      "03-capability",
+      "06-measure",
+      "08-services",
+      "09-project",
+      "11-resource-flow"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:measureOfTypeEndBoundaryType",
+    "term": "measureOfTypeEndBoundaryType",
+    "definition": "endBoundaryType is a member of Measure",
+    "aliases": [],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:measureOfTypeProjectType",
+    "term": "measureOfTypeProjectType",
+    "definition": "ProjectType is a member of Measure",
+    "aliases": [],
+    "groups": [
+      "06-measure",
+      "09-project"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:measureOfTypeResource",
+    "term": "measureOfTypeResource",
+    "definition": "ResourceType is a member of Measure",
+    "aliases": [],
+    "groups": [
+      "01-performer",
+      "03-capability",
+      "04-resource",
+      "06-measure",
+      "08-services",
+      "09-project",
+      "11-resource-flow",
+      "12-pedigree",
+      "13-information-pedigree",
+      "15-reification",
+      "16-information-data"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:measureOfTypeStartBoundaryType",
+    "term": "measureOfTypeStartBoundaryType",
+    "definition": "startBoundaryType is a member of Measure",
+    "aliases": [],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:measureOfTypeWholePartType",
+    "term": "measureOfTypeWholePartType",
+    "definition": "wholePart is a member of Measure",
+    "aliases": [],
+    "groups": [
+      "06-measure"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:MeasureType",
+    "term": "MeasureType",
+    "definition": "A category of Measures",
+    "aliases": [],
+    "groups": [
+      "00-foundation",
+      "03-capability",
+      "06-measure",
+      "07-location",
+      "10-rules",
+      "12-pedigree"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:measureTypeApplicableToActivity",
+    "term": "measureTypeApplicableToActivity",
+    "definition": "Type instance relationship between Activity and MeasureType",
+    "aliases": [],
+    "groups": [
+      "06-measure",
+      "10-rules"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:MeasureTypeUnitsOfMeasure",
+    "term": "MeasureTypeUnitsOfMeasure",
+    "definition": "The subtype of MeasureType that has units.",
+    "aliases": [],
+    "groups": [
+      "00-foundation",
+      "03-capability",
+      "06-measure",
+      "07-location",
+      "10-rules"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:Name",
+    "term": "Name",
+    "definition": "The type of all utterances of a given name for a Thing. The exemplarText provides a written example of the uttered name.",
+    "aliases": [],
+    "groups": [
+      "00-foundation",
+      "07-location"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:namedBy",
+    "term": "namedBy",
+    "definition": "A couple that asserts that a Name describes a Thing.",
+    "aliases": [],
+    "groups": [
+      "00-foundation",
+      "07-location"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:NameType",
+    "term": "NameType",
+    "definition": "A RepresentationType that is the Powertype of Name",
+    "aliases": [],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:NamingScheme",
+    "term": "NamingScheme",
+    "definition": "A Type whose members are Names. What kind of name the name is.",
+    "aliases": [],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:namingSchemeInstance",
+    "term": "namingSchemeInstance",
+    "definition": "A representationSchemeInstance that asserts a Name is a member of a NamingScheme.",
+    "aliases": [],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:NeedsSatisfactionMeasure",
+    "term": "NeedsSatisfactionMeasure",
+    "definition": "A category of quality measures that address how well a system meets the user's needs and requirements.",
+    "aliases": [],
+    "groups": [
+      "06-measure"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:NeedsSatisfactionMeasureType",
+    "term": "NeedsSatisfactionMeasureType",
+    "definition": "The Powertype of NeedsStatisfactionMeasure.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:Organization",
+    "term": "Organization",
+    "definition": "A specific real-world assemblage of people and other resources organized for an on-going purpose.",
+    "aliases": [
+      "Department",
+      "Agency",
+      "Enterprise"
+    ],
+    "groups": [
+      "01-performer",
+      "11-resource-flow",
+      "12-pedigree",
+      "14-org-structure"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:OrganizationalMeasure",
+    "term": "OrganizationalMeasure",
+    "definition": "A category of quality measures that address how costly a Performer is to operate and maintain.",
+    "aliases": [],
+    "groups": [
+      "06-measure"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:OrganizationalMeasureType",
+    "term": "OrganizationalMeasureType",
+    "definition": "The Powertype of OrganizationalMeasure.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:OrganizationType",
+    "term": "OrganizationType",
+    "definition": "A type of Organization",
+    "aliases": [],
+    "groups": [
+      "01-performer",
+      "11-resource-flow",
+      "12-pedigree",
+      "14-org-structure"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:OrganizationTypeType",
+    "term": "OrganizationTypeType",
+    "definition": "The Powertype of OrganizationType.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:overlap",
+    "term": "overlap",
+    "definition": "A couple of wholePart couples where the part in each couple is the same.",
+    "aliases": [],
+    "groups": [
+      "00-foundation",
+      "14-org-structure"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:OverlapType",
+    "term": "OverlapType",
+    "definition": "An overlap in which the places are taken by Types only.",
+    "aliases": [],
+    "groups": [
+      "00-foundation",
+      "14-org-structure"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:partiesToAnAgreement",
+    "term": "partiesToAnAgreement",
+    "definition": "The two parties involved in an agreement",
+    "aliases": [],
+    "groups": [
+      "05-guidance",
+      "15-reification",
+      "16-information-data"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:PedigreeInformation",
+    "term": "PedigreeInformation",
+    "definition": "Information describing pedigree",
+    "aliases": [],
+    "groups": [
+      "00-foundation",
+      "12-pedigree",
+      "13-information-pedigree",
+      "15-reification",
+      "16-information-data"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:PedigreeInformationType",
+    "term": "PedigreeInformationType",
+    "definition": "The Powertype of PedigreeInformation.",
+    "aliases": [],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:PerformanceMeasure",
+    "term": "PerformanceMeasure",
+    "definition": "A category of quality measures that address how well a Performer meets Capability needs.",
+    "aliases": [],
+    "groups": [
+      "06-measure"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:PerformanceMeasureType",
+    "term": "PerformanceMeasureType",
+    "definition": "The Powertype of PerformanceMeasure.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:Performer",
+    "term": "Performer",
+    "definition": "Any entity - human, automated, or any aggregation of human and/or automated - that performs an activity and provides a capability.",
+    "aliases": [
+      "Actor",
+      "Agent",
+      "Capability Configuration (MODAF)"
+    ],
+    "groups": [
+      "00-foundation",
+      "01-performer",
+      "03-capability",
+      "08-services",
+      "09-project",
+      "10-rules",
+      "11-resource-flow",
+      "12-pedigree",
+      "13-information-pedigree",
+      "14-org-structure",
+      "15-reification",
+      "16-information-data"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:PerformerType",
+    "term": "PerformerType",
+    "definition": "The Powertype of Performer.",
+    "aliases": [],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:PersonRoleType",
+    "term": "PersonRoleType",
+    "definition": "A category of person roles defined by the role or roles they share that are relevant to an architecture.  Includes assigned materiel.",
+    "aliases": [
+      "Role"
+    ],
+    "groups": [
+      "01-performer",
+      "11-resource-flow",
+      "12-pedigree",
+      "14-org-structure"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:personRoleTypePartOfPerformer",
+    "term": "personRoleTypePartOfPerformer",
+    "definition": "A wholePart between a PersonRoleType and a Performer in which it performs",
+    "aliases": [],
+    "groups": [
+      "01-performer",
+      "14-org-structure"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:PersonRoleTypeType",
+    "term": "PersonRoleTypeType",
+    "definition": "The Powertype of PersonRoleType.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:PhysicalMeasure",
+    "term": "PhysicalMeasure",
+    "definition": "A category of measures of spatio-temporal extent of an Individual such as length, mass, energy, velocity, …",
+    "aliases": [],
+    "groups": [
+      "06-measure",
+      "07-location"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:PhysicalMeasureType",
+    "term": "PhysicalMeasureType",
+    "definition": "The Powertype of PhysicalMeasure.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:PlanarSurface",
+    "term": "PlanarSurface",
+    "definition": "A two-dimensional portion of space.",
+    "aliases": [],
+    "groups": [
+      "07-location"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:PlanarSurfaceType",
+    "term": "PlanarSurfaceType",
+    "definition": "Powertype Of PlanarSurface",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:PlanarSurfaceTypeType",
+    "term": "PlanarSurfaceTypeType",
+    "definition": "The Powertype of PlanarSurfaceType.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:Point",
+    "term": "Point",
+    "definition": "Unidimensional Individual (dimensionless in space, existant over all time)",
+    "aliases": [],
+    "groups": [
+      "07-location"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:pointPartOfLine",
+    "term": "pointPartOfLine",
+    "definition": "A couple that represents the whole part relationship between a line and a point",
+    "aliases": [],
+    "groups": [
+      "07-location"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:pointPartOfPlanarSurface",
+    "term": "pointPartOfPlanarSurface",
+    "definition": "A couple that represents the whole part relationship between a planar surface and a point",
+    "aliases": [],
+    "groups": [
+      "07-location"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:PointType",
+    "term": "PointType",
+    "definition": "Powertype Of Point",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:PointTypeType",
+    "term": "PointTypeType",
+    "definition": "The Powertype of PointType.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:PolygonArea",
+    "term": "PolygonArea",
+    "definition": "The space enclosed by a polygon.",
+    "aliases": [],
+    "groups": [
+      "07-location"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:PolygonAreaType",
+    "term": "PolygonAreaType",
+    "definition": "Powertype Of PolygonArea",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:PolygonAreaTypeType",
+    "term": "PolygonAreaTypeType",
+    "definition": "The Powertype of PolygonAreaType.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:portPartOfPerformer",
+    "term": "portPartOfPerformer",
+    "definition": "A an association of the whole Performer to its Port that is visible and interfaces with other Performers",
+    "aliases": [],
+    "groups": [
+      "08-services"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:PortType",
+    "term": "PortType",
+    "definition": "The Powertype of Port.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:PositionReferenceFrame",
+    "term": "PositionReferenceFrame",
+    "definition": "An arbitrary set of axes with reference to which the position or motion of something is described or physical laws are formulated.",
+    "aliases": [],
+    "groups": [
+      "07-location"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:PositionReferenceFrameType",
+    "term": "PositionReferenceFrameType",
+    "definition": "The Powertype of PositionReferenceFrame.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:Powertype",
+    "term": "Powertype",
+    "definition": "A Type that is the is the set (i.e., Type) of all subsets (i.e., subTypes) that can be taken over the some Type.",
+    "aliases": [],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:powertypeInstance",
+    "term": "powertypeInstance",
+    "definition": "An association that between of the sets within the powerType and the powerType.  A special form of typeInstance.",
+    "aliases": [],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:Project",
+    "term": "Project",
+    "definition": "A temporary endeavor undertaken to create Resources or Desired Effects.",
+    "aliases": [
+      "Plan",
+      "Tactic",
+      "Strategy",
+      "Activity"
+    ],
+    "groups": [
+      "09-project",
+      "15-reification",
+      "16-information-data"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:ProjectType",
+    "term": "ProjectType",
+    "definition": "The powertype of Project",
+    "aliases": [],
+    "groups": [
+      "09-project",
+      "15-reification",
+      "16-information-data"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:ProjectTypeType",
+    "term": "ProjectTypeType",
+    "definition": "The Powertype of ProjectType.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:Property",
+    "term": "Property",
+    "definition": "An IndividualType whose members all exhibit a common trait or feature. Often the Individuals are states having a property (the state of being 18 degrees centigrade), where this property can be a CategoricalProperty (qv.) or a DispositionalProperty (qv.).",
+    "aliases": [],
+    "groups": [
+      "00-foundation",
+      "06-measure",
+      "12-pedigree"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:propertyOfIndividual",
+    "term": "propertyOfIndividual",
+    "definition": "A typeInstance that asserts an Individual is an instance of a Property - i.e. the Individual \"has\" a property \n\nExamples:\n\nA product being \"expensive\"\nA laptop weighing 2.2kg\nA car travelling between 40 and 50 km/h",
+    "aliases": [],
+    "groups": [
+      "00-foundation",
+      "06-measure",
+      "12-pedigree"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:propertyOfType",
+    "term": "propertyOfType",
+    "definition": "A superSubtype that asserts an IndividualType is a subtype of a Property - i.e. it asserts all members of the Individual type \"have\" a property \n\nExamples:\n\nAll London Buses are red\nAll Porsche 911 2.2S have a mass between 900 and 960 kg\nAll atoms of merc",
+    "aliases": [],
+    "groups": [
+      "00-foundation",
+      "06-measure",
+      "12-pedigree"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:PropertyType",
+    "term": "PropertyType",
+    "definition": "The Powertype of Property.",
+    "aliases": [],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:RealProperty",
+    "term": "RealProperty",
+    "definition": "Land and improvements to land (i.e., facilities).",
+    "aliases": [],
+    "groups": [
+      "00-foundation",
+      "07-location"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:RealPropertyType",
+    "term": "RealPropertyType",
+    "definition": "Powertype Of RealProperty",
+    "aliases": [],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:RealPropertyTypeType",
+    "term": "RealPropertyTypeType",
+    "definition": "The Powertype of RealPropertyType.",
+    "aliases": [],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:RectangularArea",
+    "term": "RectangularArea",
+    "definition": "The space enclosed by a rectangle.",
+    "aliases": [],
+    "groups": [
+      "07-location"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:RectangularAreaType",
+    "term": "RectangularAreaType",
+    "definition": "Powertype Of RectangularArea",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:RectangularAreaTypeType",
+    "term": "RectangularAreaTypeType",
+    "definition": "The Powertype of RectangularAreaType.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:RegionOfCountry",
+    "term": "RegionOfCountry",
+    "definition": "A large, usually continuous segment of a political state or nation or its territory.",
+    "aliases": [],
+    "groups": [
+      "07-location"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:regionOfCountryPartOfCountry",
+    "term": "regionOfCountryPartOfCountry",
+    "definition": "A couple that represents the whole part relationship between a country and a region within it",
+    "aliases": [],
+    "groups": [
+      "07-location"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:RegionOfCountryType",
+    "term": "RegionOfCountryType",
+    "definition": "Powertype Of RegionOfCountry",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:RegionOfCountryTypeType",
+    "term": "RegionOfCountryTypeType",
+    "definition": "The Powertype of RegionOfCountryType.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:RegionOfWorld",
+    "term": "RegionOfWorld",
+    "definition": "A large, usually continuous segment of a surface or space; area.",
+    "aliases": [],
+    "groups": [
+      "07-location"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:RegionOfWorldType",
+    "term": "RegionOfWorldType",
+    "definition": "Powertype Of RegionOfWorld",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:RegionOfWorldTypeType",
+    "term": "RegionOfWorldTypeType",
+    "definition": "The Powertype of RegionOfWorldType.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:Representation",
+    "term": "Representation",
+    "definition": "A SignType where all the individual Signs are intended to signify the same Thing.",
+    "aliases": [],
+    "groups": [
+      "00-foundation",
+      "12-pedigree"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:RepresentationScheme",
+    "term": "RepresentationScheme",
+    "definition": "A RepresentationType that is a collection of Representations that are intended to be the preferred Representations in certain contexts.",
+    "aliases": [],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:representationSchemeInstance",
+    "term": "representationSchemeInstance",
+    "definition": "A typeInstance that asserts a Representation is a member of a RepresentationScheme.",
+    "aliases": [],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:RepresentationType",
+    "term": "RepresentationType",
+    "definition": "A Type that is the Powertype of Representation",
+    "aliases": [],
+    "groups": [
+      "00-foundation",
+      "08-services",
+      "11-resource-flow",
+      "12-pedigree",
+      "13-information-pedigree",
+      "15-reification",
+      "16-information-data"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:representedBy",
+    "term": "representedBy",
+    "definition": "A couple that asserts that a Representation represents a Thing.",
+    "aliases": [],
+    "groups": [
+      "00-foundation",
+      "16-information-data"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:Resource",
+    "term": "Resource",
+    "definition": "Data, Information, Performers, Materiel, or Personnel Types that are produced or consumed.",
+    "aliases": [],
+    "groups": [
+      "00-foundation",
+      "01-performer",
+      "03-capability",
+      "04-resource",
+      "08-services",
+      "09-project",
+      "11-resource-flow",
+      "12-pedigree",
+      "13-information-pedigree",
+      "14-org-structure",
+      "15-reification",
+      "16-information-data"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:resourceInLocationType",
+    "term": "resourceInLocationType",
+    "definition": "The relationship that describes the location of a performer or type of performer",
+    "aliases": [],
+    "groups": [
+      "01-performer",
+      "04-resource",
+      "07-location",
+      "11-resource-flow",
+      "12-pedigree",
+      "13-information-pedigree",
+      "15-reification",
+      "16-information-data"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:ResourceType",
+    "term": "ResourceType",
+    "definition": "The Powertype of Resource.",
+    "aliases": [],
+    "groups": [
+      "00-foundation",
+      "04-resource"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:Rule",
+    "term": "Rule",
+    "definition": "A principle or condition that governs behavior; a prescribed guide for conduct or action",
+    "aliases": [],
+    "groups": [
+      "00-foundation",
+      "01-performer",
+      "03-capability",
+      "06-measure",
+      "08-services",
+      "09-project",
+      "10-rules",
+      "11-resource-flow",
+      "12-pedigree",
+      "13-information-pedigree",
+      "15-reification",
+      "16-information-data"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:ruleConstrainsActivity",
+    "term": "ruleConstrainsActivity",
+    "definition": "An overlap between a Rule and the Activities it allows",
+    "aliases": [],
+    "groups": [
+      "01-performer",
+      "03-capability",
+      "08-services",
+      "09-project",
+      "10-rules",
+      "11-resource-flow",
+      "12-pedigree",
+      "13-information-pedigree",
+      "15-reification",
+      "16-information-data"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:rulePartOfMeasureType",
+    "term": "rulePartOfMeasureType",
+    "definition": "A couple that represents the whole part relationship between types of measures and rules",
+    "aliases": [],
+    "groups": [
+      "03-capability",
+      "06-measure",
+      "10-rules"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:RuleType",
+    "term": "RuleType",
+    "definition": "The Powertype of Rule.",
+    "aliases": [],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:SecurityAttributesGroup",
+    "term": "SecurityAttributesGroup",
+    "definition": "The group of Information Security Marking attributes in which the use of attributes 'classification' and 'ownerProducer' is required. This group is to be contrasted with group 'SecurityAttributesOptionGroup' in which use of those attributes is optional.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:SecurityAttributesGroupType",
+    "term": "SecurityAttributesGroupType",
+    "definition": "The Powertype of SecurityAttributesGroup.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:Service",
+    "term": "Service",
+    "definition": "A mechanism to enable access to a set of one or more capabilities , where the access is provided using a prescribed interface and is exercised consistent with constraints and policies as specified by the service description.  The mechanism is a Performer.  The \"capabilities\" accessed are Resources -- Information, Data, Materiel, Performers, and Geo-political Extents.",
+    "aliases": [],
+    "groups": [
+      "01-performer",
+      "08-services",
+      "11-resource-flow",
+      "12-pedigree"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:ServiceDescription",
+    "term": "ServiceDescription",
+    "definition": "Information necessary to interact with the service in such terms as the service inputs, outputs, and associated semantics. The service description also conveys what is accomplished when the service is invoked and the conditions for using the service.",
+    "aliases": [
+      "Service Interface Description (UPDM)"
+    ],
+    "groups": [
+      "08-services",
+      "15-reification",
+      "16-information-data"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:ServiceDescriptionType",
+    "term": "ServiceDescriptionType",
+    "definition": "The Powertype of ServiceDescription.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:serviceEnablesAccessToResource",
+    "term": "serviceEnablesAccessToResource",
+    "definition": "An overlap between the Service (i.e., mechanism) and the Resources (i.e., capabilities) to which it provides access.",
+    "aliases": [],
+    "groups": [
+      "04-resource",
+      "08-services"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:ServiceLevel",
+    "term": "ServiceLevel",
+    "definition": "A measurement of the performance of a system or service.",
+    "aliases": [],
+    "groups": [
+      "00-foundation",
+      "06-measure"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:ServiceLevelType",
+    "term": "ServiceLevelType",
+    "definition": "The Powertype of ServiceLevel.",
+    "aliases": [],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:ServicePort",
+    "term": "ServicePort",
+    "definition": "A part of a Performer that specifics a interaction component through which the Performer interacts with other Performers.  This isolates dependencies between performers to particular interaction points rather than to the performer as a whole.",
+    "aliases": [
+      "Mediator (OASIS SOA RA)",
+      "Service Interface (UPDM)"
+    ],
+    "groups": [
+      "08-services"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:servicePortDescribedBy",
+    "term": "servicePortDescribedBy",
+    "definition": "A tuple that asserts that Information describes a Thing.",
+    "aliases": [],
+    "groups": [
+      "08-services"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:ServicePortType",
+    "term": "ServicePortType",
+    "definition": "The Powertype of ServicePort.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:ServiceType",
+    "term": "ServiceType",
+    "definition": "The Powertype of Service.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:Sign",
+    "term": "Sign",
+    "definition": "An Individual that signifies a Thing.\r\n\r\nExample: 'BOSTON' signifies BOSTON",
+    "aliases": [],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:SignType",
+    "term": "SignType",
+    "definition": "An IndividualType that is the Powertype of Sign.",
+    "aliases": [],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:SignTypeType",
+    "term": "SignTypeType",
+    "definition": "The Powertype of SignType.",
+    "aliases": [],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:SingletonActivity",
+    "term": "SingletonActivity",
+    "definition": "A set of activities containing only one activity.",
+    "aliases": [],
+    "groups": [
+      "12-pedigree"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:SingletonIndividualType",
+    "term": "SingletonIndividualType",
+    "definition": "A set of individuals containing only one individual.",
+    "aliases": [],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:SingletonResource",
+    "term": "SingletonResource",
+    "definition": "A set of resources containing only one resource",
+    "aliases": [],
+    "groups": [
+      "00-foundation",
+      "04-resource",
+      "12-pedigree"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:Site",
+    "term": "Site",
+    "definition": "Physical (geographic) location that is or was owned by, leased to, or otherwise possessed. Each site is assigned to a single installation. A site may exist in one of three forms: (1) Land only, where there are no facilities present and where the land consists of either a single land parcel or two or more contiguous land parcels. (2)  Facility or facilities only, where the underlying land is neither owned nor controlled by the government. A stand-alone facility can be a site. If a facility is not a stand-alone facility, it must be assigned to a site. (3). Land and all the facilities thereon, where the land consists of either a single land parcel or two or more contiguous land parcels.",
+    "aliases": [],
+    "groups": [
+      "07-location"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:sitePartOfInstallation",
+    "term": "sitePartOfInstallation",
+    "definition": "A whole-part association representing that a Site (the part) is spatio-temporally contained within an Installation (the whole).",
+    "aliases": [],
+    "groups": [
+      "07-location"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:SiteType",
+    "term": "SiteType",
+    "definition": "Powertype Of Site",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:SiteTypeType",
+    "term": "SiteTypeType",
+    "definition": "The Powertype of SiteType.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:Skill",
+    "term": "Skill",
+    "definition": "The ability, coming from one's knowledge, practice, aptitude, etc., to do something well.",
+    "aliases": [
+      "Training",
+      "Knowledge",
+      "Ability"
+    ],
+    "groups": [
+      "01-performer",
+      "12-pedigree",
+      "14-org-structure"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:skillOfPersonRoleType",
+    "term": "skillOfPersonRoleType",
+    "definition": "A type property between a PersonRoleType and the Skills it entails",
+    "aliases": [],
+    "groups": [
+      "01-performer",
+      "06-measure",
+      "12-pedigree",
+      "14-org-structure"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:SkillType",
+    "term": "SkillType",
+    "definition": "The Powertype of Skill.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:SolidVolume",
+    "term": "SolidVolume",
+    "definition": "The amount of space occupied by a three-dimensional object of definite shape; not liquid or gaseous.",
+    "aliases": [],
+    "groups": [
+      "07-location"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:SolidVolumeType",
+    "term": "SolidVolumeType",
+    "definition": "Powertype Of SolidVolume",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:SolidVolumeTypeType",
+    "term": "SolidVolumeTypeType",
+    "definition": "The Powertype of SolidVolumeType.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:SpatialMeasure",
+    "term": "SpatialMeasure",
+    "definition": "A category of measures of the spatio-temporal location of an Individual.",
+    "aliases": [],
+    "groups": [
+      "06-measure",
+      "07-location"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:SpatialMeasureType",
+    "term": "SpatialMeasureType",
+    "definition": "The Powertype of SpatialMeasure.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:Standard",
+    "term": "Standard",
+    "definition": "A formal agreement documenting generally accepted specifications or criteria for products, processes, procedures, policies, systems, and/or personnel.",
+    "aliases": [],
+    "groups": [
+      "00-foundation",
+      "05-guidance"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:StandardType",
+    "term": "StandardType",
+    "definition": "The Powertype of Standard.",
+    "aliases": [],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:startBoundary",
+    "term": "startBoundary",
+    "definition": "The beginning of a temporalBoundary.",
+    "aliases": [],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:StartBoundaryType",
+    "term": "StartBoundaryType",
+    "definition": "The beginning of a temporalBoundaryType.",
+    "aliases": [],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:superSubType",
+    "term": "superSubType",
+    "definition": "An association in which one Type (the subtype) is a subset of the other Type (supertype).",
+    "aliases": [],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:Surface",
+    "term": "Surface",
+    "definition": "A portion of space having length and breadth but no thickness or regards to time.",
+    "aliases": [],
+    "groups": [
+      "07-location"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:SurfaceType",
+    "term": "SurfaceType",
+    "definition": "Powertype Of Surface",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:SurfaceTypeType",
+    "term": "SurfaceTypeType",
+    "definition": "The Powertype of SurfaceType.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:System",
+    "term": "System",
+    "definition": "A functionally, physically, and/or behaviorally related group of regularly interacting or interdependent elements.",
+    "aliases": [],
+    "groups": [
+      "01-performer",
+      "11-resource-flow",
+      "12-pedigree"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:SystemType",
+    "term": "SystemType",
+    "definition": "The Powertype of System.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:TechnicalStandard",
+    "term": "TechnicalStandard",
+    "definition": "Technical standards document specific technical methodologies and practices to design and implement.",
+    "aliases": [],
+    "groups": [
+      "05-guidance"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:TechnicalStandardType",
+    "term": "TechnicalStandardType",
+    "definition": "The Powertype of TechnicalStandard.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:temporalBoundary",
+    "term": "temporalBoundary",
+    "definition": "The start and end times for the spatio-temporal extent of an Individual",
+    "aliases": [],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:TemporalBoundaryType",
+    "term": "TemporalBoundaryType",
+    "definition": "The start and end times for the Individual members of a Type.",
+    "aliases": [],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:TemporalMeasure",
+    "term": "TemporalMeasure",
+    "definition": "A type of measure of time",
+    "aliases": [],
+    "groups": [
+      "06-measure"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:TemporalMeasureType",
+    "term": "TemporalMeasureType",
+    "definition": "The Powertype of TemporalMeasure.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:temporalWholePart",
+    "term": "temporalWholePart",
+    "definition": "A wholePart that asserts the spatial extent of the (whole) individual is co-extensive with the spatial extent of the (part) individual for a particular period of time.",
+    "aliases": [],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:TemporalWholePartType",
+    "term": "TemporalWholePartType",
+    "definition": "A couple between two Individual Types where for each member of the whole set, there is a corresponding member of the part set for which a wholePart relationship exists, and conversely",
+    "aliases": [],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:Thing",
+    "term": "Thing",
+    "definition": "The union of Individual, Type, and tuple.",
+    "aliases": [],
+    "groups": [
+      "00-foundation",
+      "07-location",
+      "12-pedigree",
+      "13-information-pedigree",
+      "15-reification",
+      "16-information-data"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:Tuple",
+    "term": "Tuple",
+    "definition": "A relationship between two or more things. Note: Tuples are identified by their places (i.e. the ends of the relationship).",
+    "aliases": [],
+    "groups": [
+      "00-foundation",
+      "16-information-data"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:TupleType",
+    "term": "TupleType",
+    "definition": "The powertype of tuple that provides the stereotype for tuples of Types.",
+    "aliases": [],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:Type",
+    "term": "Type",
+    "definition": "A set (or class) of Things.  Note1: Types are identified by their members (i.e. all the things of that type). Note2: The IDEAS Foundation is a higher-order ontology, so Types may have members that are also Types.",
+    "aliases": [],
+    "groups": [
+      "00-foundation",
+      "12-pedigree"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:typeInstance",
+    "term": "typeInstance",
+    "definition": "A Thing can be an instance of a Type - i.e. set membership. Note that IDEAS is a higher-order model, hence Types may be instances of Types.",
+    "aliases": [],
+    "groups": [
+      "00-foundation"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:Vision",
+    "term": "Vision",
+    "definition": "An end that describes the future state of the enterprise, without regard to how it is to be achieved; a mental image of what the future will or could be like",
+    "aliases": [],
+    "groups": [
+      "09-project"
+    ],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:visionIsRealizedByDesiredEffect",
+    "term": "visionIsRealizedByDesiredEffect",
+    "definition": "The relationship that exists between a vision and the specific desired effect that realised it",
+    "aliases": [],
+    "groups": [
+      "09-project"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:VisionType",
+    "term": "VisionType",
+    "definition": "The Powertype of Vision.",
+    "aliases": [],
+    "groups": [],
+    "association": false,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:wholePart",
+    "term": "wholePart",
+    "definition": "A couple that asserts one (part) Individual is part of another (whole) Individual.",
+    "aliases": [],
+    "groups": [
+      "00-foundation",
+      "14-org-structure"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:WholePartType",
+    "term": "WholePartType",
+    "definition": "A coupleType that asserts one Type (the part) has members that have a whole-part relation with a member of the other Type (whole).",
+    "aliases": [],
+    "groups": [
+      "00-foundation",
+      "14-org-structure"
+    ],
+    "association": true,
+    "status": "a. In Model",
+    "erd": false
+  },
+  {
+    "id": "dodaf:agreementSubtypeOfRule",
+    "term": "agreementSubtypeOfRule",
+    "definition": "Agreement is a subtype of Rule.",
+    "aliases": [],
+    "groups": [],
+    "association": true,
+    "status": "f. ERD-derived",
+    "erd": true
+  },
+  {
+    "id": "dodaf:functionalStandardIsRule",
+    "term": "functionalStandardIsRule",
+    "definition": "FunctionalStandard is a subtype of Rule.",
+    "aliases": [],
+    "groups": [],
+    "association": true,
+    "status": "f. ERD-derived",
+    "erd": true
+  },
+  {
+    "id": "dodaf:guidanceIsRule",
+    "term": "guidanceIsRule",
+    "definition": "Guidance is a subtype of Rule.",
+    "aliases": [],
+    "groups": [],
+    "association": true,
+    "status": "f. ERD-derived",
+    "erd": true
+  },
+  {
+    "id": "dodaf:individualPerformerPowertypeInstanceOfPerformer",
+    "term": "individualPerformerPowertypeInstanceOfPerformer",
+    "definition": "IndividualPerformer is a powertype instance of Performer.",
+    "aliases": [],
+    "groups": [],
+    "association": true,
+    "status": "f. ERD-derived",
+    "erd": true
+  },
+  {
+    "id": "dodaf:individualResourcePowertypeInstanceOfResource",
+    "term": "individualResourcePowertypeInstanceOfResource",
+    "definition": "IndividualResource is a powertype instance of Resource.",
+    "aliases": [],
+    "groups": [
+      "04-resource"
+    ],
+    "association": true,
+    "status": "f. ERD-derived",
+    "erd": true
+  },
+  {
+    "id": "dodaf:informationPedigree",
+    "term": "informationPedigree",
+    "definition": "Information and PedigreeInformation are associated via the informationPedigree tuple.",
+    "aliases": [],
+    "groups": [],
+    "association": true,
+    "status": "f. ERD-derived",
+    "erd": true
+  },
+  {
+    "id": "dodaf:measureOfDesireSubtypeOfMeasure",
+    "term": "measureOfDesireSubtypeOfMeasure",
+    "definition": "MeasureOfDesire is a subtype of Measure.",
+    "aliases": [],
+    "groups": [],
+    "association": true,
+    "status": "f. ERD-derived",
+    "erd": true
+  },
+  {
+    "id": "dodaf:measureOfEffectSubtypeOfMeasure",
+    "term": "measureOfEffectSubtypeOfMeasure",
+    "definition": "MeasureOfEffect is a subtype of Measure.",
+    "aliases": [],
+    "groups": [],
+    "association": true,
+    "status": "f. ERD-derived",
+    "erd": true
+  },
+  {
+    "id": "dodaf:measureableSkillSubtypeOfSkill",
+    "term": "measureableSkillSubtypeOfSkill",
+    "definition": "MeasureableSkill is a subtype of Skill.",
+    "aliases": [],
+    "groups": [],
+    "association": true,
+    "status": "f. ERD-derived",
+    "erd": true
+  },
+  {
+    "id": "dodaf:organizationHasSkill",
+    "term": "organizationHasSkill",
+    "definition": "Skill is a part of Organization (wholePart).",
+    "aliases": [],
+    "groups": [],
+    "association": true,
+    "status": "f. ERD-derived",
+    "erd": true
+  },
+  {
+    "id": "dodaf:organizationPartOfResource",
+    "term": "organizationPartOfResource",
+    "definition": "Organization is a part of Resource (wholePart).",
+    "aliases": [],
+    "groups": [
+      "04-resource"
+    ],
+    "association": true,
+    "status": "f. ERD-derived",
+    "erd": true
+  },
+  {
+    "id": "dodaf:organizationPowertypeInstanceOfOrganizationType",
+    "term": "organizationPowertypeInstanceOfOrganizationType",
+    "definition": "Organization is a powertype instance of OrganizationType.",
+    "aliases": [],
+    "groups": [],
+    "association": true,
+    "status": "f. ERD-derived",
+    "erd": true
+  },
+  {
+    "id": "dodaf:organizationSubtypeOfPerformer",
+    "term": "organizationSubtypeOfPerformer",
+    "definition": "Organization is a subtype of Performer.",
+    "aliases": [],
+    "groups": [],
+    "association": true,
+    "status": "f. ERD-derived",
+    "erd": true
+  },
+  {
+    "id": "dodaf:organizationTypeInstanceOfOrganization",
+    "term": "organizationTypeInstanceOfOrganization",
+    "definition": "Organization is a type instance of OrganizationType.",
+    "aliases": [],
+    "groups": [],
+    "association": true,
+    "status": "f. ERD-derived",
+    "erd": true
+  },
+  {
+    "id": "dodaf:pedigreeProducedByActivity",
+    "term": "pedigreeProducedByActivity",
+    "definition": "Activity and PedigreeInformation are associated via the pedigreeProducedByActivity tuple.",
+    "aliases": [],
+    "groups": [],
+    "association": true,
+    "status": "f. ERD-derived",
+    "erd": true
+  },
+  {
+    "id": "dodaf:pedigreeWholePart",
+    "term": "pedigreeWholePart",
+    "definition": "PedigreeInformation is a part of PedigreeInformation (wholePart).",
+    "aliases": [],
+    "groups": [],
+    "association": true,
+    "status": "f. ERD-derived",
+    "erd": true
+  },
+  {
+    "id": "dodaf:performerSubtypeOfResource",
+    "term": "performerSubtypeOfResource",
+    "definition": "Performer is a subtype of Resource.",
+    "aliases": [],
+    "groups": [
+      "04-resource"
+    ],
+    "association": true,
+    "status": "f. ERD-derived",
+    "erd": true
+  },
+  {
+    "id": "dodaf:personRoleTypePartOfOrganization",
+    "term": "personRoleTypePartOfOrganization",
+    "definition": "PersonRoleType is a part of Organization (wholePart).",
+    "aliases": [],
+    "groups": [],
+    "association": true,
+    "status": "f. ERD-derived",
+    "erd": true
+  },
+  {
+    "id": "dodaf:ruleConstrainsActivityPerformedByPerformer",
+    "term": "ruleConstrainsActivityPerformedByPerformer",
+    "definition": "Rule and Activity are associated via the ruleConstrainsActivityPerformedByPerformer tuple.",
+    "aliases": [],
+    "groups": [],
+    "association": true,
+    "status": "f. ERD-derived",
+    "erd": true
+  },
+  {
+    "id": "dodaf:ruleConstrainsPerformer",
+    "term": "ruleConstrainsPerformer",
+    "definition": "Rule and Performer are associated via the ruleConstrainsPerformer tuple.",
+    "aliases": [],
+    "groups": [],
+    "association": true,
+    "status": "f. ERD-derived",
+    "erd": true
+  },
+  {
+    "id": "dodaf:ruleConstraintOfActivityValidUnderCondition",
+    "term": "ruleConstraintOfActivityValidUnderCondition",
+    "definition": "Rule and Condition are associated via the ruleConstraintOfActivityValidUnderCondition tuple.",
+    "aliases": [],
+    "groups": [],
+    "association": true,
+    "status": "f. ERD-derived",
+    "erd": true
+  },
+  {
+    "id": "dodaf:serviceSubtypeOfPerformer",
+    "term": "serviceSubtypeOfPerformer",
+    "definition": "Service is a subtype of Performer.",
+    "aliases": [],
+    "groups": [],
+    "association": true,
+    "status": "f. ERD-derived",
+    "erd": true
+  },
+  {
+    "id": "dodaf:standardIsRule",
+    "term": "standardIsRule",
+    "definition": "Standard is a subtype of Rule.",
+    "aliases": [],
+    "groups": [],
+    "association": true,
+    "status": "f. ERD-derived",
+    "erd": true
+  },
+  {
+    "id": "dodaf:systemSubtypeOfPerformer",
+    "term": "systemSubtypeOfPerformer",
+    "definition": "System is a subtype of Performer.",
+    "aliases": [],
+    "groups": [],
+    "association": true,
+    "status": "f. ERD-derived",
+    "erd": true
+  },
+  {
+    "id": "dodaf:technicalStandardIsRule",
+    "term": "technicalStandardIsRule",
+    "definition": "TechnicalStandard is a subtype of Rule.",
+    "aliases": [],
+    "groups": [],
+    "association": true,
+    "status": "f. ERD-derived",
+    "erd": true
+  }
+]

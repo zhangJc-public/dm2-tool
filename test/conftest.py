@@ -65,22 +65,28 @@ Content here.
 
 @pytest.fixture
 def sample_terms_json():
-    """Sample DM2 terms JSON content"""
+    """Sample DM2 terms JSON content (derived terms.json format)"""
     import json
     return json.dumps([
         {
+            "id": "dodaf:Activity",
             "term": "Activity",
             "definition": "An action performed by a performer",
-            "alias": "Task, Function",
-            "source": "DoDAF 2.02",
-            "groups": ["Activity"]
+            "aliases": ["Task", "Function"],
+            "groups": ["02-activity"],
+            "association": False,
+            "status": "a. In Model",
+            "erd": False
         },
         {
+            "id": "dodaf:Performer",
             "term": "Performer",
             "definition": "Any entity that performs an activity",
-            "alias": "",
-            "source": "DM2",
-            "groups": ["Performer"]
+            "aliases": ["Actor", "Agent"],
+            "groups": ["01-performer"],
+            "association": False,
+            "status": "a. In Model",
+            "erd": False
         },
     ])
 
@@ -91,8 +97,8 @@ def mock_reference_root(tmp_path, sample_terms_json):
     ref_root = tmp_path / "dm2-reference"
     ref_root.mkdir()
 
-    # Write terms JSON
-    (ref_root / "_dm2_v202_extract.json").write_text(sample_terms_json, encoding="utf-8")
+    # Write terms JSON (derived index format)
+    (ref_root / "terms.json").write_text(sample_terms_json, encoding="utf-8")
 
     # Write a concept markdown file
     concept_dir = ref_root / "01-Performer"

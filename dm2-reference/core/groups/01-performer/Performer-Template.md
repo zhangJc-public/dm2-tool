@@ -1,23 +1,21 @@
 ---
 type: dm2/performer
 dm2-layer: Type | Individual
-dm2-subtype: System | Service | Organization | PersonRole
+dm2-subtype: OrganizationType | PersonRoleType | Port | Service | System
 name: null
 definition: null
 synonyms: []
 relationships:
-  performs: []
-  partOf: []
-  hasPart: []
-  providesService: []
-  consumesResource: []
-  locatedAt: []
-  measuredBy: []
-  containsMateriel: []
-  hasPort: []
-  hasRole: []
-  measuredByOrg: []
-  hasCapability: []
+  RuleConstraintsActivity: []
+  activityPerformableUnderCondition: []
+  activityPerformedByPerformer: []
+  materielPartOfPerformer: []
+  measureOfTypeActivity: []
+  measureOfTypeCondition: []
+  measureOfTypeResource: []
+  personRoleTypePartOfPerformer: []
+  resourceInLocationType: []
+  skillOfPersonRoleType: []
 pedigree:
   source: ''
   derivedFrom: []
@@ -54,6 +52,19 @@ tags:
 相关分析: '[[../详细分析/DM2-Performer详细分析]]'
 ---
 
+## DM2 关联清单（元模型权威）
+> 本组权威关联（来自 dm2-metamodel-2.02.yaml 关联目录）：
+> - RuleConstraintsActivity: Rule ─▶ Activity
+> - activityPerformableUnderCondition: Activity ─▶ Condition
+> - activityPerformedByPerformer: Performer ─▶ Activity
+> - materielPartOfPerformer: Materiel ─▶ Performer
+> - measureOfTypeActivity: Measure ─▶ Activity
+> - measureOfTypeCondition: Measure ─▶ Condition
+> - measureOfTypeResource: Measure ─▶ Resource
+> - personRoleTypePartOfPerformer: PersonRoleType ─▶ Performer
+> - resourceInLocationType: Resource ─▶ LocationType
+> - skillOfPersonRoleType: Skill ─▶ PersonRoleType
+
 # {名称}
 
 ## 基本信息
@@ -62,7 +73,7 @@ tags:
 |------|-----|
 | DM2 类型 | Performer |
 | 分层 | {Type | Individual} |
-| 子类型 | {System | Service | Organization | PersonRole} |
+| 子类型 | OrganizationType | PersonRoleType | Port | Service | System |
 | 同义词 | {synonyms} |
 
 ## 定义
@@ -79,21 +90,21 @@ graph LR
 
 ## 关联关系
 
-### performs（执行）
+### activityPerformedByPerformer（执行）
 - [[Activity-1]]
 - [[Activity-2]]
 
-### partOf（所属）
+### wholePart（所属）
 - [[Parent-Performer-1]]
 
-### hasPart（包含）
+### wholePart（包含）
 - [[Child-Performer-1]]
 - [[Child-Performer-2]]
 
-### providesService（提供服务）
+### serviceEnablesAccessToResource（提供服务）
 - [[Service-1]]
 
-### locatedAt（位置）
+### resourceInLocationType（位置）
 - [[Location-1]]
 
 ## 能力映射

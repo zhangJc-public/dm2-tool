@@ -8,18 +8,19 @@ objective: ''
 precondition: ''
 postcondition: ''
 relationships:
-  performedBy: []
-  consumes: []
-  produces: []
-  partOf: []
-  hasPart: []
-  prerequisite: []
-  successor: []
-  governedBy: []
-  directedBy: []
-  underCondition: []
-  mapsToCapability: []
-  measuredBy: []
+  RuleConstraintsActivity: []
+  activityConsumesResource: []
+  activityMapsToCapabilityType: []
+  activityPartOfCapability: []
+  activityPartOfProjectType: []
+  activityPerformableUnderCondition: []
+  activityPerformedByPerformer: []
+  activityProducesResource: []
+  desiredEffectDirectsActivity: []
+  jointAction: []
+  measureOfTypeActivity: []
+  measureTypeApplicableToActivity: []
+  ruleConstrainsActivity: []
 pedigree:
   source: ''
   derivedFrom: []
@@ -55,6 +56,22 @@ tags:
 - dm2/individual
 相关分析: '[[../详细分析/DM2-Performer详细分析]]（Activity 元模型嵌入其中）'
 ---
+
+## DM2 关联清单（元模型权威）
+> 本组权威关联（来自 dm2-metamodel-2.02.yaml 关联目录）：
+> - RuleConstraintsActivity: Rule ─▶ Activity
+> - activityConsumesResource: Activity ─▶ Resource
+> - activityMapsToCapabilityType: Activity ─▶ CapabilityType
+> - activityPartOfCapability: Activity ─▶ Capability
+> - activityPartOfProjectType: Activity ─▶ ProjectType
+> - activityPerformableUnderCondition: Activity ─▶ Condition
+> - activityPerformedByPerformer: Performer ─▶ Activity
+> - activityProducesResource: Activity ─▶ Resource
+> - desiredEffectDirectsActivity: Resource ─▶ Activity
+> - jointAction: Activity ─▶ Activity
+> - measureOfTypeActivity: Measure ─▶ Activity
+> - measureTypeApplicableToActivity: MeasureType ─▶ Activity
+> - ruleConstrainsActivity: Activity ─▶ Rule
 
 # {名称}
 
@@ -107,13 +124,13 @@ graph LR
 
 ## 层级关系
 
-- **partOf**：[[Capability-1]]、[[Activity-Parent-1]]
-- **hasPart**：[[Sub-Activity-1]]、[[Sub-Activity-2]]
+- **activityPartOfCapability**：[[Capability-1]]、[[Activity-Parent-1]]
+- **activityPartOfCapability**：[[Sub-Activity-1]]、[[Sub-Activity-2]]
 
 ## 时序关系
 
-- **prerequisite**：[[Pre-Activity-1]]
-- **successor**：[[Post-Activity-1]]
+- **beforeAfter**：[[Pre-Activity-1]]
+- **beforeAfter**：[[Post-Activity-1]]
 
 ## 治理规则
 

@@ -46,11 +46,20 @@ synonyms: []
 coordinates: ''
 address: ''
 relationships:
-  hosts: []
-  partOf: []
-  hasPart: []
-  adjacentTo: []
-  connectedTo: []
+  axesDescribedBy: []
+  coordinateCenterDescribedBy: []
+  describedBy: []
+  facilityPartOfSite: []
+  individualResourceInLocation: []
+  linePartOfPlanarSurface: []
+  locationNamedByAddress: []
+  measureOfIndividual: []
+  measureOfIndividualPoint: []
+  namedBy: []
+  pointPartOfLine: []
+  pointPartOfPlanarSurface: []
+  regionOfCountryPartOfCountry: []
+  sitePartOfInstallation: []
 pedigree:
   source: ''
   derivedFrom: []
@@ -83,6 +92,23 @@ tags:
 - dm2/virtual
 相关分析: '[[../详细分析/DM2-Location详细分析]]'
 ---
+
+## DM2 关联清单（元模型权威）
+> 本组权威关联（来自 dm2-metamodel-2.02.yaml 关联目录）：
+> - axesDescribedBy: Point ─▶ PositionReferenceFrame
+> - coordinateCenterDescribedBy: Point ─▶ PositionReferenceFrame
+> - describedBy: Thing ─▶ Information
+> - facilityPartOfSite: Facility ─▶ Site
+> - individualResourceInLocation: IndividualResource ─▶ Location
+> - linePartOfPlanarSurface: Line ─▶ PlanarSurface
+> - locationNamedByAddress: Location ─▶ Address
+> - measureOfIndividual: Measure ─▶ Point
+> - measureOfIndividualPoint: Point ─▶ Measure
+> - namedBy: Thing ─▶ Name
+> - pointPartOfLine: Point ─▶ Line
+> - pointPartOfPlanarSurface: Point ─▶ PlanarSurface
+> - regionOfCountryPartOfCountry: RegionOfCountry ─▶ Country
+> - sitePartOfInstallation: Site ─▶ Installation
 
 # {名称}
 
@@ -119,7 +145,7 @@ tags:
 
 ## 托管对象
 
-### hosts（托管）
+### resourceInLocationType（托管）
 - [[Performer-1]] — 类型：数据中心
 - [[Resource-1]] — 类型：服务器集群
 
@@ -132,10 +158,10 @@ graph TB
     L2 -->|hasPart| L4[Location Child 2]
 ```
 
-### partOf（所属）
+### wholePart（所属）
 - [[Parent-Location-1]]
 
-### hasPart（包含）
+### wholePart（包含）
 - [[Child-Location-1]]
 - [[Child-Location-2]]
 

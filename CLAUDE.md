@@ -17,13 +17,18 @@ DoDAF Meta Model 2.02 系统工程辅助工具。
 ├── src/dm2/                  ← Python 包
 │   ├── cli/                 ← CLI 入口 + 命令实现
 │   ├── core/                ← 核心引擎（AI Agent 接口）
-│   ├── kernel/              ← DM2 元模型和索引
+│   ├── kernel/              ← DM2 索引 + metamodel/ 派生索引加载器
 │   ├── engine/              ← 视图生成、pipeline
 │   ├── cognitive/           ← Cynefin/6W 分析
-│   ├── reasoning/           ← 一致性检查
+│   ├── reasoning/           ← 一致性检查 + 符合性校验
 │   └── utils/               ← 路径、frontmatter 解析
+├── scripts/                  ← 构建脚本（派生知识索引生成）
+│   └── build_knowledge_indexes.py
 ├── dm2-reference/           ← 内置 DM2 参考知识库
-│   └── core/                ← 打包发布的核心数据
+│   ├── dm2-data-dictionary.yaml ← 权威源：DM2 数据字典（279 术语 + 怪物矩阵）
+│   ├── dm2-metamodel-2.02.yaml  ← 权威源：DM2 逻辑数据模型（19 子模型）
+│   ├── group-to-views.yaml  ← 数据组→视图映射（basis 证据标注）
+│   └── core/                ← 派生索引 + views.yaml + groups/（打包发布）
 ├── docs/
 ├── test/
 ├── templates/               ← dm2 init 使用的项目模板
@@ -62,12 +67,16 @@ DM2_DEBUG=1 dm2 analyze ...   # 显示索引器诊断（默认静默，保证 --
 | `src/dm2/cli/main.py` | CLI 入口和命令路由 |
 | `src/dm2/cli/commands/` | 各命令实现（`init/analyze/generate/validate/...`） |
 | `src/dm2/core/` | 核心引擎：Instructions Engine、Artifact Graph、Change Manager、Pipeline V2 |
-| `src/dm2/core/templates/workflows/` | 技能 Markdown 模板（from Python `.py` → `.claude/skills/`） |
-| `src/dm2/kernel/` | DM2 元模型定义、视图 schema、术语索引 |
+| `src/dm2/core/templates/workflows/` | 技能 Markdown 模板（from Python `.py` → 各 adapter 的 skills 目录） |
+| `src/dm2/core/adapters/` | AI 工具适配器：`claude.py`（ClaudeCodeAdapter）、`dsh.py`（DshAdapter）+ `get_adapter()` 注册表 |
+| `src/dm2/kernel/indexer.py` | 术语/概念/视图模板加载（术语源 = `core/terms.json`） |
+| `src/dm2/kernel/metamodel/` | `MetamodelIndex`：关联目录/分类学/视图内容规范查询 |
 | `src/dm2/engine/` | 视图生成 pipeline 各步骤 |
 | `src/dm2/cognitive/` | Cynefin 复杂度评估（五维域投票+硬触发，含 Disorder；`cynefin_deriver.py` 外部化 YAML 词库，CLI/pipeline 共用）+ 6W 分析 |
-| `src/dm2/reasoning/` | 一致性校验（R1-R5） |
-| `dm2-reference/core/` | views.yaml、术语 JSON、数据组模板、group-to-views 映射 |
+| `src/dm2/reasoning/consistency.py` | 散文级正则一致性检查（prose-heuristic） |
+| `src/dm2/reasoning/conformance.py` | 元模型符合性校验（metamodel-conformance，5 条规则） |
+| `scripts/build_knowledge_indexes.py` | 权威源 YAML → 派生 JSON 索引 + 组模板 relationships 对账 |
+| `dm2-reference/core/` | views.yaml、派生索引（terms/associations/taxonomy/view-content-spec.json）、数据组模板 |
 | `test/` | 测试套件 |
 | `templates/` | `dm2 init` 的项目模板骨架 |
 
@@ -78,6 +87,7 @@ DM2_DEBUG=1 dm2 analyze ...   # 显示索引器诊断（默认静默，保证 --
 - **视图生命周期** — 每个视图经过 `pending → in_progress → generated → verified` 四个状态，由 `.dm2/view-state.yaml` 管理。
 - **变更生命周期** — 每个变更在 `dm2-changes/<name>/` 下有 proposal、design、tasks 和 views/ 目录。
 - **路径优先** — `get_reference_path()` 优先 `.dm2/reference/` 本地副本，回退到包内置 `dm2-reference/core/`。
+- **索引派生** — 改权威源 YAML（`dm2-data-dictionary.yaml` / `dm2-metamodel-2.02.yaml`）后必须重跑 `python3 scripts/build_knowledge_indexes.py` 再生成派生 JSON（快照测试 `test/test_knowledge_indexes.py` 会拦截未再生成的索引）；组模板 `relationships:` 槽位用 `--fix-templates` 从关联目录投影同步。运行时只加载紧凑 JSON，不解析 840KB 源 YAML。
 - **约定优先于配置** — 文件名、目录结构是系统约定的接口，减少配置项。如需动态行为，走模板生成而非运行时配置。
 - **测试风格** — 使用 pytest，测试放在 `test/` 目录，与 `src/dm2/` 结构对应。
 

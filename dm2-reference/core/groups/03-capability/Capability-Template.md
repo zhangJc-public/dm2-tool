@@ -6,17 +6,22 @@ definition: null
 synonyms: []
 level: TypeType | Type | Capability | IndividualCapability
 relationships:
-  composedOf: []
-  contributesTo: []
-  requiredBy: []
-  enablesActivity: []
-  performedBy: []
-  measuredBy: []
-  governedBy: []
+  activityConsumesResource: []
+  activityMapsToCapabilityType: []
+  activityPartOfCapability: []
+  activityPerformableUnderCondition: []
+  activityPerformedByPerformer: []
+  activityProducesResource: []
+  capabilityOfPerformer: []
+  desireMeasure: []
   desiredEffect: []
-  realizedByProject: []
-  mapsActivity: []
-  conditions: []
+  desiredEffectOfCapability: []
+  effectMeasure: []
+  measureOfTypeActivity: []
+  measureOfTypeCondition: []
+  measureOfTypeResource: []
+  ruleConstrainsActivity: []
+  rulePartOfMeasureType: []
 pedigree:
   source: ''
   derivedFrom: []
@@ -55,6 +60,25 @@ tags:
 相关分析: '[[../详细分析/DM2-Capability详细分析]]'
 ---
 
+## DM2 关联清单（元模型权威）
+> 本组权威关联（来自 dm2-metamodel-2.02.yaml 关联目录）：
+> - activityConsumesResource: Activity ─▶ Resource
+> - activityMapsToCapabilityType: Activity ─▶ CapabilityType
+> - activityPartOfCapability: Activity ─▶ Capability
+> - activityPerformableUnderCondition: Activity ─▶ Condition
+> - activityPerformedByPerformer: Performer ─▶ Activity
+> - activityProducesResource: Activity ─▶ Resource
+> - capabilityOfPerformer: Capability ─▶ Performer
+> - desireMeasure: Measure ─▶ MeasureOfDesire
+> - desiredEffect: Resource ─▶ Performer
+> - desiredEffectOfCapability: desiredEffect ─▶ Capability
+> - effectMeasure: MeasureOfEffect ─▶ Resource
+> - measureOfTypeActivity: Measure ─▶ Activity
+> - measureOfTypeCondition: Measure ─▶ Condition
+> - measureOfTypeResource: Measure ─▶ Resource
+> - ruleConstrainsActivity: Activity ─▶ Rule
+> - rulePartOfMeasureType: Rule ─▶ MeasureType
+
 # {名称}
 
 ## 基本信息
@@ -84,11 +108,11 @@ graph TB
 
 ## 能力组成
 
-### composedOf（组成）
+### activityPartOfCapability（组成）
 - [[Sub-Capability-1]] — 贡献度：高
 - [[Sub-Capability-2]] — 贡献度：中
 
-### contributesTo（归属）
+### desiredEffectOfCapability（归属）
 - [[Parent-Capability-1]]
 
 ## 三角关系
@@ -106,7 +130,7 @@ graph TB
 - [[Effect-1]]
 - [[Effect-2]]
 
-### measuredBy（度量）
+### measureOfTypeResource（度量）
 - [[Measure-1]] — 目标：95%
 - [[Measure-2]] — 目标：< 100ms
 

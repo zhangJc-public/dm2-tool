@@ -101,10 +101,9 @@ def init(
         if _groups_src.exists() and not (_ref_dst / "groups").exists():
             shutil.copytree(str(_groups_src), str(_ref_dst / "groups"))
             ref_copied += 1
-        # _dm2_v202_extract.json（DM2 术语库）
-        _terms_src = _ref_src / "_dm2_v202_extract.json"
-        if _terms_src.exists():
-            shutil.copy2(str(_terms_src), str(_ref_dst / "_dm2_v202_extract.json"))
+        # 派生知识索引（terms/associations/taxonomy/view-content-spec）
+        for _idx in _ref_src.glob("*.json"):
+            shutil.copy2(str(_idx), str(_ref_dst / _idx.name))
             ref_copied += 1
         # Cynefin 推导词库
         _cynefin_kw = _ref_src / "cynefin-keywords.yaml"
@@ -751,6 +750,7 @@ def validate(
     """对已生成的 DoDAF 视图运行一致性检查"""
     from dm2.core.views.manager import ViewManager, ViewStatus
     from dm2.reasoning.consistency import ConsistencyChecker
+    from dm2.utils.frontmatter import FrontmatterParser
     from dm2.utils.paths import get_project_root
 
     vm = ViewManager()
@@ -812,12 +812,32 @@ def validate(
         if view_path:
             views_data[v.id] = view_path.read_text(encoding='utf-8')
 
-    # Run consistency check
+    # Run metamodel-grounded conformance checks first (structured frontmatter)
+    from dm2.reasoning.conformance import MetamodelConformanceChecker
+    conf_checker = MetamodelConformanceChecker()
+    structured_notes = {}
+    for vid, content in views_data.items():
+        fm = FrontmatterParser.parse(content) if "dm2-type" in content else None
+        if fm and fm.get("dm2-type"):
+            structured_notes[vid] = fm
+    # Vault instance notes (optional)
+    from dm2.utils.paths import get_vault_path
+    vault = get_vault_path()
+    if vault:
+        vault_kb = vault / "文学" / "领域知识" / "DM2"
+        if vault_kb.exists():
+            structured_notes.update(conf_checker.collect_note_frontmatters(vault_kb.rglob("*.md")))
+    conformance_issues = conf_checker.check_notes(structured_notes)
+    for v in views:
+        conformance_issues.extend(conf_checker.check_view_required(v.id, structured_notes))
+
+    # Legacy prose heuristics run second
     checker = ConsistencyChecker()
     issues = checker.check_views(views_data)
 
     # Auto-update verified status if no errors
-    error_count = sum(1 for i in issues if i.severity.value == "error")
+    error_count = sum(1 for i in issues if i.severity.value == "error") \
+        + sum(1 for i in conformance_issues if i.severity.value == "error")
     if error_count == 0 and views_data:
         for v in views:
             vm.update_status(v.id, ViewStatus.VERIFIED)
@@ -827,7 +847,7 @@ def validate(
         json_success({
             "view_id": view_id if not all_views else None,
             "all_views": all_views,
-            "views_checked": list(views_data.keys()),
+            "views_checked": sorted(views_data.keys()),
             "issues": [
                 {
                     "type": i.issue_type,
@@ -836,32 +856,48 @@ def validate(
                     "view_id": i.view_id,
                     "related_views": i.related_views,
                     "suggestion": i.suggestion,
+                    "source": "metamodel-conformance",
+                }
+                for i in conformance_issues
+            ] + [
+                {
+                    "type": i.issue_type,
+                    "severity": i.severity.value,
+                    "message": i.message,
+                    "view_id": i.view_id,
+                    "related_views": i.related_views,
+                    "suggestion": i.suggestion,
+                    "source": "prose-heuristic",
                 }
                 for i in issues
             ],
             "summary": {
-                "error": sum(1 for i in issues if i.severity.value == "error"),
-                "warning": sum(1 for i in issues if i.severity.value == "warning"),
-                "info": sum(1 for i in issues if i.severity.value == "info"),
+                "error": error_count,
+                "warning": sum(1 for i in issues if i.severity.value == "warning")
+                + sum(1 for i in conformance_issues if i.severity.value == "warning"),
+                "info": sum(1 for i in issues if i.severity.value == "info")
+                + sum(1 for i in conformance_issues if i.severity.value == "info"),
             },
             "verified": error_count == 0 and len(views_data) > 0,
         })
         return
 
     # Human-readable output
-    if not issues:
+    if not issues and not conformance_issues:
         typer.echo("没有发现一致性问题")
         return
 
-    typer.echo(f"\n一致性检查: {len(views_data)} 个视图, {len(issues)} 个问题\n")
+    all_issues = [("metamodel-conformance", i) for i in conformance_issues] \
+        + [("prose-heuristic", i) for i in issues]
+    typer.echo(f"\n一致性检查: {len(views_data)} 个视图, {len(all_issues)} 个问题\n")
     for severity in ["error", "warning", "info"]:
-        sev_issues = [i for i in issues if i.severity.value == severity]
+        sev_issues = [(s, i) for s, i in all_issues if i.severity.value == severity]
         if not sev_issues:
             continue
         label = {"error": "错误", "warning": "警告", "info": "信息"}[severity]
         typer.echo(f"## {label} ({len(sev_issues)})\n")
-        for i in sev_issues:
-            typer.echo(f"  [{severity.upper()}] {i.message}")
+        for source, i in sev_issues:
+            typer.echo(f"  [{severity.upper()}|{source}] {i.message}")
             if i.suggestion:
                 typer.echo(f"         建议: {i.suggestion}")
             if i.view_id:
@@ -1040,6 +1076,7 @@ def instructions(
         },
         "rules": instr.rules,
         "template": instr.template,
+        "association_manifest": instr.association_manifest,
         "output_path": instr.output_path,
     }
 

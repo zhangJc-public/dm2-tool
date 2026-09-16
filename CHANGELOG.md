@@ -20,6 +20,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     （修复「不确定」被子串「确定」反判为 simple 的语义反转 bug），命中词作为证据透传
   - 置信度重写：缺失维度不投票，公式输出 0.20–0.95 并暴露 coverage/agreement 分解；
     域 → depth_tier 视图深度档位（minimal/core/extended/full/none）
+- **知识库扎根 DM2 元模型**（OpenSpec 变更 `ground-kb-in-dm2-metamodel`）：
+  - 权威源入库：`dm2-reference/dm2-data-dictionary.yaml`（279 术语 + 怪物矩阵）、
+    `dm2-metamodel-2.02.yaml`（19 子模型 / 621 类 / 242 Tuple）
+  - `scripts/build_knowledge_indexes.py` 派生 4 个紧凑 JSON 索引
+    （terms/associations/taxonomy/view-content-spec），运行时只加载 JSON，不解析 840KB 源 YAML
+  - `src/dm2/kernel/metamodel/` 新增 `MetamodelIndex`（关联目录/分类学/视图内容规范查询）；
+    `dm2 knowledge` 新增 `term/taxonomy/associations/content` 四个子命令
+  - `dm2 validate` 接入元模型符合性校验（`src/dm2/reasoning/conformance.py`，5 条规则），
+    与散文级启发式检查分层报告（metamodel-conformance / prose-heuristic）
+  - 17 个数据组模板 `relationships:` 槽位按关联目录权威名再生成
 - Initial release structure for GitHub
 
 ### Changed

@@ -40,10 +40,20 @@ direction: higher-is-better | lower-is-better | target-is-best
 targetValue: ''
 threshold: ''
 relationships:
-  measures: []
-  partOf: []
-  contributesTo: []
-  governedBy: []
+  capabilityOfPerformer: []
+  desireMeasure: []
+  effectMeasure: []
+  measureOfIndividual: []
+  measureOfIndividualPoint: []
+  measureOfTypeActivity: []
+  measureOfTypeCondition: []
+  measureOfTypeProjectType: []
+  measureOfTypeResource: []
+  measureTypeApplicableToActivity: []
+  propertyOfIndividual: []
+  propertyOfType: []
+  rulePartOfMeasureType: []
+  skillOfPersonRoleType: []
 pedigree:
   source: ''
   derivedFrom: []
@@ -76,6 +86,23 @@ tags:
 - dm2/performance
 相关分析: '[[../详细分析/DM2-Measure详细分析]]'
 ---
+
+## DM2 关联清单（元模型权威）
+> 本组权威关联（来自 dm2-metamodel-2.02.yaml 关联目录）：
+> - capabilityOfPerformer: Capability ─▶ Performer
+> - desireMeasure: Measure ─▶ MeasureOfDesire
+> - effectMeasure: MeasureOfEffect ─▶ Resource
+> - measureOfIndividual: Measure ─▶ Point
+> - measureOfIndividualPoint: Point ─▶ Measure
+> - measureOfTypeActivity: Measure ─▶ Activity
+> - measureOfTypeCondition: Measure ─▶ Condition
+> - measureOfTypeProjectType: Measure ─▶ ProjectType
+> - measureOfTypeResource: Measure ─▶ Resource
+> - measureTypeApplicableToActivity: MeasureType ─▶ Activity
+> - propertyOfIndividual: Property ─▶ Individual
+> - propertyOfType: IndividualType ─▶ Property
+> - rulePartOfMeasureType: Rule ─▶ MeasureType
+> - skillOfPersonRoleType: Skill ─▶ PersonRoleType
 
 # {名称}
 
@@ -136,8 +163,8 @@ gauge
 
 ## 层级关系
 
-- **partOf**：[[Metric-System-1]]
-- **contributesTo**：[[KPI-1]]
+- **wholePart**：[[Metric-System-1]]
+- **desiredEffectOfCapability**：[[KPI-1]]
 
 ## 备注
 
