@@ -1,4 +1,3 @@
-from __future__ import annotations
 """
 Step 3+4: Data Definition + Knowledge Accumulation (数据定义 + 知识沉淀)
 
@@ -11,14 +10,14 @@ Step 3+4: Data Definition + Knowledge Accumulation (数据定义 + 知识沉淀)
   6. 输出数据需求文档
 """
 
-import re
-from dataclasses import dataclass, field
+from __future__ import annotations
+
+from dataclasses import dataclass
 from pathlib import Path
 
-from dm2.cognitive.six_w_analyzer import SixW, SIX_W_TO_DM2_GROUPS
+from dm2.cognitive.six_w_analyzer import SIX_W_TO_DM2_GROUPS, SixW
 from dm2.kernel.indexer import DM2KnowledgeIndexer
 from dm2.kernel.rag import ObsidianRAGEngine
-
 
 DM2_GROUP_TO_ENTITY_TYPES: dict[str, list[str]] = {
     "Resource": ["resource", "information", "data", "material"],

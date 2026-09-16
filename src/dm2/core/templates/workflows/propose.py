@@ -1,12 +1,10 @@
 """Propose workflow — full analysis + planning artifact generation."""
 
 from dm2.core.templates import (
-    WorkflowTemplate,
-    SkillTemplate,
     CommandTemplate,
-    WORKFLOWS,
+    SkillTemplate,
+    WorkflowTemplate,
 )
-
 
 PROPOSE_SKILL = SkillTemplate(
     name="dm2-propose-workflow",

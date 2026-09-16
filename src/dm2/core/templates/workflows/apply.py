@@ -1,12 +1,10 @@
 """Apply workflow — task-driven view generation from the propose plan."""
 
 from dm2.core.templates import (
-    WorkflowTemplate,
-    SkillTemplate,
     CommandTemplate,
-    WORKFLOWS,
+    SkillTemplate,
+    WorkflowTemplate,
 )
-
 
 APPLY_SKILL = SkillTemplate(
     name="dm2-apply-workflow",

@@ -1,10 +1,6 @@
 """Tests for DM2KnowledgeIndexer"""
-import pytest
 from dm2.kernel.indexer import (
     DM2KnowledgeIndexer,
-    DM2Term,
-    DM2Concept,
-    ViewTemplate,
 )
 
 

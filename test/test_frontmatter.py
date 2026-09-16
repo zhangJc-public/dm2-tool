@@ -1,5 +1,4 @@
 """Tests for FrontmatterParser"""
-import pytest
 from dm2.utils.frontmatter import FrontmatterParser
 
 

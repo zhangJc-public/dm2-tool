@@ -1,7 +1,7 @@
-from __future__ import annotations
 """Pipeline State Manager - 读写 .dm2/state.yaml 管理步骤状态"""
 
-import os
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
@@ -42,7 +42,6 @@ class PipelineStateManager:
 
     def init_state(self, description: str = "") -> PipelineState:
         """初始化 pipeline 状态"""
-        import yaml
 
         self.steps_dir.mkdir(parents=True, exist_ok=True)
 

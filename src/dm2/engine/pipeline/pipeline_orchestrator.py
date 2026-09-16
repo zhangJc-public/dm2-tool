@@ -1,4 +1,3 @@
-from __future__ import annotations
 """
 Pipeline Orchestrator - 6步流程主控制器
 
@@ -11,7 +10,7 @@ Pipeline Orchestrator - 6步流程主控制器
   6. 进度输出
 """
 
-from pathlib import Path
+from __future__ import annotations
 
 from dm2.engine.pipeline.state_manager import PipelineStateManager
 from dm2.engine.pipeline.step1_intent_scope import Step1IntentScope
@@ -20,7 +19,6 @@ from dm2.engine.pipeline.step5_analysis import Step5Analysis
 from dm2.engine.pipeline.step6_documentation import Step6Documentation
 from dm2.kernel.indexer import DM2KnowledgeIndexer
 from dm2.utils.paths import get_project_root
-
 
 STEP_NAMES = {
     "step1-intent-scope": "Step 1+2：意图澄清 + 范围界定",
@@ -73,7 +71,7 @@ class PipelineOrchestrator:
         state = self.state_mgr.load()
         print()
         print("=" * 60)
-        print(f"✅ DoDAF 6步融合流程完成！")
+        print("✅ DoDAF 6步融合流程完成！")
         print(f"   迭代次数: {state.iteration}")
         print(f"   产物位置: {self.project_root / '.dm2' / 'steps' / ''}")
         print(f"   视图输出: {self.project_root / 'output' / ''}")
@@ -155,7 +153,7 @@ class PipelineOrchestrator:
             output_dir = self.project_root / "output"
             self.step6.save_views(result, output_dir)
 
-            print(f"   ✓ Composite View: 已生成")
+            print("   ✓ Composite View: 已生成")
             print(f"   ✓ 独立视图: {len(result.views)} 个")
             print(f"   ✓ Wikilinks: {len(result.wikilinks_map)} 个实体")
             print(f"   ✓ 迭代建议: {len(result.knowledge_delta.iteration_suggestions)} 条")
@@ -180,7 +178,6 @@ class PipelineOrchestrator:
                 w.strip() for w in sw_match.group(1).split(",")
             ]
 
-        groups = re.findall(r'^\s*-\s*(.+)$', content, re.MULTILINE)
         # 过滤出 DM2 数据组格式的行
         group_section = False
         for line in content.split("\n"):
@@ -201,7 +198,7 @@ class PipelineOrchestrator:
         """触发迭代循环"""
         self.state_mgr.reset_for_iteration()
         print("🔄 已重置 Pipeline，准备新一轮迭代...")
-        print(f"   上一轮产物已保留在 .dm2/steps/ 中")
+        print("   上一轮产物已保留在 .dm2/steps/ 中")
 
     def show_progress(self):
         """显示当前进度"""

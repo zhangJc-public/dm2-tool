@@ -1,6 +1,6 @@
 """Verify workflow — validate generated DoDAF views for completeness, correctness, and coherence."""
 
-from dm2.core.templates import WorkflowTemplate, SkillTemplate, CommandTemplate
+from dm2.core.templates import CommandTemplate, SkillTemplate, WorkflowTemplate
 
 VERIFY_SKILL = SkillTemplate(
     name="dm2-verify-workflow",

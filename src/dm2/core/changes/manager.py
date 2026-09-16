@@ -1,8 +1,7 @@
 """Change Manager — architecture change lifecycle management."""
 
-import os
 import shutil
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import date, datetime
 from enum import Enum
 from pathlib import Path

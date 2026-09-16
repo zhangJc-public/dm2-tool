@@ -1,4 +1,3 @@
-from __future__ import annotations
 """
 Step 6: Documentation + Knowledge Feedback (文档化 + 知识回流)
 
@@ -11,16 +10,17 @@ Step 6: Documentation + Knowledge Feedback (文档化 + 知识回流)
   6. 输出视图文件到 .dm2/output/
 """
 
+from __future__ import annotations
+
 import re
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
 
-from dm2.cognitive.six_w_analyzer import SixWAnalyzer, SixW
+from dm2.cognitive.six_w_analyzer import SixWAnalyzer
 from dm2.core.agent.instructions import InstructionBuilder
 from dm2.core.knowledge.api import KnowledgeAPI
 from dm2.engine.view_generator import (
-    ArchitectureInput,
     ViewTemplateFiller,
 )
 from dm2.kernel.indexer import DM2KnowledgeIndexer
@@ -266,7 +266,7 @@ class Step6Documentation:
         """在内容中追加 wikilinks 章节"""
         links_section = "\n\n## 关联知识\n\n"
         for entity, links in list(wikilinks_map.items())[:10]:
-            link_str = " ".join(f"[[{l}]]" for l in links)
+            link_str = " ".join(f"[[{link}]]" for link in links)
             links_section += f"- **{entity}**: {link_str}\n"
 
         return content.rstrip() + links_section
@@ -311,7 +311,7 @@ class Step6Documentation:
         )
 
         wikilinks_summary = "\n".join(
-            f"- **{entity}**: {' '.join(f'[[{l}]]' for l in links[:3])}"
+            f"- **{entity}**: {' '.join(f'[[{link}]]' for link in links[:3])}"
             for entity, links in list(result.wikilinks_map.items())[:10]
         )
 

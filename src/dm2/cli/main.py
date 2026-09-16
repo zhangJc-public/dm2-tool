@@ -8,6 +8,11 @@ from typing import List, Optional
 
 import typer
 
+from dm2.cli.commands.change import register_change_commands
+from dm2.cli.commands.concern import concern_app
+from dm2.cli.commands.knowledge import register_knowledge_commands
+from dm2.cli.commands.view import register_view_commands
+
 app = typer.Typer(
     name="dm2",
     help="DoDAF Meta Model 2.02 系统工程辅助工具",
@@ -34,11 +39,6 @@ def _require_project():
 
 
 # Register subcommand groups
-from dm2.cli.commands.change import register_change_commands
-from dm2.cli.commands.concern import concern_app
-from dm2.cli.commands.knowledge import register_knowledge_commands
-from dm2.cli.commands.view import register_view_commands
-
 register_knowledge_commands(app)
 register_change_commands(app)
 register_view_commands(app)
@@ -693,7 +693,6 @@ def analyze(
 
     # 数据组激活检测 (增强 JSON 输出)
     activations = recommender.get_data_group_activation(description)
-    active_groups = [a for a in activations if a.score > 0.0]
 
     # Silently persist analysis state for cross-session context
     from dm2.utils.paths import is_dm2_project as _is_proj

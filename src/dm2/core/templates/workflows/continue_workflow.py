@@ -1,6 +1,6 @@
 """Continue workflow — resume in-progress dm2 analysis or view generation."""
 
-from dm2.core.templates import WorkflowTemplate, SkillTemplate, CommandTemplate, WORKFLOWS
+from dm2.core.templates import CommandTemplate, SkillTemplate, WorkflowTemplate
 
 CONTINUE_SKILL = SkillTemplate(
     name="dm2-continue-workflow",

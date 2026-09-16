@@ -1,5 +1,4 @@
 """Tests for path utilities"""
-import pytest
 from dm2.utils.paths import get_project_root, is_dm2_project
 
 

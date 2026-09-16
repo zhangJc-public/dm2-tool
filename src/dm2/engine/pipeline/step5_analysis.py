@@ -1,4 +1,3 @@
-from __future__ import annotations
 """
 Step 5: Analysis Execution (分析执行)
 
@@ -9,11 +8,13 @@ Step 5: Analysis Execution (分析执行)
   4. 一致性检查 — 复用 consistency.py
 """
 
-import re
-from dataclasses import dataclass, field
+from __future__ import annotations
 
+import re
+from dataclasses import dataclass
+
+from dm2.reasoning.consistency import ConsistencyChecker, ConsistencyIssue
 from dm2.reasoning.patterns import PatternMatcher, PatternType
-from dm2.reasoning.consistency import ConsistencyChecker, ConsistencyIssue, IssueSeverity
 
 
 @dataclass

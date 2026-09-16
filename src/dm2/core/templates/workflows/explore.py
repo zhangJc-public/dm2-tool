@@ -1,12 +1,10 @@
 """Explore workflow — read-only DoDAF architecture exploration and discussion."""
 
 from dm2.core.templates import (
-    WorkflowTemplate,
-    SkillTemplate,
     CommandTemplate,
-    WORKFLOWS,
+    SkillTemplate,
+    WorkflowTemplate,
 )
-
 
 EXPLORE_SKILL = SkillTemplate(
     name="dm2-explore-workflow",

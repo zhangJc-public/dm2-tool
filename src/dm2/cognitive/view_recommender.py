@@ -3,7 +3,6 @@ View Recommender - DoDAF 视图推荐引擎
 基于 DM2 17 数据组激活检测驱动的视图推荐
 """
 
-import re
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Optional

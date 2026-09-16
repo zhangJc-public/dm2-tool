@@ -1,6 +1,6 @@
 """New workflow — start a new DoDAF architecture analysis."""
 
-from dm2.core.templates import WorkflowTemplate, SkillTemplate, CommandTemplate
+from dm2.core.templates import CommandTemplate, SkillTemplate, WorkflowTemplate
 
 NEW_SKILL = SkillTemplate(
     name="dm2-new-workflow",

@@ -1,6 +1,6 @@
 """Fast-forward workflow — generate all recommended views in one shot."""
 
-from dm2.core.templates import WorkflowTemplate, SkillTemplate, CommandTemplate
+from dm2.core.templates import CommandTemplate, SkillTemplate, WorkflowTemplate
 
 FF_SKILL = SkillTemplate(
     name="dm2-ff-workflow",

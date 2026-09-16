@@ -1,6 +1,6 @@
 """Bulk-archive workflow — archive multiple completed dm2 changes at once."""
 
-from dm2.core.templates import WorkflowTemplate, SkillTemplate, CommandTemplate
+from dm2.core.templates import CommandTemplate, SkillTemplate, WorkflowTemplate
 
 BULK_ARCHIVE_SKILL = SkillTemplate(
     name="dm2-bulk-archive-workflow",

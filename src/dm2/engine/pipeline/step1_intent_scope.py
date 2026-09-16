@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 """
 Step 1+2: Intent Clarification + Scope Definition (意图澄清 + 范围界定)
 
@@ -11,6 +9,8 @@ Step 1+2: Intent Clarification + Scope Definition (意图澄清 + 范围界定)
   5. DM2 数据组选择
   6. 输出范围定义文档
 """
+
+from __future__ import annotations
 
 from dataclasses import dataclass, field
 

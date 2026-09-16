@@ -1,6 +1,7 @@
 """pytest fixtures for dm2-tool tests"""
 import tempfile
 from pathlib import Path
+
 import pytest
 
 
@@ -22,7 +23,6 @@ def tmp_project():
 @pytest.fixture
 def tmp_dm2_project_cwd(tmp_project, monkeypatch):
     """Change cwd to a temporary dm2 project"""
-    import os
     monkeypatch.chdir(str(tmp_project))
     return tmp_project
 

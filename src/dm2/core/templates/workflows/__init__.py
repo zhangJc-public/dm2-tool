@@ -2,16 +2,16 @@
 
 from dm2.core.templates import WORKFLOWS
 from dm2.core.templates.workflows import (
-    propose,
-    continue_workflow,
-    new_workflow,
-    ff,
-    verify,
-    onboard,
-    bulk_archive,
-    explore,
     apply,
     archive,
+    bulk_archive,
+    continue_workflow,
+    explore,
+    ff,
+    new_workflow,
+    onboard,
+    propose,
+    verify,
 )
 
 _all_workflows = [

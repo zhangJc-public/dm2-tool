@@ -1,6 +1,6 @@
 """Pipeline V2 — Agent-driven 6-step orchestration."""
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
 from typing import Optional

@@ -1,6 +1,6 @@
 """Onboard workflow — guided walkthrough of the complete dm2 DoDAF architecture modeling cycle."""
 
-from dm2.core.templates import WorkflowTemplate, SkillTemplate, CommandTemplate
+from dm2.core.templates import CommandTemplate, SkillTemplate, WorkflowTemplate
 
 ONBOARD_SKILL = SkillTemplate(
     name="dm2-onboard-workflow",
