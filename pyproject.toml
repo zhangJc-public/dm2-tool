@@ -48,3 +48,4 @@ ignore = ["E501"]  # line too long (handled by formatter)
 [tool.pytest.ini_options]
 testpaths = ["test"]
 python_files = ["test_*.py"]
+pythonpath = ["src", "."]
