@@ -1,32 +1,57 @@
-# Cynefin 复杂度推导词库
+# Cynefin 复杂度推导词库（v2）
 #
-# 维度按「因果关系可知性」组织，与规模信号分离。
-# 每个维度三档倾向：clear（明晰）/ complicated（繁杂）/ complex（复杂）。
-# - clear / complicated 词表在匹配时带否定前缀保护（不|未|没|无|毫|并不|尚未|难以），
-#   例如「不确定」不会再被「确定」二次命中；
-# - 否定式（不确定、无先例、规则缺失）直接列在 complex 词表中；
-# - 匹配按长度优先、去重叠：长词（难以协调）覆盖其包含的短词（协调）。
+# 三层定位：
+#   1) 本文件的词表只产生「启发式预填」（prefill）与语境规则信号，不是最终判定；
+#   2) dimensions.<id>.rubric 是规范评估量表（引导问题 + 三档行为锚点），
+#      由在环 Agent/人按量表裁定（adjudicated）；
+#   3) crisis 信号必须通过语境门控：候选词 + 窗口内门控词，且不落入排除复合词。
+#
+# 维度词表匹配规则（v1 保持）：
+# - clear / complicated 正面词带否定前缀保护（不|未|没|无|毫|并不|尚未|难以），
+#   「不确定」不会被「确定」二次命中；否定式直接列入 complex；
+# - 长度优先、去重叠：长词（难以协调）覆盖短词（协调）。
 # scale 节只产出规模剖面，不参与域判定。
-version: 1
+version: 2
 
-# 危机信号：命中即一票进 Chaotic；命中片段不回流维度匹配
+# ── 危机信号：语境规则 ──────────────────────────────────────────
+# 候选词命中后：
+#   a) 与任一 exclude 复合词跨度重叠 → excluded（规划/准备语境，留痕不沉默）；
+#   b) 否则在候选跨度左右 window 个字符内找到 require_near 门控词 → fired；
+#   c) 找不到门控词 → weak（提示裁定者，不触发否决）。
+# direct 短语视为门控恒成立，但同样受 exclude 跨度否决。
 crisis:
-  - 应急
-  - 应急响应
-  - 应急处置
-  - 应急指挥
-  - 中断
-  - 全站中断
-  - 宕机
-  - 失控
-  - 蔓延
-  - 战时
-  - 紧急抢修
-  - 救灾
-  - 抢险
-  - outage
-  - emergency
-  - crisis
+  signals:
+    - id: response-in-progress          # 应急处置/响应进行时
+      candidates: [应急处置, 应急响应, 应急指挥, 抢修]
+      require_near: [正在, 中, 已启动, 已进入]
+      window: 8
+      exclude: [应急预案, 应急演练, 应急体系, 应急能力, 应急机制,
+                应急流程, 应急规划, 应急制度, 响应流程, 响应预案,
+                应急响应能力, 应急响应体系]
+    - id: large-scale-outage             # 既成事实的大面积中断/宕机
+      candidates: [中断, 宕机]
+      require_near: [全站, 全网, 全线, 大面积, 核心系统, 核心业务, 多个关键]
+      window: 6
+      exclude: [中断风险, 中断处置流程, 防止中断, 防中断, 宕机风险,
+                业务中断风险, 应急预案]
+    - id: spreading                      # 事态蔓延进行时
+      candidates: [蔓延]
+      require_near: [正在, 仍在, 持续, 事态]
+      window: 4
+      exclude: [防止蔓延, 防蔓延]
+    - id: loss-of-control                # 失控进行时/完全态
+      candidates: [失控]
+      require_near: [正在, 已, 完全, 濒于]
+      window: 4
+      exclude: [失控风险, 防止失控, 防失控]
+  # 门控语义已内嵌的强短语（仍受 exclude 跨度否决）
+  direct:
+    - 战时状态
+    - 紧急抢修中
+    - major outage
+    - system is down
+    - ongoing emergency
+    - active crisis
 
 # 否定前缀：用于 clear / complicated 正面词的后顾断言
 negation_prefixes:
@@ -42,6 +67,12 @@ negation_prefixes:
 dimensions:
   # ── 需求可知性：问题空间是否已知 ──────────────────────────────
   requirement_knowability:
+    rubric:
+      question: "需求现在能说清吗？是冻结的、需要调研收敛的、还是在持续涌现？"
+      anchors:
+        clear: "需求明确且已冻结，范围不再变化"
+        complicated: "部分明确，经调研或分阶段推进可以收敛"
+        complex: "需求模糊或持续涌现，行动前无法完整定义"
     clear:
       - 需求明确
       - 范围明确
@@ -86,6 +117,12 @@ dimensions:
 
   # ── 实践成熟度：解空间知识（最佳实践→专家分析→无先例）────────
   practice_maturity:
+    rubric:
+      question: "这类问题有现成做法吗？是照搬最佳实践、需要专家分析选型、还是业内没有先例？"
+      anchors:
+        clear: "有成熟方案/最佳实践，照标准实施即可"
+        complicated: "需要专家分析，存在多个好答案，需选型或定制集成"
+        complex: "无先例可循，只能在行动中探索有效做法"
     clear:
       - 成熟方案
       - 成熟产品
@@ -135,6 +172,12 @@ dimensions:
 
   # ── 环境动态性：答案的时效性 ─────────────────────────────────
   environmental_dynamics:
+    rubric:
+      question: "外部环境变化有多快？今天的方案会不会在建成前就过期？"
+      anchors:
+        clear: "环境静态稳定，方案长期有效"
+        complicated: "变化可预测，可按路线图/分期演进"
+        complex: "快速变化或对抗演变，答案会过期，需要探针式迭代"
     clear:
       - 长期稳定
       - 稳定
@@ -168,6 +211,12 @@ dimensions:
 
   # ── 目标一致性：干系人冲突（不是干系人数量）──────────────────
   goal_alignment:
+    rubric:
+      question: "各方想要的是同一件事吗？是目标一致、利益可协调、还是存在根本对立？"
+      anchors:
+        clear: "各方接受同一目标，无实质分歧"
+        complicated: "多元利益但可通过协调达成一致"
+        complex: "存在根本目标冲突或立场对立，协调本身是核心难题"
     clear:
       - 目标一致
       - 各方一致
@@ -198,6 +247,12 @@ dimensions:
 
   # ── 约束清晰度：规则的一致性（不是条文数量）──────────────────
   constraint_clarity:
+    rubric:
+      question: "约束条件清楚且自洽吗？是完备一致、有框架需解释、还是缺失或互相矛盾？"
+      anchors:
+        clear: "规则/标准完备且相互一致，无合规要求也算清晰"
+        complicated: "有合规框架或行业标准，但需要解释和适配"
+        complex: "规则缺失、监管不明或条文相互矛盾，无章可循"
     clear:
       - 规则完备
       - 标准完备

@@ -281,7 +281,14 @@ def status(
             confidence = c.get("confidence", 0) or 0
             tier = c.get("depth_tier")
             tier_str = f"，视图档位 {tier}" if tier else ""
-            typer.echo(f"  Cynefin 域: {label} (置信度 {confidence:.0%}{tier_str})")
+            resolution = c.get("resolution")
+            if resolution == "adjudicated":
+                mark = " ✓已裁定"
+            elif resolution == "heuristic":
+                mark = " ～草案"
+            else:
+                mark = ""  # 无 resolution 字段的历史记录
+            typer.echo(f"  Cynefin 域: {label}{mark} (置信度 {confidence:.0%}{tier_str})")
         a = analysis_state.get("analyze")
         if a:
             typer.echo(f"  6W 分析: {a.get('primary_6w', '?')} (置信度 {a.get('confidence', 0):.0%})")
@@ -338,26 +345,56 @@ def archive(
 
 @app.command()
 def cynefin(
-    description: str = typer.Option("", "--desc", "-d", help="系统/架构描述（自动推导维度倾向与证据）"),
+    description: str = typer.Option("", "--desc", "-d", help="系统/架构描述（启发式预填，非最终判定）"),
     knowability: str = typer.Option(None, "--knowability", help="需求可知性：clear|complicated|complex"),
     maturity: str = typer.Option(None, "--maturity", help="实践成熟度：clear|complicated|complex"),
     dynamics: str = typer.Option(None, "--dynamics", help="环境动态性：clear|complicated|complex"),
     alignment: str = typer.Option(None, "--alignment", help="目标一致性：clear|complicated|complex"),
     constraints: str = typer.Option(None, "--constraints", help="约束清晰度：clear|complicated|complex"),
+    domain: str = typer.Option(None, "--domain", help="终局裁定域（跳过机械解析）：Clear|Complicated|Complex|Chaotic|Disorder"),
     systems: int = typer.Option(None, "--systems", "-s", help="规模信号：系统数量（不参与域判定）"),
     stakeholder_count: int = typer.Option(None, "--stakeholder-count", help="规模信号：干系人数量"),
     time_span: str = typer.Option(None, "--time-span", help="规模信号：short|medium|long"),
+    rubric_only: bool = typer.Option(False, "--rubric-only", help="只输出空白评估量表，不做推导"),
     json_flag: bool = typer.Option(False, "--json", "-j", help="输出结构化 JSON"),
 ):
-    """运行 Cynefin 复杂度评估（五维域投票 + 硬触发，含 Disorder 第五域）"""
+    """运行 Cynefin 复杂度评估（证据卷宗 + 量表；heuristic 草案或已裁定）"""
     from dm2.cognitive.cynefin_analyzer import (
         DIMENSION_IDS,
         CynefinAnalyzer,
         DimensionVote,
+        Domain,
         ScaleProfile,
         Tendency,
     )
-    from dm2.cognitive.cynefin_deriver import CynefinDeriver, votes_from_user
+    from dm2.cognitive.cynefin_deriver import (
+        CynefinDeriver,
+        build_rubric_payload,
+        votes_from_user,
+    )
+
+    # ── 量表交付（无推导、无持久化）─────────────────────────────────
+    if rubric_only:
+        payload = {
+            "rubric": build_rubric_payload(),
+            "depth_tiers": {
+                "Clear": "minimal: 2-4 个（OV-1 + CV-1）",
+                "Complicated": "core: 12-17 个（P0 核心）",
+                "Complex": "extended: P0+P1 + 行为三件套",
+                "Chaotic": "full: 全量 + Fusion Views + 实时模拟",
+                "Disorder": "none: 先完成需求澄清",
+            },
+        }
+        if json_flag:
+            from dm2.cli.json_output import json_success
+            json_success(payload)
+            return
+        typer.echo("Cynefin 评估量表（请逐维确认后用维度选项或 --domain 裁定）：")
+        for item in payload["rubric"]:
+            typer.echo(f"\n● {item['id']}: {item['question']}")
+            for level, anchor in item["anchors"].items():
+                typer.echo(f"  - {level}: {anchor}")
+        return
 
     user_dimensions = {
         "requirement_knowability": knowability,
@@ -368,26 +405,40 @@ def cynefin(
     }
     valid_tendencies = {"clear", "complicated", "complex"}
     bad = [v for v in user_dimensions.values() if v is not None and v not in valid_tendencies]
+    domain_override = None
+    if domain is not None:
+        try:
+            domain_override = Domain(domain)
+        except ValueError:
+            bad.append(domain)
     if bad or (time_span is not None and time_span not in {"short", "medium", "long"}):
         if json_flag:
             from dm2.cli.json_output import json_error
-            json_error("INVALID_ARG", "维度取值须为 clear|complicated|complex，时间跨度须为 short|medium|long")
+            json_error("INVALID_ARG",
+                       "维度取值须为 clear|complicated|complex，--domain 须为五域之一，"
+                       "时间跨度须为 short|medium|long")
             raise typer.Exit(1)
-        typer.echo("错误：维度取值须为 clear|complicated|complex，--time-span 须为 short|medium|long")
+        typer.echo("错误：维度取值须为 clear|complicated|complex，--domain 须为五域之一，"
+                   "--time-span 须为 short|medium|long")
         raise typer.Exit(1)
 
     # 描述推导（CLI 与 pipeline 共用同一 deriver）；无描述时五维全部弃权
+    signal_report: list = []
+    warnings: list = []
     if description:
         derivation = CynefinDeriver().derive(description)
         votes = derivation.votes
         crisis = derivation.crisis
         scale = derivation.scale_profile
+        signal_report = derivation.signal_report
+        warnings = derivation.warnings
     else:
         votes = votes_from_user({})
         crisis = False
         scale = ScaleProfile()
 
-    # 显式选项逐维覆盖推导结果（修复旧版 override 不生效的缺陷）
+    # 显式选项逐维覆盖预填（修复旧版 override 不生效的缺陷）并使结果成为已裁定
+    explicit_dims = [dim_id for dim_id, raw in user_dimensions.items() if raw is not None]
     vote_by_id = {v.dimension_id: v for v in votes}
     for dim_id, raw in user_dimensions.items():
         if raw is not None:
@@ -404,10 +455,19 @@ def cynefin(
     if time_span is not None:
         scale.time_span = time_span
 
+    adjudicated = bool(explicit_dims) or domain_override is not None
     result = CynefinAnalyzer().assess(
-        votes, crisis=crisis, scale=scale, context=description[:100]
+        votes,
+        crisis=crisis,
+        scale=scale,
+        context=description[:100],
+        domain_override=domain_override,
+        resolution="adjudicated" if adjudicated else "heuristic",
+        warnings=warnings,
+        signal_report=signal_report,
     )
-    payload = result.to_dict()
+    rubric = build_rubric_payload(votes)
+    payload = result.to_dict(rubric=rubric)
 
     # Silently persist analysis state for cross-session context
     from dm2.utils.paths import is_dm2_project
@@ -428,11 +488,16 @@ def cynefin(
         json_success(payload)
         return
 
-    typer.echo(f"Cynefin 域: {result.domain_label}")
+    status = "✓ 已裁定" if adjudicated else "～启发式草案（未裁定）"
+    typer.echo(f"Cynefin 域: {result.domain_label}  [{status}]")
     typer.echo(f"置信度: {result.confidence:.0%}")
     typer.echo(f"视图深度档位: {result.depth_tier} — {result.depth_guidance}")
+    if result.mechanical_suggestion:
+        typer.echo(f"机械规则建议: {result.mechanical_suggestion}（已被 --domain 终裁）")
     typer.echo()
     typer.echo(result.reasoning_details)
+    for w in result.warnings:
+        typer.echo(f"  ⚠ {w}")
     if result.needs_clarification:
         typer.echo()
         typer.echo("⚠ 判定依据不足，请先澄清需求（或用维度选项显式赋值），再选择视图集。")

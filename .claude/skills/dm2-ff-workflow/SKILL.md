@@ -30,11 +30,11 @@ Fast-forward through architecture analysis and view generation — run everythin
    python3 -m dm2.cli.main change new "<name>"
    ```
 
-3. **Run Cynefin assessment**
+3. **Run Cynefin heuristic prefill and adjudicate**
    ```bash
    python3 -m dm2.cli.main cynefin -d "<description>" --json
    ```
-   Parse the domain, confidence and depth_tier for the summary. If `needs_clarification` is true (Disorder), state that the assessment is under-evidenced and proceed with the P0 core view set cautiously.
+   The result is `resolution: "heuristic"` until explicitly adjudicated. Read `signal_report`/`warnings` (excluded/weak crisis candidates such as 应急预案/中断风险 are not real crises; if the user confirms an ongoing event, re-run with `--domain Chaotic`), and re-run with explicit dimension options (or `--domain`) to lock the adjudicated result before committing to a view scope. Mark the domain as **未裁定** in the summary if you proceed without adjudication; if `needs_clarification` is true (Disorder), proceed cautiously with only the P0 core view set.
 
 4. **Run 6W analysis to get recommended views**
    ```bash

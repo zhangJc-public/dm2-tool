@@ -96,20 +96,21 @@ Cynefin helps us understand how knowable the cause-and-effect of your system is.
 python3 -m dm2.cli.main cynefin -d "<description>" --json
 ```
 
-**SHOW:**
-Parse and display the result:
+**SHOW and ADJUDICATE:**
+The output is a heuristic prefill, not a verdict (`resolution: "heuristic"`). Walk the user through the `rubric`: for each of the five dimensions show its question, the suggested prefill and its evidence, and confirm whether it fits. Also surface `signal_report`/`warnings` — planning terms like 应急预案/应急演练/中断风险 are NOT crises; confirm with the user if a real ongoing event is described.
+
+Display:
 ```
-**Domain:** <domain_label>
+**Domain (draft):** <domain_label>  [resolution: heuristic]
 **Confidence:** <confidence>%
 **View depth:** <depth_tier> — <depth_guidance>
-**Key evidence:** <top matched terms per dimension>
-
-**Reasoning:** <brief explanation>
+**Per-dimension:** <question → prefill + evidence; user confirm/change>
+**Warnings:** <excluded/weak signals>
 ```
 
-If `needs_clarification` is true, say so honestly and ask a clarifying question rather than pretending the domain is known.
+After the user confirms the five dimensions (or corrects some), re-run with explicit `--knowability/...` options or `--domain` so the persisted result is `resolution: "adjudicated"`. If `needs_clarification` is true (Disorder), ask the rubric questions rather than pretending the domain is known.
 
-**PAUSE** — Wait for acknowledgment.
+**PAUSE** — Wait for the adjudicated result and acknowledgment.
 
 ---
 

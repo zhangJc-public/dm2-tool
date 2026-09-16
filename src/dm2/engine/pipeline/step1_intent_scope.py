@@ -34,6 +34,8 @@ class IntentScopeResult:
     secondary_ws: list[str]
     needs_clarification: bool = False
     scale_profile: dict = field(default_factory=dict)
+    cynefin_resolution: str = "heuristic"
+    cynefin_warnings: list[str] = field(default_factory=list)
 
 
 REVERSE_QUESTION_TEMPLATES = {
@@ -109,6 +111,8 @@ class Step1IntentScope:
             crisis=derivation.crisis,
             scale=derivation.scale_profile,
             context=description,
+            warnings=derivation.warnings,
+            signal_report=derivation.signal_report,
         )
 
         # 4. 选择 DM2 数据组
@@ -139,6 +143,8 @@ class Step1IntentScope:
                 "time_span": cynefin_result.scale_profile.time_span,
                 "stakeholders": cynefin_result.scale_profile.stakeholders,
             },
+            cynefin_resolution=cynefin_result.resolution,
+            cynefin_warnings=cynefin_result.warnings,
         )
 
     def _generate_clarification_questions(
@@ -211,6 +217,11 @@ class Step1IntentScope:
             "\n⚠ **判定不明（Disorder）**：请优先回答上方澄清问题，暂不推荐固定视图集。"
             if result.needs_clarification else ""
         )
+        warnings_str = ""
+        if result.cynefin_warnings:
+            warnings_str = "\n- **信号提示（启发式，未经裁定）**：\n" + "\n".join(
+                f"  - ⚠ {w}" for w in result.cynefin_warnings
+            )
 
         return f"""# Step 1+2：意图澄清 + 范围界定
 
@@ -224,9 +235,10 @@ class Step1IntentScope:
 
 ## Cynefin 复杂度评估
 
-- **域**: {result.cynefin_domain}
+- **域**: {result.cynefin_domain}（{result.cynefin_resolution} ～启发式草案，未经裁定）
 - **置信度**: {result.cynefin_confidence:.0%}
 - **规模剖面**: 系统 {result.scale_profile.get('systems') or '?'} / 干系人 {result.scale_profile.get('stakeholders') or '?'} / 时间跨度 {result.scale_profile.get('time_span') or '未知'}（不参与域判定）
+{warnings_str}
 {disorder_note}
 
 ### 评估详情
@@ -262,6 +274,8 @@ class Step1IntentScope:
                 "domain": result.cynefin_domain,
                 "confidence": result.cynefin_confidence,
                 "details": result.cynefin_details,
+                "resolution": result.cynefin_resolution,
+                "warnings": result.cynefin_warnings,
                 "needs_clarification": result.needs_clarification,
                 "scale_profile": result.scale_profile,
             },

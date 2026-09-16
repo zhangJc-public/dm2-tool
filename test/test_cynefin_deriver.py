@@ -91,6 +91,17 @@ class TestCrisis:
         assert d.crisis is True
         assert d.crisis_evidence
 
+    @pytest.mark.parametrize("text", [
+        "编制网络安全应急预案，开展应急演练，完善中断处置流程",
+        "评估业务中断风险，编写应急响应预案，形成风险清单",
+        "建设应急响应能力，完善应急预案体系，定期组织应急演练",
+    ])
+    def test_planning_terms_are_not_crisis(self, deriver, analyzer, text):
+        """Regression: 预案/演练/风险评估是准备工作，不得一票判 Chaotic。"""
+        d = deriver.derive(text)
+        assert d.crisis is False, f"误判危机: {d.crisis_evidence}"
+        assert analyzer.assess(d.votes, crisis=d.crisis).domain != "Chaotic"
+
     def test_crisis_spans_do_not_feed_dimensions(self, deriver, analyzer):
         d = deriver.derive("全站中断，应急处置，事态蔓延")
         # 危机词本身不得让任何维度投出 complex 票
@@ -153,10 +164,18 @@ class TestParity:
 class TestExternalizedLexicon:
     def test_custom_keywords_injected(self):
         custom = {
+            "version": 2,
             "negation_prefixes": ["不"],
-            "crisis": ["天塌了"],
+            "crisis": {
+                "signals": [
+                    {"id": "t", "candidates": ["天塌"],
+                     "require_near": ["了"], "window": 2, "exclude": []}
+                ],
+                "direct": [],
+            },
             "dimensions": {
                 "requirement_knowability": {
+                    "rubric": {"question": "q", "anchors": {"clear": "a", "complicated": "b", "complex": "c"}},
                     "clear": ["清晰"], "complicated": [], "complex": ["模糊"],
                 },
                 "practice_maturity": {"clear": [], "complicated": [], "complex": []},
@@ -168,7 +187,9 @@ class TestExternalizedLexicon:
         }
         deriver = CynefinDeriver(custom)
         assert deriver.derive("表述清晰").votes[0].tendency == Tendency.CLEAR
-        assert deriver.derive("天塌了").crisis is True
+        collapse = deriver.derive("天塌了")
+        assert collapse.crisis is True
+        assert collapse.signal_report[0]["verdict"] == "fired"
 
     def test_missing_keyword_file_raises(self, monkeypatch, tmp_path):
         import dm2.cognitive.cynefin_deriver as mod

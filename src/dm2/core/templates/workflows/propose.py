@@ -35,14 +35,19 @@ PROPOSE_SKILL = SkillTemplate(
 
    This creates a change at `dm2-changes/<name>/`.
 
-3. **Run Cynefin complexity assessment**
+3. **Run Cynefin heuristic prefill and ADJUDICATE**
 
    ```bash
    python3 -m dm2.cli.main cynefin --json -d "<system description>"
    ```
 
-   Parse the JSON evidence pack: `domain` (Clear/Complicated/Complex/Chaotic/Disorder), `confidence` plus `confidence_breakdown`, per-dimension `tendency` votes with matched `evidence`, `depth_tier` (view scope guidance), and `scale_profile` (advisory breadth signal, not part of domain logic).
-   The JSON is auditable as-is. Accept it unless you have grounds to override a vote; if you do override, save your reasoning to `dm2-changes/<name>/analysis/cynefin-assessment.md` and note which dimension you changed and why. If `needs_clarification` is true (Disorder), surface the uncertainty to the user before fixing the view set — do not silently pick a domain.
+   The output is a heuristic evidence pack, not a verdict (`resolution: "heuristic"`): per-dimension prefill tendency with matched `evidence`, a `rubric` (questions + three anchored levels), `signal_report` (crisis candidates fired/excluded/weak with reasons), `warnings`, `confidence_breakdown`, `depth_tier`, and `scale_profile`.
+
+   You MUST adjudicate before fixing the view set:
+   - Read every `signal_report` entry and `warnings` entry. Crisis candidates marked `excluded` (planning compounds like 应急预案/应急演练/中断风险) or `weak` (no aspect/scope gate nearby) are not crises unless the user's context proves an event is actually happening — if it is, re-run with `--domain Chaotic` and say why.
+   - Walk the five `rubric` dimensions against the user's description; accept the prefill where the evidence is sound. If any dimension needs changing, re-run with the corresponding `--knowability/--maturity/--dynamics/--alignment/--constraints` option(s); this marks the result `resolution: "adjudicated"`.
+   - If `needs_clarification` is true (Disorder), ask the user a rubric question before proceeding — do not silently pick a domain.
+   - If your adjudication differs from the mechanical output, record your reasoning in `dm2-changes/<name>/analysis/cynefin-assessment.md` (which dimension/domain, why). The command persists the adjudicated result, including `mechanical_suggestion` when `--domain` was used.
 
 4. **Run enhanced analysis with data group activation**
 

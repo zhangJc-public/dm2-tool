@@ -119,23 +119,37 @@ class ComplexityAssessment:
     crisis: bool = False
     scale_profile: Optional[ScaleProfile] = None
     confidence_breakdown: dict = field(default_factory=dict)
+    # heuristic：纯机械推导草案；adjudicated：经 Agent/人显式裁定
+    resolution: str = "heuristic"
+    warnings: list[str] = field(default_factory=list)
+    signal_report: list[dict] = field(default_factory=list)
+    # --domain 终裁时，机械规则原本建议的域（审计分歧用）
+    mechanical_suggestion: Optional[str] = None
 
     @property
     def domain_label(self) -> str:
         return _DOMAIN_LABELS.get(self.domain, "未知")
 
-    def to_dict(self) -> dict:
+    def to_dict(self, rubric: Optional[list[dict]] = None) -> dict:
         """序列化为结构化 JSON（CLI --json 与 analysis-state 持久化共用）。"""
         scale = self.scale_profile
-        return {
+        payload = {
             "domain": self.domain.value,
+            "suggested_domain": (
+                self.mechanical_suggestion
+                if self.mechanical_suggestion is not None
+                else self.domain.value
+            ),
             "domain_label": self.domain_label,
+            "resolution": self.resolution,
             "confidence": self.confidence,
             "confidence_breakdown": dict(self.confidence_breakdown),
             "crisis": self.crisis,
             "needs_clarification": self.needs_clarification,
             "depth_tier": self.depth_tier,
             "depth_guidance": self.depth_guidance,
+            "warnings": list(self.warnings),
+            "signal_report": list(self.signal_report),
             "dimensions": [
                 {
                     "id": v.dimension_id,
@@ -152,6 +166,11 @@ class ComplexityAssessment:
             },
             "reasoning": self.reasoning_details,
         }
+        if self.mechanical_suggestion is not None:
+            payload["mechanical_suggestion"] = self.mechanical_suggestion
+        if rubric is not None:
+            payload["rubric"] = rubric
+        return payload
 
 
 class CynefinAnalyzer:
@@ -171,25 +190,39 @@ class CynefinAnalyzer:
         crisis: bool = False,
         scale: Optional[ScaleProfile] = None,
         context: str = "",
+        domain_override: Optional[Domain] = None,
+        resolution: str = "heuristic",
+        warnings: Optional[list[str]] = None,
+        signal_report: Optional[list[dict]] = None,
     ) -> ComplexityAssessment:
         """
         解析 Cynefin 域。
 
         Args:
             votes: 各维度投票（可少于 5 个；缺失维度按弃权处理）
-            crisis: 危机信号（一票进 Chaotic）
+            crisis: 语境规则成立的危机信号（机械规则一票进 Chaotic）
             scale: 规模剖面（仅随结果报告）
             context: 附加上下文，写入理由文本
+            domain_override: Agent/人终裁域；提供时跳过机械解析（证据卷宗仍保留）
+            resolution: heuristic（推导草案）或 adjudicated（已裁定）
+            warnings/signal_report: deriver 产出的证据卷宗，随结果透传
         """
         self._validate_votes(votes)
         by_id = {v.dimension_id: v for v in votes}
         ordered = [by_id[dim_id] for dim_id in DIMENSION_IDS if dim_id in by_id]
 
-        # 1. 危机否决
+        # 机械解析（即使终裁也照算，作为 mechanical_suggestion 留痕）
         if crisis:
-            domain = Domain.CHAOTIC
+            mechanical = Domain.CHAOTIC
         else:
-            domain = self._resolve_domain(ordered)
+            mechanical = self._resolve_domain(ordered)
+
+        mechanical_suggestion: Optional[str] = None
+        if domain_override is not None:
+            domain = domain_override
+            mechanical_suggestion = mechanical.value
+        else:
+            domain = mechanical
 
         breakdown = self._confidence_breakdown(ordered)
         confidence = self._compute_confidence(breakdown)
@@ -197,7 +230,8 @@ class CynefinAnalyzer:
         depth_tier, depth_guidance = _DEPTH_TIERS[domain]
 
         reasoning = self._generate_reasoning(
-            ordered, domain, confidence, breakdown, crisis, context
+            ordered, domain, confidence, breakdown, crisis, context,
+            resolution, mechanical_suggestion,
         )
 
         return ComplexityAssessment(
@@ -211,6 +245,10 @@ class CynefinAnalyzer:
             crisis=crisis,
             scale_profile=scale,
             confidence_breakdown=breakdown,
+            resolution=resolution,
+            warnings=list(warnings or []),
+            signal_report=list(signal_report or []),
+            mechanical_suggestion=mechanical_suggestion,
         )
 
     # ── 域解析 ─────────────────────────────────────────────────────────
@@ -304,11 +342,19 @@ class CynefinAnalyzer:
         breakdown: dict,
         crisis: bool,
         context: str,
+        resolution: str = "heuristic",
+        mechanical_suggestion: Optional[str] = None,
     ) -> str:
-        lines = [f"复杂度评估（{_DOMAIN_LABELS[domain]}）："]
+        status = "启发式草案（未裁定）" if resolution == "heuristic" else "已经裁定"
+        lines = [f"复杂度评估（{_DOMAIN_LABELS[domain]}，{status}）："]
 
-        if crisis:
-            lines.append("  ⚠ 危机信号触发：应急/失控/中断等情景，一票判定为混沌域")
+        if mechanical_suggestion and mechanical_suggestion != domain.value:
+            lines.append(
+                f"  ⚠ 机械规则建议 {mechanical_suggestion}，"
+                f"裁定域为 {domain.value}（分歧已留痕）"
+            )
+        if crisis and domain == Domain.CHAOTIC:
+            lines.append("  ⚠ 语境成立的危机信号触发：一票判定为混沌域")
 
         for v in votes:
             label = DIMENSION_LABELS.get(v.dimension_id, v.dimension_id)

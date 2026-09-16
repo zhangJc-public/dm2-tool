@@ -51,7 +51,7 @@ The CLI cynefin command and the Step 1+2 pipeline (`Step1IntentScope`) SHALL inv
 
 ### Requirement: Crisis and Disorder CLI behavior
 
-The cynefin command SHALL map crisis lexicon (e.g. 应急、中断、失控、战时、正在蔓延) to the crisis signal that forces the `Chaotic` domain, and SHALL surface Disorder results as a normal, successful outcome directing the user to clarification.
+The cynefin command SHALL map crisis lexicon — ongoing/realized strong-signal phrases only (e.g. 全站中断、应急处置中、事态正在蔓延、战时状态), not planning terms such as 应急预案、应急演练、业务中断风险 — to the crisis signal that forces the `Chaotic` domain, and SHALL surface Disorder results as a normal, successful outcome directing the user to clarification.
 
 #### Scenario: Crisis description resolves Chaotic
 - **WHEN** `dm2 cynefin -d "核心业务全站中断，正在应急处置，事态仍在蔓延"` is run
