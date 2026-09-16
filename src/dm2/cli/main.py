@@ -34,10 +34,11 @@ def _require_project():
 
 
 # Register subcommand groups
-from dm2.cli.commands.knowledge import register_knowledge_commands
 from dm2.cli.commands.change import register_change_commands
-from dm2.cli.commands.view import register_view_commands
 from dm2.cli.commands.concern import concern_app
+from dm2.cli.commands.knowledge import register_knowledge_commands
+from dm2.cli.commands.view import register_view_commands
+
 register_knowledge_commands(app)
 register_change_commands(app)
 register_view_commands(app)
@@ -48,9 +49,21 @@ app.add_typer(concern_app, name="concern")
 def init(
     name: str = typer.Argument(".", help="项目目录名"),
     vault: Optional[str] = typer.Option(None, "--vault", "-v", help="关联的 Obsidian vault 路径（可选）"),
+    tool: str = typer.Option("claude", "--tool", "-t", help="目标 AI 工具: claude|dsh（默认 claude）"),
     json_flag: bool = typer.Option(False, "--json", "-j", help="输出结构化 JSON（供 AI Agent 使用）"),
 ):
     """在当前目录创建新的 DM2 项目"""
+
+    from dm2.core.adapters import get_adapter
+    try:
+        adapter = get_adapter(tool)
+    except ValueError as e:
+        if json_flag:
+            from dm2.cli.json_output import json_error
+            json_error("INVALID_TOOL", str(e))
+            raise typer.Exit(1)
+        typer.echo(f"错误: {e}")
+        raise typer.Exit(1)
 
     target = Path.cwd() / name
 
@@ -76,11 +89,10 @@ def init(
         (target / subdir).mkdir(parents=True, exist_ok=True)
         created_dirs.append(subdir)
 
-    # 从模板生成 .claude/ 配置（skills + commands）
-    from dm2.core.templates.generator import generate_agent_config
-    from dm2.core.adapters.claude import ClaudeCodeAdapter
+    # 从模板生成 AI 工具配置（skills，Claude 另含 commands）
     from dm2 import __version__
-    generated = generate_agent_config(target, __version__, ClaudeCodeAdapter())
+    from dm2.core.templates.generator import generate_agent_config
+    generated = generate_agent_config(target, __version__, adapter)
 
     import shutil
     _dm2_root = Path(__file__).parent.parent.parent.parent
@@ -115,13 +127,21 @@ def init(
     if _g2v_src.exists():
         shutil.copy2(str(_g2v_src), str(_ref_dst / "group-to-views.yaml"))
 
+    skills_rel = adapter.get_skills_dir()
+    commands_rel = adapter.get_commands_dir() if adapter.supports_commands else None
     if json_flag:
         from dm2.cli.json_output import json_success
         json_success({
             "project_path": str(target.resolve()),
             "directories": created_dirs,
             "vault_path": vault,
-            "claude_config": generated > 0,
+            "agent_config": {
+                "tool": adapter.tool_id,
+                "files_generated": generated,
+                "skills_dir": skills_rel,
+                "commands_dir": commands_rel,
+                "commands": commands_rel is not None,
+            },
         })
         return
 
@@ -132,12 +152,13 @@ def init(
     typer.echo("     dm2-changes/        - 架构变更")
     typer.echo("     dm2-archive/        - 已归档变更")
     if generated > 0:
-        typer.echo("     .claude/skills/     - Claude Code AI 技能")
-        typer.echo("     .claude/commands/   - Claude Code 斜杠命令")
+        typer.echo(f"     {skills_rel + '/':<20} - AI 技能（{adapter.tool_id}）")
+        if commands_rel:
+            typer.echo(f"     {commands_rel + '/':<20} - 斜杠命令")
 
 
-@app.command()
-def list(
+@app.command(name="list")
+def list_changes(
     json_flag: bool = typer.Option(False, "--json", "-j", help="输出结构化 JSON（供 AI Agent 使用）"),
 ):
     """列出项目中的架构变更"""
@@ -612,8 +633,9 @@ def analyze(
     # Silently persist analysis state for cross-session context
     from dm2.utils.paths import is_dm2_project as _is_proj
     if _is_proj():
-        import yaml as _yaml
         from datetime import datetime as _dt
+
+        import yaml as _yaml
         _sf = Path.cwd() / ".dm2" / "analysis-state.yaml"
         _sf.parent.mkdir(parents=True, exist_ok=True)
         _existing = {}
@@ -1012,8 +1034,8 @@ def instructions(
 ):
     """生成 AI Agent 指令（供 Agent 使用的结构化任务描述）"""
     from dm2.core.agent.instructions import InstructionBuilder
-    from dm2.core.knowledge.api import KnowledgeAPI
     from dm2.core.artifacts.graph import ArtifactGraph
+    from dm2.core.knowledge.api import KnowledgeAPI
 
     knowledge = KnowledgeAPI()
     graph = None
@@ -1152,9 +1174,9 @@ def run(
 
     # Agent mode: initialize pipeline with JSON output throughout
     if agent:
-        from dm2.core.pipeline.orchestrator import PipelineOrchestratorV2
         from dm2.core.agent.instructions import InstructionBuilder
         from dm2.core.knowledge.api import KnowledgeAPI
+        from dm2.core.pipeline.orchestrator import PipelineOrchestratorV2
         orch = PipelineOrchestratorV2()
         state = orch.init_pipeline(description)
         knowledge = KnowledgeAPI()
@@ -1261,9 +1283,9 @@ def run(
         raise typer.Exit(0)
 
     if json_flag:
-        from dm2.core.pipeline.orchestrator import PipelineOrchestratorV2
         from dm2.core.agent.instructions import InstructionBuilder
         from dm2.core.knowledge.api import KnowledgeAPI
+        from dm2.core.pipeline.orchestrator import PipelineOrchestratorV2
         orch = PipelineOrchestratorV2()
         state = orch.init_pipeline(description)
         knowledge = KnowledgeAPI()

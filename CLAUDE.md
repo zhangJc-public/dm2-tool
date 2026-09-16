@@ -47,7 +47,10 @@ File System Layer      ← .dm2/ 项目 + dm2-changes/ + output/
 
 **核心模式**: CLI 是大脑，AI 是手脚。CLI 管理状态、生成指令；AI Agent 根据指令执行任务。
 
-**技能分发**: `dm2 init` 通过 Python 模板动态生成 `.claude/skills/` 和 `.claude/commands/`。`ToolAdapter` 协议支持未来扩展到其他 AI 工具。
+**技能分发**: `dm2 init` 通过 Python 模板动态生成 AI 工具配置，由 `ToolAdapter` 协议选择目标：
+- `claude`（默认）：`.claude/skills/` + `.claude/commands/dm2/`
+- `dsh`：`init --tool dsh` → `.dsh/skills/`（10 个 SKILL.md，`user-invocable: true`，无 commands；正文经 `DshAdapter.render_skill_body` 重写 `/dm2:*`、`AskUserQuestion`、`python3 -m dm2.cli.main`）
+注册表入口：`dm2.core.adapters.get_adapter(tool_id)`。
 
 ## 开发
 
@@ -103,7 +106,7 @@ DM2_DEBUG=1 dm2 analyze ...   # 显示索引器诊断（默认静默，保证 --
 ## 项目模式（.dm2/）
 
 `dm2 init` 创建的项目含：
-- `.claude/skills/` + `.claude/commands/` — 从 Python 模板动态生成
+- `.claude/skills/` + `.claude/commands/`（默认）或 `.dsh/skills/`（`--tool dsh`）— 从 Python 模板动态生成
 - `.dm2/reference/` — 知识库本地副本
 - `.dm2/view-state.yaml` — 视图生命周期状态
 - `.dm2/analysis-state.yaml` — cynefin/analyze 结果持久化

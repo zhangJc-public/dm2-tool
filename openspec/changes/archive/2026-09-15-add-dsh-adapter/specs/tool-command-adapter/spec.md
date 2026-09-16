@@ -1,8 +1,7 @@
-# Tool Command Adapter
+# Tool Command Adapter (delta)
 
-## Purpose
-Define the `ToolAdapter` protocol — an abstract interface for mapping workflow templates to tool-specific filesystem locations and frontmatter formats, enabling support for multiple AI coding tools through the same template system.
-## Requirements
+## MODIFIED Requirements
+
 ### Requirement: Tool adapter protocol
 dm2 SHALL define a `ToolAdapter` protocol in `src/dm2/core/adapters/` specifying the interface for mapping workflow templates to tool-specific filesystem locations and frontmatter formats.
 
@@ -51,6 +50,8 @@ dm2 SHALL provide a `ClaudeCodeAdapter` implementing `ToolAdapter` for Claude Co
 - **AND** generation SHALL express differences only through protocol members (`get_skills_dir`, `get_commands_dir`, `supports_commands`, `render_skill_body`, and the frontmatter formatters)
 - **AND** the Claude adapter's generated output SHALL remain byte-identical to its pre-change output
 
+## ADDED Requirements
+
 ### Requirement: DeepSeek Harness adapter implementation
 dm2 SHALL provide a `DshAdapter` implementing `ToolAdapter` for DeepSeek Harness, writing skills to `.dsh/skills/` and emitting no command files.
 
@@ -86,4 +87,3 @@ dm2 SHALL expose `get_adapter(tool_id)` from `src/dm2/core/adapters/`, resolving
 - **WHEN** `get_adapter()` is called with an unregistered id
 - **THEN** it SHALL raise `ValueError` naming the available ids
 - **AND** `dm2 init --tool <unknown>` SHALL report `INVALID_TOOL` and exit non-zero without writing files
-

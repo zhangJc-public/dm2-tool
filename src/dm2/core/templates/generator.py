@@ -1,9 +1,9 @@
-"""Generate Claude Code skill and command files from workflow templates."""
+"""Generate AI tool skill and command files from workflow templates."""
 
 from pathlib import Path
 
-from dm2.core.templates import WORKFLOWS
 from dm2.core.adapters import ToolAdapter
+from dm2.core.templates import WORKFLOWS
 
 
 def generate_agent_config(
@@ -11,21 +11,23 @@ def generate_agent_config(
     version: str,
     adapter: ToolAdapter,
 ) -> int:
-    """Generate skill and command files for all registered workflows.
+    """Generate skill (and optionally command) files for all registered workflows.
 
     Args:
         target_dir: Project root directory to generate files into.
         version: dm2-tool version string for `generatedBy` metadata.
-        adapter: Tool-specific adapter (e.g. ClaudeCodeAdapter).
+        adapter: Tool-specific adapter (e.g. ClaudeCodeAdapter, DshAdapter).
 
     Returns:
         Number of files generated.
     """
     skills_dir = target_dir / adapter.get_skills_dir()
-    commands_dir = target_dir / adapter.get_commands_dir()
-
     skills_dir.mkdir(parents=True, exist_ok=True)
-    commands_dir.mkdir(parents=True, exist_ok=True)
+
+    commands_dir: Path | None = None
+    if adapter.supports_commands and adapter.get_commands_dir() is not None:
+        commands_dir = target_dir / adapter.get_commands_dir()
+        commands_dir.mkdir(parents=True, exist_ok=True)
 
     count = 0
 
@@ -34,13 +36,18 @@ def generate_agent_config(
         skill_dir = skills_dir / wf.skill_dir
         skill_dir.mkdir(parents=True, exist_ok=True)
         skill_file = skill_dir / "SKILL.md"
+        skill_body = adapter.render_skill_body(wf.skill.instructions)
         skill_content = (
             adapter.format_skill_frontmatter(wf.skill, version)
             + "\n"
-            + wf.skill.instructions
+            + skill_body
         )
         skill_file.write_text(skill_content, encoding="utf-8")
         count += 1
+
+        # Adapters without a command convention (e.g. DSH) skip command files.
+        if commands_dir is None:
+            continue
 
         # Generate command .md
         cmd_file = commands_dir / wf.command_file

@@ -40,6 +40,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **BREAKING** `dm2 cynefin --json` 契约：输出五维投票+证据、置信度分解、
   scale_profile、depth_tier、needs_clarification；旧 analysis-state 读取保持兼容
 - 裸跑 `dm2 cynefin`（无描述无选项）不再产出虚假的中庸判定，改为 Disorder 成功响应
+- `dm2 init --tool/-t claude|dsh`: target-AI-tool selection. New `DshAdapter`
+  emits 10 project skills under `.dsh/skills/<skill>/SKILL.md` (DeepSeek
+  Harness discovery, `user-invocable: true`, no command files) and rewrites
+  Claude-specific body references (`/dm2:<id>` → skill references,
+  `AskUserQuestion` → `ask_user_question`, `python3 -m dm2.cli.main` → `dm2`).
+  `ToolAdapter.get_adapter(tool_id)` is the adapter registry.
+
+### Changed
+- `dm2 init --json` field `claude_config` (boolean) replaced by structured
+  `agent_config` (`tool`, `files_generated`, `skills_dir`, `commands_dir`,
+  `commands`). The default (`claude`) generation is otherwise unchanged.
 - `.claude/` directory added to version control
 - `settings.local.json` renamed to `settings.example.json` as template
 

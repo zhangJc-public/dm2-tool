@@ -17,7 +17,8 @@ pip install -e ".[dev]"         # 含测试和 lint
 ## 快速开始
 
 ```bash
-dm2 init my-project             # 创建项目
+dm2 init my-project             # 创建项目（默认 Claude Code 适配器）
+dm2 init my-project -t dsh      # 或生成 DeepSeek Harness 技能（.dsh/skills/）
 dm2 analyze -d "系统描述..."     # 6W 分析 + 视图推荐
 dm2 cynefin                      # 复杂度评估
 dm2 generate OV-1 -d "..."      # 生成 DoDAF 视图
@@ -32,7 +33,7 @@ dm2 validate --all              # 一致性校验
 | **Cynefin 评估** | 复杂度域判断，指导方法论选择 |
 | **视图生成** | 支持 52 个 DoDAF 视图（OV/SV/SvcV/CV/DIV/PV/AV/StdV） |
 | **一致性校验** | 跨视图引用和逻辑一致性检查 |
-| **AI Agent 接口** | JSON 输出，兼容 Claude Code 等 Agent 工具 |
+| **AI Agent 接口** | JSON 输出，支持 Claude Code 与 DeepSeek Harness 适配器 |
 
 ## AI Agent 工作流
 
@@ -41,7 +42,12 @@ dm2 validate --all              # 一致性校验
   (只读探索)      (分析规划)        (任务实施)       (一致性检查)      (归档)
 ```
 
-`dm2 init` 自动生成 10 个 Claude Code 斜杠命令，从 Python 模板动态生成 `.claude/skills/` 和 `.claude/commands/`。
+`dm2 init` 从 Python 模板自动生成 10 个工作流技能，用 `--tool/-t` 选择目标工具：
+
+| 目标 | 生成位置 | 产物 |
+|------|----------|------|
+| `claude`（默认） | `.claude/skills/` + `.claude/commands/dm2/` | 技能 + 斜杠命令 |
+| `dsh` | `.dsh/skills/` | 仅技能（DeepSeek Harness 无项目级命令目录） |
 
 ## 可用视图
 

@@ -100,7 +100,24 @@ File System Layer      ← .dm2/ 项目 + dm2-changes/ + dm2-archive/
 
 CLI 管理状态、生成结构化指令；AI Agent 根据指令执行具体任务（分析、生成视图、检查一致性等）。
 
-**技能分发**：`dm2 init` 通过 Python 模板系统（`core/templates/`）和工具适配器（`core/adapters/`）动态生成 `.claude/` 配置，不依赖开发者环境的 `.claude/` 目录。
+**技能分发**：`dm2 init` 通过 Python 模板系统（`core/templates/`）和工具适配器（`core/adapters/`）动态生成 AI 工具配置，不依赖开发者环境的配置目录。
+
+**目标工具选择（`--tool/-t`）**：
+
+| 选项 | 生成位置 | 内容 |
+|------|----------|------|
+| `claude`（默认） | `.claude/skills/` + `.claude/commands/dm2/` | 10 个 SKILL.md + 10 个斜杠命令，正文保持 `/dm2:*` 语法 |
+| `dsh` | `.dsh/skills/` | 仅 10 个 SKILL.md（`user-invocable: true`）；正文中的 `/dm2:<id>` 重写为 `dm2-<id>-workflow` 技能引用、`AskUserQuestion` 重写为 `ask_user_question`、`/dm2:knowledge` 与 `python3 -m dm2.cli.main` 归一为 `dm2` CLI 调用 |
+
+DeepSeek Harness 从 git 项目根（找不到 `.git` 时取会话 cwd）发现 `.dsh/skills/<dir>/SKILL.md`。在 DSH 中使用：
+
+```bash
+pip install -e .
+dm2 init . -t dsh        # 已有项目补装：在项目根重跑即可（幂等）
+# 然后在项目根启动 DSH 会话；Agent 经 bash 调用 dm2 CLI 执行工作流
+```
+
+> `dm2` 须在 shell 的 PATH 中；不可用时技能正文里的 CLI 调用可手动替换为 `python3 -m dm2.cli.main ...`。
 
 ### AI Agent 接口
 
@@ -187,9 +204,12 @@ src/dm2/core/templates/workflows/
 ### `dm2 init` — 创建项目
 
 ```bash
-dm2 init [名称]                # 在当前目录下创建项目
+dm2 init [名称]                # 在当前目录下创建项目（默认 claude 适配器）
 dm2 init my-arch -v ~/vault   # 创建项目并关联 Obsidian vault
+dm2 init . -t dsh             # 生成 DeepSeek Harness 项目技能（.dsh/skills/）
 ```
+
+`-t/--tool` 支持 `claude`（默认）与 `dsh`；`--json` 返回的 `data.agent_config` 含 `tool`、生成文件数与目录信息（未知工具返回 `INVALID_TOOL` 错误）。
 
 ### `dm2 list` — 列出架构变更
 

@@ -1,8 +1,7 @@
-# DM2 Project Init
+# DM2 Project Init (delta)
 
-## Purpose
-Define the `dm2 init` command behavior — creating a self-contained `.dm2/` project with all necessary configuration, reference knowledge base, and AI Agent collaboration files.
-## Requirements
+## MODIFIED Requirements
+
 ### Requirement: Init provisions local reference knowledge base
 The `dm2 init` command SHALL copy the DM2 reference knowledge base (views.yaml, _dm2_v202_extract.json, group-to-views.yaml, and 17 data group templates) into `.dm2/reference/` when creating a project, making the project self-contained.
 
@@ -31,19 +30,6 @@ The `dm2 init` command SHALL copy the DM2 reference knowledge base (views.yaml, 
 - **THEN** existing dm2 skill directories SHALL be overwritten with freshly generated content
 - **AND** non-dm2 skill directories SHALL NOT be touched (e.g., openspec-* from a separate `openspec init`)
 
-### Requirement: Reference path resolution prefers project-local
-The `get_reference_path()` function SHALL check for a project-local `.dm2/reference/` directory first, falling back to the built-in package `dm2-reference/core/` if no project-local copy exists.
-
-#### Scenario: Project-local reference used when present
-- **WHEN** a dm2 command runs within a project that has `.dm2/reference/`
-- **THEN** `get_reference_path()` SHALL return the project-local `.dm2/reference/` path
-- **AND** all knowledge loading (terms, concepts, views, groups) SHALL use the project-local data
-
-#### Scenario: Package reference used as fallback
-- **WHEN** a dm2 command runs outside a dm2 project, or within a project without `.dm2/reference/`
-- **THEN** `get_reference_path()` SHALL return the built-in package `dm2-reference/core/` path
-- **AND** commands SHALL function identically to before this change
-
 ### Requirement: Template-based skill generation
 `dm2 init` SHALL generate skill and command files for the selected tool from Python template dataclasses rather than copying from the developer's `.claude/` directory. The developer's `.claude/` SHALL be ignored by `dm2 init`.
 
@@ -56,6 +42,8 @@ The `get_reference_path()` function SHALL check for a project-local `.dm2/refere
 - **WHEN** `dm2 init` runs in a dm2-tool development checkout (where `.claude/` exists with OpenSpec content)
 - **THEN** the generated project SHALL NOT contain OpenSpec skills or commands
 - **AND** the copy source SHALL be the Python template dataclasses, not any directory on the filesystem
+
+## ADDED Requirements
 
 ### Requirement: Init targets a selectable AI tool
 `dm2 init` SHALL accept `--tool/-t` with the values `claude` and `dsh`, selecting the adapter that generates the project's AI Agent files.
@@ -81,4 +69,3 @@ The `get_reference_path()` function SHALL check for a project-local `.dm2/refere
 - **WHEN** `dm2 init` is re-run in an existing project with either `--tool` value
 - **THEN** the selected tool's generated files SHALL be refreshed
 - **AND** the pre-existing reference knowledge base and any other tool's generated directory SHALL NOT be modified
-

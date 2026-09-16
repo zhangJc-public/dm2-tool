@@ -1,7 +1,7 @@
 """Claude Code adapter — maps dm2 workflows to .claude/skills/ and .claude/commands/dm2/."""
 
 from dm2.core.adapters import ToolAdapter
-from dm2.core.templates import SkillTemplate, CommandTemplate
+from dm2.core.templates import CommandTemplate, SkillTemplate
 
 
 class ClaudeCodeAdapter(ToolAdapter):
