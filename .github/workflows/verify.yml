@@ -22,7 +22,7 @@ jobs:
         run: |
           python -c "
           import yaml, sys
-          with open('dm2-reference/views.yaml') as f:
+          with open('dm2-reference/core/views.yaml') as f:
               data = yaml.safe_load(f)
           views = data['views']
           ids = {v['id'] for v in views}
@@ -47,19 +47,22 @@ jobs:
         run: |
           python -c "
           from pathlib import Path
-          ref = Path('dm2-reference')
+          ref = Path('dm2-reference/core')
           # Each numbered data group directory should exist (00-16)
           for i in range(17):
               prefix = f'{i:02d}'
-              matches = list(ref.glob(f'{prefix}*'))
+              matches = list(ref.glob(f'groups/{prefix}*'))
               if not matches:
                   print(f'WARNING: no directory for data group prefix {prefix}')
-          # Check _dm2_v202_extract.json exists
-          json_path = ref / '_dm2_v202_extract.json'
-          if not json_path.exists():
-              print('ERROR: _dm2_v202_extract.json not found')
+          # Check derived knowledge indexes exist (built from authoritative sources)
+          missing = [n for n in ('terms.json', 'associations.json',
+                                 'taxonomy.json', 'view-content-spec.json')
+                     if not (ref / n).exists()]
+          if missing:
+              print(f'ERROR: derived indexes not found: {missing}')
               exit(1)
-          print(f'Reference structure: OK ({json_path.stat().st_size:,} bytes)')
+          terms = ref / 'terms.json'
+          print(f'Reference structure: OK ({terms.stat().st_size:,} bytes terms.json)')
           "
 
   smoke-test:
