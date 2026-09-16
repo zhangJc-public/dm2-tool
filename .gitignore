@@ -9,3 +9,5 @@ dm2-changes/*/output/
 .ruff_cache/
 settings.local.json
 .DS_Store
+build/
+.workbuddy/
