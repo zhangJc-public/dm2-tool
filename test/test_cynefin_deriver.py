@@ -1,5 +1,6 @@
 """Tests for the shared CynefinDeriver: polarity safety, evidence, golden corpus."""
 import pytest
+import yaml
 
 from dm2.cognitive.cynefin_analyzer import CynefinAnalyzer, Tendency
 from dm2.cognitive.cynefin_deriver import (
@@ -109,6 +110,34 @@ class TestCrisis:
         assert analyzer.assess(d.votes, crisis=d.crisis).domain.value == "Chaotic"
 
 
+class TestCrisisSignalReport:
+    """信号卷宗三态：excluded 留痕、weak 提示、fired 与 excluded 可共存。"""
+
+    def test_excluded_candidates_reported_not_silent(self, deriver):
+        d = deriver.derive("评估业务中断风险，编写应急响应预案")
+        verdicts = {e["matched"]: e["verdict"] for e in d.signal_report}
+        assert verdicts.get("中断") == "excluded"
+        assert verdicts.get("应急响应") == "excluded"
+        assert d.crisis is False
+        assert any("复合词" in (e["reason"] or "") for e in d.signal_report
+                   if e["verdict"] == "excluded")
+        assert any("--domain" in w for w in d.warnings)
+
+    def test_weak_candidate_without_gate(self, deriver):
+        d = deriver.derive("定期完善应急处置")
+        entry = next(e for e in d.signal_report if e["matched"] == "应急处置")
+        assert entry["verdict"] == "weak"
+        assert "无门控词" in entry["reason"]
+        assert d.crisis is False
+
+    def test_fired_and_excluded_coexist(self, deriver):
+        d = deriver.derive("全站中断，正在应急处置，同时编写应急响应预案")
+        verdicts = [e["verdict"] for e in d.signal_report]
+        assert "fired" in verdicts
+        assert "excluded" in verdicts
+        assert d.crisis is True
+
+
 class TestScaleProfile:
     def test_scale_fields(self, deriver):
         scale = deriver.derive("多团队在多个系统上长期运营，涉及组织和部门").scale_profile
@@ -144,12 +173,16 @@ class TestParity:
             step1 = Step1IntentScope()
             d = step1.cynefin_deriver.derive(text)
             direct = step1.cynefin_analyzer.assess(
-                d.votes, crisis=d.crisis, scale=d.scale_profile
+                d.votes, crisis=d.crisis, scale=d.scale_profile,
+                context=text, warnings=d.warnings, signal_report=d.signal_report,
             )
             result = step1.execute(text)
             assert expected in result.cynefin_domain
             assert result.cynefin_domain == direct.domain_label
             assert result.cynefin_confidence == direct.confidence
+            # CLI↔pipeline 一致性：解析状态与警告卷宗同步透传
+            assert result.cynefin_resolution == direct.resolution == "heuristic"
+            assert result.cynefin_warnings == direct.warnings
 
     def test_pipeline_disorder_is_non_blocking(self):
         from dm2.engine.pipeline.step1_intent_scope import Step1IntentScope
@@ -203,6 +236,28 @@ class TestExternalizedLexicon:
         mod.load_cynefin_keywords.cache_clear()
         with pytest.raises(CynefinKeywordsError):
             mod.load_cynefin_keywords()
+        mod.load_cynefin_keywords.cache_clear()  # 还原 lru_cache
+
+    def test_v1_lexicon_rejected_with_path_hint(self, monkeypatch, tmp_path):
+        """v1 词库必须报版本错误并给出路径与同步指引，不得静默误判。"""
+        import dm2.cognitive.cynefin_deriver as mod
+
+        ref = tmp_path / "core"
+        ref.mkdir()
+        legacy = ref / "cynefin-keywords.yaml"
+        legacy.write_text(
+            yaml.dump({"version": 1, "dimensions": {}}, allow_unicode=True),
+            encoding="utf-8",
+        )
+        monkeypatch.setattr(mod, "get_reference_path", lambda: ref)
+        monkeypatch.setattr(mod, "_package_keyword_candidates", lambda: [])
+        mod.load_cynefin_keywords.cache_clear()
+        with pytest.raises(CynefinKeywordsError) as exc_info:
+            mod.load_cynefin_keywords()
+        message = str(exc_info.value)
+        assert "v1" in message and "需要 v2" in message
+        assert str(legacy) in message
+        assert "覆盖本地副本" in message
         mod.load_cynefin_keywords.cache_clear()  # 还原 lru_cache
 
     def test_falls_back_to_packaged_lexicon(self, monkeypatch, tmp_path):

@@ -265,27 +265,33 @@ DM2 知识库状态:
 dm2 archive <变更名称>         # 将完成的变更移入 dm2-archive/
 ```
 
-### `dm2 cynefin` — 复杂度评估
+### `dm2 cynefin` — 复杂度评估（证据提取 + 量表 + 裁定）
 
 基于 Cynefin 框架评估问题的**因果可知性**（而非规模），沿五个语义维度投票：需求可知性、实践成熟度、环境动态性、目标一致性、约束清晰度。五域为 Clear / Complicated / Complex / Chaotic / Disorder；证据不足且跨域矛盾时判 Disorder，提示先澄清需求。
 
+评估分三层：文本推导只产出**启发式预填**（`resolution: "heuristic"`，非最终判定）；语义裁定由在环 Agent/人按评估量表（rubric，五维引导问题 + 三档行为锚点）完成，传任一显式维度选项或用 `--domain` 终裁后标记 `resolution: "adjudicated"`。危机信号走语境规则（候选词 + 窗口内门控词 + 排除复合词），被排除/弱信号写入 `signal_report` 留痕而不静默——「应急预案」「中断风险」等规划语境不再误判 Chaotic。`dm2 status` 以 `～草案` / `✓已裁定` 标注解析状态。
+
 ```bash
-dm2 cynefin -d "医院等保三级建设，需专家分析，多方协调"   # 自动推导
+dm2 cynefin --rubric-only                                # 空白评估量表（无需描述）
+dm2 cynefin -d "医院等保三级建设，需专家分析，多方协调"   # 启发式预填（草案）
 dm2 cynefin                                                # 无输入 → Disorder
-dm2 cynefin -d "..." --maturity complex --systems 8        # 显式覆盖单维 + 规模信号
+dm2 cynefin -d "..." --maturity complex --systems 8        # 显式裁定单维 + 规模信号
+dm2 cynefin -d "..." --domain Complex                      # 终裁域（机械建议留痕 suggested_domain）
 ```
 
 参数：
 
 | 参数 | 取值 | 默认 |
 |------|------|------|
-| `--desc` / `-d` | 系统/架构描述（自动推导维度倾向、证据、危机信号、规模剖面） | — |
-| `--knowability` / `--maturity` / `--dynamics` / `--alignment` / `--constraints` | `clear` / `complicated` / `complex`（覆盖对应推导维度） | 不传=按推导/弃权 |
+| `--desc` / `-d` | 系统/架构描述（启发式预填维度倾向、证据、危机信号、规模剖面） | — |
+| `--knowability` / `--maturity` / `--dynamics` / `--alignment` / `--constraints` | `clear` / `complicated` / `complex`（显式裁定对应维度，整次结果标记已裁定） | 不传=按预填/弃权 |
+| `--domain` | 五域之一，终裁域（跳过机械解析；机械建议保留在 `suggested_domain` / `mechanical_suggestion`） | — |
+| `--rubric-only` | 只输出空白量表与 depth_tier 档位说明，不做推导、不持久化 | false |
 | `--systems` / `-s` / `--stakeholder-count` | 整数，规模剖面，**不参与域判定** | 推导 |
 | `--time-span` | `short` / `medium` / `long`，规模剖面 | 推导 |
-| `--json` / `-j` | 输出逐维度投票+证据、置信度分解、depth_tier、规模剖面的结构化 JSON | false |
+| `--json` / `-j` | 输出逐维度投票+证据、`resolution`、`warnings`、`signal_report`、`rubric`（五维量表）、`suggested_domain`、置信度分解、depth_tier、规模剖面的结构化 JSON | false |
 
-域 → 视图深度档位（depth_tier）：Clear=minimal（2-4 个）、Complicated=core（P0 核心）、Complex=extended（P0+P1+行为三件套）、Chaotic=full（全量+Fusion）、Disorder=none（先澄清）。词库位于 `dm2-reference/core/cynefin-keywords.yaml`，可在不改代码的前提下调整。
+域 → 视图深度档位（depth_tier）：Clear=minimal（2-4 个）、Complicated=core（P0 核心）、Complex=extended（P0+P1+行为三件套）、Chaotic=full（全量+Fusion）、Disorder=none（先澄清）。词库位于 `dm2-reference/core/cynefin-keywords.yaml`（v2：语境规则 + 量表锚点），可在不改代码的前提下调整；旧 v1 词库副本会报版本错误，请用包内置副本覆盖同步。
 
 ### `dm2 analyze` — 架构分析（无需 LLM）
 

@@ -30,6 +30,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `dm2 validate` 接入元模型符合性校验（`src/dm2/reasoning/conformance.py`，5 条规则），
     与散文级启发式检查分层报告（metamodel-conformance / prose-heuristic）
   - 17 个数据组模板 `relationships:` 槽位按关联目录权威名再生成
+- **Cynefin 评估量表与裁定**（OpenSpec 变更 `cynefin-rubric-assessment`）：
+  - `dm2 cynefin --rubric-only` 输出空白量表（五维引导问题 + 三档行为锚点）与档位说明
+  - 新增 `--domain <域>` 终裁：跳过机械解析直接取域，机械建议保留在
+    `suggested_domain` / `mechanical_suggestion` 留痕；非法域报 `INVALID_ARG`
+  - 评估量表（`rubric`）与证据卷宗（`signal_report` / `warnings`）随 CLI JSON 与
+    analysis-state 输出；`dm2 status` 以 `～草案` / `✓已裁定` 标注解析状态
+  - propose/ff/onboard 工作流改为「读证据卷宗与量表 → 向用户提问 → 显式裁定」标准动作
 - Initial release structure for GitHub
 
 ### Changed
@@ -40,6 +47,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **BREAKING** `dm2 cynefin --json` 契约：输出五维投票+证据、置信度分解、
   scale_profile、depth_tier、needs_clarification；旧 analysis-state 读取保持兼容
 - 裸跑 `dm2 cynefin`（无描述无选项）不再产出虚假的中庸判定，改为 Disorder 成功响应
+- **BREAKING** 词库 `cynefin-keywords.yaml` 升级 v2：危机判定从子串词列表改为语境规则
+  （候选词 + 窗口内门控词 + 排除复合词，产出 fired/excluded/weak 三态 `signal_report`），
+  五维各带 rubric 引导问题与行为锚点；旧 v1 词库副本会报版本错误，需用包内置副本覆盖同步
+- **BREAKING** `dm2 cynefin --json` 契约新增 `resolution`（heuristic|adjudicated）、
+  `warnings`、`signal_report`、`rubric`、`suggested_domain` 字段；显式维度选项现在使
+  结果标记为已裁定（adjudicated），纯 `-d` 推导标记为草案（heuristic）
 - `dm2 init --tool/-t claude|dsh`: target-AI-tool selection. New `DshAdapter`
   emits 10 project skills under `.dsh/skills/<skill>/SKILL.md` (DeepSeek
   Harness discovery, `user-invocable: true`, no command files) and rewrites
