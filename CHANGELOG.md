@@ -34,6 +34,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `settings.local.json` renamed to `settings.example.json` as template
 
 ### Fixed
+- **数据组→视图映射修复与证据标注**（OpenSpec 变更 `repair-group-view-mapping`）：
+  修复 `group-to-views.yaml` 的视图 ID 错误（SvcV-3）并补齐 SV 家族覆盖盲区，
+  为每条映射添加 `basis` 证据标注；新增 `test/test_group_view_mapping.py`
+  三类校验（视图 ID 有效性 / 数据组覆盖 / basis 完整性）
 - `.gitignore` updated to allow `.claude/` directory
 
 ## [0.1.0] - YYYY-MM-DD
