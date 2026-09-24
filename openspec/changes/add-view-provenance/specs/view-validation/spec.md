@@ -38,7 +38,7 @@ The system SHALL provide a `dm2 validate` command that runs consistency checks o
 ### Requirement: Validation mark in view state
 After successful validation, the system SHALL update the view status to `verified` if and only if the view's pedigree is complete; otherwise, the status remains unchanged and a new validation issue is added.
 
-#### Scenario: Auto-update on clean validation with complete pedigree
+#### Scenario: Auto-update on clean validation
 - **WHEN** validation runs and finds zero ERROR-level issues
 - **AND** the view's pedigree has all core fields (author, creation_date, source) populated
 - **THEN** the system SHALL update the view status to `verified` in ViewManager
@@ -59,7 +59,7 @@ After successful validation, the system SHALL update the view status to `verifie
 ## ADDED Requirements
 
 ### Requirement: Validation issues carry suggested fixes
-Each validation issue persisted to pedigree SHALL include, when applicable, a `suggested_fix` field that the LLM can act on.
+Each validation issue persisted to pedigree SHALL include, when applicable, a `suggested_fix` field that the AI Agent can act on.
 
 #### Scenario: Suggested fix included
 - **WHEN** `ConsistencyChecker` produces an issue of type `missing-reference` or `term-mismatch`

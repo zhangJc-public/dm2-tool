@@ -21,7 +21,7 @@ The dm2-propose-workflow SHALL include a trace planning step after view recommen
 - **THEN** for each view, the plan SHALL list the activated DM2 data groups
 - **AND** SHALL note any data groups that are not covered by the proposed view set
 
-### Requirement: Propose workflow requires LLM to record reasoning
+### Requirement: Propose workflow requires AI Agent to record reasoning
 The SKILL.md for `/dm2:propose` SHALL instruct the AI Agent to record initial reasoning fields for each recommended view by calling `dm2 trace record`.
 
 #### Scenario: Initial reasoning recorded for recommended views

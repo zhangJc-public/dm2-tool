@@ -104,4 +104,4 @@
 - [ ] 13.2 Run `ruff check src/` — no new lint errors
 - [ ] 13.3 Verify CLI commands work end-to-end: `dm2 init`, `dm2 change new test`, `dm2 trace record ...`, `dm2 audit ...`, `dm2 audit-report`
 - [ ] 13.4 Verify `--force-pedigree` override path works and is logged
-- [ ] 13.5 Verify LLM-driven flow works: regenerated SKILL.md contains trace instructions, and a Claude session can successfully complete a propose→apply→audit cycle
+- [ ] 13.5 Verify AI Agent-driven flow works: regenerated SKILL.md contains trace instructions, and a Claude session can successfully complete a propose→apply→audit cycle

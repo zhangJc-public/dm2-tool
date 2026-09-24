@@ -14,12 +14,22 @@ The dm2-apply-workflow SHALL generate DoDAF views by reading and executing the t
 - **AND** SHALL read `dm2-changes/<name>/proposal.md` and `design.md` for context
 - **AND** SHALL sort pending views by dependency order using `dm2 knowledge views --json`
 - **AND** SHALL generate each view in order, save to `dm2-changes/<name>/views/<View-ID>.<ext>`, and register with `dm2 view register`
-- **AND** for each view, SHALL call `dm2 trace record <view_id>` with the LLM's generation reasoning
+- **AND** for each view, SHALL call `dm2 trace record <view_id>` with the AI Agent's generation reasoning
 - **AND** SHALL mark each completed task with `- [x]` in tasks.md
+
+#### Scenario: Apply with missing tasks.md
+- **WHEN** user runs `/dm2:apply` but `dm2-changes/<name>/tasks.md` does not exist
+- **THEN** the workflow SHALL inform the user that no plan exists
+- **AND** SHALL suggest running `/dm2:propose` first
+
+#### Scenario: Apply resumes after interruption
+- **WHEN** user runs `/dm2:apply` on a change with some tasks already checked `[x]`
+- **THEN** the workflow SHALL skip already-completed tasks
+- **AND** SHALL continue from the first unchecked task
 
 ## ADDED Requirements
 
-### Requirement: Apply requires LLM-supplied generation reasoning
+### Requirement: Apply requires agent-supplied generation reasoning
 The SKILL.md for `/dm2:apply` SHALL instruct the AI Agent to record generation reasoning when producing each view.
 
 #### Scenario: Generation reasoning recorded per view

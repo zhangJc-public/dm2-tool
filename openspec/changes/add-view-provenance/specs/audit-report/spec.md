@@ -1,6 +1,9 @@
 # Audit Report
 
-**Purpose**: Generate human-readable audit reports from Pedigree records, supporting engineering compliance review and "why was this built this way" questions. Distinct from `dm2 validate` (which checks view correctness) — audit reports explain view provenance and rationale.
+## Purpose
+Generate human-readable audit reports from Pedigree records, supporting engineering compliance
+review and "why was this built this way" questions. Distinct from `dm2 validate` (which checks
+view correctness) — audit reports explain view provenance and rationale.
 
 ## ADDED Requirements
 

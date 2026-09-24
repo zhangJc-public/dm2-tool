@@ -1,6 +1,10 @@
-# LLM Reasoning Trace
+# View Provenance
 
-**Purpose**: Record and retrieve the reasoning behind LLM-generated DoDAF views to support engineering audit. Implements the DM2 V2.02 **Pedigree** data group as a first-class artifact within the dm2 project lifecycle.
+## Purpose
+Record and retrieve the provenance of AI Agent-generated DoDAF views to support engineering
+audit: the facts dm2 observes itself are kept distinct from the reasoning the external AI Agent
+states. Implements the DM2 V2.02 **Pedigree** data group as a first-class artifact within the
+dm2 project lifecycle.
 
 ## ADDED Requirements
 
@@ -9,11 +13,11 @@ The system SHALL define a `Pedigree` data model in `dm2.core.pedigree.model` tha
 
 - `view_id` (string, required): The DoDAF view identifier (e.g., "OV-1", "CV-1")
 - `pedigree_id` (string, required): A UUID generated at first record creation
-- `author` (object, required): Who created the view — fields `type` (enum: human, llm-assisted, llm-autonomous), `model` (string, model version when LLM), `operator` (string, triggering human user)
+- `author` (object, required): Who created the view — fields `type` (enum: human, agent-assisted, agent-autonomous), `model` (string, model version when AI Agent), `operator` (string, triggering human user)
 - `creation_date` (ISO-8601 datetime, required)
 - `modification_history` (array of ModificationRecord, required): Each entry has `date`, `actor`, `change_description`
 - `source` (object, required): Standard provenance — fields `standard` (e.g., "DoDAF V2.02 Vol 2"), `section`, `dm2_terms_used` (array of `{term, definition_ref}`), `alignment_notes` (free text)
-- `reasoning` (object, required): The LLM's rationale — fields `summary` (string), `decision_factors` (array of `{factor, score?, source}`), `alternatives_considered` (array of `{option, rejected_because}`)
+- `reasoning` (object, required): The Agent's stated rationale — fields `summary` (string), `decision_factors` (array of `{factor, score?, source}`), `alternatives_considered` (array of `{option, rejected_because}`)
 - `validation` (object, required): Validation history — fields `ran_R1`-`ran_R5` (booleans), `issues` (array of `{rule, severity, message, suggested_fix?}`), `last_validated` (ISO-8601 datetime or null)
 - `reliability` (enum: low, medium, high, required)
 - `confidence` (number 0-1, required)
@@ -57,7 +61,7 @@ Generated view files (Markdown) SHALL include a `pedigree` block in their YAML f
 - `source` (object): Reference fields only (standard + section + dm2_terms_used)
 
 #### Scenario: View frontmatter contains pedigree block
-- **WHEN** a view file is written by the LLM-driven generation pipeline
+- **WHEN** a view file is written by the agent-driven generation pipeline
 - **THEN** the frontmatter SHALL include a `pedigree:` section
 - **AND** the `pedigree.pedigree_id` SHALL match the full record in `.dm2/pedigree/<view_id>.yaml`
 - **AND** the frontmatter pedigree SHALL be parseable as YAML
@@ -68,7 +72,7 @@ Generated view files (Markdown) SHALL include a `pedigree` block in their YAML f
 - **AND** SHALL contain enough information to understand the view's origin without reading the external YAML
 
 ### Requirement: Automatic fact capture by CLI
-The system SHALL automatically record certain objective facts about view operations as pedigree entries, without requiring the LLM to declare them.
+The system SHALL automatically record certain objective facts about view operations as pedigree entries, without requiring the AI Agent to declare them.
 
 #### Scenario: View registration captured
 - **WHEN** `dm2 view register <view_id>` is called
@@ -90,17 +94,17 @@ The system SHALL automatically record certain objective facts about view operati
 - **THEN** the system SHALL append a `ModificationRecord` to the pedigree
 - **AND** the record SHALL include the new state in `change_description`
 
-### Requirement: LLM-supplied reasoning fields
-The system SHALL expose a CLI command `dm2 trace record` that the LLM (via SKILL.md instructions) can call to write the LLM-side reasoning fields (`reasoning.summary`, `reasoning.decision_factors`, `reasoning.alternatives_considered`, `known_limitations`).
+### Requirement: Agent-supplied reasoning fields
+The system SHALL expose a CLI command `dm2 trace record` that the AI Agent (via skill instructions) can call to submit the agent-side reasoning fields (`reasoning.summary`, `reasoning.decision_factors`, `reasoning.alternatives_considered`, `known_limitations`).
 
 #### Scenario: Basic trace record command
-- **WHEN** user or LLM runs `dm2 trace record <view_id> --summary "..." --reasoning-file <yaml-path>`
+- **WHEN** user or AI Agent runs `dm2 trace record <view_id> --summary "..." --reasoning-file <yaml-path>`
 - **THEN** the system SHALL load the existing pedigree for `<view_id>`
 - **AND** SHALL merge the supplied reasoning fields into the pedigree
 - **AND** SHALL save the merged pedigree to `.dm2/pedigree/<view_id>.yaml`
 
 #### Scenario: Reasoning provided via stdin
-- **WHEN** user or LLM runs `echo '<yaml>' | dm2 trace record <view_id> --stdin`
+- **WHEN** user or AI Agent runs `echo '<yaml>' | dm2 trace record <view_id> --stdin`
 - **THEN** the system SHALL parse YAML from stdin
 - **AND** SHALL merge the parsed fields into the existing pedigree
 - **AND** SHALL save the merged pedigree
@@ -164,5 +168,18 @@ The system SHALL expose pedigree records through the existing knowledge API at `
 - **AND** SHALL include each view's `author.type`, `creation_date`, and `confidence` for filtering
 
 #### Scenario: Search by author type
-- **WHEN** `KnowledgeAPI.list_pedigrees(author_type="llm-autonomous")` is called
-- **THEN** the system SHALL return only pedigrees with `author.type == "llm-autonomous"`
+- **WHEN** `KnowledgeAPI.list_pedigrees(author_type="agent-autonomous")` is called
+- **THEN** the system SHALL return only pedigrees with `author.type == "agent-autonomous"`
+
+### Requirement: Provenance recording introduces no LLM dependency
+Recording provenance SHALL NOT make dm2 call an LLM or declare an LLM client library; the agent-side reasoning fields SHALL be treated as content submitted by the external AI Agent rather than inference performed by dm2.
+
+#### Scenario: No LLM call is introduced
+- **WHEN** `dm2 trace record` or `dm2 audit` runs
+- **THEN** dm2 SHALL NOT invoke an LLM
+- **AND** the distribution SHALL continue to declare no LLM client library, as required by `dm2-no-llm-dependency`
+
+#### Scenario: Agent-stated reasoning is labelled as unverified
+- **WHEN** an audit report or a pedigree record presents the reasoning layer
+- **THEN** those fields SHALL be identified as stated by the agent and not validated by dm2
+- **AND** they SHALL NOT be presented as facts observed by dm2

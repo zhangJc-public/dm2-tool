@@ -1,6 +1,6 @@
 # View Lifecycle (delta)
 
-This is a delta spec modifying the existing `view-lifecycle` capability to integrate with the LLM reasoning trace system.
+This is a delta spec modifying the existing `view-lifecycle` capability to integrate with the view provenance system.
 
 ## MODIFIED Requirements
 

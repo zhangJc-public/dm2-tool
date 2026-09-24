@@ -8,7 +8,7 @@ This delta adds pedigree fields to the view metadata schema, complementing the e
 Each generated view file (Markdown) SHALL include a `pedigree` block in its YAML frontmatter. The frontmatter pedigree SHALL contain the minimum information needed to identify the view's provenance and follow the full trace:
 
 - `pedigree_id` (string, required): UUID linking to the full record at `.dm2/pedigree/<view_id>.yaml`
-- `author` (object, required): Subset of full record — `type`, `model` (when LLM), `operator`
+- `author` (object, required): Subset of full record — `type`, `model` (when AI Agent), `operator`
 - `creation_date` (ISO-8601 datetime, required)
 - `source` (object, required): Reference subset — `standard`, `section`, `dm2_terms_used` (array of `{term, definition_ref}`)
 
