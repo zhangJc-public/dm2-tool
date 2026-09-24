@@ -37,6 +37,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - 评估量表（`rubric`）与证据卷宗（`signal_report` / `warnings`）随 CLI JSON 与
     analysis-state 输出；`dm2 status` 以 `～草案` / `✓已裁定` 标注解析状态
   - propose/ff/onboard 工作流改为「读证据卷宗与量表 → 向用户提问 → 显式裁定」标准动作
+- **地基文档与治理**（OpenSpec 变更 `establish-dm2-foundation`，及配套
+  `remove-llm-packaging-residuals` / `report-missing-knowledge-base` /
+  `wire-cli-output-schemas`，均已归档）：
+  - 新增 `docs/foundation.md`：定位边界、实测分层依赖边、9 条横切不变量
+    （每条带守护锚点）、可复现现状基线、裂缝 D1–D10 清单与目标态
+  - 新增守护测试：架构分层边界（`test_architecture_boundaries.py`）、
+    JSON 信封契约（`test_cli_json_contract.py`）、输出 schema 对照真实输出
+    （`test_cli_output_schemas.py`）、生成物字节一致性
+    （`test_generated_agent_config.py`）、知识库缺失报错
+    （`test_missing_knowledge_base.py`）
+  - 研究语料从 `dm2-reference/reference/` 整体迁至 `docs/reference/`
+    （运行时不读取、不随包分发）；删除死目录 `templates/` 与
+    `dm2-reference/view-representations.yaml`
 - Initial release structure for GitHub
 
 ### Changed
@@ -68,6 +81,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `settings.local.json` renamed to `settings.example.json` as template
 
 ### Fixed
+- **项目守卫族与 JSON 信封**：`view list/register`、`run`、`validate`
+  补项目守卫；所有守卫在 `--json` 模式下输出 `NOT_IN_PROJECT` 错误信封
+  （此前守卫失败会往 stdout 写纯文本、或在任意目录静默创建 `.dm2/`）；
+  `config -s` 守卫前置到写入之前；`view register` 补接受 `--json`
+- **知识库缺失从「静默空答案」改为明确失败**：`get_reference_path()` 在两条
+  候选路径都不存在时抛 `KnowledgeBaseNotFound`，CLI 中央转为 `KB_NOT_FOUND`
+  信封（人类模式给可操作提示）；`concerns.yaml` 同样处理
+- **分发形态正式确立为 editable-only**：sdist→wheel 实测确认包外数据文件被
+  静默丢弃（wheel 的 `dm2/` 内零 json/yaml），非 editable 安装确定不可用——
+  现在会干净地报 `KB_NOT_FOUND` 而非静默空答案。删除 MANIFEST.in、删除会向
+  PyPI 发布坏 wheel 的 release.yml，并清理指向不存在路径的死 package-data；
+  正式 wheel 分发为 foundation D10 延后项
 - **数据组→视图映射修复与证据标注**（OpenSpec 变更 `repair-group-view-mapping`）：
   修复 `group-to-views.yaml` 的视图 ID 错误（SvcV-3）并补齐 SV 家族覆盖盲区，
   为每条映射添加 `basis` 证据标注；新增 `test/test_group_view_mapping.py`
