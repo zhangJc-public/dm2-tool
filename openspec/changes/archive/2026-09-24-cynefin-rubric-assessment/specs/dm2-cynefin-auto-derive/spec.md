@@ -33,7 +33,7 @@ The `dm2 cynefin` command SHALL automatically derive an **evidence pack** from a
 
 Crisis detection SHALL use the v2 context-rule signals from the externalized lexicon (candidate term plus within-window aspect/scope gate, excluding planning compounds). Planning and preparedness language — 应急预案、应急演练、应急响应能力/体系建设、业务中断风险、中断处置流程、防失控措施 — SHALL NOT fire the crisis veto; such rejected candidate matches SHALL appear in `signal_report` as `excluded`, and gate-unsatisfied candidates as `weak`. Disorder results SHALL remain normal successful outcomes directing the user to clarification.
 
-#### Scenario: Ongoing crisis resolves Chaotic
+#### Scenario: Crisis description resolves Chaotic
 - **WHEN** `dm2 cynefin -d "核心业务全站中断，正在应急处置，事态仍在蔓延"` runs
 - **THEN** crisis SHALL be true, domain `Chaotic`, depth tier `full`
 

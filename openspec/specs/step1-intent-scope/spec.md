@@ -1,6 +1,10 @@
 # Step 1+2: Intent & Scope
 
-**Purpose**: 意图澄清 + 范围界定，整合 Cynefin 判定、反向质问机制和上下文预算管理。TBD: 详细架构文档。
+## Purpose
+
+意图澄清 + 范围界定，整合 Cynefin 判定、反向质问机制和上下文预算管理。
+
+<!-- TBD: 详细架构文档。 -->
 
 ## Requirements
 

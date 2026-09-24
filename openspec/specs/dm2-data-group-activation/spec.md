@@ -1,7 +1,8 @@
-## DM2 Data Group Activation Spec
+# DM2 Data Group Activation
 
-### Purpose
+## Purpose
 Define the data-group-driven view recommendation mechanism — keywords, external mapping, and CLI→Agent data contract.
+
 ## Requirements
 ### Requirement: Template frontmatter expansion
 Each of the 17 DM2 data group templates in `dm2-reference/core/groups/*/*-Template.md` SHALL include two new frontmatter fields: `keywords` (for activation detection) and `related_dm2_views` (for view mapping reference). All 17 groups SHALL have a template file — groups without templates SHALL be created.

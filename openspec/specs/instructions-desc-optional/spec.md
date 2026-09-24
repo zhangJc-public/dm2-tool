@@ -1,10 +1,10 @@
 ## Instructions --desc Optional Spec
 
-### Purpose
+## Purpose
+
 Define the `dm2 instructions` command's `--desc` parameter contract: optional for view-type artifacts with a guidance prompt, required for step-type artifacts.
 
-### Requirements
-
+## Requirements
 ### Requirement: View instructions accept optional --desc
 When `dm2 instructions` is called for a view-type artifact (e.g., `StdV-1`, `view/OV-2`, bare view ID like `OV-5a`), the `--desc` parameter SHALL be optional. If not provided, the response SHALL include a guidance prompt in `project_description` encouraging the Agent to interact with the user.
 

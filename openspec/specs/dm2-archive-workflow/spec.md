@@ -1,10 +1,10 @@
 ## DM2 Archive Workflow Spec
 
-### Purpose
+## Purpose
+
 Define the `/dm2:archive` workflow — single-change archive with validation and confirmation, distinct from bulk-archive.
 
-### Requirements
-
+## Requirements
 ### Requirement: Single-change archive
 The dm2-archive-workflow SHALL archive a single completed dm2 change, providing a simple confirmation-based flow distinct from `/dm2:bulk-archive`.
 

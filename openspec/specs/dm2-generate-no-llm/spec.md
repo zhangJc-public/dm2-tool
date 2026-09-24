@@ -1,10 +1,10 @@
 ## DM2 Generate No-LLM Spec
 
-### Purpose
+## Purpose
+
 Ensure `dm2 generate` operates as a pure CLI tool without LLM dependency. It outputs structured metadata and AI Agent instructions rather than generating view content via LLM.
 
-### Requirements
-
+## Requirements
 ### Requirement: No LLM dependency for view generation
 The `dm2 generate` command SHALL NOT require or call any LLM API. It SHALL output structured metadata and instructions for AI Agent consumption, not generated view content.
 

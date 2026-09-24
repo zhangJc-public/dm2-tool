@@ -1,6 +1,10 @@
 # Pipeline Orchestrator
 
-**Purpose**: 6 步流程的主控制器，负责步骤调度、状态管理和迭代循环。TBD: 详细架构文档。
+## Purpose
+
+6 步流程的主控制器，负责步骤调度、状态管理和迭代循环。
+
+<!-- TBD: 详细架构文档。 -->
 
 ## Requirements
 

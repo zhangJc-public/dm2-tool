@@ -80,3 +80,11 @@ Default dimension weights and band edges SHALL be defined as named constants so 
 #### Scenario: Two complex votes without hard trigger stay in band
 - **WHEN** exactly two dimensions vote `complex` and the other three vote `complicated`, with default weights
 - **THEN** the domain SHALL be `Complicated` (hard trigger not reached, band average below 2.5)
+
+#### Scenario: Mature regulated practice is Complicated
+- **WHEN** the 等保三级医院 anchor description is assessed (complete regulatory regime, established security practice, analyzable multi-system integration)
+- **THEN** the resolved domain SHALL be `Complicated`
+
+#### Scenario: Emerging uncertain requirements are Complex
+- **WHEN** the AI-system anchor description is assessed (requirements uncertain, practice emerging, environment dynamic — at least three complex tendencies)
+- **THEN** the resolved domain SHALL be `Complex`

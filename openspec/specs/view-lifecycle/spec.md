@@ -1,6 +1,10 @@
 # View Lifecycle
 
-**Purpose**: Track DoDAF view generation lifecycle state within a dm2 project. TBD: integration with pipeline and validation workflows.
+## Purpose
+
+Track DoDAF view generation lifecycle state within a dm2 project.
+
+<!-- TBD: integration with pipeline and validation workflows. -->
 
 ## Requirements
 

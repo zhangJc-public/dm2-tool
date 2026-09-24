@@ -1,6 +1,10 @@
 # Step 6: Documentation
 
-**Purpose**: 文档化 + 知识回流，Composite View 生成 + wikilinks 双向关联 + 迭代反馈。TBD: 详细架构文档。
+## Purpose
+
+文档化 + 知识回流，Composite View 生成 + wikilinks 双向关联 + 迭代反馈。
+
+<!-- TBD: 详细架构文档。 -->
 
 ## Requirements
 

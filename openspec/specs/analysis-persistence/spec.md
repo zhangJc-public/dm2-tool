@@ -1,6 +1,10 @@
 # Analysis Persistence
 
-**Purpose**: Persist analysis results (Cynefin, 6W) to project state for cross-session AI agent context. TBD: integration with knowledge base delta tracking.
+## Purpose
+
+Persist analysis results (Cynefin, 6W) to project state for cross-session AI agent context.
+
+<!-- TBD: integration with knowledge base delta tracking. -->
 
 ## Requirements
 

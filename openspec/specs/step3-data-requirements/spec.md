@@ -1,6 +1,10 @@
 # Step 3+4: Data Requirements
 
-**Purpose**: 数据定义 + 知识沉淀，6W 矩阵驱动数据采集 + DM2 知识库检索。TBD: 详细架构文档。
+## Purpose
+
+数据定义 + 知识沉淀，6W 矩阵驱动数据采集 + DM2 知识库检索。
+
+<!-- TBD: 详细架构文档。 -->
 
 ## Requirements
 

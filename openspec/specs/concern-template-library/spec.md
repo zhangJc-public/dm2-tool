@@ -1,10 +1,10 @@
 ## Concern Template Library Spec
 
-### Purpose
+## Purpose
+
 Define architecture concern templates as external reference data that enable the AI Agent to match user descriptions against domain-specific architecture focus areas.
 
-### Requirements
-
+## Requirements
 ### Requirement: Concern template library
 The system SHALL provide an external YAML file at `dm2-reference/concerns.yaml` defining architecture concern patterns. Each concern SHALL specify expected data group activation patterns, core views, and domain keywords.
 

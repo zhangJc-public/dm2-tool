@@ -1,7 +1,8 @@
 # dm2-explore-workflow Specification
 
 ## Purpose
-TBD - created by archiving change add-dm2-explore-workflow. Update Purpose after archive.
+Define the read-only exploration workflow: a distributable `dm2-explore-workflow` skill that lets an agent discuss DoDAF views, concepts, and architecture decisions without generating views or creating changes, and that complements the propose → continue/ff → verify → archive pipeline by hinting at view dependency chains.
+
 ## Requirements
 ### Requirement: dm2 explore workflow is registered and distributable
 The `dm2-explore-workflow` SHALL be defined as a Python WorkflowTemplate in `core/templates/workflows/explore.py` and registered in the WORKFLOWS list alongside the other 7 workflows.

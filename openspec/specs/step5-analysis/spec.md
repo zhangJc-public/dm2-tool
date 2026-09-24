@@ -1,6 +1,10 @@
 # Step 5: Analysis
 
-**Purpose**: 分析执行（SE 四算子），整合溯因推理、OODA 韧性分析、TOC 瓶颈识别和一致性检查。TBD: 详细架构文档。
+## Purpose
+
+分析执行（SE 四算子），整合溯因推理、OODA 韧性分析、TOC 瓶颈识别和一致性检查。
+
+<!-- TBD: 详细架构文档。 -->
 
 ## Requirements
 

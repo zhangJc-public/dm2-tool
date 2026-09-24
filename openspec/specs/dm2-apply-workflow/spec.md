@@ -1,10 +1,10 @@
 ## DM2 Apply Workflow Spec
 
-### Purpose
+## Purpose
+
 Define the `/dm2:apply` workflow — task-driven view generation that reads tasks.md and executes the implementation plan from `/dm2:propose`.
 
-### Requirements
-
+## Requirements
 ### Requirement: Task-driven view generation
 The dm2-apply-workflow SHALL generate DoDAF views by reading and executing the tasks.md plan file produced by `/dm2:propose`, rather than re-running analysis.
 

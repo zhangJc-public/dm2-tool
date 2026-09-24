@@ -1,7 +1,8 @@
 # no-new-capability Specification
 
 ## Purpose
-TBD - created by archiving change soften-analysis-dir-guidance. Update Purpose after archive.
+Constrain the propose workflow to orchestration rather than invention: dm2 does not gain a new capability for authoring analysis prose, and instead guides the agent to write its own analysis artifacts from the structured context dm2 emits.
+
 ## Requirements
 ### Requirement: propose workflow guides agent to write own analysis
 

@@ -1,10 +1,10 @@
 ## DM2 New Workflow Spec
 
-### Purpose
+## Purpose
+
 Define the `/dm2:new` workflow behavior — scaffold-only creation of a change directory.
 
-### Requirements
-
+## Requirements
 ### Requirement: Scaffold-only on create
 The /dm2:new workflow SHALL create a change directory and initial state only, then wait for user direction. The cynefin assessment, 6W analysis, and view generation steps SHALL be removed from this workflow and only exist in /dm2:propose.
 
