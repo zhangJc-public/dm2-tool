@@ -31,3 +31,23 @@ jobs:
 
       - name: Run lint
         run: ruff check src/ test/
+
+  spec:
+    # The spec corpus is the authority for behaviour, so it is gated on its own runner
+    # rather than once per Python version. Strict mode also fails on warnings, which is
+    # how placeholder Purposes and malformed sections get caught.
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install OpenSpec
+        run: npm install -g @fission-ai/openspec@1.13.1
+
+      - name: Validate specs and changes
+        run: openspec validate --all --strict
