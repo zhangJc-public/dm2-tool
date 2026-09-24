@@ -1,13 +1,26 @@
 # DoDAF 视图单一数据源 —— 所有视图信息统一定义于此
 # indexer / view_recommender / view_generator / prompts 均从此加载
 #
+# 数据来源:
+#   - dodaf_v2-02_web.pdf (DoDAF V2.02 web, 289 pages)
+#   - 2009美国国防部体系结构框架 - DoDAF V2.0 - Vol. 2.pdf (Vol 2: Architectural Data and Models)
+#
 # 新增字段 (2026-05-05):
 #   standard_name   - DoDAF V2.02 标准英文名 (Table 1.2-1)
-#   model_category  - 标准分类: Structural | Behavioral | Tree | Mapping |
-#                     Tabular | Pictorial | Timeline | Ontology (Table 1.2-2)
+#   model_category  - 标准分类 (Table 1.2-2 / dodaf_v2-02_web.pdf page 40):
+#                     Structural  结构/静态关系描述
+#                     Behavioral  行为/动态过程描述
+#                     Tree        层级分类/分解
+#                     Mapping     两类信息间的映射关系
+#                     Tabular     行列结构数据
+#                     Pictorial   自由图形描述
+#                     Timeline    时间线/阶段规划
+#                     Ontology    术语/本体定义
 #   representation  - 输出形式: node-link | tree | org-chart | flowchart |
 #                     state-diagram | sequence-diagram | er-diagram | pictorial |
 #                     gantt | table | text
+#                     （representation → mermaid_type 的映射刻意存于代码层，
+#                       见 src/dm2/core/agent/instructions.py，不在 YAML 中重复）
 #   purpose         - 视图目的 / 回答什么问题
 #   sections        - 章节大纲 (替代硬编码模板)
 #   required_fields - 视图必须产出的字段列表

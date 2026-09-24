@@ -2,13 +2,22 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://dm2-tool/schemas/cynefin.json",
   "title": "dm2 cynefin --json Response Data",
-  "description": "Cynefin 复杂度评估的结构化输出",
+  "description": "Cynefin 复杂度评估的结构化输出。本 schema 声明保证存在的核心字段与域取值空间；该命令还会输出 signal_report、dimensions、rubric 等扩展字段，此处不穷举（未声明的字段默认允许）。",
   "type": "object",
   "properties": {
     "domain": {
       "type": "string",
-      "enum": ["简单（Clear）", "繁杂（Complicated）", "复杂（Complex）", "混沌（Chaotic）"],
-      "description": "Cynefin 域标签"
+      "enum": ["Clear", "Complicated", "Complex", "Chaotic", "Disorder"],
+      "description": "裁定域（枚举名；中文标签见 domain_label）"
+    },
+    "suggested_domain": {
+      "type": "string",
+      "enum": ["Clear", "Complicated", "Complex", "Chaotic", "Disorder"],
+      "description": "启发式建议域，未经裁定"
+    },
+    "domain_label": {
+      "type": "string",
+      "description": "域的中文标签，如「不明（Disorder）」"
     },
     "confidence": {
       "type": "number",
@@ -16,14 +25,22 @@
       "maximum": 1,
       "description": "评估置信度"
     },
-    "recommended_view_count": {
-      "type": "string",
-      "description": "推荐视图数范围，如 '12-17 个（P0 核心）'"
-    },
     "reasoning": {
       "type": "string",
-      "description": "评估推理详情"
+      "description": "人类可读的裁定理由"
+    },
+    "resolution": {
+      "type": "string",
+      "description": "裁定方式（如 heuristic / user）"
+    },
+    "crisis": {
+      "type": "boolean",
+      "description": "是否命中危机否决"
+    },
+    "needs_clarification": {
+      "type": "boolean",
+      "description": "是否需要用户澄清"
     }
   },
-  "required": ["domain", "confidence", "recommended_view_count", "reasoning"]
+  "required": ["domain", "domain_label", "confidence", "reasoning"]
 }

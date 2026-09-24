@@ -36,10 +36,11 @@
         "properties": {
           "view_id": { "type": "string", "description": "视图 ID，如 OV-1" },
           "view_name": { "type": "string", "description": "视图名称" },
-          "priority": { "type": "integer", "minimum": 1, "maximum": 3, "description": "1=必须, 2=推荐, 3=可选" },
-          "relevance_score": { "type": "number", "minimum": 0, "maximum": 1 }
+          "relevance_score": { "type": "number", "minimum": 0, "maximum": 1, "description": "相关度评分" },
+          "reason": { "type": "string", "description": "推荐理由（含「路径完整性补充」等来源标注）" },
+          "dm2_groups": { "type": "array", "items": { "type": "string" }, "description": "触发该推荐的 DM2 数据组" }
         },
-        "required": ["view_id", "view_name", "priority", "relevance_score"]
+        "required": ["view_id", "view_name", "relevance_score", "reason", "dm2_groups"]
       }
     },
     "suggested_views": {

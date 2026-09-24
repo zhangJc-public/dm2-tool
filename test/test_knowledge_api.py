@@ -1,11 +1,10 @@
 """Tests for the metamodel-grounded Knowledge API (dm2 knowledge ...)."""
 import json
-import subprocess
-import sys
 
 import pytest
 
 from dm2.core.knowledge.api import KnowledgeAPI
+from test._cli import run_cli
 
 
 @pytest.fixture(scope="module")
@@ -91,8 +90,8 @@ class TestCliJsonEnvelope:
     """End-to-end: the CLI emits the standard {status, data} envelope."""
 
     def _run(self, *args):
-        proc = subprocess.run(
-            [sys.executable, "-m", "dm2.cli.main", "knowledge", *args, "--json"],
+        proc = run_cli(
+            ["knowledge", *args, "--json"],
             capture_output=True, text=True,
         )
         assert proc.returncode == 0, proc.stderr
@@ -116,8 +115,8 @@ class TestCliJsonEnvelope:
         assert "activityPerformedByPerformer" in labels
 
     def test_not_found_envelope(self):
-        proc = subprocess.run(
-            [sys.executable, "-m", "dm2.cli.main", "knowledge", "term", "Nope", "--json"],
+        proc = run_cli(
+            ["knowledge", "term", "Nope", "--json"],
             capture_output=True, text=True,
         )
         assert proc.returncode == 1

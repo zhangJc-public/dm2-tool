@@ -5,13 +5,12 @@ transitive dependency ancestors declared in views.yaml (e.g. OV-2/OV-5a require 
 which in turn requires CV-1/AV-1).
 """
 import json
-import subprocess
-import sys
 
 import pytest
 
 from dm2.cognitive.view_recommender import ViewRecommendation, ViewRecommender
 from dm2.kernel.indexer import DM2KnowledgeIndexer
+from test._cli import cli_env, run_cli
 
 
 @pytest.fixture(scope="module")
@@ -93,9 +92,9 @@ class TestAnalyzeCliSmoke:
     """`dm2 analyze` SHALL emit dependency-complete recommended_views."""
 
     def test_analyze_recommends_ov1_with_reason(self):
-        proc = subprocess.run(
+        proc = run_cli(
             [
-                sys.executable, "-m", "dm2.cli.main", "analyze",
+                "analyze",
                 "-d", "作战节点连接、活动分解、资源流",
                 "--json",
             ],
@@ -118,12 +117,9 @@ class TestAnalyzeCliSmoke:
 
     def test_merged_stream_is_parseable_json(self):
         """`2>&1` merged stream must still be valid JSON (regression for stderr noise)."""
-        import os
-        env = dict(os.environ)
-        env.pop("DM2_DEBUG", None)
-        proc = subprocess.run(
-            [sys.executable, "-m", "dm2.cli.main", "analyze", "-d", "资源流", "--json"],
-            capture_output=True, text=True, check=True, env=env,
+        proc = run_cli(
+            ["analyze", "-d", "资源流", "--json"],
+            capture_output=True, text=True, check=True, env=cli_env(DM2_DEBUG=None),
         )
         merged = proc.stdout + proc.stderr
         parsed = json.loads(merged)  # must not raise
@@ -131,12 +127,9 @@ class TestAnalyzeCliSmoke:
 
     def test_debug_env_restores_indexer_diagnostics(self):
         """DM2_DEBUG=1 re-enables the indexer Loaded line (for human debugging)."""
-        import os
-        env = dict(os.environ)
-        env["DM2_DEBUG"] = "1"
-        proc = subprocess.run(
-            [sys.executable, "-m", "dm2.cli.main", "knowledge", "views", "--json"],
-            capture_output=True, text=True, check=True, env=env,
+        proc = run_cli(
+            ["knowledge", "views", "--json"],
+            capture_output=True, text=True, check=True, env=cli_env(DM2_DEBUG="1"),
         )
         assert "[DM2 Indexer] Loaded:" in proc.stderr
         # stdout is still pure JSON

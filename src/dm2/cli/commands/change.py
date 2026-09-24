@@ -5,11 +5,16 @@ import typer
 change_app = typer.Typer(help="架构变更管理", no_args_is_help=True)
 
 
-def _require_project():
-    """确保当前在 .dm2 项目中"""
+def _require_project(json_flag: bool = False):
+    """确保当前在 .dm2 项目中（JSON 模式输出错误信封）"""
     from dm2.utils.paths import is_dm2_project
     if not is_dm2_project():
-        typer.echo("错误: 当前目录不在 .dm2 项目中。请先运行 dm2 init")
+        message = "当前目录不在 .dm2 项目中。请先运行 dm2 init"
+        if json_flag:
+            from dm2.cli.json_output import json_error
+            json_error("NOT_IN_PROJECT", message)
+            raise typer.Exit(1)
+        typer.echo(f"错误: {message}")
         raise typer.Exit(1)
 
 
@@ -19,7 +24,7 @@ def new(
     json_flag: bool = typer.Option(False, "--json", "-j", help="输出结构化 JSON（供 AI Agent 使用）"),
 ):
     """创建新的架构变更"""
-    _require_project()
+    _require_project(json_flag)
     from dm2.core.changes.manager import ChangeManager
     mgr = ChangeManager()
     path = mgr.create(name)
@@ -37,7 +42,7 @@ def status(
     json_flag: bool = typer.Option(False, "--json", "-j", help="输出结构化 JSON（供 AI Agent 使用）"),
 ):
     """查看变更状态与产物进度"""
-    _require_project()
+    _require_project(json_flag)
     from dm2.core.changes.manager import ChangeManager
     mgr = ChangeManager()
     if name:
@@ -73,7 +78,7 @@ def list_changes(
     json_flag: bool = typer.Option(False, "--json", "-j", help="输出结构化 JSON（供 AI Agent 使用）"),
 ):
     """列出所有活跃变更"""
-    _require_project()
+    _require_project(json_flag)
     from dm2.core.changes.manager import ChangeManager
     mgr = ChangeManager()
     changes = mgr.list_changes()
@@ -96,7 +101,7 @@ def archive_change(
     json_flag: bool = typer.Option(False, "--json", "-j", help="输出结构化 JSON（供 AI Agent 使用）"),
 ):
     """归档变更（使用 ChangeManager）"""
-    _require_project()
+    _require_project(json_flag)
     from dm2.core.changes.manager import ChangeManager
     mgr = ChangeManager()
     try:

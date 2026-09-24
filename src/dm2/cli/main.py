@@ -1,5 +1,6 @@
 """DM2 CLI - 系统工程辅助工具命令行入口"""
 
+import os
 import shutil
 import subprocess
 import sys
@@ -30,11 +31,20 @@ def _json_option():
     return typer.Option(False, "--json", "-j", help="输出结构化 JSON（供 AI Agent 使用）")
 
 
-def _require_project():
-    """确保当前在 .dm2 项目中"""
+def _require_project(json_flag: bool = False):
+    """确保当前在 .dm2 项目中。
+
+    JSON 模式下必须输出错误信封：stdout 只允许出现信封，否则调用方
+    （AI Agent）会拿到无法解析的纯文本。人类模式保持原有中文提示。
+    """
     from dm2.utils.paths import is_dm2_project
     if not is_dm2_project():
-        typer.echo("错误: 当前目录不在 .dm2 项目中。请先运行 dm2 init")
+        message = "当前目录不在 .dm2 项目中。请先运行 dm2 init"
+        if json_flag:
+            from dm2.cli.json_output import json_error
+            json_error("NOT_IN_PROJECT", message)
+            raise typer.Exit(1)
+        typer.echo(f"错误: {message}")
         raise typer.Exit(1)
 
 
@@ -162,7 +172,7 @@ def list_changes(
     json_flag: bool = typer.Option(False, "--json", "-j", help="输出结构化 JSON（供 AI Agent 使用）"),
 ):
     """列出项目中的架构变更"""
-    _require_project()
+    _require_project(json_flag)
     from dm2.utils.paths import get_project_root
 
     root = get_project_root()
@@ -220,7 +230,7 @@ def status(
     json_flag: bool = typer.Option(False, "--json", "-j", help="输出结构化 JSON"),
 ):
     """显示项目状态概览"""
-    _require_project()
+    _require_project(json_flag)
     from dm2.kernel.indexer import DM2KnowledgeIndexer
 
     indexer = DM2KnowledgeIndexer()
@@ -315,7 +325,7 @@ def archive(
     json_flag: bool = typer.Option(False, "--json", "-j", help="输出结构化 JSON（供 AI Agent 使用）"),
 ):
     """归档一个架构变更"""
-    _require_project()
+    _require_project(json_flag)
     from datetime import date
 
     from dm2.utils.paths import get_project_root
@@ -591,7 +601,7 @@ def config(
     show_user: bool = typer.Option(False, "--user", "-u", help="显示当前用户级配置"),
     show_project: bool = typer.Option(False, "--project", "-p", help="显示当前项目级配置"),
     show_resolved: bool = typer.Option(False, "--resolved", "-r", help="显示合并解析后的配置"),
-    set_key: str = typer.Option("", "--set", "-s", help="设置用户级配置项 (如 llm.model=claude-opus-4-7)"),
+    set_key: str = typer.Option("", "--set", "-s", help="设置用户级配置项 (如 views.include_mermaid=true)"),
     json_flag: bool = typer.Option(False, "--json", "-j", help="输出结构化 JSON（供 AI Agent 使用）"),
 ):
     """查看和设置配置"""
@@ -628,8 +638,9 @@ def config(
         update = value
         for k in reversed(keys):
             update = {k: update}
+        # 守卫必须在写入之前：否则项目外调用会先落盘再报错
+        _require_project(json_flag)
         path = set_user_config(update)
-        _require_project()
         if json_flag:
             from dm2.cli.json_output import json_success
             json_success({"key": key, "value": value, "config_path": str(path)})
@@ -834,6 +845,7 @@ def validate(
     json_flag: bool = typer.Option(False, "--json", "-j", help="输出结构化 JSON（供 AI Agent 使用）"),
 ):
     """对已生成的 DoDAF 视图运行一致性检查"""
+    _require_project(json_flag)
     from dm2.core.views.manager import ViewManager, ViewStatus
     from dm2.reasoning.consistency import ConsistencyChecker
     from dm2.utils.frontmatter import FrontmatterParser
@@ -1189,6 +1201,12 @@ def run(
     json_flag: bool = typer.Option(False, "--json", "-j", help="输出结构化 JSON（供 AI Agent 使用）"),
 ):
     """运行 DoDAF 6步融合流程（支持 Agent 驱动模式）"""
+    # run 会写入 <cwd>/.dm2/state.yaml；项目外必须快速失败，
+    # 否则会在任意目录留下 .dm2/ 并被误认为成功。
+    # Agent 子模式（--agent/--status/--instructions/--complete-step）
+    # 无条件输出信封，守卫也必须输出信封。
+    agent_mode = agent or status_flag or bool(instructions_flag) or bool(complete_step)
+    _require_project(json_flag or agent_mode)
 
     # Agent mode: status query
     if status_flag:
@@ -1437,9 +1455,41 @@ def version(
     typer.echo(f"dm2-tool v{__version__}")
 
 
+def _json_mode_requested() -> bool:
+    """本次调用是否要求 JSON 输出。
+
+    中央报错点拿不到各命令的 ``json_flag``。``-j`` 在整个 CLI 中只用于 JSON
+    标志（``test_cli_json_contract`` 固定了这一点），因此扫描 argv 是安全的；
+    若将来有命令挪用 ``-j``，此处会静默失准，届时须改为显式传递。
+    """
+    return "--json" in sys.argv or "-j" in sys.argv
+
+
+def _invoke_app() -> None:
+    """运行 CLI，把「找不到知识库」转成明确的失败而不是 traceback。
+
+    只捕获 KnowledgeBaseNotFound，不捕获其基类 RuntimeError，避免顺带吞掉
+    无关的运行时错误。DM2_DEBUG 置位时重新抛出，便于开发者定位。
+    """
+    from dm2.utils.paths import KnowledgeBaseNotFound
+
+    try:
+        app()
+    except KnowledgeBaseNotFound as exc:
+        if os.environ.get("DM2_DEBUG"):
+            raise
+        message = str(exc)
+        if _json_mode_requested():
+            from dm2.cli.json_output import json_error
+            json_error("KB_NOT_FOUND", message)
+        else:
+            typer.echo(f"错误: {message}")
+        raise SystemExit(1) from exc
+
+
 def main():
-    app()
+    _invoke_app()
 
 
 if __name__ == "__main__":
-    app()
+    _invoke_app()

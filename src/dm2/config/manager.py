@@ -100,7 +100,7 @@ def resolve_config(project_root: Optional[Path] = None) -> dict:
 
 
 def get(path: str, default: Any = None, project_root: Optional[Path] = None) -> Any:
-    """获取配置项（支持 dot notation，如 'llm.model'）"""
+    """获取配置项（支持 dot notation，如 'views.include_mermaid'）"""
     config = resolve_config(project_root)
     return _safe_get_nested(config, path, default)
 

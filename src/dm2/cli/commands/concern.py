@@ -1,31 +1,40 @@
 """dm2 concern * — 架构关切模板查询（供 AI Agent 做关切-视图匹配推荐）"""
 
 from pathlib import Path
-from typing import Optional
 
 import typer
 import yaml
 
+from dm2.utils.paths import KnowledgeBaseNotFound
+
 concern_app = typer.Typer(help="架构关切模板查询", no_args_is_help=True)
 
 
-def _get_concerns_path() -> Optional[Path]:
-    """Locate concerns.yaml — shipped with the package in dm2-reference/."""
+def _get_concerns_path() -> Path:
+    """定位 concerns.yaml（随 dm2-reference/ 分发）。
+
+    Raises:
+        KnowledgeBaseNotFound: 两处候选都不存在时。静默返回 ``None`` 会让
+            ``dm2 concern list`` 把「找不到知识库」说成「没有关切模板」——
+            这正是 D10 实测到的静默空答案。
+    """
     _root = Path(__file__).parent.parent.parent.parent.parent  # src/dm2/cli/commands/ → 5 levels up
     candidates = [
         _root / "dm2-reference" / "concerns.yaml",
         _root / "dm2-reference" / "core" / "concerns.yaml",
     ]
-    for p in candidates:
-        if p.exists():
-            return p
-    return None
+    for path in candidates:
+        if path.exists():
+            return path
+    raise KnowledgeBaseNotFound(
+        "未找到关切模板文件 concerns.yaml。已检查：\n"
+        + "\n".join(f"  - {candidate}" for candidate in candidates)
+        + "\n请运行 dm2 init 创建项目本地副本，或改用 editable 安装（pip install -e .）。"
+    )
 
 
 def _load_concerns() -> list[dict]:
     path = _get_concerns_path()
-    if path is None:
-        return []
     data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
     return data.get("concerns", [])
 
