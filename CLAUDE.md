@@ -7,7 +7,7 @@ DoDAF Meta Model 2.02 系统工程辅助工具。
 ```
 ~/workroot/dm2-tool/
 ├── .github/                  # GitHub 配置
-│   ├── workflows/           # CI/CD (test, release, docs)
+│   ├── workflows/           # CI/CD (test, verify, docs)
 │   ├── ISSUE_TEMPLATE/      # Issue 模板
 │   └── PULL_REQUEST_TEMPLATE.md
 ├── .claude/                  ← 生成物：手写文件仅 settings.example.json
@@ -61,7 +61,7 @@ File System Layer      ← .dm2/ 项目 + dm2-changes/ + output/
 ## 开发
 
 ```bash
-pip install -e .              # 可编辑模式安装
+pip install -e .              # 可编辑模式安装（唯一支持的分发形态，见下「工作规则」）
 openspec update --force       # 首次克隆后重建未入库的 openspec 技能与 opsx 命令
 python3 -m dm2 version        # 验证安装
 python3 -m dm2.cli.main --help  # 查看所有命令
@@ -106,6 +106,7 @@ DM2_DEBUG=1 dm2 analyze ...   # 显示索引器诊断（默认静默，保证 --
 - **视图生命周期** — 每个视图经过 `pending → in_progress → generated → verified` 四个状态，由 `.dm2/view-state.yaml` 管理。
 - **变更生命周期** — 每个变更在 `dm2-changes/<name>/` 下有 proposal、design、tasks 和 views/ 目录。
 - **路径优先** — `get_reference_path()` 优先 `.dm2/reference/` 本地副本，回退到包内置 `dm2-reference/core/`。
+- **分发形态：editable-only** — 唯一支持 `pip install -e .`，不发布 wheel/sdist 到 PyPI。非 editable 安装因包外数据文件不入 wheel 而无法工作，会以 `KB_NOT_FOUND` 明确失败（证据与判定见 `docs/foundation.md` §5 D10）。需要正式 wheel 分发时，先做「运行时资产迁入 `src/dm2/`」的变更。
 - **索引派生** — 改权威源 YAML（`dm2-data-dictionary.yaml` / `dm2-metamodel-2.02.yaml`）后必须重跑 `python3 scripts/build_knowledge_indexes.py` 再生成派生 JSON（快照测试 `test/test_knowledge_indexes.py` 会拦截未再生成的索引）；组模板 `relationships:` 槽位用 `--fix-templates` 从关联目录投影同步。运行时只加载紧凑 JSON，不解析 840KB 源 YAML。
 - **约定优先于配置** — 文件名、目录结构是系统约定的接口，减少配置项。如需动态行为，走模板生成而非运行时配置。
 - **测试风格** — 使用 pytest，测试放在 `test/` 目录，与 `src/dm2/` 结构对应。
