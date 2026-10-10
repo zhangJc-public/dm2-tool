@@ -115,12 +115,12 @@ File System Layer      ← .dm2/ 项目 + dm2-changes/ + dm2-archive/
 
 | 指标 | 数值 | 复现命令 |
 |---|---|---|
-| spec 数 | 35 | `ls -d openspec/specs/*/ \| wc -l` |
-| requirement 总数 | 135 | `grep -rh '^### Requirement:' openspec/specs/*/spec.md \| wc -l` |
-| spec 校验 | 36 项通过 / 0 失败（strict 无警告） | `openspec validate --all --strict` |
-| 测试 | 239 passed | `pytest test/` |
-| 顶层命令 | 18 | `dm2 --help` |
-| 命令 JSON 契约 | 28 flag 门控 + 2 无 JSON（均属豁免，共 30） | 见 §5 D2/D3/D4 |
+| spec 数 | 37 | `ls -d openspec/specs/*/ \| wc -l` |
+| requirement 总数 | 158 | `grep -rh '^### Requirement:' openspec/specs/*/spec.md \| wc -l` |
+| spec 校验 | 37 项通过 / 0 失败（strict 无警告） | `openspec validate --all --strict` |
+| 测试 | 366 passed | `pytest test/` |
+| 顶层命令 | 21 | `dm2 --help` |
+| 命令 JSON 契约 | 34 flag 门控 + 3 豁免（`completion`/`__complete`/`uninstall`，共 37） | 见 §5 D2/D3/D4 |
 | 知识库 | 279 术语 / 52 视图 / 17 数据组 | `dm2 knowledge stats --json` |
 | 工作流技能 | 10 个工作流 × 2 个适配器目标（`.claude` + `.dsh` 均入库并由字节守护） | `dm2 init -t claude\|dsh` |
 | Python 下限 | `>=3.9`，CI 矩阵 3.9–3.12 | `pyproject.toml`、`.github/workflows/test.yml` |
@@ -129,16 +129,20 @@ File System Layer      ← .dm2/ 项目 + dm2-changes/ + dm2-archive/
 > 地基变更前的基线为 33 spec / 119 requirement / 194 测试 / 27 flag 门控 + 1 总是 JSON + 2 无 JSON；差异来自新增契约与守护测试，以及 `view register` 补上 `--json`。此后 `wire-cli-output-schemas`、`remove-llm-packaging-residuals`、`report-missing-knowledge-base` 等变更继续推高了这些数字——上表数值随时可用所列命令复现。
 >
 > 2026-10-10：开发环境切到 DSH + SDD（`.agents/skills` 承载 openspec 技能、`.dsh/skills` 承载 dm2 技能），
-> 测试数 236 → 239（字节守护从 `.claude` 扩展到 `.dsh`）；spec / requirement / 命令数不变。
+> 测试数 236 → 239（字节守护从 `.claude` 扩展到 `.dsh`）。
+>
+> 2026-10-10：`add-view-provenance` 归档（新增 `view-provenance`/`audit-report` 两个 spec，另更新 5 个），
+> 数字变为 37 spec / 158 requirement / 366 测试 / 21 顶层命令（新增 `trace`、`audit`、`audit-report`）；
+> 不变量新增 I10（视图溯源两层分离 + `verified` 门控）。
 
 **已验证的强项**（本次不改其行为，仅用测试锁定）：
 
 - **S1 分层干净**：见 §2，无反向依赖 → 已由 `test_architecture_boundaries.py` 守护。
-- **S2 规范有规模**：35 spec / 135 requirement，strict 全量校验通过 → 已由 CI `spec` job 守护。
-- **S3 质量关口存在**：239 测试绿、ruff 干净、CI 覆盖 3.9–3.12；代码经 3.9.6 实跑验证兼容。
+- **S2 规范有规模**：37 spec / 158 requirement，strict 全量校验通过 → 已由 CI `spec` job 守护。
+- **S3 质量关口存在**：366 测试绿、ruff 干净、CI 覆盖 3.9–3.12；代码经 3.9.6 实跑验证兼容。
 - **S4 零 LLM 已规范化**：`dm2-no-llm-dependency` 覆盖源码、打包与用户可见面。
 - **S5 适配缝已验证**：`ToolAdapter` 由 claude/dsh 两个目标证实可用。
-- **S6 信封覆盖率高**：30 个命令中 28 个输出统一信封，另 2 个为显式豁免 → 已由 `test_cli_json_contract.py` 守护。
+- **S6 信封覆盖率高**：37 个命令中 34 个输出统一信封，另 3 个为显式豁免 → 已由 `test_cli_json_contract.py` 守护。
 
 ---
 
