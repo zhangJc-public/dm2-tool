@@ -21,6 +21,23 @@ from dm2.utils.paths import get_reference_path
 
 from .consistency import IssueSeverity
 
+#: The five metamodel conformance rules, in pedigree ``ran_R1``..``ran_R5`` order.
+#: R1 ``_check_unknown_term`` / R2 ``_check_type_layer`` /
+#: R3 ``_check_relationships`` / R4 ``_check_endpoint_types`` /
+#: R5 ``check_view_required``. Prose heuristics are a separate layer and are not
+#: part of this numbering (see docs/foundation.md §2).
+CONFORMANCE_RULES = ("R1", "R2", "R3", "R4", "R5")
+
+#: Issue type -> rule id, used when a run's issues are persisted into a pedigree
+#: (``validation.issues[].rule``).
+CONFORMANCE_RULE_BY_ISSUE_TYPE = {
+    "unknown-term": "R1",
+    "type-layer": "R2",
+    "unknown-relation": "R3",
+    "endpoint-type": "R4",
+    "required-association": "R5",
+}
+
 
 @dataclass
 class ConformanceIssue:
@@ -52,6 +69,8 @@ class MetamodelConformanceChecker:
         self.index = index or MetamodelIndex(reference_root).load()
         self._term_names: set = set()
         self._load_term_names(reference_root)
+        #: Rule ids that actually ran in the latest invocation (pedigree ran_R*).
+        self.last_ran_rules: set[str] = set()
 
     def _load_term_names(self, reference_root: Optional[Path]):
         root = Path(reference_root) if reference_root else get_reference_path()
@@ -89,6 +108,9 @@ class MetamodelConformanceChecker:
         """
         issues: list[ConformanceIssue] = []
         type_map = {nid: str(fm.get("dm2-type", "")) for nid, fm in notes.items()}
+        # R1-R4 are invoked unconditionally from here; R5 belongs to the caller
+        # (one `check_view_required` call per view).
+        self.last_ran_rules = set(CONFORMANCE_RULES[:4])
 
         for note_id, fm in notes.items():
             dm2_type = str(fm.get("dm2-type", ""))
@@ -219,6 +241,7 @@ class MetamodelConformanceChecker:
     # ── view-level check ─────────────────────────────────────────────────
     def check_view_required(self, view_id: str, notes: dict[str, dict]) -> list[ConformanceIssue]:
         """Necessary associations of a view absent from the structured data."""
+        self.last_ran_rules.add("R5")
         spec = self.index.get_view_spec(view_id)
         if not spec:
             return []

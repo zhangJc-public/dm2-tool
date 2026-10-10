@@ -27,7 +27,7 @@
 - [ ] 4.2 Implement event subscription mechanism for `ViewManager` state changes (use simple observer pattern)
 - [ ] 4.3 Add event hooks to `dm2/core/views/manager.py` at: view registration, state transitions (pending→in_progress→generated→verified)
 - [ ] 4.4 Implement `record_modification(view_id, actor, change_description)` method on PedigreeRecorder
-- [ ] 4.5 Modify `dm2/reasoning/consistency.py` to call PedigreeRecorder after validation completes
+- [x] 4.5 Persist validation results into the pedigree from `dm2 validate` (ran_R1–R5, issues with suggested fixes, last_validated); the CLI owns this, not `ConsistencyChecker`
 - [ ] 4.6 Write unit tests verifying state changes produce ModificationRecord entries
 
 ## 5. CLI Commands — trace record
@@ -53,12 +53,12 @@
 
 ## 7. View Lifecycle Integration
 
-- [ ] 7.1 Extend `.dm2/view-state.yaml` schema to include `pedigree_status` and `pedigree_missing` per view
-- [ ] 7.2 Modify `ViewManager` to refuse `verified` transition when pedigree core fields are missing
-- [ ] 7.3 Add `--force-pedigree` flag to `dm2 validate` for explicit override
-- [ ] 7.4 Update `dm2 view list` to show `pedigree_status` column and `--pedigree-status` filter
-- [ ] 7.5 Update `dm2 view list --json` to include `pedigree_status` and `pedigree_missing` fields
-- [ ] 7.6 Write tests verifying verified gating and override behavior
+- [x] 7.1 Extend `.dm2/view-state.yaml` schema to include `pedigree_status` and `pedigree_missing` per view
+- [x] 7.2 Modify `ViewManager` to refuse `verified` transition when pedigree core fields are missing
+- [x] 7.3 Add `--force-pedigree` flag to `dm2 validate` for explicit override
+- [x] 7.4 Update `dm2 view list` to show `pedigree_status` column and `--pedigree-status` filter
+- [x] 7.5 Update `dm2 view list --json` to include `pedigree_status` and `pedigree_missing` fields
+- [x] 7.6 Write tests verifying verified gating and override behavior
 
 ## 8. View Frontmatter Pedigree
 

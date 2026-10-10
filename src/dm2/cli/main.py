@@ -837,11 +837,117 @@ def analyze(
     typer.echo(f"建议视图: {', '.join(result.suggested_views[:5])}")
 
 
+def _validation_report(conformance_issues, prose_issues, blocked) -> list[dict]:
+    """Unified issue rows shared by the human and JSON output paths."""
+    report = [
+        {
+            "type": i.issue_type,
+            "severity": i.severity.value,
+            "message": i.message,
+            "view_id": i.view_id,
+            "related_views": i.related_views,
+            "suggestion": i.suggestion,
+            "source": "metamodel-conformance",
+        }
+        for i in conformance_issues
+    ] + [
+        {
+            "type": i.issue_type,
+            "severity": i.severity.value,
+            "message": i.message,
+            "view_id": i.view_id,
+            "related_views": i.related_views,
+            "suggestion": i.suggestion,
+            "source": "prose-heuristic",
+        }
+        for i in prose_issues
+    ]
+    for blocked_view, missing in blocked:
+        report.append({
+            "type": "pedigree",
+            "severity": "error",
+            "message": f"Pedigree incomplete: missing {', '.join(missing)}",
+            "view_id": blocked_view,
+            "related_views": [],
+            "suggestion": f"运行 dm2 trace record {blocked_view} 补全 author/creation_date/source",
+            "source": "pedigree",
+        })
+    return report
+
+
+def _rows_for_view(view_id: str, conformance_issues, prose_issues, blocked) -> list[dict]:
+    """This run's issues attributable to one view, in pedigree validation shape."""
+    from dm2.reasoning.conformance import CONFORMANCE_RULE_BY_ISSUE_TYPE
+
+    rows = []
+    for issue in conformance_issues:
+        if getattr(issue, "note_id", "") == view_id or issue.view_id == view_id:
+            rows.append({
+                "rule": CONFORMANCE_RULE_BY_ISSUE_TYPE.get(issue.issue_type, issue.issue_type),
+                "severity": issue.severity.value,
+                "message": issue.message,
+                "suggested_fix": issue.suggestion or None,
+            })
+    for issue in prose_issues:
+        if issue.view_id == view_id:
+            rows.append({
+                "rule": issue.issue_type,
+                "severity": issue.severity.value,
+                "message": issue.message,
+                "suggested_fix": issue.suggestion or None,
+            })
+    for blocked_view, missing in blocked:
+        if blocked_view == view_id:
+            rows.append({
+                "rule": "pedigree",
+                "severity": "error",
+                "message": f"Pedigree incomplete: missing {', '.join(missing)}",
+                "suggested_fix": f"运行 dm2 trace record {view_id} 补全 author/creation_date/source",
+            })
+    return rows
+
+
+def _persist_validation(project_root, view_id: str, rows: list[dict], ran_rules: list[str]) -> bool:
+    """Write this run's validation into an existing pedigree; never creates one."""
+    from datetime import datetime
+
+    from dm2.core.pedigree.completeness import trace_enabled
+    from dm2.core.pedigree.model import ValidationIssue, ValidationRecord
+    from dm2.core.pedigree.store import PedigreeStore
+
+    if not trace_enabled(project_root):
+        return False
+    store = PedigreeStore(project_root)
+    record = store.load(view_id)
+    if record is None:
+        return False
+    record.validation = ValidationRecord(
+        ran_R1="R1" in ran_rules,
+        ran_R2="R2" in ran_rules,
+        ran_R3="R3" in ran_rules,
+        ran_R4="R4" in ran_rules,
+        ran_R5="R5" in ran_rules,
+        issues=[
+            ValidationIssue(
+                rule=row["rule"],
+                severity=row["severity"],
+                message=row["message"],
+                suggested_fix=row["suggested_fix"],
+            )
+            for row in rows
+        ],
+        last_validated=datetime.now().isoformat(timespec="seconds"),
+    )
+    store.save(record)
+    return True
+
+
 @app.command()
 def validate(
     view_id: str = typer.Argument(None, help="要校验的视图 ID"),
     all_views: bool = typer.Option(False, "--all", help="校验所有已生成视图"),
     change: str = typer.Option("", "--change", "-c", help="变更名称（从 dm2-changes/<name>/views/ 读取视图）"),
+    force_pedigree: bool = typer.Option(False, "--force-pedigree", help="无视溯源完整性，强制进入 verified（留痕）"),
     json_flag: bool = typer.Option(False, "--json", "-j", help="输出结构化 JSON（供 AI Agent 使用）"),
 ):
     """对已生成的 DoDAF 视图运行一致性检查"""
@@ -933,12 +1039,31 @@ def validate(
     checker = ConsistencyChecker()
     issues = checker.check_views(views_data)
 
-    # Auto-update verified status if no errors
-    error_count = sum(1 for i in issues if i.severity.value == "error") \
+    # Pedigree-gated verified transition first: it appends the fact-layer
+    # modification records that this run then reports.
+    base_error_count = sum(1 for i in issues if i.severity.value == "error") \
         + sum(1 for i in conformance_issues if i.severity.value == "error")
-    if error_count == 0 and views_data:
+    blocked: list[tuple[str, list[str]]] = []
+    if base_error_count == 0 and views_data:
         for v in views:
-            vm.update_status(v.id, ViewStatus.VERIFIED)
+            decision = vm.try_verify(v.id, force=force_pedigree)
+            if not decision.allowed:
+                blocked.append((v.id, decision.missing))
+
+    report = _validation_report(conformance_issues, issues, blocked)
+    summary = {
+        severity: sum(1 for row in report if row["severity"] == severity)
+        for severity in ("error", "warning", "info")
+    }
+    verified = base_error_count == 0 and bool(views_data) and not blocked
+
+    # Persist results into existing pedigrees (an absent record is not created).
+    ran_rules = sorted(conf_checker.last_ran_rules)
+    pedigree_updated = False
+    for v in views:
+        rows = _rows_for_view(v.id, conformance_issues, issues, blocked)
+        if _persist_validation(root, v.id, rows, ran_rules):
+            pedigree_updated = True
 
     if json_flag:
         from dm2.cli.json_output import json_success
@@ -946,60 +1071,31 @@ def validate(
             "view_id": view_id if not all_views else None,
             "all_views": all_views,
             "views_checked": sorted(views_data.keys()),
-            "issues": [
-                {
-                    "type": i.issue_type,
-                    "severity": i.severity.value,
-                    "message": i.message,
-                    "view_id": i.view_id,
-                    "related_views": i.related_views,
-                    "suggestion": i.suggestion,
-                    "source": "metamodel-conformance",
-                }
-                for i in conformance_issues
-            ] + [
-                {
-                    "type": i.issue_type,
-                    "severity": i.severity.value,
-                    "message": i.message,
-                    "view_id": i.view_id,
-                    "related_views": i.related_views,
-                    "suggestion": i.suggestion,
-                    "source": "prose-heuristic",
-                }
-                for i in issues
-            ],
-            "summary": {
-                "error": error_count,
-                "warning": sum(1 for i in issues if i.severity.value == "warning")
-                + sum(1 for i in conformance_issues if i.severity.value == "warning"),
-                "info": sum(1 for i in issues if i.severity.value == "info")
-                + sum(1 for i in conformance_issues if i.severity.value == "info"),
-            },
-            "verified": error_count == 0 and len(views_data) > 0,
+            "issues": report,
+            "summary": summary,
+            "verified": verified,
+            "pedigree_updated": pedigree_updated,
         })
         return
 
     # Human-readable output
-    if not issues and not conformance_issues:
+    if not report:
         typer.echo("没有发现一致性问题")
         return
 
-    all_issues = [("metamodel-conformance", i) for i in conformance_issues] \
-        + [("prose-heuristic", i) for i in issues]
-    typer.echo(f"\n一致性检查: {len(views_data)} 个视图, {len(all_issues)} 个问题\n")
+    typer.echo(f"\n一致性检查: {len(views_data)} 个视图, {len(report)} 个问题\n")
     for severity in ["error", "warning", "info"]:
-        sev_issues = [(s, i) for s, i in all_issues if i.severity.value == severity]
-        if not sev_issues:
+        severity_rows = [row for row in report if row["severity"] == severity]
+        if not severity_rows:
             continue
         label = {"error": "错误", "warning": "警告", "info": "信息"}[severity]
-        typer.echo(f"## {label} ({len(sev_issues)})\n")
-        for source, i in sev_issues:
-            typer.echo(f"  [{severity.upper()}|{source}] {i.message}")
-            if i.suggestion:
-                typer.echo(f"         建议: {i.suggestion}")
-            if i.view_id:
-                typer.echo(f"         视图: {i.view_id}")
+        typer.echo(f"## {label} ({len(severity_rows)})\n")
+        for row in severity_rows:
+            typer.echo(f"  [{severity.upper()}|{row['source']}] {row['message']}")
+            if row["suggestion"]:
+                typer.echo(f"         建议: {row['suggestion']}")
+            if row["view_id"]:
+                typer.echo(f"         视图: {row['view_id']}")
         typer.echo()
 
 

@@ -30,10 +30,12 @@ def register_view_commands(app: typer.Typer):
 @view_app.command(name="list")
 def list_views(
     status: str = typer.Option(None, "--status", "-s", help="按状态过滤 (pending, in_progress, generated, verified)"),
+    pedigree_status: str = typer.Option(None, "--pedigree-status", help="按溯源状态过滤 (complete, incomplete, absent)"),
     json_flag: bool = typer.Option(False, "--json", "-j", help="输出结构化 JSON（供 AI Agent 使用）"),
 ):
     """列出项目中的视图及其生成状态"""
     _require_project(json_flag)
+    from dm2.core.pedigree.completeness import ABSENT, COMPLETE, INCOMPLETE
     from dm2.core.views.manager import ViewManager, ViewStatus
 
     vm = ViewManager()
@@ -46,11 +48,21 @@ def list_views(
             if json_flag:
                 from dm2.cli.json_output import json_error
                 json_error("INVALID_STATUS", f"无效的状态值: {status}，有效值: pending, in_progress, generated, verified")
-                return
+                raise typer.Exit(1)
             typer.echo(f"无效的状态值: {status}")
             raise typer.Exit(1)
 
-    views = vm.list_views(status_filter)
+    valid_pedigree = (COMPLETE, INCOMPLETE, ABSENT)
+    if pedigree_status and pedigree_status not in valid_pedigree:
+        message = f"无效的溯源状态: {pedigree_status}，有效值: {', '.join(valid_pedigree)}"
+        if json_flag:
+            from dm2.cli.json_output import json_error
+            json_error("INVALID_PEDIGREE_STATUS", message)
+            raise typer.Exit(1)
+        typer.echo(message)
+        raise typer.Exit(1)
+
+    views = vm.list_views(status_filter, pedigree_status)
 
     if json_flag:
         from dm2.cli.json_output import json_success
@@ -63,6 +75,8 @@ def list_views(
                     "verified_at": v.verified_at,
                     "output_path": v.output_path,
                     "change": v.change_name,
+                    "pedigree_status": v.pedigree_status,
+                    "pedigree_missing": v.pedigree_missing,
                 }
                 for v in views
             ],
@@ -74,10 +88,16 @@ def list_views(
         typer.echo("(没有找到视图)")
         return
 
-    typer.echo(f"{'View ID':<12} {'Status':<16} {'Generated':<22} {'Verified':<22}")
-    typer.echo("-" * 72)
+    header = f"{'View ID':<12} {'Status':<16} {'Pedigree':<12} {'Generated':<22} {'Verified':<22}"
+    typer.echo(header)
+    typer.echo("-" * len(header))
     for v in views:
-        typer.echo(f"{v.id:<12} {v.status.value:<16} {v.generated_at[:19]:<22} {v.verified_at[:19]:<22}")
+        typer.echo(
+            f"{v.id:<12} {v.status.value:<16} {v.pedigree_status:<12} "
+            f"{v.generated_at[:19]:<22} {v.verified_at[:19]:<22}"
+        )
+        if v.pedigree_missing:
+            typer.echo(f"{'':<12} 溯源缺失字段: {', '.join(v.pedigree_missing)}")
 
 
 @view_app.command(name="register")
