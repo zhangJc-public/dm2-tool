@@ -76,12 +76,14 @@ File System Layer      ← .dm2/ 项目 + dm2-changes/ + dm2-archive/
 | `src/dm2/` | 运行时 Python 包 | pip 入口 `dm2`；包内各层互引 |
 | `dm2-reference/core/` | 运行时知识库：派生索引 + `views.yaml` + 组模板 | `kernel/indexer.py`（经 `get_reference_path()`）；`dm2 init` 复制到项目 |
 | `dm2-reference/` 根 YAML | 权威源（数据字典 / 元模型 / 视图映射）＝构建输入；`concerns.yaml`＝运行时关切模板 | `scripts/build_knowledge_indexes.py`（前三者，仅构建）；`cli/commands/concern.py` 与 propose 技能模板（`concerns.yaml`） |
-| `scripts/` | 权威源 YAML → 派生 JSON 索引 | 开发者手动运行（无自动调用者） |
+| `scripts/` | 权威源 YAML → 派生 JSON 索引；技能模板 → 入库 agent 产物 | 开发者手动运行（无自动调用者） |
 | `schemas/` | CLI JSON 输出形状声明 | `test/test_cli_output_schemas.py` |
 | `test/` | 测试套件 | `pytest`、CI |
 | `docs/` | 文档；`docs/reference/` 为源研究语料 | 人类读者；`docs/reference/` **无代码消费者** |
 | `openspec/` | 变更与规范语料 | `openspec` CLI（validate / archive）、CI `spec` job |
-| `.claude/` | 生成的 agent 指令 | Claude Code；dm2 自产部分由 `test_generated_agent_config.py` 守护 |
+| `.claude/` | 生成的 agent 指令（Claude Code 目标） | Claude Code；dm2 自产部分由 `test_generated_agent_config.py` 守护 |
+| `.dsh/skills/` | 生成的 agent 指令（DSH 目标） | DSH 会话（source `project-dsh`）；dm2 自产部分由 `test_generated_agent_config.py` 守护 |
+| `.agents/skills/` | openspec 的 SDD 技能（**第三方生成，不入库**） | DSH 会话（source `project-agents`）；openspec CLI 的 init/update 重建 |
 | `.github/` | CI 工作流 | GitHub Actions |
 
 > 分发不在本表之列，但它揭示了一个相关事实（D10）：项目的安装形态是 **editable / 源码检出**（文档也只写 `pip install -e .`）——2026-09-24 起这是**唯一正式支持**的形态：不发布 wheel/sdist 到 PyPI，非 editable 安装以 `KB_NOT_FOUND` 明确失败。
@@ -102,34 +104,37 @@ File System Layer      ← .dm2/ 项目 + dm2-changes/ + dm2-archive/
 | I6 | 变更生命周期：`dm2-changes/<name>/` 下 proposal/design/tasks/views | `openspec/specs/dm2-project-init` |
 | I7 | 知识库权威源为 YAML，运行时只加载派生 JSON | `openspec/specs/dm2-metamodel-knowledge` |
 | I8 | 技能由 Python 模板 + `ToolAdapter` 生成，不从开发者目录复制 | `openspec/specs/skill-template-generation`、`tool-command-adapter` |
-| I9 | 生成物按**归属**决定入库与守护：dm2 自产的入库并由字节一致性测试守护；第三方工具产出的不入库，由该工具的 update 命令重建 | `test/test_generated_agent_config.py`、`.gitignore` |
+| I9 | 生成物按**归属**决定入库与守护：dm2 自产的入库并由字节一致性测试守护；第三方工具产出的不入库，由该工具的 update 命令重建 | `test/test_generated_agent_config.py`（字节守护覆盖 `.claude` + `.dsh`；`.agents` 由 ignore 断言守护）、`.gitignore` |
 
 ---
 
 ## 4. 当前态基线
 
-以下数值可用所列命令复现，作为后续回归对比的基准（2026-09 实测，**已含本次地基变更**）：
+以下数值可用所列命令复现，作为后续回归对比的基准（2026-09 地基变更后实测；2026-10-10 复核刷新）：
 
 | 指标 | 数值 | 复现命令 |
 |---|---|---|
 | spec 数 | 35 | `ls -d openspec/specs/*/ \| wc -l` |
 | requirement 总数 | 135 | `grep -rh '^### Requirement:' openspec/specs/*/spec.md \| wc -l` |
 | spec 校验 | 36 项通过 / 0 失败（strict 无警告） | `openspec validate --all --strict` |
-| 测试 | 236 passed | `pytest test/` |
+| 测试 | 239 passed | `pytest test/` |
 | 顶层命令 | 18 | `dm2 --help` |
 | 命令 JSON 契约 | 28 flag 门控 + 2 无 JSON（均属豁免，共 30） | 见 §5 D2/D3/D4 |
 | 知识库 | 279 术语 / 52 视图 / 17 数据组 | `dm2 knowledge stats --json` |
-| 工作流技能 | 10 个工作流 × 2 个适配器目标 | `dm2 init -t claude\|dsh` |
+| 工作流技能 | 10 个工作流 × 2 个适配器目标（`.claude` + `.dsh` 均入库并由字节守护） | `dm2 init -t claude\|dsh` |
 | Python 下限 | `>=3.9`，CI 矩阵 3.9–3.12 | `pyproject.toml`、`.github/workflows/test.yml` |
 | 分发形态 | **editable-only**（`pip install -e .`），无 PyPI 发布 | 本节 §2、§5 D10 |
 
 > 地基变更前的基线为 33 spec / 119 requirement / 194 测试 / 27 flag 门控 + 1 总是 JSON + 2 无 JSON；差异来自新增契约与守护测试，以及 `view register` 补上 `--json`。此后 `wire-cli-output-schemas`、`remove-llm-packaging-residuals`、`report-missing-knowledge-base` 等变更继续推高了这些数字——上表数值随时可用所列命令复现。
+>
+> 2026-10-10：开发环境切到 DSH + SDD（`.agents/skills` 承载 openspec 技能、`.dsh/skills` 承载 dm2 技能），
+> 测试数 236 → 239（字节守护从 `.claude` 扩展到 `.dsh`）；spec / requirement / 命令数不变。
 
 **已验证的强项**（本次不改其行为，仅用测试锁定）：
 
 - **S1 分层干净**：见 §2，无反向依赖 → 已由 `test_architecture_boundaries.py` 守护。
 - **S2 规范有规模**：35 spec / 135 requirement，strict 全量校验通过 → 已由 CI `spec` job 守护。
-- **S3 质量关口存在**：236 测试绿、ruff 干净、CI 覆盖 3.9–3.12；代码经 3.9.6 实跑验证兼容。
+- **S3 质量关口存在**：239 测试绿、ruff 干净、CI 覆盖 3.9–3.12；代码经 3.9.6 实跑验证兼容。
 - **S4 零 LLM 已规范化**：`dm2-no-llm-dependency` 覆盖源码、打包与用户可见面。
 - **S5 适配缝已验证**：`ToolAdapter` 由 claude/dsh 两个目标证实可用。
 - **S6 信封覆盖率高**：30 个命令中 28 个输出统一信封，另 2 个为显式豁免 → 已由 `test_cli_json_contract.py` 守护。
@@ -204,7 +209,7 @@ File System Layer      ← .dm2/ 项目 + dm2-changes/ + dm2-archive/
 
 | 非目标 | 理由 |
 |---|---|
-| 环境适配（DSH 原生工具、agent preset、多工具分发） | 按用户决定延后；地基稳后再谈 |
+| DSH 产品面原生化（agent preset、`@local/dsh-tool-dm2` 原生工具插件、多工具分发） | 2026-10-10 起**开发环境**已切到 DSH + SDD（`.agents/skills` 承载 openspec 技能、`.dsh/skills` 承载 dm2 技能，见 §2）；产品面原生化仍延后，待开发环境稳定后单独立项 |
 | 中文检索召回（D9） | 知识库内容层问题，独立变更 |
 | 非交互式 `uninstall` / `--yes` | 判定为豁免（D8） |
 | 合并 `_require_project` 的多份拷贝 | 属重构，超出地基范围；本次仅补齐缺失的守卫并统一其语义，三份拷贝保持独立（不得下沉到 `utils`——那会形成向上依赖，破坏 I1） |

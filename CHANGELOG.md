@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **开发环境切到 DSH + SDD**（仓库工具链调整，不改变 dm2 对外行为，故无 OpenSpec 变更）：
+  - 接入 OpenSpec 的厂商中立目标 `agents`：12 个 `openspec-*` SDD 技能写入 `.agents/skills/`，
+    DSH 以 `project-agents` 发现；这批第三方技能不入库，由 `openspec init/update` 重建
+  - dm2 自产的 DSH 技能面 `.dsh/skills/dm2-*`（10 个）入库；字节一致性守护
+    （`test/test_generated_agent_config.py`）扩展为 `.claude` + `.dsh` 双适配器
+  - 新增 `scripts/render_agent_config.py`：一条命令幂等重建全部入库 agent 产物
+  - `.gitignore` 与归属守护补 `.agents/skills/openspec-*`、`.agents/skills/.openspec-target`
 - **Cynefin 复杂度模块按理论重构**（OpenSpec 变更 `redesign-cynefin-model`）：
   - 五个语义维度（需求可知性/实践成熟度/环境动态性/目标一致性/约束清晰度），
     度量因果可知性而非规模；规模信号（系统数/时间跨度/干系人数）拆入独立 scale profile

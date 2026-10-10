@@ -257,7 +257,21 @@ preset 是一个目录（用户自编位置 `~/.dsh/.agent-presets/<id>/`），�
 
 - **动态 Cordis 插件不持久**：进程重启即失效，不能当作交付物；交付走项目 `.dsh/skills`（文件）或正式 preset/插件包。
 - **审批边界**：`change new/archive`、`view register`、`generate` 是写操作。bash 路径下受 DSH 文件沙箱约束（实测当前策略 workspace-write）；原生工具路径应显式区分只读/写工具并接入 `approval`。
-- **技能触发模型**：dm2 工作流技能现为 `user-invocable: false`（模型路由）。若希望用户像 `/dm2:explore` 一样显式入口，DSH 下需置 `user-invocable: true` 或注册命令插件——这是产品决策点。
+- **技能触发模型**：`DshAdapter` 现输出 `user-invocable: true`（用户可显式触发），模型路由默认仍开启；若要 `/dm2-*` 命令入口，属方案 C 的产品面工作。
 - **项目根发现依赖 `.git`**：非 git 的 dm2 项目会回退 cwd；`dm2 init` 可提示 `git init` 或确保在项目根启动会话。
 - **Python 环境**：`dm2` 装在 `~/Library/Python/3.9/bin`，插件 shell 需保证 PATH；插件应支持配置可执行路径（含 `python3 -m dm2.cli.main` 回退）。
 - **模板契约测试**：多个断言钉死中文/英文指令短语，渲染替换必须避开被钉死的字符串（如 explore 的 dependency-chain 句），令牌化时以新增、不改写既有英文句为原则。
+
+## 8. 落地结论（2026-10-10）
+
+本次落地的是**开发环境切片**（在 DSH 里用 SDD 继续开发 dm2-tool），不是 dm2 产品面的原生化；方案 B/C 仍延后（见 `docs/foundation.md` §7）。
+
+| 项 | 结论 |
+|---|---|
+| SDD 技能分发 | 用 OpenSpec 1.13.1 的厂商中立目标 `agents` 写 `.agents/skills/`，DSH 以 `project-agents` 发现。命令：首次 `openspec init . --tools claude,agents --force`，日常 `openspec update --force` |
+| 技能内容 | 该目标把正文 `/opsx:*` 渲染为 `/openspec-*`；正文无 `AskUserQuestion`/`TodoWrite`；frontmatter 多出的 `allowed-tools`/`license`/`compatibility` 被 DSH 忽略 |
+| 用户可触发 | DSH 对缺省的 `user-invocable` 取 **true**（`userInvocable: userInvocable !== false`），openspec 技能无需该字段即可用户触发 |
+| 归属 | `.agents/skills/openspec-*` 与 `.agents/skills/.openspec-target` **不入库**（`.gitignore`），由 `test/test_generated_agent_config.py` 的第三方断言守护 |
+| dm2 自产 DSH 产物 | `.dsh/skills/dm2-*` **入库**；字节一致性守护覆盖 `.claude` + `.dsh` 两个适配器，重建命令 `python3 scripts/render_agent_config.py` |
+| 技能优先级 | `.dsh/skills`（`project-dsh`）> `.agents/skills`（`project-agents`）；`dm2-*` 与 `openspec-*` 命名不重叠，无遮蔽 |
+| 首次克隆 | 需先跑一次 `openspec init . --tools claude,agents --force` 补出未入库的技能树，之后 `openspec update --force` 才认得出 agents 目标 |

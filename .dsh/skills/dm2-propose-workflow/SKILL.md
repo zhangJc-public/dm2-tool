@@ -1,0 +1,212 @@
+---
+name: dm2-propose-workflow
+description: "Run full DoDAF architecture analysis and generate planning artifacts (proposal, design, tasks) in one pass. Use when the user wants to analyze a system with DM2."
+user-invocable: true
+metadata:
+  author: "dm2"
+  version: "0.1.0"
+  generatedBy: "dm2-tool/0.1.0"
+---
+
+Run a complete DoDAF architecture analysis and generate planning artifacts with concern-driven view focusing.
+
+**Input**: The argument after the `dm2-propose-workflow` skill is a system description (what to analyze and model).
+
+**Steps**
+
+1. **Get input**
+
+   If no system description is provided with the command, use the **ask_user_question tool** (open-ended, no preset options) to ask:
+   > "What system do you want to model? Describe the system or problem you're working on."
+
+   From their description, derive a kebab-case change name (e.g., "network security situational awareness system" → `network-security-situational-awareness`).
+
+   **IMPORTANT**: Do NOT proceed without understanding what the user wants to model.
+
+2. **Create the change directory**
+
+   ```bash
+   dm2 change new "<name>"
+   ```
+
+   This creates a change at `dm2-changes/<name>/`.
+
+3. **Run Cynefin heuristic prefill and ADJUDICATE**
+
+   ```bash
+   dm2 cynefin --json -d "<system description>"
+   ```
+
+   The output is a heuristic evidence pack, not a verdict (`resolution: "heuristic"`): per-dimension prefill tendency with matched `evidence`, a `rubric` (questions + three anchored levels), `signal_report` (crisis candidates fired/excluded/weak with reasons), `warnings`, `confidence_breakdown`, `depth_tier`, and `scale_profile`.
+
+   You MUST adjudicate before fixing the view set:
+   - Read every `signal_report` entry and `warnings` entry. Crisis candidates marked `excluded` (planning compounds like 应急预案/应急演练/中断风险) or `weak` (no aspect/scope gate nearby) are not crises unless the user's context proves an event is actually happening — if it is, re-run with `--domain Chaotic` and say why.
+   - Walk the five `rubric` dimensions against the user's description; accept the prefill where the evidence is sound. If any dimension needs changing, re-run with the corresponding `--knowability/--maturity/--dynamics/--alignment/--constraints` option(s); this marks the result `resolution: "adjudicated"`.
+   - If `needs_clarification` is true (Disorder), ask the user a rubric question before proceeding — do not silently pick a domain.
+   - If your adjudication differs from the mechanical output, record your reasoning in `dm2-changes/<name>/analysis/cynefin-assessment.md` (which dimension/domain, why). The command persists the adjudicated result, including `mechanical_suggestion` when `--domain` was used.
+
+4. **Run enhanced analysis with data group activation**
+
+   ```bash
+   dm2 analyze --json -d "<system description>"
+   ```
+   ```bash
+   dm2 concern list --json
+   ```
+
+   Parse the analyze JSON to get:
+   - `data_group_activation`: 17-dimensional activation vector
+   - `data_group_keywords_matched`: keywords that triggered per group
+   - `candidate_views`: all recommended DoDAF views (unsorted)
+   - `group_to_views`: per-group mapping (name/label/activation/keywords/views)
+
+   Parse the concern list JSON to get:
+   - All 8 architecture concern templates with their `expected_data_groups` and `core_views` and `keywords`
+   Optionally save your own rich analysis to `dm2-changes/<name>/analysis/` for audit (e.g., `data-group-activation.md`, `concern-match.md`). Do NOT dump raw CLI JSON — capture your reasoning, not the thin keyword-match output.
+
+5. **Concern matching and Human selection**
+
+   For each concern, compute a relevance score:
+
+   ```
+   concern_score = 0.6 × group_activation_overlap + 0.4 × keyword_match
+     where:
+       group_activation_overlap = |active_groups ∩ concern.expected_groups| / |concern.expected_groups|
+       keyword_match = |description_words ∩ concern.keywords| / |concern.keywords|
+
+       active_groups = {group_id for group_id, score in data_group_activation.items() if score > 0.0}
+       description_words = set of normalized words from the system description
+   ```
+
+   **Rank** concerns by score descending. Present the top candidates with the ask_user_question tool:
+
+   > "I've identified {N} relevant architecture concerns. Select the ones that match your focus:"
+
+   Options should include at least the top 3 concerns (score ≥ 0.15) plus:
+   - "全部视图（不做聚焦）" — skip concern filtering, use all candidate views
+   - "再看一下" — let user review other concerns
+
+   Each option label should show the concern name, score, and core view count:
+   > "身份认证与访问控制 (0.58, 4 视图)"
+
+   **IMPORTANT**: Let the Human make the final selection. Do NOT auto-select. The Human may pick 0, 1, or multiple concerns.
+
+6. **Derive focused view set**
+
+   From the Human-selected concerns:
+   - **Focused views**: Union of `core_views` from all selected concerns
+   - **Additional candidate views**: All views from `candidate_views` that are NOT in the focused set
+   - **Separate into phases**:
+     - **P1 (Core)**: Focused views that also appear in candidate_views
+     - **P2 (Extended)**: Remaining focused views (concern core_views not in candidate_views)
+     - **P3 (Additional)**: Additional candidate views (marked as supplementary)
+
+   If Human picked "全部视图" (no concern filter), use all candidate_views as P1/P2/P3 based on relevance_score.
+
+7. **视图完整性确认 (View-set completeness confirmation)**
+
+   After P1/P2/P3 phase assignment, verify the focused view set is dependency-complete. The analyze JSON includes a `view_dependencies` map (each view → its prerequisite views, from views.yaml):
+
+   - For every view in the focused set, compute its **transitive ancestors** (the prerequisites of its prerequisites, recursively).
+   - Any ancestor that is absent from the set SHALL be supplemented into **P3** and marked `P3 supplement` (路径完整性补充). List each supplemented view with its dependency rationale — e.g. "OV-1 — prerequisite of OV-2/OV-5a".
+   - Worked example: if the focused set contains OV-2 or OV-5a but not OV-1, OV-1 MUST be added; OV-1's own prerequisites (CV-1, AV-1) are then added transitively. This applies even when the Human-selected concerns' `core_views` exclude OV-1 (e.g. data-security-and-compliance) — dependency requirements override concern focus.
+
+   **Pictorial communication baseline**: `pictorial` views — **OV-1** (High-Level Operational Concept Graphic), **CV-1** (Vision), **AV-1** (Overview and Summary Information) — SHALL NOT be dropped from the view set solely because the DM2 monster matrix marks them data-light (few necessary terms / no necessary associations). These views are the **communication baseline for decision-makers**: a view set containing only data-dense models cannot be presented to or decided on by non-modelers. Data-lightness is never grounds for exclusion.
+
+8. **Generate planning artifacts in the change directory**
+
+   Create three files under `dm2-changes/<name>/`:
+
+   a. **proposal.md** — why and scope
+      - User's system description and conversation context
+      - Cynefin complexity assessment result
+      - Activated DM2 data groups overview (top activated groups)
+      - **Selected concerns**: Which concerns the Human selected and why
+      - **Focused views** (P1/P2): The concern-driven core view set
+      - **Additional candidate views** (P3): Views not in any selected concern, for reference
+
+   b. **design.md** — technical approach
+      - Data group activation analysis (which groups scored highest)
+      - Concern-driven view selection rationale
+      - View dependency chain derived from ArtifactGraph
+      - Phase rationale (P1=concern core, P2=concern extended, P3=supplementary)
+      - Key decisions and trade-offs
+
+   c. **tasks.md** — executable task list
+      - View generation tasks ordered by dependency (use ArtifactGraph topological order; ancestors first)
+      - Each task: `- [ ] Generate <View-ID>: <description>`
+      - Phase-labelled: P1 (concern core), P2 (concern extended), P3 (supplementary), `P3 supplement` (dependency-complete ancestors from step 7, with rationale)
+      - Total view count should be focused (typically ≤ 12, vs unfocused 15+)
+
+9. **Show results**
+
+   ```
+   ## Analysis Complete: <change-name>
+
+   **Complexity**: <clear/complicated/complex/chaotic>
+   **Selected Concerns**: <concern names>
+   **Activated Data Groups**: <top 3-5 groups with scores>
+   **Focused Views**: <N views (P1+P2)>
+
+   ### Phase 1 (Concern Core)
+   - <view-id>: <brief description>
+   ...
+
+   ### Phase 2 (Concern Extended)
+   - <view-id>: <brief description>
+   ...
+
+   ### Phase 3 (Supplementary)
+   - <view-id>: <brief description>
+   - <view-id> (P3 supplement): <missing ancestor + dependency rationale from step 7>
+   ...
+
+   Planning artifacts created at: dm2-changes/<name>/
+     - proposal.md
+     - design.md
+     - tasks.md
+
+   Ready to implement? Run the `dm2-apply-workflow` skill to execute the plan and generate all views.
+   Step-by-step: the `dm2-continue-workflow` skill. One-shot (skip planning): the `dm2-ff-workflow` skill.
+   ```
+
+**Concern Matching Algorithm Reference**
+
+```
+For each concern in concerns.yaml:
+
+  # Group activation overlap (0.0 to 1.0)
+  active = set of group_ids with activation_score > 0.0
+  group_overlap = len(active ∩ concern.expected_groups) / len(concern.expected_groups)
+
+  # Keyword match (0.0 to 1.0)
+  desc_lower = set of normalized words from system description
+  kw_lower = set of normalized words from concern.keywords
+  kw_match = len(desc_lower ∩ kw_lower) / max(len(kw_lower), 1)
+
+  # Weighted score
+  score = 0.6 * group_overlap + 0.4 * kw_match
+
+Present concerns with score ≥ 0.10 to the Human (up to 5 options).
+```
+
+**Edge Cases**
+
+- **No groups activated (all scores 0.0)**: Keyword match alone determines ranking. Present top 3 concerns, flag that activation is weak.
+- **Single concern dominates (score > 2× second place)**: Highlight it as strongly recommended but still let Human choose.
+- **All concerns below 0.10**: Present top 3 anyway with a note that confidence is low, and offer "全部视图" as the recommended option.
+- **Human selects no concerns**: Treat the same as "全部视图" — use all candidate_views.
+
+**Guardrails**
+- Use `dm2` for all CLI calls
+- Do NOT store priority rankings inside CLI output — the AI Agent decides priority
+- Cynefin, analyze, and concern list use existing CLI commands, not new backend code
+- Planning artifacts go into the change directory (dm2-changes/<name>/)
+- Tasks must be ordered by view dependency (use ArtifactGraph topological order)
+- Concern matching algorithm runs in the AI Agent (this SKILL), NOT in Python code
+- The focused view set from selected concerns MUST be a subset/superset of candidate_views; use union logic
+- The focused view set MUST be dependency-complete: every view's transitive ancestors (per the analyze JSON `view_dependencies`) are present; supplemented ancestors go into P3 marked `P3 supplement` with their dependency rationale
+- Pictorial views (OV-1/CV-1/AV-1) are the decision-maker communication baseline — never exclude them solely because the monster matrix marks them data-light
+- If the user provides additional context during the conversation (compliance requirements, stakeholder roles, etc.), incorporate it into the artifacts and keyword matching
+- Always let the Human make the final concern selection — never auto-select
+- Focused view set target: ≤ 12 views (vs unfocused 15+)

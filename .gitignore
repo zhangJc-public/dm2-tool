@@ -14,6 +14,9 @@ build/
 
 # 第三方工具生成的 agent 指令——由工具自己的 update 命令重建，不进版本控制。
 # 归属规则：谁生成的谁负责；dm2 自己的产物（.claude/skills/dm2-*、
-# .claude/commands/dm2/）入库并由 test_generated_agent_config.py 守护。
+# .claude/commands/dm2/、.dsh/skills/dm2-*）入库并由 test_generated_agent_config.py 守护。
 .claude/skills/openspec-*/
 .claude/commands/opsx/
+# DSH 以 project-agents 发现 .agents/skills；openspec 的 agents 目标写在这里。
+.agents/skills/openspec-*/
+.agents/skills/.openspec-target
