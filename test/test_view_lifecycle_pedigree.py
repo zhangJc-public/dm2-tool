@@ -22,8 +22,8 @@ def _project(tmp_path, *, trace: bool = True):
     return tmp_path
 
 
-def _register(tmp_path, view_id: str = "CV-1") -> ViewManager:
-    vm = ViewManager(tmp_path)
+def _register(tmp_path, view_id: str = "CV-1", *, attach_recorder: bool = True) -> ViewManager:
+    vm = ViewManager(tmp_path, attach_recorder=attach_recorder)
     vm.register_view(view_id, output_path="", change_name="demo")
     return vm
 
@@ -38,28 +38,32 @@ def _complete_record(tmp_path, view_id: str = "CV-1") -> Pedigree:
     return record
 
 
-def test_registered_view_without_a_record_is_absent(tmp_path):
+def test_registration_opens_an_incomplete_record(tmp_path):
     _project(tmp_path)
     info = _register(tmp_path).get_view("CV-1")
-    assert info.pedigree_status == "absent"
-    assert info.pedigree_missing == ["author", "creation_date", "source"]
+    assert info.pedigree_status == "incomplete"
+    assert info.pedigree_missing == ["author", "source"]
 
     state = yaml.safe_load((tmp_path / ".dm2" / "view-state.yaml").read_text(encoding="utf-8"))
-    assert state["views"]["CV-1"]["pedigree_status"] == "absent"
-    assert state["views"]["CV-1"]["pedigree_missing"] == ["author", "creation_date", "source"]
+    assert state["views"]["CV-1"]["pedigree_status"] == "incomplete"
+    assert state["views"]["CV-1"]["pedigree_missing"] == ["author", "source"]
+
+    record = PedigreeStore(tmp_path).load("CV-1")
+    assert record.creation_date
+    assert [entry.change_description for entry in record.modification_history] == ["view registered"]
 
 
 def test_incomplete_record_reports_only_the_missing_fields(tmp_path):
     _project(tmp_path)
     PedigreeStore(tmp_path).save(Pedigree.from_dict({"view_id": "CV-1", "author": {"type": "human"}}))
-    info = _register(tmp_path).get_view("CV-1")
+    info = _register(tmp_path, attach_recorder=False).get_view("CV-1")
     assert info.pedigree_status == "incomplete"
     assert info.pedigree_missing == ["creation_date", "source"]
 
 
 def test_try_verify_blocks_an_incomplete_pedigree(tmp_path):
     _project(tmp_path)
-    vm = _register(tmp_path)
+    vm = _register(tmp_path, attach_recorder=False)
     decision = vm.try_verify("CV-1")
     assert decision.allowed is False
     assert decision.missing == ["author", "creation_date", "source"]
@@ -70,7 +74,7 @@ def test_blocked_transition_is_recorded_on_an_existing_record(tmp_path):
     _project(tmp_path)
     store = PedigreeStore(tmp_path)
     store.save(Pedigree.from_dict({"view_id": "CV-1", "author": {"type": "human"}}))
-    vm = _register(tmp_path)
+    vm = _register(tmp_path, attach_recorder=False)
 
     assert vm.try_verify("CV-1").allowed is False
     record = store.load("CV-1")
@@ -93,7 +97,8 @@ def test_complete_pedigree_promotes_and_records_the_pass(tmp_path):
 
     record = PedigreeStore(tmp_path).load("CV-1")
     assert [entry.change_description for entry in record.modification_history] == [
-        "verified: validation passed"
+        "view registered",
+        "verified: validation passed",
     ]
 
 
@@ -127,7 +132,8 @@ def _cli_project(tmp_path, monkeypatch):
     _project(tmp_path)
     vm = ViewManager(tmp_path)
     vm.register_view("CV-1", change_name="demo")
-    vm.register_view("OV-2", change_name="demo")
+    # A legacy view that was never registered through this tool keeps no record.
+    ViewManager(tmp_path, attach_recorder=False).register_view("OV-2", change_name="demo")
     PedigreeStore(tmp_path).save(Pedigree.from_dict({"view_id": "CV-1", "author": {"type": "human"}}))
     return tmp_path
 

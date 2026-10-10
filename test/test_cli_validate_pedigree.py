@@ -90,6 +90,8 @@ def test_validate_blocks_verified_and_reports_the_gap(tmp_path, monkeypatch):
 
 def test_validate_never_creates_a_missing_pedigree(tmp_path, monkeypatch):
     _validate_project(tmp_path, monkeypatch, None)
+    # Registration opens a stub; drop it to model a legacy view without a record.
+    PedigreeStore(tmp_path).delete("CV-1")
     _, payload = _run("CV-1", "--change", "demo")
     data = payload["data"]
     assert data["pedigree_updated"] is False

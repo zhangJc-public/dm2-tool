@@ -3,15 +3,16 @@
 The lifecycle owns the ``verified`` gate: a view may only reach that state when
 its pedigree carries the core fields (``author``, ``creation_date``, ``source``),
 unless the project switches tracing off or an operator forces the transition.
-Pedigree records themselves are read/written through :mod:`dm2.core.pedigree`;
-this module never owns their content.
+Every observed transition is emitted as a :class:`ViewEvent`; a
+:class:`~dm2.core.pedigree.recorder.PedigreeRecorder` is attached by default and
+turns those events into fact-layer records.
 """
 
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
 from pathlib import Path
-from typing import Optional
+from typing import Callable, Optional
 
 import yaml
 
@@ -21,7 +22,9 @@ from dm2.core.pedigree.completeness import (
     trace_enabled,
 )
 from dm2.core.pedigree.completeness import status as pedigree_status
+from dm2.core.pedigree.recorder import PedigreeRecorder
 from dm2.core.pedigree.store import PedigreeStore
+from dm2.core.views.events import ViewEvent
 
 
 class ViewStatus(str, Enum):
@@ -56,10 +59,16 @@ class ViewManager:
     """Manages lifecycle state of DoDAF views within a dm2 project."""
 
     def __init__(self, project_root: Optional[Path] = None,
-                 pedigree_store: Optional[PedigreeStore] = None):
+                 pedigree_store: Optional[PedigreeStore] = None,
+                 attach_recorder: bool = True):
         self._root = project_root or Path.cwd()
         self._state: dict = {}
         self._pedigree_store = pedigree_store
+        self._observers: list[Callable[[ViewEvent], None]] = []
+        self._recorder: Optional[PedigreeRecorder] = None
+        if attach_recorder:
+            self._recorder = PedigreeRecorder(self.pedigree_store)
+            self.add_observer(self._recorder.handle_event)
         self._load()
 
     def _state_file(self) -> Path:
@@ -88,6 +97,19 @@ class ViewManager:
             self._pedigree_store = PedigreeStore(self._root)
         return self._pedigree_store
 
+    @property
+    def recorder(self) -> Optional[PedigreeRecorder]:
+        """The attached fact-layer recorder, or ``None`` when detached."""
+        return self._recorder
+
+    def add_observer(self, callback: Callable[[ViewEvent], None]) -> None:
+        """Subscribe to lifecycle events (the recorder does this by default)."""
+        self._observers.append(callback)
+
+    def _emit(self, event: ViewEvent) -> None:
+        for callback in list(self._observers):
+            callback(event)
+
     def _pedigree_state(self, view_id: str) -> tuple[str, list[str]]:
         """Freshly computed ``(pedigree_status, missing fields)`` for one view."""
         record = self.pedigree_store.load(view_id)
@@ -104,7 +126,12 @@ class ViewManager:
 
     # ── lifecycle transitions ────────────────────────────────────────────
 
-    def update_status(self, view_id: str, status: ViewStatus) -> None:
+    def update_status(self, view_id: str, status: ViewStatus, *,
+                      actor: str = "cli", description: str = "") -> None:
+        """Persist a status change and emit it as an observed lifecycle event."""
+        previous = ""
+        if isinstance(self._state.get(view_id), dict):
+            previous = str(self._state[view_id].get("status", ""))
         if view_id not in self._state:
             self._state[view_id] = {}
         self._state[view_id]["status"] = status.value
@@ -112,14 +139,27 @@ class ViewManager:
             self._state[view_id]["generated_at"] = datetime.now().isoformat()
         elif status == ViewStatus.VERIFIED:
             self._state[view_id]["verified_at"] = datetime.now().isoformat()
+        self._emit(ViewEvent(
+            view_id=view_id,
+            kind="status",
+            status=status.value,
+            previous_status=previous,
+            output_path=str(self._state[view_id].get("output_path", "")),
+            change_name=str(self._state[view_id].get("change", "")),
+            actor=actor,
+            description=description,
+        ))
         self._persist_pedigree_state(view_id)
         self._save()
 
     def try_verify(self, view_id: str, *, force: bool = False) -> VerifyDecision:
         """Attempt the ``verified`` transition, gated on pedigree completeness.
 
-        Facts observed here are appended to the pedigree when a record exists; a
-        missing record cannot be annotated and is reported via ``missing``.
+        The transition itself carries the outcome text, so the recorder writes a
+        single record per attempt ("validation passed" / "override"). A blocked
+        attempt changes no state, so it is recorded directly on the existing
+        record — a missing record cannot be annotated and is reported via
+        ``missing`` instead.
 
         Args:
             view_id: View to promote.
@@ -139,16 +179,17 @@ class ViewManager:
             return VerifyDecision(allowed=False, missing=missing)
 
         if force and missing:
-            if record is not None:
-                record.append_modification("operator", "verified via --force-pedigree override")
-                self.pedigree_store.save(record)
-            self.update_status(view_id, ViewStatus.VERIFIED)
+            self.update_status(
+                view_id,
+                ViewStatus.VERIFIED,
+                actor="operator",
+                description="verified via --force-pedigree override",
+            )
             return VerifyDecision(allowed=True, missing=missing, forced=True)
 
-        if record is not None:
-            record.append_modification("cli", "verified: validation passed")
-            self.pedigree_store.save(record)
-        self.update_status(view_id, ViewStatus.VERIFIED)
+        self.update_status(
+            view_id, ViewStatus.VERIFIED, description="verified: validation passed"
+        )
         return VerifyDecision(allowed=True)
 
     def register_view(self, view_id: str, output_path: str = "",
@@ -161,6 +202,15 @@ class ViewManager:
             self._state[view_id]["generated_at"] = datetime.now().isoformat()
         self._state[view_id]["output_path"] = output_path
         self._state[view_id]["change"] = change_name
+        # The recorder opens the record before view-state is stamped, so the
+        # persisted pedigree_status reflects the registration it just observed.
+        self._emit(ViewEvent(
+            view_id=view_id,
+            kind="register",
+            status=ViewStatus.GENERATED.value,
+            output_path=output_path,
+            change_name=change_name,
+        ))
         self._persist_pedigree_state(view_id)
         self._save()
 

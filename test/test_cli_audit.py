@@ -119,13 +119,13 @@ def test_audit_report_summarises_views_and_lists_gaps(tmp_path, monkeypatch):
     assert result.exit_code == 0
     data = payload["data"]
     assert data["summary"]["total_views"] == 2
-    assert data["summary"]["with_pedigree"] == 1
-    assert data["summary"]["without_pedigree"] == 1
+    assert data["summary"]["with_pedigree"] == 2
+    assert data["summary"]["without_pedigree"] == 0
     assert data["summary"]["filtered_out"] == 0
     assert data["trace_gaps"] == ["OV-2"]
     entries = {entry["view_id"]: entry for entry in data["views"]}
     assert entries["CV-1"]["pedigree_status"] == "complete"
-    assert entries["OV-2"]["pedigree_status"] == "absent"
+    assert entries["OV-2"]["pedigree_status"] == "incomplete"
     assert entries["OV-2"]["author"] == "NOT RECORDED"
 
     default = tmp_path / ".dm2" / "audit" / f"project-audit-{date.today():%Y%m%d}.md"

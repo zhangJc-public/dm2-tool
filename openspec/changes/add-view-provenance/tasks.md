@@ -2,8 +2,8 @@
 
 - [x] 1.1 Create `src/dm2/core/pedigree/` module directory with `__init__.py`
 - [ ] 1.2 Create `src/dm2/core/pedigree/schema.yaml` documenting the Pedigree structure
-- [ ] 1.3 Create `.dm2/pedigree/` in `dm2 init` (inline config in `src/dm2/cli/main.py`; the old `templates/` dir was removed — `docs/foundation.md` D6)
-- [ ] 1.4 Add `trace.enabled: true` to default `.dm2/config.yaml` template
+- [x] 1.3 Create `.dm2/pedigree/` in `dm2 init` (inline config in `src/dm2/cli/main.py`; the old `templates/` dir was removed — `docs/foundation.md` D6)
+- [x] 1.4 Add `trace.enabled: true` to default `.dm2/config.yaml` template
 - [ ] 1.5 Document `.dm2/pedigree/` as **committed** provenance evidence (audit value; no gitignore entry in the `dm2 init` template)
 
 ## 2. Data Model
@@ -23,12 +23,12 @@
 
 ## 4. Auto-Capture (Fact Layer)
 
-- [ ] 4.1 Create `src/dm2/core/pedigree/recorder.py` with `PedigreeRecorder` class
-- [ ] 4.2 Implement event subscription mechanism for `ViewManager` state changes (use simple observer pattern)
-- [ ] 4.3 Add event hooks to `dm2/core/views/manager.py` at: view registration, state transitions (pending→in_progress→generated→verified)
-- [ ] 4.4 Implement `record_modification(view_id, actor, change_description)` method on PedigreeRecorder
+- [x] 4.1 Create `src/dm2/core/pedigree/recorder.py` with `PedigreeRecorder` class
+- [x] 4.2 Implement event subscription mechanism for `ViewManager` state changes (use simple observer pattern)
+- [x] 4.3 Add event hooks to `dm2/core/views/manager.py` at: view registration, state transitions (pending→in_progress→generated→verified)
+- [x] 4.4 Implement `record_modification(view_id, actor, change_description)` method on PedigreeRecorder
 - [x] 4.5 Persist validation results into the pedigree from `dm2 validate` (ran_R1–R5, issues with suggested fixes, last_validated); the CLI owns this, not `ConsistencyChecker`
-- [ ] 4.6 Write unit tests verifying state changes produce ModificationRecord entries
+- [x] 4.6 Write unit tests verifying state changes produce ModificationRecord entries
 
 ## 5. CLI Commands — trace record
 

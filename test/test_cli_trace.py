@@ -35,13 +35,13 @@ known_limitations:
 """
 
 
-def _project(tmp_path, monkeypatch, *, trace: bool = True):
+def _project(tmp_path, monkeypatch, *, trace: bool = True, recorder: bool = True):
     monkeypatch.chdir(tmp_path)
     (tmp_path / ".dm2").mkdir()
     (tmp_path / ".dm2" / "config.yaml").write_text(
         f"trace:\n  enabled: {'true' if trace else 'false'}\n", encoding="utf-8"
     )
-    ViewManager(tmp_path).register_view("CV-1", change_name="demo")
+    ViewManager(tmp_path, attach_recorder=recorder).register_view("CV-1", change_name="demo")
     return tmp_path
 
 
@@ -133,17 +133,22 @@ def test_pedigree_id_is_stable_across_updates(tmp_path, monkeypatch):
 
     record = PedigreeStore(tmp_path).load("CV-1")
     assert record.reasoning.summary == "second pass"
-    assert len(record.modification_history) == 2
+    assert [entry.change_description for entry in record.modification_history] == [
+        "view registered",
+        "reasoning recorded",
+        "reasoning recorded",
+    ]
 
 
 def test_malformed_decision_factor_is_rejected_without_writing(tmp_path, monkeypatch):
     _project(tmp_path, monkeypatch)
+    before = PedigreeStore(tmp_path).load("CV-1").to_yaml()
     bad = "reasoning:\n  decision_factors:\n    - factor: x\n"
     result, payload = _run("record", "CV-1", "--stdin", stdin=bad)
     assert result.exit_code == 1
     assert payload["error"]["code"] == "INVALID_ARG"
     assert "decision_factors[0].source" in payload["error"]["message"]
-    assert not PedigreeStore(tmp_path).exists("CV-1")
+    assert PedigreeStore(tmp_path).load("CV-1").to_yaml() == before
 
 
 def test_conflicting_input_flags_are_rejected(tmp_path, monkeypatch):
@@ -262,7 +267,7 @@ def test_lineage_without_matches_returns_an_empty_result(tmp_path, monkeypatch):
 
 
 def test_migrate_stamps_absent_statuses_without_creating_records(tmp_path, monkeypatch):
-    _project(tmp_path, monkeypatch)
+    _project(tmp_path, monkeypatch, recorder=False)
     result, payload = _run("migrate")
     assert result.exit_code == 0
     assert payload["data"]["views"] == {"CV-1": "absent"}

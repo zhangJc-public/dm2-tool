@@ -25,6 +25,7 @@ from dm2.core.pedigree.model import (
     ValidationIssue,
     ValidationRecord,
 )
+from dm2.core.pedigree.recorder import PedigreeRecorder
 from dm2.core.pedigree.store import PedigreeStore
 
 __all__ = [
@@ -38,6 +39,7 @@ __all__ = [
     "INCOMPLETE",
     "ModificationRecord",
     "Pedigree",
+    "PedigreeRecorder",
     "PedigreeStore",
     "PedigreeValidationError",
     "RELIABILITY_VALUES",

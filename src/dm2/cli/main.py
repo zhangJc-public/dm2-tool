@@ -89,6 +89,7 @@ def init(
     template_config = {
         "views": {"include_mermaid": True, "include_timestamps": True},
         "consistency": {"check_enabled": True, "strict_mode": False},
+        "trace": {"enabled": True},
     }
     if vault:
         template_config["vault_path"] = vault
@@ -102,6 +103,10 @@ def init(
     for subdir in ["dm2-changes", "dm2-archive"]:
         (target / subdir).mkdir(parents=True, exist_ok=True)
         created_dirs.append(subdir)
+
+    # 溯源记录目录是工程审计证据，随项目提交（不写入 .gitignore）
+    (target / ".dm2" / "pedigree").mkdir(parents=True, exist_ok=True)
+    created_dirs.append(".dm2/pedigree")
 
     # 从模板生成 AI 工具配置（skills，Claude 另含 commands）
     from dm2 import __version__
@@ -1019,6 +1024,10 @@ def validate(
                     break
         if view_path:
             views_data[v.id] = view_path.read_text(encoding='utf-8')
+            # Post-generation human edits are observed here, before this run's
+            # validation results overwrite the record's validation field.
+            if vm.recorder is not None:
+                vm.recorder.detect_content_change(v.id, str(view_path))
 
     # Run metamodel-grounded conformance checks first (structured frontmatter)
     from dm2.reasoning.conformance import MetamodelConformanceChecker

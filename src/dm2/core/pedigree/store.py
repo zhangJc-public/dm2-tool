@@ -53,6 +53,11 @@ class PedigreeStore:
         self._root = Path(project_root)
 
     @property
+    def root(self) -> Path:
+        """The dm2 project root this store reads and writes under."""
+        return self._root
+
+    @property
     def directory(self) -> Path:
         return self._root / ".dm2" / "pedigree"
 
