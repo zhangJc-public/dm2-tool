@@ -1,25 +1,25 @@
 ## 1. Setup & Scaffolding
 
-- [ ] 1.1 Create `src/dm2/core/pedigree/` module directory with `__init__.py`
+- [x] 1.1 Create `src/dm2/core/pedigree/` module directory with `__init__.py`
 - [ ] 1.2 Create `src/dm2/core/pedigree/schema.yaml` documenting the Pedigree structure
-- [ ] 1.3 Update `templates/` to include `.dm2/pedigree/` creation in `dm2 init`
+- [ ] 1.3 Create `.dm2/pedigree/` in `dm2 init` (inline config in `src/dm2/cli/main.py`; the old `templates/` dir was removed — `docs/foundation.md` D6)
 - [ ] 1.4 Add `trace.enabled: true` to default `.dm2/config.yaml` template
-- [ ] 1.5 Add `pedigree` directory to `.gitignore` template (or document as committed)
+- [ ] 1.5 Document `.dm2/pedigree/` as **committed** provenance evidence (audit value; no gitignore entry in the `dm2 init` template)
 
 ## 2. Data Model
 
-- [ ] 2.1 Create `src/dm2/core/pedigree/model.py` with `Pedigree` dataclass and nested types (`Author`, `Source`, `Reasoning`, `DecisionFactor`, `Alternative`, `ModificationRecord`, `ValidationRecord`, `ValidationIssue`)
-- [ ] 2.2 Add field validation in Pedigree constructor (required vs optional, type checks, enum constraints for `reliability`, `author.type`)
-- [ ] 2.3 Implement `to_yaml()` and `from_yaml()` class methods using `yaml.safe_dump` / `yaml.safe_load`
-- [ ] 2.4 Write unit tests in `test/test_pedigree_model.py` covering round-trip, validation, missing fields
+- [x] 2.1 Create `src/dm2/core/pedigree/model.py` with `Pedigree` dataclass and nested types (`Author`, `Source`, `Reasoning`, `DecisionFactor`, `Alternative`, `ModificationRecord`, `ValidationRecord`, `ValidationIssue`)
+- [x] 2.2 Add field validation in Pedigree constructor (required vs optional, type checks, enum constraints for `reliability`, `author.type`)
+- [x] 2.3 Implement `to_yaml()` and `from_yaml()` class methods using `yaml.safe_dump` / `yaml.safe_load`
+- [x] 2.4 Write unit tests in `test/test_pedigree_model.py` covering round-trip, validation, missing fields
 
 ## 3. Storage Layer
 
-- [ ] 3.1 Create `src/dm2/core/pedigree/store.py` with `PedigreeStore` class
-- [ ] 3.2 Implement `load(view_id)` and `save(pedigree)` with atomic write (temp file + rename)
-- [ ] 3.3 Implement `list_all()` returning all view_ids with pedigrees
-- [ ] 3.4 Implement `exists(view_id)` and `delete(view_id)` (delete only via admin command, not CLI default)
-- [ ] 3.5 Write integration tests in `test/test_pedigree_store.py` with temporary project directory
+- [x] 3.1 Create `src/dm2/core/pedigree/store.py` with `PedigreeStore` class
+- [x] 3.2 Implement `load(view_id)` and `save(pedigree)` with atomic write (temp file + rename)
+- [x] 3.3 Implement `list_all()` returning all view_ids with pedigrees
+- [x] 3.4 Implement `exists(view_id)` and `delete(view_id)` (delete only via admin command, not CLI default)
+- [x] 3.5 Write integration tests in `test/test_pedigree_store.py` with temporary project directory
 
 ## 4. Auto-Capture (Fact Layer)
 
@@ -73,8 +73,8 @@
 - [ ] 9.1 Update `src/dm2/core/templates/workflows/propose.py` to include Trace Plan section instructions and `dm2 trace record` calls in generated SKILL.md
 - [ ] 9.2 Update `src/dm2/core/templates/workflows/apply.py` to require `dm2 trace record` after each view generation
 - [ ] 9.3 Add `dm2 audit <view_id>` reference in the SKILL.md output
-- [ ] 9.4 Update `src/dm2/core/templates/generator.py` to include pedigree section guidance in the template
-- [ ] 9.5 Manually verify generated SKILL.md files contain the new trace requirements (snapshot test)
+- [ ] 9.4 Keep pedigree guidance in the workflow templates: `generator.py` needs no change (it renders whatever the templates provide)
+- [ ] 9.5 Regenerate committed agent artifacts for both adapters (`python3 scripts/render_agent_config.py`) and extend `test_workflow_templates.py` assertions for the trace requirements
 
 ## 10. Knowledge API Integration
 
@@ -93,10 +93,10 @@
 ## 12. Testing & Documentation
 
 - [ ] 12.1 Add end-to-end test in `test/test_e2e_pedigree.py` covering: propose → apply → validate → audit full flow
-- [ ] 12.2 Add fixture in `test/fixtures/sample-system-with-trace/` (or extend existing) showing a complete trace example
+- [ ] 12.2 Build the complete-trace example inline in `test/test_e2e_pedigree.py` with `tmp_path` (this repo has no `test/fixtures/` directory)
 - [ ] 12.3 Update `docs/readme.md` with new `dm2 audit` and `dm2 trace` command documentation
 - [ ] 12.4 Update `CLAUDE.md` project structure section to mention `src/dm2/core/pedigree/`
-- [ ] 12.5 Add example pedigree YAML in `docs/examples/pedigree-example.yaml`
+- [ ] 12.5 Add example pedigree YAML at `docs/examples/pedigree-example.yaml` (create the directory)
 
 ## 13. Quality Gates
 
