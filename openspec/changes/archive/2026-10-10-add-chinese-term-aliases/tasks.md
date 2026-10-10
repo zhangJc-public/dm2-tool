@@ -42,4 +42,4 @@
 - [x] 6.2 `pytest test/` 全绿；`ruff check src/ test/ scripts/` 干净
 - [x] 6.3 `openspec validate --all --strict` 通过
 - [x] 6.4 端到端人工验证：`dm2 knowledge search "资源流" --json`、`search "活动属于能力"`、`search "activity capability"`
-- [ ] 6.5 `openspec archive add-chinese-term-aliases`，并复核归档后 spec/测试计数
+- [x] 6.5 `openspec archive add-chinese-term-aliases`，并复核归档后 spec/测试计数
