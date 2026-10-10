@@ -8,6 +8,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **视图溯源（DM2 Pedigree）**（OpenSpec 变更 `add-view-provenance`）：
+  - **事实层**由 CLI 自动捕获（视图注册、状态转换、校验结果、视图文件内容哈希变化），
+    **理由层**由外部 AI Agent 经 `dm2 trace record` 主动声明；两层在存储与呈现上严格分离
+  - 新命令：`dm2 trace record/show/lineage/migrate`、`dm2 audit <view>`、`dm2 audit-report`
+  - `.dm2/view-state.yaml` 增加每个视图的 `pedigree_status`/`pedigree_missing`；
+    `dm2 view list --pedigree-status complete|incomplete|absent` 可过滤
+  - `dm2 validate` 把本轮结果写回已有溯源记录（`ran_R1`–`ran_R5`、带 `suggested_fix` 的问题、
+    `last_validated`），并以溯源完整性门控 `verified`；新增 `--force-pedigree` 覆盖（在修改历史中留痕），
+    项目配置 `trace.enabled: false` 作为整体逃生阀
+  - `.dm2/pedigree/<view_id>.yaml` 随项目提交（工程审计证据）；审计输出一律把理由层标注为
+    「Agent 自述、未经验证」；无自动修复的问题显示 `No automated fix available`
+  - `KnowledgeAPI` 新增 `get_pedigree`/`list_pedigrees`/`pedigree_summary`；
+    `dm2 knowledge view --json` 与 `dm2 instructions` 的 context 带上溯源状态
+  - propose/apply 技能模板要求 `## Trace Plan` 与每视图 `dm2 trace record`（含 reasoning-file 格式、
+    失败处置）；视图生成后的人工修改由内容哈希自动识别并记为 `actor=human`
+  - `dm2 init` 创建 `.dm2/pedigree/` 并写入 `trace.enabled: true`
 - **开发环境切到 DSH + SDD**（仓库工具链调整，不改变 dm2 对外行为，故无 OpenSpec 变更）：
   - 接入 OpenSpec 的厂商中立目标 `agents`：12 个 `openspec-*` SDD 技能写入 `.agents/skills/`，
     DSH 以 `project-agents` 发现；这批第三方技能不入库，由 `openspec init/update` 重建
@@ -60,6 +76,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial release structure for GitHub
 
 ### Changed
+- **BREAKING** `dm2 validate` 不再无条件把视图置为 `verified`：溯源缺核心字段
+  （`author`/`creation_date`/`source`）时保持 `generated` 并报 `rule: pedigree` 错误。
+  旧项目可选：跑 `dm2 trace migrate` 后用 `dm2 trace record` 补核心字段，
+  或设 `trace.enabled: false` 关闭门控与溯源写入
+- `dm2 view list` 的表格与 `--json` 增加 `pedigree_status`/`pedigree_missing`；
+  非法的 `--pedigree-status` 值现在以非零退出码返回错误信封
 - **BREAKING** `dm2 cynefin` 选项：`--uncertainty/--rules/--stakeholders` 替换为
   `--knowability/--constraints/--alignment`（取值 `clear|complicated|complex`），
   新增 `--maturity/--dynamics/--stakeholder-count/--time-span`；`--systems` 改为纯规模

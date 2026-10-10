@@ -58,8 +58,10 @@ my-project/
       view-content-spec.json ← 52 视图必要术语/必要关联（怪物矩阵×元模型）
       group-to-views.yaml ← 数据组到视图的映射
       groups/             ← 17 个数据组 Markdown 模板
-    view-state.yaml       ← 视图生命周期状态（ViewManager 管理）
+    view-state.yaml       ← 视图生命周期状态（ViewManager 管理，含 pedigree_status）
     analysis-state.yaml   ← 分析结果持久化（cynefin/analyze）
+    pedigree/             ← 视图溯源记录（DM2 Pedigree；**随项目提交**，工程审计证据）
+    audit/                ← 审计报告输出（dm2 audit / audit-report 生成）
   .claude/
     skills/               ← Claude Code AI 技能（dm2 init 默认，从 Python 模板动态生成）
     commands/             ← Claude Code 斜杠命令（含 generatedBy 版本元数据）
@@ -328,23 +330,84 @@ dm2 generate SV-4 -d "防火墙系统功能分解" --no-rag              # 禁�
 
 ### `dm2 validate` — 视图一致性校验
 
-对已生成的 DoDAF 视图运行一致性检查（Activity-Performer 绑定、Resource Flow 完整性、Capability-Activity 映射、Temporal 一致性），校验通过自动更新视图状态为 `verified`。
+对已生成的 DoDAF 视图运行一致性检查（Activity-Performer 绑定、Resource Flow 完整性、Capability-Activity 映射、Temporal 一致性）。校验通过**且溯源完整**时，视图状态自动更新为 `verified`；溯源缺核心字段（`author`/`creation_date`/`source`）时保持 `generated` 并报 `rule: pedigree` 错误。
 
 ```bash
-dm2 validate OV-2              # 校验单个视图
-dm2 validate --all             # 校验所有已生成视图
-dm2 validate OV-2 --json       # JSON 格式输出（供 AI Agent 使用）
+dm2 validate OV-2                     # 校验单个视图
+dm2 validate --all                    # 校验所有已生成视图
+dm2 validate OV-2 --json              # JSON 格式输出（供 AI Agent 使用）
+dm2 validate OV-2 --force-pedigree    # 无视溯源完整性强制 verified（在修改历史中留痕）
 ```
 
-输出按 severity（ERROR/WARNING/INFO）分组，每项含 issue 类型、消息、建议和关联视图。
+输出按 severity（ERROR/WARNING/INFO）分组，每项含 issue 类型、消息、建议和关联视图。校验结果会写回**已存在**的溯源记录（`ran_R1`–`ran_R5`、带 `suggested_fix` 的问题、`last_validated`）；JSON 里以 `pedigree_updated` 标明是否写入，`verified` 反映门控后的真实结果。
 
 ### `dm2 view` — 视图生命周期管理
 
 ```bash
-dm2 view list                  # 列出所有视图及生成状态
-dm2 view list --status verified # 按状态过滤（pending/in_progress/generated/verified）
-dm2 view list --json           # JSON 格式输出（供 AI Agent 使用）
+dm2 view list                    # 列出所有视图及生成状态
+dm2 view list --status verified  # 按状态过滤（pending/in_progress/generated/verified）
+dm2 view list --pedigree-status incomplete   # 按溯源状态过滤（complete/incomplete/absent）
+dm2 view list --json             # JSON 输出（含 pedigree_status / pedigree_missing）
+dm2 view register OV-1 -c <change> -p output/OV-1.md   # 注册生成的视图（顺带写入溯源事实层）
 ```
+
+### `dm2 trace` — 视图溯源（Pedigree）记录与查询
+
+dm2 实现 DoDAF V2.02 的 **Pedigree** 数据组，分两层：
+
+- **事实层**（CLI 观测，Agent 不可改写）：视图注册、状态转换、校验结果、视图文件内容哈希变化
+- **理由层**（外部 AI Agent 主动声明）：`reasoning`、`known_limitations`
+
+dm2 只持久化 Agent 提交的内容，不推断也不校验其真实性；审计输出一律标注「Agent 自述、未经验证」。记录位于 `.dm2/pedigree/<view_id>.yaml`，**随项目提交**（工程审计证据；`dm2 init` 不会为它写 `.gitignore`）。
+
+```bash
+dm2 trace record CV-1 --summary "能力分类视图的推荐依据"
+dm2 trace record CV-1 --reasoning-file dm2-changes/<name>/analysis/trace-CV-1.yaml
+dm2 trace record CV-1 --stdin          # 从标准输入读 YAML
+dm2 trace show CV-1                    # 完整记录（YAML；--json 输出结构化）
+dm2 trace lineage --term Capability    # 哪些视图引用了该 DM2 术语（按变更分组）
+dm2 trace lineage --capability "多任务调度"
+dm2 trace migrate --json               # 为既有视图回填 pedigree_status（不伪造记录）
+```
+
+`--reasoning-file` / `--stdin` 的 YAML 可包含 `reasoning`（`summary` / `decision_factors` / `alternatives_considered`）、`known_limitations`、`source`（`standard` / `section` / `dm2_terms_used`）、`author`、`reliability`、`confidence`；**只覆盖提交的字段**：
+
+```yaml
+author:
+  type: agent-assisted        # human | agent-assisted | agent-autonomous
+  model: deepseek-v3
+source:
+  standard: DoDAF V2.02 Vol 2
+  section: CV-1 Capability Taxonomy
+  dm2_terms_used:
+    - term: Capability
+      definition_ref: terms.json#Capability
+reasoning:
+  summary: "..."
+  decision_factors:
+    - factor: "data group activation: 03-capability"
+      score: 0.85
+      source: "dm2 analyze --json"
+  alternatives_considered:
+    - option: "Generate OV-5a instead"
+      rejected_because: "..."
+known_limitations: ["..."]
+```
+
+约束：`decision_factors[].factor`/`.source`、`alternatives_considered[].option`/`.rejected_because` 必填，缺字段报 `INVALID_ARG` 且**不落半成品**；`trace.enabled: false` 的项目拒绝写入（`TRACE_DISABLED`），读取与审计不受影响。
+
+### `dm2 audit` / `dm2 audit-report` — 工程审计报告
+
+`dm2 validate` 检查视图**是否正确**；audit 回答视图**为什么是这个样子**。
+
+```bash
+dm2 audit CV-1                                   # → .dm2/audit/CV-1-audit.md（并打印）
+dm2 audit CV-1 --output reports/cv1.md --json
+dm2 audit-report                                 # → .dm2/audit/project-audit-YYYYMMDD.md
+dm2 audit-report --min-confidence 0.7 --json     # 只列 confidence ≥ 0.7，并给出被过滤数量
+```
+
+单视图报告：作者与时间、标准引用（`source.standard` / `section`，未记录时写 `Standard reference: NOT RECORDED`）、理由摘要、决策因素表、备选方案、修改历史、校验历史（无自动修复时写 `No automated fix available`）、已知局限。项目报告：项目概要（视图总数、按生命周期状态计数、有/无溯源、过滤计数）、数据组覆盖、逐视图条目、**溯源缺口**（无记录 / 缺核心字段 / 未记录标准出处）。无记录时报告给出当前生命周期状态与 `dm2 trace record <view_id>` 建议。
 
 ### `dm2 run` — 运行 DoDAF 6步融合流程
 

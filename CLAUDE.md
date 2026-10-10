@@ -18,7 +18,7 @@ DoDAF Meta Model 2.02 系统工程辅助工具。
 ├── .dsh/skills/              ← 生成物、入库：10 个 dm2-* DSH 技能（`dm2 init --tool dsh` 的产品面）
 ├── src/dm2/                  ← Python 包
 │   ├── cli/                 ← CLI 入口 + 命令实现
-│   ├── core/                ← 核心引擎（AI Agent 接口）
+│   ├── core/                ← 核心引擎（AI Agent 接口）；core/pedigree/ = 视图溯源（Pedigree）
 │   ├── kernel/              ← DM2 索引 + metamodel/ 派生索引加载器
 │   ├── engine/              ← 视图生成、pipeline
 │   ├── cognitive/           ← Cynefin/6W 分析
@@ -87,6 +87,7 @@ DM2_DEBUG=1 dm2 analyze ...   # 显示索引器诊断（默认静默，保证 --
 | `src/dm2/core/` | 核心引擎：Instructions Engine、Artifact Graph、Change Manager、Pipeline V2 |
 | `src/dm2/core/templates/workflows/` | 技能 Markdown 模板（from Python `.py` → 各 adapter 的 skills 目录） |
 | `src/dm2/core/adapters/` | AI 工具适配器：`claude.py`（ClaudeCodeAdapter）、`dsh.py`（DshAdapter）+ `get_adapter()` 注册表 |
+| `src/dm2/core/pedigree/` | 视图溯源（DM2 Pedigree）：`model.py`（数据模型，事实层/理由层分离）、`store.py`（原子 YAML 存取）、`recorder.py`（事实层捕获）、`completeness.py`（核心字段与 `trace.enabled`）、`schema.yaml`（结构声明） |
 | `src/dm2/kernel/indexer.py` | 术语/概念/视图模板加载（术语源 = `core/terms.json`） |
 | `src/dm2/kernel/metamodel/` | `MetamodelIndex`：关联目录/分类学/视图内容规范查询 |
 | `src/dm2/engine/` | 视图生成 pipeline 各步骤 |
@@ -115,6 +116,7 @@ DM2_DEBUG=1 dm2 analyze ...   # 显示索引器诊断（默认静默，保证 --
 - **CLI 输出结构化 JSON** — 契约见 `openspec/specs/cli-json-contract`：读写项目/架构状态的命令接受 `--json`/`-j`，输出 `{"status":"success","data":{...}}` 或 `{"status":"error","error":{"code":"...","message":"..."}}`；JSON 模式下 stdout 只含信封（诊断走 stderr），项目守卫失败也必须返回信封。豁免（不得视为缺陷）：`completion`（输出 shell 脚本）、隐藏 `__complete`、`uninstall`（交互式人工维护）。
 - **输出形状以 schema 声明** — `schemas/*.json` 声明各命令 JSON 输出的形状，由 `test/test_cli_output_schemas.py` 对照真实输出执行。改输出须同步改 schema；描述已移除能力的 schema 必须删除，不得留在树上腐烂。
 - **视图生命周期** — 每个视图经过 `pending → in_progress → generated → verified` 四个状态，由 `.dm2/view-state.yaml` 管理。
+- **视图溯源（Pedigree）** — 每次视图操作都有溯源：事实层（注册、状态转换、校验结果、内容哈希）由 CLI 自动捕获，理由层由外部 AI Agent 经 `dm2 trace record` 主动声明；`verified` 被溯源完整性门控（缺 `author`/`creation_date`/`source` 时保持 `generated`）。记录在 `.dm2/pedigree/<view_id>.yaml`，随项目提交；`trace.enabled: false` 是整体逃生阀。审计输出必须把理由层标注为「Agent 自述、未经验证」。契约见 `openspec/specs/view-provenance`。
 - **变更生命周期** — 每个变更在 `dm2-changes/<name>/` 下有 proposal、design、tasks 和 views/ 目录。
 - **路径优先** — `get_reference_path()` 优先 `.dm2/reference/` 本地副本，回退到包内置 `dm2-reference/core/`。
 - **分发形态：editable-only** — 唯一支持 `pip install -e .`，不发布 wheel/sdist 到 PyPI。非 editable 安装因包外数据文件不入 wheel 而无法工作，会以 `KB_NOT_FOUND` 明确失败（证据与判定见 `docs/foundation.md` §5 D10）。需要正式 wheel 分发时，先做「运行时资产迁入 `src/dm2/`」的变更。
@@ -128,7 +130,7 @@ DM2_DEBUG=1 dm2 analyze ...   # 显示索引器诊断（默认静默，保证 --
 
 - **项目管理**: `dm2 init` / `list` / `status` / `archive`
 - **分析与生成**: `dm2 analyze` / `cynefin` / `generate` / `validate`
-- **AI Agent 接口**: `dm2 knowledge` / `change` / `view` / `concern` / `instructions` / `run --agent`
+- **AI Agent 接口**: `dm2 knowledge` / `change` / `view` / `concern` / `instructions` / `run --agent` / `trace` / `audit` / `audit-report`
 - **配置与工具**: `dm2 config` / `completion` / `version`
 
 ## 项目模式（.dm2/）
@@ -136,6 +138,7 @@ DM2_DEBUG=1 dm2 analyze ...   # 显示索引器诊断（默认静默，保证 --
 `dm2 init` 创建的项目含：
 - `.claude/skills/` + `.claude/commands/`（默认）或 `.dsh/skills/`（`--tool dsh`）— 从 Python 模板动态生成
 - `.dm2/reference/` — 知识库本地副本
-- `.dm2/view-state.yaml` — 视图生命周期状态
+- `.dm2/view-state.yaml` — 视图生命周期状态（含每个视图的 `pedigree_status`）
 - `.dm2/analysis-state.yaml` — cynefin/analyze 结果持久化
+- `.dm2/pedigree/` — 视图溯源记录（随项目提交）；`.dm2/audit/` 由审计命令按需生成
 - 可选通过 `DM2_VAULT_PATH` 链接 Obsidian vault

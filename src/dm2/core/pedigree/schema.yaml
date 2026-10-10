@@ -1,0 +1,71 @@
+# DM2 V2.02 Pedigree — structure persisted at .dm2/pedigree/<view_id>.yaml
+#
+# Machine-readable companion to `dm2.core.pedigree.model`. Field names, enums and
+# required flags must stay in sync with that module; `test_pedigree_model.py`
+# asserts that every dataclass field appears here.
+#
+# Two layers, deliberately separated:
+#   fact layer  — modification_history / validation / content_hash: dm2 observed it
+#   stated layer — reasoning / known_limitations: the external AI Agent declared it,
+#                  dm2 persists it but never verifies it and labels it as such
+core_fields: [author, creation_date, source]  # required before a view may reach `verified`
+
+fields:
+  view_id: {type: string, required: true, description: "DoDAF view id, e.g. CV-1 (also the file name)"}
+  pedigree_id: {type: string, required: true, description: "UUID generated when dm2 opens the record"}
+  creation_date: {type: iso8601, required: true, description: "Observed when dm2 opened the record"}
+  author:
+    required: true
+    type: {type: enum, values: [human, agent-assisted, agent-autonomous], required: true}
+    model: {type: string, description: "Model version when an AI Agent produced the view"}
+    operator: {type: string, description: "Triggering human user"}
+  source:
+    required: true
+    standard: {type: string, description: "e.g. DoDAF V2.02 Vol 2"}
+    section: {type: string, description: "Section name from views.yaml"}
+    dm2_terms_used:
+      type: array
+      items:
+        term: {type: string, required: true}
+        definition_ref: {type: string, description: "Canonical definition location"}
+    alignment_notes: {type: string}
+  reasoning:
+    required: true
+    summary: {type: string}
+    decision_factors:
+      type: array
+      items:
+        factor: {type: string, required: true}
+        score: {type: number, required: false}
+        source: {type: string, required: true}
+    alternatives_considered:
+      type: array
+      items:
+        option: {type: string, required: true}
+        rejected_because: {type: string, required: true}
+  validation:
+    required: true
+    ran_R1: {type: boolean}
+    ran_R2: {type: boolean}
+    ran_R3: {type: boolean}
+    ran_R4: {type: boolean}
+    ran_R5: {type: boolean}
+    issues:
+      type: array
+      items:
+        rule: {type: string, required: true, description: "R1-R5, pedigree, or a prose-heuristic issue type"}
+        severity: {type: enum, values: [error, warning, info], required: true}
+        message: {type: string, required: true}
+        suggested_fix: {type: string, required: false, description: "Machine-parseable fix; omitted when none exists"}
+    last_validated: {type: iso8601, nullable: true}
+  modification_history:
+    type: array
+    items:
+      date: {type: iso8601}
+      actor: {type: string, description: "cli | agent | human | operator"}
+      change_description: {type: string}
+  reliability: {type: enum, values: [low, medium, high], required: true}
+  confidence: {type: number, minimum: 0, maximum: 1, required: true}
+  known_limitations: {type: array, items: {type: string}}
+  content_hash: {type: string, description: "sha256 of the view file at the last observation (human-edit detection)"}
+  change: {type: string, description: "dm2 change that generated the view"}

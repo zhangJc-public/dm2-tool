@@ -3,6 +3,8 @@
 Spec: openspec/specs/view-provenance (Pedigree data model / required fields)
 """
 
+from pathlib import Path
+
 import pytest
 
 from dm2.core.pedigree import (
@@ -218,3 +220,32 @@ def test_from_yaml_rejects_a_record_without_a_view_id():
     with pytest.raises(PedigreeValidationError) as excinfo:
         Pedigree.from_yaml("")
     assert excinfo.value.field_name == "view_id"
+
+
+SCHEMA_PATH = (
+    Path(__file__).resolve().parent.parent / "src" / "dm2" / "core" / "pedigree" / "schema.yaml"
+)
+EXAMPLE_PATH = Path(__file__).resolve().parent.parent / "docs" / "examples" / "pedigree-example.yaml"
+
+
+def test_schema_yaml_documents_every_model_field():
+    import dataclasses
+
+    from dm2.core.pedigree import model
+
+    text = SCHEMA_PATH.read_text(encoding="utf-8")
+    for name, obj in vars(model).items():
+        if name.startswith("_") or not dataclasses.is_dataclass(obj):
+            continue
+        for field_info in dataclasses.fields(obj):
+            if field_info.name == "strict":
+                continue  # internal loading flag, never persisted
+            assert f"{field_info.name}:" in text, f"{name}.{field_info.name} missing from schema.yaml"
+
+
+def test_example_pedigree_parses_as_a_complete_record():
+    record = Pedigree.from_yaml(EXAMPLE_PATH.read_text(encoding="utf-8"))
+    assert record.view_id == "CV-1"
+    assert record.missing_core_fields() == []
+    assert record.source.dm2_terms_used[0].term == "Capability"
+    assert record.validation.ran_R5 is True

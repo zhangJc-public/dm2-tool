@@ -105,6 +105,7 @@ File System Layer      ← .dm2/ 项目 + dm2-changes/ + dm2-archive/
 | I7 | 知识库权威源为 YAML，运行时只加载派生 JSON | `openspec/specs/dm2-metamodel-knowledge` |
 | I8 | 技能由 Python 模板 + `ToolAdapter` 生成，不从开发者目录复制 | `openspec/specs/skill-template-generation`、`tool-command-adapter` |
 | I9 | 生成物按**归属**决定入库与守护：dm2 自产的入库并由字节一致性测试守护；第三方工具产出的不入库，由该工具的 update 命令重建 | `test/test_generated_agent_config.py`（字节守护覆盖 `.claude` + `.dsh`；`.agents` 由 ignore 断言守护）、`.gitignore` |
+| I10 | 视图溯源两层分离：事实层由 CLI 捕获（注册/转换/校验/内容哈希），理由层只由外部 AI Agent 声明且在审计中标注为未经验证；`verified` 受溯源完整性门控 | `openspec/specs/view-provenance`、`test/test_e2e_pedigree.py`、`test/test_view_lifecycle_pedigree.py` |
 
 ---
 

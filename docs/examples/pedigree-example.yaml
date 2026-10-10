@@ -1,0 +1,65 @@
+# Example pedigree record — `.dm2/pedigree/CV-1.yaml`
+#
+# `dm2 trace record CV-1 --reasoning-file <this-file>` merges the stated layer
+# (reasoning / known_limitations / source / author) into the record dm2 opened at
+# registration. The fact layer (modification_history / validation / content_hash)
+# is written by dm2 itself and must not be hand-edited.
+view_id: CV-1
+pedigree_id: 6f2c1a7e-3b4d-4c5e-9a10-1b2c3d4e5f60
+author:
+  type: agent-assisted
+  model: deepseek-v3
+  operator: architecture-lead
+creation_date: "2026-10-10T10:00:00"
+source:
+  standard: DoDAF V2.02 Vol 2
+  section: CV-1 Capability Taxonomy
+  dm2_terms_used:
+    - term: Capability
+      definition_ref: terms.json#Capability
+    - term: Activity
+      definition_ref: terms.json#Activity
+  alignment_notes: Capability taxonomy is derived from the activated 03-capability data group.
+reasoning:
+  summary: >-
+    CV-1 was recommended because the description activates the capability data
+    group; the taxonomy is grounded in the DM2 Capability term and its
+    activityPartOfCapability association.
+  decision_factors:
+    - factor: "data group activation: 03-capability"
+      score: 0.85
+      source: "dm2 analyze --json"
+    - factor: "concern match: capability-investment"
+      score: 0.61
+      source: "dm2 concern list --json"
+  alternatives_considered:
+    - option: Generate OV-5a instead
+      rejected_because: The description is capability-centric, not activity-centric.
+validation:
+  ran_R1: true
+  ran_R2: true
+  ran_R3: true
+  ran_R4: true
+  ran_R5: true
+  issues:
+    - rule: R5
+      severity: warning
+      message: 视图 CV-1 缺少 6 个标准必要关联
+      suggested_fix: "缺失关联: activityPartOfCapability, desiredEffect, ..."
+  last_validated: "2026-10-10T10:05:00"
+modification_history:
+  - date: "2026-10-10T09:59:00"
+    actor: cli
+    change_description: view registered
+  - date: "2026-10-10T10:00:00"
+    actor: agent
+    change_description: reasoning recorded
+  - date: "2026-10-10T10:05:00"
+    actor: cli
+    change_description: "verified: validation passed"
+reliability: medium
+confidence: 0.8
+known_limitations:
+  - 术语别名未逐一核对
+content_hash: 3d1c9a2f5e6b7c8d9e0f1a2b3c4d5e6f708192a3b4c5d6e7f8091a2b3c4d5e6f
+change: network-security-situational-awareness

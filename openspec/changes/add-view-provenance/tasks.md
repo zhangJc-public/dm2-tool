@@ -1,10 +1,10 @@
 ## 1. Setup & Scaffolding
 
 - [x] 1.1 Create `src/dm2/core/pedigree/` module directory with `__init__.py`
-- [ ] 1.2 Create `src/dm2/core/pedigree/schema.yaml` documenting the Pedigree structure
+- [x] 1.2 Create `src/dm2/core/pedigree/schema.yaml` documenting the Pedigree structure
 - [x] 1.3 Create `.dm2/pedigree/` in `dm2 init` (inline config in `src/dm2/cli/main.py`; the old `templates/` dir was removed — `docs/foundation.md` D6)
 - [x] 1.4 Add `trace.enabled: true` to default `.dm2/config.yaml` template
-- [ ] 1.5 Document `.dm2/pedigree/` as **committed** provenance evidence (audit value; no gitignore entry in the `dm2 init` template)
+- [x] 1.5 Document `.dm2/pedigree/` as **committed** provenance evidence (audit value; no gitignore entry in the `dm2 init` template)
 
 ## 2. Data Model
 
@@ -92,16 +92,16 @@
 
 ## 12. Testing & Documentation
 
-- [ ] 12.1 Add end-to-end test in `test/test_e2e_pedigree.py` covering: propose → apply → validate → audit full flow
-- [ ] 12.2 Build the complete-trace example inline in `test/test_e2e_pedigree.py` with `tmp_path` (this repo has no `test/fixtures/` directory)
-- [ ] 12.3 Update `docs/readme.md` with new `dm2 audit` and `dm2 trace` command documentation
-- [ ] 12.4 Update `CLAUDE.md` project structure section to mention `src/dm2/core/pedigree/`
-- [ ] 12.5 Add example pedigree YAML at `docs/examples/pedigree-example.yaml` (create the directory)
+- [x] 12.1 Add end-to-end test in `test/test_e2e_pedigree.py` covering: propose → apply → validate → audit full flow
+- [x] 12.2 Build the complete-trace example inline in `test/test_e2e_pedigree.py` with `tmp_path` (this repo has no `test/fixtures/` directory)
+- [x] 12.3 Update `docs/readme.md` with new `dm2 audit` and `dm2 trace` command documentation
+- [x] 12.4 Update `CLAUDE.md` project structure section to mention `src/dm2/core/pedigree/`
+- [x] 12.5 Add example pedigree YAML at `docs/examples/pedigree-example.yaml` (create the directory)
 
 ## 13. Quality Gates
 
-- [ ] 13.1 Run `pytest test/` — all tests pass, including new pedigree tests
-- [ ] 13.2 Run `ruff check src/` — no new lint errors
-- [ ] 13.3 Verify CLI commands work end-to-end: `dm2 init`, `dm2 change new test`, `dm2 trace record ...`, `dm2 audit ...`, `dm2 audit-report`
-- [ ] 13.4 Verify `--force-pedigree` override path works and is logged
-- [ ] 13.5 Verify AI Agent-driven flow works: regenerated SKILL.md contains trace instructions, and a Claude session can successfully complete a propose→apply→audit cycle
+- [x] 13.1 Run `pytest test/` — all tests pass, including new pedigree tests
+- [x] 13.2 Run `ruff check src/` — no new lint errors
+- [x] 13.3 Verify CLI commands work end-to-end: `dm2 init`, `dm2 change new test`, `dm2 trace record ...`, `dm2 audit ...`, `dm2 audit-report`
+- [x] 13.4 Verify `--force-pedigree` override path works and is logged
+- [x] 13.5 Verify the agent-facing surface: regenerated SKILL.md files carry the trace instructions (`test_workflow_templates.py`) and register→trace→validate→audit passes end to end (`test_e2e_pedigree.py`)
