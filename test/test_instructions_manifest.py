@@ -42,3 +42,38 @@ class TestAssociationManifest:
     def test_unknown_view_has_empty_manifest(self, builder):
         instr = builder.build_view_instructions("NOPE-9", "测试")
         assert instr.association_manifest == []
+
+
+class TestPedigreeContext:
+    """The instruction context tells the Agent what provenance is still missing."""
+
+    @staticmethod
+    def _project(tmp_path):
+        (tmp_path / ".dm2").mkdir()
+        (tmp_path / ".dm2" / "config.yaml").write_text("trace:\n  enabled: true\n", encoding="utf-8")
+        return tmp_path
+
+    def test_absent_provenance_is_reported(self, tmp_path):
+        builder = InstructionBuilder(KnowledgeAPI(project_root=self._project(tmp_path)))
+        instr = builder.build_view_instructions("CV-1", "能力体系")
+        assert instr.context.pedigree["pedigree_status"] == "absent"
+        assert instr.context.pedigree["pedigree_missing"] == [
+            "author",
+            "creation_date",
+            "source",
+        ]
+
+    def test_incomplete_provenance_is_reported(self, tmp_path):
+        from dm2.core.pedigree import Pedigree
+        from dm2.core.pedigree.store import PedigreeStore
+
+        project = self._project(tmp_path)
+        PedigreeStore(project).save(
+            Pedigree.from_dict({"view_id": "CV-1", "author": {"type": "human"}})
+        )
+
+        builder = InstructionBuilder(KnowledgeAPI(project_root=project))
+        instr = builder.build_view_instructions("CV-1", "能力体系")
+        assert instr.context.pedigree["pedigree_status"] == "incomplete"
+        assert instr.context.pedigree["pedigree_missing"] == ["creation_date", "source"]
+        assert instr.context.pedigree["author_type"] == "human"

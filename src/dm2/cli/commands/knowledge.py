@@ -96,6 +96,7 @@ def view(
         typer.echo(f"未找到视图: {view_id}")
         raise typer.Exit(1)
     data = asdict(v)
+    data["pedigree_summary"] = api.pedigree_summary(view_id)
     if json_flag:
         from dm2.cli.json_output import json_success
         json_success(data)
@@ -106,6 +107,7 @@ def view(
     typer.echo(f"  被依赖: {v.downstream}")
     typer.echo(f"  DM2 数据组: {v.dm2_groups}")
     typer.echo(f"  优先级: {v.priority}")
+    typer.echo(f"  溯源: {data['pedigree_summary']['pedigree_status']}")
 
 
 @knowledge_app.command()

@@ -62,11 +62,11 @@
 
 ## 8. View Frontmatter Pedigree
 
-- [ ] 8.1 Extend `dm2/utils/frontmatter.py` parser to handle `pedigree` block (nested mapping)
-- [ ] 8.2 Create helper to write pedigree block to view frontmatter (preserve existing fields)
-- [ ] 8.3 Create helper to extract pedigree_id from frontmatter and link to external YAML
-- [ ] 8.4 Update InstructionBuilder to include pedigree context when generating view instructions
-- [ ] 8.5 Write tests for frontmatter round-trip with pedigree block
+- [x] 8.1 Extend `dm2/utils/frontmatter.py` parser to handle `pedigree` block (nested mapping)
+- [x] 8.2 Create helper to write pedigree block to view frontmatter (preserve existing fields)
+- [x] 8.3 Create helper to extract pedigree_id from frontmatter and link to external YAML
+- [x] 8.4 Update InstructionBuilder to include pedigree context when generating view instructions
+- [x] 8.5 Write tests for frontmatter round-trip with pedigree block
 
 ## 9. SKILL.md Template Updates
 
@@ -78,9 +78,9 @@
 
 ## 10. Knowledge API Integration
 
-- [ ] 10.1 Extend `dm2/core/knowledge/api.py` `KnowledgeAPI` with `get_pedigree(view_id)`, `list_pedigrees()`, `list_pedigrees(author_type=...)` methods
-- [ ] 10.2 Ensure `dm2 knowledge view <view_id> --json` output includes pedigree_summary
-- [ ] 10.3 Write tests for new KnowledgeAPI methods
+- [x] 10.1 Extend `dm2/core/knowledge/api.py` `KnowledgeAPI` with `get_pedigree(view_id)`, `list_pedigrees()`, `list_pedigrees(author_type=...)` methods
+- [x] 10.2 Ensure `dm2 knowledge view <view_id> --json` output includes pedigree_summary
+- [x] 10.3 Write tests for new KnowledgeAPI methods
 
 ## 11. Migration Support
 

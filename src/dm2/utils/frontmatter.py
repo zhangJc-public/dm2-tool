@@ -66,6 +66,29 @@ class FrontmatterParser:
             return new_frontmatter + content
 
     @staticmethod
+    def extract_pedigree(content: str) -> Optional[dict]:
+        """The view's `pedigree` frontmatter block, or None when absent/malformed.
+
+        The block is a nested mapping (pedigree_id / author / creation_date /
+        source); `yaml.safe_load` already handles the nesting, this is the typed
+        accessor the indexer and validation code share.
+        """
+        block = FrontmatterParser.extract(content, "pedigree")
+        return block if isinstance(block, dict) else None
+
+    @staticmethod
+    def extract_pedigree_id(content: str) -> Optional[str]:
+        """The `pedigree.pedigree_id` linking a view to `.dm2/pedigree/<id>.yaml`."""
+        block = FrontmatterParser.extract_pedigree(content) or {}
+        pedigree_id = block.get("pedigree_id")
+        return str(pedigree_id) if pedigree_id else None
+
+    @staticmethod
+    def set_pedigree(content: str, pedigree: dict) -> str:
+        """Write/refresh the `pedigree` block while preserving other frontmatter."""
+        return FrontmatterParser.update(content, {"pedigree": pedigree})
+
+    @staticmethod
     def extract_all_links(content: str) -> list[str]:
         """提取所有双链 [[]]"""
         return re.findall(r'\[\[([^\]]+)\]\]', content)

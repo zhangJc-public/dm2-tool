@@ -13,6 +13,9 @@ class InstructionContext:
     dm2_terms: list[dict] = field(default_factory=list)
     dm2_concepts: list[dict] = field(default_factory=list)
     dependency_artifacts: list[dict] = field(default_factory=list)
+    #: Provenance state of the view being generated: what the Agent must still
+    #: declare through `dm2 trace record` before the view can reach `verified`.
+    pedigree: dict = field(default_factory=dict)
 
 
 @dataclass
@@ -251,6 +254,7 @@ class InstructionBuilder:
                 project_description=description,
                 dm2_terms=terms,
                 dependency_artifacts=deps,
+                pedigree=self.knowledge.pedigree_summary(view_id),
             ),
             rules=rules,
             template=template,

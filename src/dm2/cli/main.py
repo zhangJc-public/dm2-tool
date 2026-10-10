@@ -1280,6 +1280,7 @@ def instructions(
             "dm2_terms": instr.context.dm2_terms,
             "dm2_concepts": instr.context.dm2_concepts,
             "dependency_artifacts": instr.context.dependency_artifacts,
+            "pedigree": instr.context.pedigree,
         },
         "rules": instr.rules,
         "template": instr.template,

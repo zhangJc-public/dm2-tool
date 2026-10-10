@@ -38,6 +38,56 @@ class TestExtract:
         assert result == "default"
 
 
+class TestPedigreeBlock:
+    """The nested `pedigree` frontmatter block (view provenance)."""
+
+    PEDIGREE = {
+        "pedigree_id": "pid-1",
+        "author": {"type": "agent-assisted", "model": "deepseek-v3", "operator": "vano"},
+        "creation_date": "2026-10-10T10:00:00",
+        "source": {
+            "standard": "DoDAF V2.02 Vol 2",
+            "section": "CV-1",
+            "dm2_terms_used": [{"term": "Capability", "definition_ref": "terms.json#Capability"}],
+        },
+    }
+
+    def test_set_pedigree_then_extract(self):
+        content = "---\nname: CV-1\n---\n# CV-1\n"
+        block = FrontmatterParser.extract_pedigree(FrontmatterParser.set_pedigree(content, self.PEDIGREE))
+        assert block["pedigree_id"] == "pid-1"
+        assert block["author"]["model"] == "deepseek-v3"
+        assert block["source"]["dm2_terms_used"][0]["term"] == "Capability"
+
+    def test_set_pedigree_preserves_other_fields_and_body(self):
+        content = "---\nname: CV-1\ntags: [a]\n---\n# body\n\ntext\n"
+        updated = FrontmatterParser.set_pedigree(content, self.PEDIGREE)
+        assert updated.endswith("# body\n\ntext\n")
+        parsed = FrontmatterParser.parse(updated)
+        assert parsed["name"] == "CV-1"
+        assert parsed["tags"] == ["a"]
+        assert parsed["pedigree"]["pedigree_id"] == "pid-1"
+
+    def test_set_pedigree_is_idempotent(self):
+        content = "---\nname: CV-1\n---\n# CV-1\n"
+        once = FrontmatterParser.set_pedigree(content, self.PEDIGREE)
+        assert FrontmatterParser.set_pedigree(once, self.PEDIGREE) == once
+
+    def test_extract_pedigree_id(self):
+        updated = FrontmatterParser.set_pedigree("---\nname: CV-1\n---\n# CV-1\n", self.PEDIGREE)
+        assert FrontmatterParser.extract_pedigree_id(updated) == "pid-1"
+
+    def test_missing_pedigree_is_none(self):
+        content = "---\nname: CV-1\n---\n# CV-1\n"
+        assert FrontmatterParser.extract_pedigree(content) is None
+        assert FrontmatterParser.extract_pedigree_id(content) is None
+
+    def test_non_mapping_pedigree_is_none(self):
+        content = "---\npedigree: not-a-mapping\n---\n# CV-1\n"
+        assert FrontmatterParser.extract_pedigree(content) is None
+        assert FrontmatterParser.extract_pedigree_id(content) is None
+
+
 class TestUpdate:
     def test_update_existing_frontmatter_preserves_body(self, sample_markdown_with_frontmatter):
         """Verify the bugfix: updating frontmatter no longer truncates body text"""

@@ -1,6 +1,7 @@
 """DM2 Knowledge API — structured query interface for AI agents."""
 
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Optional
 
 from dm2.kernel.indexer import DM2KnowledgeIndexer
@@ -49,12 +50,23 @@ class ViewResult:
 class KnowledgeAPI:
     """Public API for querying DM2 knowledge base."""
 
-    def __init__(self):
+    def __init__(self, project_root: Optional[Path] = None):
         # Indexer diagnostics are DM2_DEBUG-gated (indexer._diag), so stderr stays
         # clean for --json consumers piping 2>&1. No redirection needed here.
         self._indexer = DM2KnowledgeIndexer()
         self._indexer.load_all()
         self._metamodel = None
+        self._project_root = project_root
+        self._pedigree_store = None
+
+    @property
+    def pedigree_store(self):
+        """Pedigree storage for this project (resolved lazily, never written here)."""
+        if self._pedigree_store is None:
+            from dm2.core.pedigree.store import PedigreeStore
+
+            self._pedigree_store = PedigreeStore(self._project_root)
+        return self._pedigree_store
 
     @property
     def metamodel(self):
@@ -63,6 +75,46 @@ class KnowledgeAPI:
             from dm2.kernel.metamodel import MetamodelIndex
             self._metamodel = MetamodelIndex(self._indexer.reference_root).load()
         return self._metamodel
+
+    # ── provenance (Pedigree) ────────────────────────────────────────────
+    def get_pedigree(self, view_id: str):
+        """The full Pedigree record for a view, or ``None`` when absent."""
+        return self.pedigree_store.load(view_id)
+
+    def pedigree_summary(self, view_id: str) -> dict:
+        """Compact provenance state for instructions and ``knowledge view``."""
+        from dm2.core.pedigree import completeness
+
+        record = self.get_pedigree(view_id)
+        return {
+            "pedigree_status": completeness.status(record),
+            "pedigree_missing": completeness.missing_core_fields(record),
+            "author_type": record.author.type if record and record.author else "",
+            "creation_date": record.creation_date if record else "",
+            "confidence": record.confidence if record else None,
+            "last_validated": record.validation.last_validated if record else None,
+        }
+
+    def list_pedigrees(self, author_type: Optional[str] = None) -> list[dict]:
+        """Every recorded view with the fields callers filter on."""
+        from dm2.core.pedigree import completeness
+
+        records = []
+        for view_id in self.pedigree_store.list_all():
+            record = self.pedigree_store.load(view_id)
+            if record is None:
+                continue
+            current = record.author.type if record.author else ""
+            if author_type is not None and current != author_type:
+                continue
+            records.append({
+                "view_id": view_id,
+                "author_type": current,
+                "creation_date": record.creation_date,
+                "confidence": record.confidence,
+                "pedigree_status": completeness.status(record),
+            })
+        return records
 
     # ── metamodel-grounded queries ───────────────────────────────────────
     def get_term_detail(self, name: str) -> Optional[dict]:

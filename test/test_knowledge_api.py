@@ -122,3 +122,73 @@ class TestCliJsonEnvelope:
         assert proc.returncode == 1
         out = json.loads(proc.stdout)
         assert out["status"] == "error"
+
+
+class TestPedigreeQueries:
+    """`KnowledgeAPI.get_pedigree` / `list_pedigrees` (view provenance)."""
+
+    @staticmethod
+    def _project(tmp_path):
+        (tmp_path / ".dm2").mkdir()
+        (tmp_path / ".dm2" / "config.yaml").write_text("trace:\n  enabled: true\n", encoding="utf-8")
+        return tmp_path
+
+    def test_absent_record(self, tmp_path):
+        api = KnowledgeAPI(project_root=self._project(tmp_path))
+        assert api.get_pedigree("CV-1") is None
+        assert api.list_pedigrees() == []
+
+        summary = api.pedigree_summary("CV-1")
+        assert summary["pedigree_status"] == "absent"
+        assert summary["pedigree_missing"] == ["author", "creation_date", "source"]
+        assert summary["confidence"] is None
+
+    def test_get_pedigree_and_summary(self, tmp_path):
+        from dm2.core.pedigree import Author, Pedigree, Source
+        from dm2.core.pedigree.store import PedigreeStore
+
+        project = self._project(tmp_path)
+        PedigreeStore(project).save(Pedigree.new(
+            "CV-1",
+            author=Author(type="agent-assisted", model="deepseek-v3"),
+            source=Source(standard="DoDAF V2.02 Vol 2"),
+            reliability="medium",
+            confidence=0.8,
+        ))
+
+        api = KnowledgeAPI(project_root=project)
+        record = api.get_pedigree("CV-1")
+        assert record is not None and record.view_id == "CV-1"
+
+        summary = api.pedigree_summary("CV-1")
+        assert summary["pedigree_status"] == "complete"
+        assert summary["author_type"] == "agent-assisted"
+        assert summary["creation_date"]
+        assert summary["confidence"] == 0.8
+
+    def test_list_pedigrees_filters_by_author_type(self, tmp_path):
+        from dm2.core.pedigree import Author, Pedigree, Source
+        from dm2.core.pedigree.store import PedigreeStore
+
+        project = self._project(tmp_path)
+        store = PedigreeStore(project)
+        store.save(Pedigree.new(
+            "CV-1",
+            author=Author(type="agent-autonomous"),
+            source=Source(standard="DoDAF V2.02 Vol 2"),
+            confidence=0.9,
+        ))
+        store.save(Pedigree.new(
+            "OV-2",
+            author=Author(type="human"),
+            source=Source(standard="DoDAF V2.02 Vol 2"),
+        ))
+
+        api = KnowledgeAPI(project_root=project)
+        assert sorted(entry["view_id"] for entry in api.list_pedigrees()) == ["CV-1", "OV-2"]
+
+        autonomous = api.list_pedigrees(author_type="agent-autonomous")
+        assert [entry["view_id"] for entry in autonomous] == ["CV-1"]
+        assert autonomous[0]["confidence"] == 0.9
+        assert autonomous[0]["pedigree_status"] == "complete"
+        assert autonomous[0]["creation_date"]
