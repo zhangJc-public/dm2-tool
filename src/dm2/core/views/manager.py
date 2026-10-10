@@ -164,6 +164,19 @@ class ViewManager:
         self._persist_pedigree_state(view_id)
         self._save()
 
+    def sync_pedigree_state(self) -> dict[str, str]:
+        """Persist the freshly computed pedigree status for every known view.
+
+        ``dm2 trace migrate`` uses this to stamp ``absent``/``incomplete``/
+        ``complete`` onto a legacy ``view-state.yaml`` without inventing records.
+        """
+        statuses = {}
+        for view_id in self._state:
+            self._persist_pedigree_state(view_id)
+            statuses[view_id] = self._state[view_id].get("pedigree_status", ABSENT)
+        self._save()
+        return statuses
+
     # ── queries ──────────────────────────────────────────────────────────
 
     def _view_info(self, view_id: str, data: dict) -> ViewInfo:

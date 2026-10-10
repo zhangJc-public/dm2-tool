@@ -93,9 +93,10 @@ The audit report SHALL include the DoDAF V2.02 Vol 2 section reference for each 
 The audit commands SHALL be accessible via the existing CLI structure, following the same patterns as `dm2 view` and `dm2 validate`.
 
 #### Scenario: Audit command help
-- **WHEN** user runs `dm2 audit --help`
+- **WHEN** user runs `dm2 audit --help` or `dm2 audit-report --help`
 - **THEN** the system SHALL display usage information including required arguments and options
-- **AND** SHALL show `--json`, `--output`, `--min-confidence` flags
+- **AND** SHALL show `--json` and `--output`
+- **AND** `dm2 audit-report --help` SHALL also show `--min-confidence`
 
 #### Scenario: Audit requires dm2 project
 - **WHEN** user runs `dm2 audit <view_id>` outside a dm2 project

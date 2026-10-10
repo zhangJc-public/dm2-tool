@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dm2-tool/schemas/audit-report.json",
+  "title": "dm2 audit-report --json Response Data",
+  "description": "项目级溯源审计的数据载荷；Markdown 报告写入 output_path。",
+  "type": "object",
+  "properties": {
+    "summary": {
+      "type": "object",
+      "properties": {
+        "total_views": { "type": "integer", "minimum": 0 },
+        "by_lifecycle_state": {
+          "type": "object",
+          "additionalProperties": { "type": "integer", "minimum": 0 }
+        },
+        "with_pedigree": { "type": "integer", "minimum": 0 },
+        "without_pedigree": { "type": "integer", "minimum": 0 },
+        "filtered_out": { "type": "integer", "minimum": 0 },
+        "min_confidence": { "type": ["number", "null"], "description": "未指定时为 null" }
+      },
+      "required": [
+        "total_views",
+        "by_lifecycle_state",
+        "with_pedigree",
+        "without_pedigree",
+        "filtered_out",
+        "min_confidence"
+      ]
+    },
+    "data_group_coverage": {
+      "type": "object",
+      "additionalProperties": { "type": "integer", "minimum": 0 },
+      "description": "有溯源的视图所覆盖的 DM2 数据组及计数"
+    },
+    "views": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "view_id": { "type": "string" },
+          "title": { "type": "string" },
+          "author": { "type": "string" },
+          "creation_date": { "type": "string" },
+          "confidence": { "type": ["number", "null"] },
+          "validation_status": { "type": "string" },
+          "pedigree_status": {
+            "type": "string",
+            "enum": ["complete", "incomplete", "absent"]
+          },
+          "lifecycle_state": { "type": "string" }
+        },
+        "required": [
+          "view_id",
+          "title",
+          "author",
+          "creation_date",
+          "confidence",
+          "validation_status",
+          "pedigree_status",
+          "lifecycle_state"
+        ]
+      }
+    },
+    "trace_gaps": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "缺少溯源记录、缺核心字段或未记录标准出处的视图 ID"
+    },
+    "output_path": { "type": "string" }
+  },
+  "required": ["summary", "data_group_coverage", "views", "trace_gaps", "output_path"]
+}

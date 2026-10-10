@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dm2-tool/schemas/audit.json",
+  "title": "dm2 audit --json Response Data",
+  "description": "单视图溯源审计的数据载荷；Markdown 报告写入 output_path。pedigree 为 null 表示该视图没有溯源记录。",
+  "type": "object",
+  "properties": {
+    "view_id": { "type": "string", "description": "视图 ID，如 CV-1" },
+    "pedigree": { "type": ["object", "null"], "description": "完整 pedigree 记录；无记录时为 null" },
+    "lifecycle_state": { "type": "string", "description": "view-state.yaml 中的生命周期状态" },
+    "generated_at": { "type": "string", "description": "视图生成时间（可能为空）" },
+    "pedigree_status": {
+      "type": "string",
+      "enum": ["complete", "incomplete", "absent"],
+      "description": "溯源完整性状态"
+    },
+    "pedigree_missing": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "缺失的核心字段名"
+    },
+    "output_path": { "type": "string", "description": "Markdown 报告写入路径" }
+  },
+  "required": [
+    "view_id",
+    "pedigree",
+    "lifecycle_state",
+    "generated_at",
+    "pedigree_status",
+    "pedigree_missing",
+    "output_path"
+  ]
+}

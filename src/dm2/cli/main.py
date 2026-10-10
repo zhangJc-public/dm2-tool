@@ -9,9 +9,11 @@ from typing import List, Optional
 
 import typer
 
+from dm2.cli.commands.audit import register_audit_commands
 from dm2.cli.commands.change import register_change_commands
 from dm2.cli.commands.concern import concern_app
 from dm2.cli.commands.knowledge import register_knowledge_commands
+from dm2.cli.commands.trace import register_trace_commands
 from dm2.cli.commands.view import register_view_commands
 
 app = typer.Typer(
@@ -52,6 +54,8 @@ def _require_project(json_flag: bool = False):
 register_knowledge_commands(app)
 register_change_commands(app)
 register_view_commands(app)
+register_trace_commands(app)
+register_audit_commands(app)
 app.add_typer(concern_app, name="concern")
 
 

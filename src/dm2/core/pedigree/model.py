@@ -290,6 +290,22 @@ class Pedigree:
             change=change,
         )
 
+    @classmethod
+    def stub(cls, view_id: str, *, change: str = "") -> "Pedigree":
+        """Open a lenient record for a view whose author/source are not known yet.
+
+        ``pedigree_id`` and ``creation_date`` are dm2-observed facts (the record
+        starts existing now); the core fields stay for the Agent or human to fill,
+        which is what makes ``incomplete`` a meaningful status.
+        """
+        return cls(
+            view_id=view_id,
+            pedigree_id=str(uuid.uuid4()),
+            creation_date=_now(),
+            change=change,
+            strict=False,
+        )
+
     def to_dict(self) -> dict[str, Any]:
         data = asdict(self)
         data.pop("strict", None)

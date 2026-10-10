@@ -36,6 +36,12 @@ PROJECT_COMMANDS = [
     ["validate", "--all"],
     ["run", "--status"],
     ["run", "--agent", "-d", "demo system"],
+    ["trace", "record", "OV-1"],
+    ["trace", "show", "OV-1"],
+    ["trace", "lineage", "--term", "Capability"],
+    ["trace", "migrate"],
+    ["audit", "OV-1"],
+    ["audit-report"],
 ]
 
 

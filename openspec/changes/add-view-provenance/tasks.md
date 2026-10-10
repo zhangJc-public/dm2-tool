@@ -32,24 +32,24 @@
 
 ## 5. CLI Commands — trace record
 
-- [ ] 5.1 Create `src/dm2/cli/commands/trace.py` with `trace_app` Typer subcommand
-- [ ] 5.2 Implement `dm2 trace record <view_id>` with `--summary` and `--reasoning-file` flags
-- [ ] 5.3 Implement `--stdin` flag for piping YAML directly
-- [ ] 5.4 Implement `dm2 trace show <view_id>` (read-only display of full pedigree)
-- [ ] 5.5 Implement `dm2 trace lineage --term <term>` and `--capability <name>` for cross-change queries
-- [ ] 5.6 Register `trace_app` in `src/dm2/cli/main.py` as new subcommand
-- [ ] 5.7 Write CLI tests in `test/test_cli_trace.py` covering happy path, malformed input, missing pedigree
+- [x] 5.1 Create `src/dm2/cli/commands/trace.py` with `trace_app` Typer subcommand
+- [x] 5.2 Implement `dm2 trace record <view_id>` with `--summary` and `--reasoning-file` flags
+- [x] 5.3 Implement `--stdin` flag for piping YAML directly
+- [x] 5.4 Implement `dm2 trace show <view_id>` (read-only display of full pedigree)
+- [x] 5.5 Implement `dm2 trace lineage --term <term>` and `--capability <name>` for cross-change queries
+- [x] 5.6 Register `trace_app` in `src/dm2/cli/main.py` as new subcommand
+- [x] 5.7 Write CLI tests in `test/test_cli_trace.py` covering happy path, malformed input, missing pedigree
 
 ## 6. CLI Commands — audit
 
-- [ ] 6.1 Create `src/dm2/cli/commands/audit.py` with `audit_app` Typer subcommand
-- [ ] 6.2 Implement `dm2 audit <view_id>` with Markdown default output
-- [ ] 6.3 Implement `--json` and `--output` flags
-- [ ] 6.4 Implement `dm2 audit-report` with project-level aggregation
-- [ ] 6.5 Implement `--min-confidence` filter on audit-report
-- [ ] 6.6 Implement audit report's "trace gaps" section (views with absent/incomplete pedigrees)
-- [ ] 6.7 Register `audit_app` in `src/dm2/cli/main.py`
-- [ ] 6.8 Write CLI tests in `test/test_cli_audit.py`
+- [x] 6.1 Create `src/dm2/cli/commands/audit.py` registering the top-level `dm2 audit` and `dm2 audit-report` commands
+- [x] 6.2 Implement `dm2 audit <view_id>` with Markdown default output
+- [x] 6.3 Implement `--json` and `--output` flags
+- [x] 6.4 Implement `dm2 audit-report` with project-level aggregation
+- [x] 6.5 Implement `--min-confidence` filter on audit-report
+- [x] 6.6 Implement audit report's "trace gaps" section (views with absent/incomplete pedigrees)
+- [x] 6.7 Register the audit commands in `src/dm2/cli/main.py`
+- [x] 6.8 Write CLI tests in `test/test_cli_audit.py`
 
 ## 7. View Lifecycle Integration
 
@@ -84,11 +84,11 @@
 
 ## 11. Migration Support
 
-- [ ] 11.1 Create `src/dm2/core/pedigree/migration.py` with one-time migration helper for existing projects
-- [ ] 11.2 Migration: scan existing view files, mark as `pedigree_status: absent` in view-state.yaml
-- [ ] 11.3 Add `dm2 trace migrate` command to run the migration
-- [ ] 11.4 Add `config.yaml` option `trace.enabled: false` to disable all pedigree writes (escape hatch for legacy projects)
-- [ ] 11.5 Write tests for migration correctness
+- [x] 11.1 Add `ViewManager.sync_pedigree_state()` as the one-time migration helper (no separate `migration.py` needed)
+- [x] 11.2 Migration: scan existing view files, mark as `pedigree_status: absent` in view-state.yaml
+- [x] 11.3 Add `dm2 trace migrate` command to run the migration
+- [x] 11.4 Add `config.yaml` option `trace.enabled: false` to disable all pedigree writes (escape hatch for legacy projects)
+- [x] 11.5 Write tests for migration correctness
 
 ## 12. Testing & Documentation
 

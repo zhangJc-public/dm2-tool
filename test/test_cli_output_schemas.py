@@ -11,7 +11,9 @@ actually carries the enum name and was missing ``Disorder``.
 
 ``_validate`` implements the subset of JSON Schema draft 2020-12 that these
 files use. It deliberately **fails loudly on any keyword it does not implement**,
-so an unsupported assertion can never turn into a silent pass.
+so an unsupported assertion can never turn into a silent pass. ``type`` accepts a
+single name or a list, which is what makes nullable fields (``object|null``)
+expressible here.
 """
 
 import json
@@ -47,7 +49,26 @@ _PYTHON_TYPES = {
     "integer": int,
     "number": (int, float),
     "boolean": bool,
+    "null": type(None),
 }
+
+
+def _matches_type(instance, declared) -> bool:
+    """JSON Schema ``type`` may be one name or a list of alternatives.
+
+    Unknown names match nothing, so a typo in a schema fails loudly instead of
+    silently accepting every value.
+    """
+    for option in declared if isinstance(declared, list) else [declared]:
+        expected = _PYTHON_TYPES.get(option)
+        if expected is None:
+            continue
+        if isinstance(instance, expected):
+            # bool is an int subclass; a JSON boolean is not a JSON integer.
+            if option == "integer" and isinstance(instance, bool):
+                continue
+            return True
+    return False
 
 
 def unsupported_keywords(schema, path="root"):
@@ -86,15 +107,8 @@ def validate(instance, schema, path="data"):
         return errors
 
     declared = schema.get("type")
-    if declared:
-        expected = _PYTHON_TYPES.get(declared)
-        if expected is not None:
-            wrong = not isinstance(instance, expected)
-            # bool is an int subclass; a JSON boolean is not a JSON integer.
-            if declared == "integer" and isinstance(instance, bool):
-                wrong = True
-            if wrong:
-                return [f"{path}: 期望 {declared}，实为 {type(instance).__name__}"]
+    if declared and not _matches_type(instance, declared):
+        return [f"{path}: 期望 {declared}，实为 {type(instance).__name__}"]
 
     if "enum" in schema and instance not in schema["enum"]:
         errors.append(f"{path}: {instance!r} 不在 enum {schema['enum']}")
@@ -206,6 +220,43 @@ SCHEMA_CASES = [
 
 @pytest.mark.parametrize("schema_name,args", SCHEMA_CASES, ids=[c[0] for c in SCHEMA_CASES])
 def test_command_data_satisfies_declared_schema(schema_name, args, project):
+    result = CliRunner().invoke(app, args)
+    assert result.exit_code == 0, result.stdout
+    errors = validate(_payload(result)["data"], load_schema(schema_name))
+    assert errors == [], f"{schema_name} 与 {args[0]} 实际输出不符:\n" + "\n".join(errors)
+
+
+@pytest.fixture
+def project_with_pedigree(project):
+    """The scaffolded project plus one registered view with a complete record."""
+    from dm2.core.pedigree.model import Author, Pedigree, Reasoning, Source
+    from dm2.core.pedigree.store import PedigreeStore
+    from dm2.core.views.manager import ViewManager
+
+    ViewManager(project).register_view("CV-1", change_name="demo")
+    PedigreeStore(project).save(Pedigree.new(
+        "CV-1",
+        author=Author(type="agent-assisted", model="deepseek-v3"),
+        source=Source(standard="DoDAF V2.02 Vol 2", section="CV-1"),
+        reasoning=Reasoning(summary="capability taxonomy"),
+        reliability="medium",
+        confidence=0.8,
+    ))
+    return project
+
+
+PEDIGREE_SCHEMA_CASES = [
+    ("audit.json", ["audit", "CV-1", "--json"]),
+    ("audit-report.json", ["audit-report", "--json"]),
+    ("trace-show.json", ["trace", "show", "CV-1", "--json"]),
+    ("trace-lineage.json", ["trace", "lineage", "--term", "Capability", "--json"]),
+]
+
+
+@pytest.mark.parametrize(
+    "schema_name,args", PEDIGREE_SCHEMA_CASES, ids=[case[0] for case in PEDIGREE_SCHEMA_CASES]
+)
+def test_pedigree_command_data_satisfies_declared_schema(schema_name, args, project_with_pedigree):
     result = CliRunner().invoke(app, args)
     assert result.exit_code == 0, result.stdout
     errors = validate(_payload(result)["data"], load_schema(schema_name))
