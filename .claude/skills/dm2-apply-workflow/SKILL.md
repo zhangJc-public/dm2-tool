@@ -78,9 +78,21 @@ Implement the architecture views planned in `/dm2:propose` by reading tasks.md a
       python3 -m dm2.cli.main view register <view_id> --change "<name>" --path "dm2-changes/<name>/views/<View-ID>.<ext>"
       ```
 
-   e. **Mark task complete** in tasks.md: change `- [ ]` to `- [x]` for this task.
+   e. **Record generation reasoning** (required before moving to the next view):
+      ```bash
+      python3 -m dm2.cli.main trace record <view_id> --summary "<content approach>" --reasoning-file "dm2-changes/<name>/analysis/trace-<View-ID>.yaml"
+      ```
+      The YAML file MUST contain:
+      - `decision_factors` — the input data, analysis results, and DM2 terms that drove the content; every entry needs `factor` and `source`
+      - `alternatives_considered` — content approaches weighed and why each was rejected (`option` + `rejected_because`)
+      - `known_limitations` — aspects the Agent is uncertain about
+      - `source.standard: "DoDAF V2.02 Vol 2"`, `source.section` (from `views.yaml`), and `source.dm2_terms_used` listing every DM2 term referenced by the view with its `definition_ref`
 
-   f. **If a view requires user input** (unclear from context):
+      **If `dm2 trace record` fails, halt generation for that view**, report the failure to the human, and leave the task unchecked in tasks.md with the note `trace record failed`. Do NOT continue to the next view as if this view were complete.
+
+   f. **Mark task complete** in tasks.md: change `- [ ]` to `- [x]` for this task.
+
+   g. **If a view requires user input** (unclear from context):
       - Note the issue and continue with other views
       - Report skipped views at the end
 
@@ -111,6 +123,7 @@ Generating view 4/7: OV-2 Operational Resource Flow
 ## Apply Complete: <change-name>
 
 **Generated:** N/N views
+**Trace recorded:** N/N views
 
 ### Generated Views
 | View | Output Path |
@@ -153,3 +166,5 @@ Run `/dm2:apply` again to retry skipped views, or `/dm2:continue` for step-by-st
 - Always pass `--json` for structured output
 - Write generated views to `dm2-changes/<name>/views/<View-ID>.<ext>` (.md or .html, whichever renders best)
 - After writing each view, register it: `python3 -m dm2.cli.main view register <view_id> --change "<name>" --path "dm2-changes/<name>/views/<View-ID>.<ext>"`
+- After registering each view, record its generation reasoning with `dm2 trace record` before moving on; on failure, halt that view and leave its task unchecked (`trace record failed`)
+- Human edits made to a view file after generation are captured automatically by `dm2 view register` / `dm2 validate` (content hash) — never hand-edit pedigree files

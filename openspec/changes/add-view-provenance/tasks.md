@@ -70,11 +70,11 @@
 
 ## 9. SKILL.md Template Updates
 
-- [ ] 9.1 Update `src/dm2/core/templates/workflows/propose.py` to include Trace Plan section instructions and `dm2 trace record` calls in generated SKILL.md
-- [ ] 9.2 Update `src/dm2/core/templates/workflows/apply.py` to require `dm2 trace record` after each view generation
-- [ ] 9.3 Add `dm2 audit <view_id>` reference in the SKILL.md output
-- [ ] 9.4 Keep pedigree guidance in the workflow templates: `generator.py` needs no change (it renders whatever the templates provide)
-- [ ] 9.5 Regenerate committed agent artifacts for both adapters (`python3 scripts/render_agent_config.py`) and extend `test_workflow_templates.py` assertions for the trace requirements
+- [x] 9.1 Update `src/dm2/core/templates/workflows/propose.py` to include Trace Plan section instructions and `dm2 trace record` calls in generated SKILL.md
+- [x] 9.2 Update `src/dm2/core/templates/workflows/apply.py` to require `dm2 trace record` after each view generation
+- [x] 9.3 Add `dm2 audit <view_id>` reference in the SKILL.md output
+- [x] 9.4 Keep pedigree guidance in the workflow templates: `generator.py` needs no change (it renders whatever the templates provide)
+- [x] 9.5 Regenerate committed agent artifacts for both adapters (`python3 scripts/render_agent_config.py`) and extend `test_workflow_templates.py` assertions for the trace requirements
 
 ## 10. Knowledge API Integration
 

@@ -189,3 +189,44 @@ class TestDshAdapterGeneration:
         assert "the `dm2-new-workflow` skill" in onboard
         archive = (root / ".dsh" / "skills" / "dm2-archive-workflow" / "SKILL.md").read_text()
         assert "the dm2-apply-workflow skill" in archive
+
+
+class TestProposeTraceRequirements:
+    """`propose` must plan provenance and record it (dm2-propose-workflow delta)."""
+
+    def test_requires_a_trace_plan_and_pedigree_section(self):
+        instr = _workflow("propose").skill.instructions
+        assert "Trace Plan" in instr
+        assert "Pedigree & Trace" in instr
+        assert "trace not recorded" in instr
+        assert "(R1–R5)" in instr
+
+    def test_instructs_the_agent_to_record_reasoning(self):
+        instr = _workflow("propose").skill.instructions
+        assert "trace record" in instr
+        assert "--reasoning-file" in instr
+        assert "decision_factors" in instr
+        assert "alternatives_considered" in instr
+
+
+class TestApplyTraceRequirements:
+    """`apply` must record generation reasoning for every view."""
+
+    def test_requires_generation_reasoning_per_view(self):
+        instr = _workflow("apply").skill.instructions
+        assert "trace record" in instr
+        assert "--reasoning-file" in instr
+        assert "decision_factors" in instr
+        assert "alternatives_considered" in instr
+        assert "known_limitations" in instr
+        assert "DoDAF V2.02 Vol 2" in instr
+        assert "source.dm2_terms_used" in instr
+
+    def test_trace_failure_halts_that_view(self):
+        instr = _workflow("apply").skill.instructions
+        assert "halt generation for that view" in instr
+        assert "trace record failed" in instr
+
+    def test_guardrails_mention_automatic_human_edit_capture(self):
+        instr = _workflow("apply").skill.instructions
+        assert "content hash" in instr

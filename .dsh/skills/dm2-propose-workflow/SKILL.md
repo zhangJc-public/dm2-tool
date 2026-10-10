@@ -124,6 +124,8 @@ Run a complete DoDAF architecture analysis and generate planning artifacts with 
       - **Selected concerns**: Which concerns the Human selected and why
       - **Focused views** (P1/P2): The concern-driven core view set
       - **Additional candidate views** (P3): Views not in any selected concern, for reference
+      - **Trace Plan** section: for each recommended view, the data groups that triggered the recommendation, the DM2 terms expected to be referenced, the validation rules to run (R1–R5), and the expected confidence level (`low`/`medium`/`high`). Also list any activated data group the proposed view set does not cover
+      - **Pedigree & Trace** subsection: the minimum pedigree fields each view needs before it can reach `verified` (`author`, `creation_date`, `source`) and how to review a view's trace with `dm2 audit <view_id>`
 
    b. **design.md** — technical approach
       - Data group activation analysis (which groups scored highest)
@@ -138,7 +140,34 @@ Run a complete DoDAF architecture analysis and generate planning artifacts with 
       - Phase-labelled: P1 (concern core), P2 (concern extended), P3 (supplementary), `P3 supplement` (dependency-complete ancestors from step 7, with rationale)
       - Total view count should be focused (typically ≤ 12, vs unfocused 15+)
 
-9. **Show results**
+9. **Record the trace for each recommended view**
+
+   Before finishing, record the planning rationale for every view in the focused
+   view set, so the audit trail exists before generation:
+
+   ```bash
+   dm2 trace record <View-ID> --summary "<why this view is in the set>" --reasoning-file dm2-changes/<name>/analysis/trace-<View-ID>.yaml
+   ```
+
+   The `--reasoning-file` is valid YAML with this structure:
+
+   ```yaml
+   reasoning:
+     summary: "<one-paragraph rationale>"
+     decision_factors:
+       - factor: "data group activation: 03-capability"
+         score: 0.85
+         source: "dm2 analyze --json"
+     alternatives_considered:
+       - option: "Generate OV-5a instead of CV-2"
+         rejected_because: "User description focuses on capability taxonomy"
+   ```
+
+   - `decision_factors[].factor` and `decision_factors[].source` are required; `alternatives_considered[].option` and `.rejected_because` are required. Malformed input is rejected with `INVALID_ARG` — fix the file and retry.
+   - `--summary` carries the short rationale; the file carries the structured factors.
+   - **A trace failure MUST NOT block the propose workflow**: log the error, continue, and record `trace not recorded: <reason>` for that view in the proposal's Trace Plan section.
+
+10. **Show results**
 
    ```
    ## Analysis Complete: <change-name>
@@ -147,6 +176,7 @@ Run a complete DoDAF architecture analysis and generate planning artifacts with 
    **Selected Concerns**: <concern names>
    **Activated Data Groups**: <top 3-5 groups with scores>
    **Focused Views**: <N views (P1+P2)>
+   **Trace recorded**: <N>/<M> views (see Trace Plan)
 
    ### Phase 1 (Concern Core)
    - <view-id>: <brief description>
@@ -207,6 +237,8 @@ Present concerns with score ≥ 0.10 to the Human (up to 5 options).
 - The focused view set from selected concerns MUST be a subset/superset of candidate_views; use union logic
 - The focused view set MUST be dependency-complete: every view's transitive ancestors (per the analyze JSON `view_dependencies`) are present; supplemented ancestors go into P3 marked `P3 supplement` with their dependency rationale
 - Pictorial views (OV-1/CV-1/AV-1) are the decision-maker communication baseline — never exclude them solely because the monster matrix marks them data-light
+- Record the trace for every recommended view (`dm2 trace record` with `--summary` and `--reasoning-file`); a trace failure is logged as `trace not recorded: <reason>` in the Trace Plan, never a reason to abandon the plan
+- The proposal's `## Trace Plan` section and `Pedigree & Trace` subsection are required artifacts, not optional prose
 - If the user provides additional context during the conversation (compliance requirements, stakeholder roles, etc.), incorporate it into the artifacts and keyword matching
 - Always let the Human make the final concern selection — never auto-select
 - Focused view set target: ≤ 12 views (vs unfocused 15+)
