@@ -27,6 +27,8 @@ def search(
         typer.echo(f"  {r['definition'][:120]}...")
         if r['aliases']:
             typer.echo(f"  别名: {', '.join(r['aliases'])}")
+        if r.get('zh_aliases'):
+            typer.echo(f"  中文别名: {', '.join(r['zh_aliases'])}")
 
 
 @knowledge_app.command()

@@ -120,7 +120,7 @@ DM2_DEBUG=1 dm2 analyze ...   # 显示索引器诊断（默认静默，保证 --
 - **变更生命周期** — 每个变更在 `dm2-changes/<name>/` 下有 proposal、design、tasks 和 views/ 目录。
 - **路径优先** — `get_reference_path()` 优先 `.dm2/reference/` 本地副本，回退到包内置 `dm2-reference/core/`。
 - **分发形态：editable-only** — 唯一支持 `pip install -e .`，不发布 wheel/sdist 到 PyPI。非 editable 安装因包外数据文件不入 wheel 而无法工作，会以 `KB_NOT_FOUND` 明确失败（证据与判定见 `docs/foundation.md` §5 D10）。需要正式 wheel 分发时，先做「运行时资产迁入 `src/dm2/`」的变更。
-- **索引派生** — 改权威源 YAML（`dm2-data-dictionary.yaml` / `dm2-metamodel-2.02.yaml`）后必须重跑 `python3 scripts/build_knowledge_indexes.py` 再生成派生 JSON（快照测试 `test/test_knowledge_indexes.py` 会拦截未再生成的索引）；组模板 `relationships:` 槽位用 `--fix-templates` 从关联目录投影同步。运行时只加载紧凑 JSON，不解析 840KB 源 YAML。
+- **索引派生** — 改权威源 YAML（`dm2-data-dictionary.yaml` / `dm2-metamodel-2.02.yaml` / `dm2-term-zh-aliases.yaml`）后必须重跑 `python3 scripts/build_knowledge_indexes.py` 再生成派生 JSON（快照测试 `test/test_knowledge_indexes.py` 会拦截未再生成的索引）；组模板 `relationships:` 槽位用 `--fix-templates` 从关联目录投影同步。运行时只加载紧凑 JSON，不解析 840KB 源 YAML。`dm2-term-zh-aliases.yaml` 是中文召回的唯一来源：**每个术语都必须有中文别名**（测试强制），别名键必须是现有术语名（构建时校验），否则中文查询静默 0 命中。
 - **约定优先于配置** — 文件名、目录结构是系统约定的接口，减少配置项。如需动态行为，走模板生成而非运行时配置。
 - **测试风格** — 使用 pytest，测试放在 `test/` 目录，与 `src/dm2/` 结构对应。
 

@@ -192,3 +192,61 @@ class TestPedigreeQueries:
         assert autonomous[0]["confidence"] == 0.9
         assert autonomous[0]["pedigree_status"] == "complete"
         assert autonomous[0]["creation_date"]
+
+
+class TestChineseSearchRecall:
+    """D9: Chinese and multi-token queries must recall the right terms."""
+
+    @pytest.mark.parametrize("query,expected", [
+        ("能力", "Capability"),
+        ("执行者", "Performer"),
+        ("活动", "Activity"),
+        ("度量", "Measure"),
+        ("项目", "Project"),
+        ("系统", "System"),
+        ("愿景", "Vision"),
+    ])
+    def test_exact_chinese_alias_ranks_first(self, api, query, expected):
+        results = api.search_terms(query)
+        assert results, f"{query} 应至少命中一个术语"
+        assert results[0].term == expected
+
+    def test_result_exposes_the_curated_alias(self, api):
+        capability = next(r for r in api.search_terms("能力") if r.term == "Capability")
+        assert "能力" in capability.zh_aliases
+        # standard aliases stay separate from the curated overlay
+        assert "能力" not in capability.aliases
+
+    def test_association_reachable_by_chinese_alias(self, api):
+        results = api.search_terms("活动属于能力")
+        assert results
+        assert results[0].term == "activityPartOfCapability"
+
+    def test_group_alias_recalls_group_members(self, api):
+        results = api.search_terms("资源流")
+        assert results
+        assert all("11-resource-flow" in r.groups for r in results)
+
+    def test_multi_token_requires_every_token(self, api):
+        both = api.search_terms("能力 活动")
+        assert any(r.term == "activityPartOfCapability" for r in both)
+
+        assert api.search_terms("能力 zzzznope") == []
+
+    def test_english_behaviour_is_unchanged(self, api):
+        assert any(r.term == "Performer" for r in api.search_terms("Performer"))
+        assert api.search_terms("Actor")[0].term == "Performer"
+        assert api.search_terms("01-performer")
+
+    def test_cli_envelope_reports_chinese_hits(self):
+        from test._cli import run_cli
+
+        proc = run_cli(["knowledge", "search", "资源流", "--json"], capture_output=True, text=True)
+        assert proc.returncode == 0, proc.stderr
+        assert proc.stderr == "", f"stderr not clean: {proc.stderr!r}"
+        out = json.loads(proc.stdout)
+        assert out["status"] == "success"
+        assert out["data"]["count"] > 0
+        # Group-level recall is attributable: every hit belongs to the 资源流 group.
+        assert all("11-resource-flow" in r["groups"] for r in out["data"]["results"])
+        assert any(r["zh_aliases"] for r in out["data"]["results"])

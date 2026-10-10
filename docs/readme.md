@@ -477,6 +477,9 @@ dm2 version --json                # JSON 格式
 
 ```bash
 dm2 knowledge search "capability"       # 搜索术语（名称/别名/定义）
+dm2 knowledge search "能力"             # 中文别名检索（279 个术语均有中文别名）
+dm2 knowledge search "资源流"           # 数据组中文别名 → 召回该组术语
+dm2 knowledge search "能力 活动"        # 多词按 token AND 匹配（每个词都要命中）
 dm2 knowledge concept Capability        # 查看概念详情
 dm2 knowledge term Performer            # 术语详情（定义/别名/数据组/必要视图/关联端点）
 dm2 knowledge taxonomy Performer        # 类型分类学（父类/子类/Type-Individual 配对）
@@ -491,6 +494,13 @@ dm2 knowledge stats                     # 知识库统计
 ```
 
 所有子命令支持 `--json` 输出。`term`/`taxonomy`/`associations`/`content` 四个子命令基于元模型派生索引（关联目录 + 分类学 + 视图内容规范），回答"这个视图该有什么内容"和"这两个类型怎么连"两类问题。
+
+**中文检索**：DM2 数据字典的术语定义与别名全部是英文，因此 dm2 额外策展了 `dm2-reference/dm2-term-zh-aliases.yaml`（279 个术语 + 17 个数据组的中文别名），构建时并入派生索引 `terms.json` 的 `zh_aliases` / `zh_groups`：
+
+- 查询按空白与中英文标点**分词**；单 token 走子串匹配，多 token 要求**每个 token 都命中**（`能力 活动` 不会把整库拉进来）
+- 排序分三层：术语名或**完整别名**命中 → 名称/别名内子串命中 → 仅定义或数据组命中；段内按术语名字典序，结果可比
+- 数据组中文别名会继承到组内术语，所以「资源流」这类**组级**中文查询也能召回（DM2 没有 `ResourceFlow` 术语——它是数据组）
+- `search --json` 的结果项同时给出标准 `aliases` 与策展的 `zh_aliases`，用于区分「来自标准」与「dm2 中文对照」
 
 ### `dm2 change` — 架构变更管理（AI Agent 接口）
 

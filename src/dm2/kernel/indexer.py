@@ -25,6 +25,15 @@ def _diag(msg: str) -> None:
         print(msg, file=sys.stderr)
 
 
+#: Query separators for term search: whitespace plus common Chinese/English punctuation.
+_QUERY_SEPARATOR = re.compile(r"[\s,，、;；:：/\\|()（）\[\]【】\"'“”‘’]+")
+
+
+def _search_tokens(query: str) -> list[str]:
+    """Split a query into casefolded tokens (empty tokens dropped)."""
+    return [token.casefold() for token in _QUERY_SEPARATOR.split(query.strip()) if token]
+
+
 VALID_MODEL_CATEGORIES = {
     "Structural", "Behavioral", "Tree", "Mapping",
     "Tabular", "Pictorial", "Timeline", "Ontology",
@@ -75,6 +84,10 @@ class DM2Term:
     # 派生索引（terms.json，源自 DM2 数据字典）字段
     curie_id: str = ""          # dodaf:<Term> CURIE
     association: bool = False   # 是否为关联/元组术语
+    # dm2 策展的中文别名（dm2-term-zh-aliases.yaml → terms.json），只影响召回
+    zh_alias: list[str] = field(default_factory=list)
+    # 所属数据组的中文别名（同源派生），让「资源流」这类组级查询能召回组内术语
+    zh_group: list[str] = field(default_factory=list)
 
 
 @dataclass
@@ -167,6 +180,7 @@ class DM2KnowledgeIndexer:
 
         for item in data:
             aliases = item.get("aliases") or []
+            zh_aliases = item.get("zh_aliases") or []
             term = DM2Term(
                 term=item.get("term", ""),
                 definition=item.get("definition", ""),
@@ -176,6 +190,8 @@ class DM2KnowledgeIndexer:
                 file_path=str(json_path),
                 curie_id=item.get("id", ""),
                 association=bool(item.get("association")),
+                zh_alias=zh_aliases if isinstance(zh_aliases, list) else [],
+                zh_group=item.get("zh_groups") or [],
             )
             self._terms_cache[term.term] = term
 
@@ -312,17 +328,43 @@ class DM2KnowledgeIndexer:
         return self._terms_cache.get(term_name)
 
     def search_terms(self, query: str) -> list[DM2Term]:
-        q = query.lower()
-        q_nospace = q.replace(" ", "")
-        results = []
-        for t in self._terms_cache.values():
-            if q in t.term.lower() or q in t.definition.lower():
-                results.append(t)
-            elif any(q in str(a).lower() for a in t.alias):
-                results.append(t)
-            elif any(q_nospace in g.lower().replace(" ", "") for g in t.groups):
-                results.append(t)
-        return results
+        """Match terms on name, definition, aliases, curated Chinese aliases, groups.
+
+        A single-token query keeps the original substring behaviour. A multi-token
+        query requires **every** token to appear somewhere in the term's searchable
+        text, which is what makes ``能力 分类`` / ``capability taxonomy`` precise
+        instead of matching most of the dictionary.
+        """
+        tokens = _search_tokens(query)
+        if not tokens:
+            return []
+
+        scored: list[tuple[int, str, DM2Term]] = []
+        for term in self._terms_cache.values():
+            haystack = " ".join([
+                term.term,
+                term.definition,
+                *[str(a) for a in term.alias],
+                *[str(z) for z in term.zh_alias],
+                *[str(g) for g in term.groups],
+                *[str(g) for g in term.zh_group],
+            ]).casefold()
+            if not all(token in haystack for token in tokens):
+                continue
+            # Tier 0: a token IS the term name or a whole curated/standard alias.
+            # Tier 1: a token appears inside some name/alias. Tier 2: definition
+            # or group hit only. Ranked ordering keeps the likely answer first.
+            names = {term.term.casefold(), *[str(z).casefold() for z in term.zh_alias]}
+            names.update(str(a).casefold() for a in term.alias)
+            if names & set(tokens):
+                tier = 0
+            elif any(token in name for token in tokens for name in names):
+                tier = 1
+            else:
+                tier = 2
+            scored.append((tier, term.term.casefold(), term))
+        scored.sort(key=lambda item: (item[0], item[1]))
+        return [term for _, _, term in scored]
 
     def get_concept(self, name: str) -> Optional[DM2Concept]:
         return self._concepts_cache.get(name)

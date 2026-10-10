@@ -33,16 +33,10 @@ def regenerated(builder):
     dd = yaml.safe_load((builder.REF / "dm2-data-dictionary.yaml").read_text(encoding="utf-8"))
     dd_terms = dd if isinstance(dd, list) else dd.get("terms", [])
     mm = yaml.safe_load((builder.REF / "dm2-metamodel-2.02.yaml").read_text(encoding="utf-8"))
-    terms = builder.build_terms(dd_terms)
-    associations = builder.build_associations(mm)
-    taxonomy = builder.build_taxonomy(mm)
-    content_spec = builder.build_view_content_spec(dd_terms, associations)
-    return {
-        "terms.json": terms,
-        "associations.json": associations,
-        "taxonomy.json": taxonomy,
-        "view-content-spec.json": content_spec,
-    }
+    outputs = builder.build_all(dd_terms, mm, builder.data_group_ids())
+    outputs.pop("_zh_aliases")
+    outputs.pop("_zh_group_aliases")
+    return outputs
 
 
 def _committed(name):
@@ -91,3 +85,71 @@ class TestSnapshotFreshness:
         assert _committed(name) == regenerated[name], (
             f"{name} is stale — run: python3 scripts/build_knowledge_indexes.py"
         )
+
+
+class TestChineseAliases:
+    """The curated Chinese overlay must be complete and consistent (D9)."""
+
+    def test_every_term_carries_a_chinese_alias(self, regenerated):
+        missing = [t["term"] for t in regenerated["terms.json"] if not t.get("zh_aliases")]
+        assert missing == [], f"缺中文别名的术语（中文查询将 0 命中）: {missing}"
+
+    def test_every_data_group_carries_chinese_aliases(self, builder, regenerated):
+        source = yaml.safe_load(builder.ZH_ALIAS_PATH.read_text(encoding="utf-8"))
+        assert set(source["groups"]) == builder.data_group_ids()
+
+    def test_group_aliases_flow_into_their_terms(self, regenerated):
+        members = [t for t in regenerated["terms.json"] if "11-resource-flow" in t["groups"]]
+        assert members, "resource-flow group has no terms"
+        assert all("资源流" in t["zh_groups"] for t in members)
+
+    @staticmethod
+    def _source(tmp_path, data):
+        path = tmp_path / "zh.yaml"
+        path.write_text(yaml.safe_dump(data, allow_unicode=True), encoding="utf-8")
+        return path
+
+    def test_complete_source_passes(self, builder, tmp_path):
+        path = self._source(tmp_path, {
+            "aliases": {"Activity": ["活动"]},
+            "groups": {"02-activity": ["活动"]},
+        })
+        terms, groups = builder.load_zh_aliases(path, {"Activity"}, {"02-activity"})
+        assert terms == {"Activity": ["活动"]}
+        assert groups == {"02-activity": ["活动"]}
+
+    def test_unknown_term_key_fails_the_build(self, builder, tmp_path):
+        path = self._source(tmp_path, {"aliases": {"Nope": ["无"]}})
+        with pytest.raises(SystemExit):
+            builder.load_zh_aliases(path, {"Activity"}, {"02-activity"})
+
+    def test_missing_alias_for_a_term_fails_the_build(self, builder, tmp_path):
+        path = self._source(tmp_path, {"aliases": {"Activity": ["活动"]}})
+        with pytest.raises(SystemExit):
+            builder.load_zh_aliases(path, {"Activity", "Capability"}, {"02-activity"})
+
+    def test_empty_alias_fails_the_build(self, builder, tmp_path):
+        path = self._source(tmp_path, {"aliases": {"Activity": ["   "]}})
+        with pytest.raises(SystemExit):
+            builder.load_zh_aliases(path, {"Activity"}, {"02-activity"})
+
+    def test_duplicate_alias_fails_the_build(self, builder, tmp_path):
+        path = self._source(tmp_path, {"aliases": {"Activity": ["活动", "活动"]}})
+        with pytest.raises(SystemExit):
+            builder.load_zh_aliases(path, {"Activity"}, {"02-activity"})
+
+    def test_unknown_group_key_fails_the_build(self, builder, tmp_path):
+        path = self._source(tmp_path, {
+            "aliases": {"Activity": ["活动"]},
+            "groups": {"99-nope": ["无"]},
+        })
+        with pytest.raises(SystemExit):
+            builder.load_zh_aliases(path, {"Activity"}, {"02-activity"})
+
+    def test_missing_group_fails_the_build(self, builder, tmp_path):
+        path = self._source(tmp_path, {
+            "aliases": {"Activity": ["活动"]},
+            "groups": {"02-activity": ["活动"]},
+        })
+        with pytest.raises(SystemExit):
+            builder.load_zh_aliases(path, {"Activity"}, {"02-activity", "03-capability"})

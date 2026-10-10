@@ -8,6 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **中文术语检索召回**（OpenSpec 变更 `add-chinese-term-aliases`，关闭地基缺口 D9）：
+  - 新增策展权威源 `dm2-reference/dm2-term-zh-aliases.yaml`：279 个术语 + 17 个数据组的中文别名；
+    构建时校验未知术语键、未知数据组键、空别名、重复别名与遗漏术语，违规即失败
+  - 派生索引 `terms.json` 增加 `zh_aliases` / `zh_groups`；`dm2 knowledge search` 命中中文别名，
+    查询按空白与中英文标点分词（多 token 要求**全部命中**），排序改为
+    「术语名/完整别名 → 名称别名内子串 → 仅定义或数据组」
+  - `dm2 knowledge search --json` 结果项新增 `zh_aliases`（标准 `aliases` 语义不变）；人类输出显示中文别名
+  - 实测：`search "资源流"`、`"能力"`、`"执行者"`、`"活动属于能力"` 均有正确召回（变更前恒为 0）
 - **视图溯源（DM2 Pedigree）**（OpenSpec 变更 `add-view-provenance`）：
   - **事实层**由 CLI 自动捕获（视图注册、状态转换、校验结果、视图文件内容哈希变化），
     **理由层**由外部 AI Agent 经 `dm2 trace record` 主动声明；两层在存储与呈现上严格分离

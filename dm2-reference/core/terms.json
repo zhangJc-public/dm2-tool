@@ -14,6 +14,10 @@
       "Plan",
       "Project"
     ],
+    "zh_aliases": [
+      "活动",
+      "作战活动"
+    ],
     "groups": [
       "01-performer",
       "02-activity",
@@ -26,6 +30,24 @@
       "13-information-pedigree",
       "15-reification",
       "16-information-data"
+    ],
+    "zh_groups": [
+      "主体",
+      "信息与数据",
+      "信息数据",
+      "信息溯源",
+      "具体化",
+      "实体化",
+      "执行者",
+      "服务",
+      "活动",
+      "溯源",
+      "能力",
+      "血统",
+      "规则",
+      "资源流",
+      "资源流动",
+      "项目"
     ],
     "association": false,
     "status": "a. In Model",
@@ -36,6 +58,9 @@
     "term": "activityConsumesResource",
     "definition": "Represents that an activity consumes a resource",
     "aliases": [],
+    "zh_aliases": [
+      "活动消耗资源"
+    ],
     "groups": [
       "02-activity",
       "03-capability",
@@ -48,6 +73,23 @@
       "13-information-pedigree",
       "15-reification",
       "16-information-data"
+    ],
+    "zh_groups": [
+      "信息与数据",
+      "信息数据",
+      "信息溯源",
+      "具体化",
+      "实体化",
+      "服务",
+      "活动",
+      "溯源",
+      "能力",
+      "血统",
+      "规则",
+      "资源",
+      "资源流",
+      "资源流动",
+      "项目"
     ],
     "association": true,
     "status": "a. In Model",
@@ -58,9 +100,16 @@
     "term": "activityMapsToCapabilityType",
     "definition": "Represents that an activity was / is / can-be/ must-be conducted under certain conditions with a spatiotemporal overlap of the activity with the condition.",
     "aliases": [],
+    "zh_aliases": [
+      "活动映射到能力类型"
+    ],
     "groups": [
       "02-activity",
       "03-capability"
+    ],
+    "zh_groups": [
+      "活动",
+      "能力"
     ],
     "association": true,
     "status": "a. In Model",
@@ -71,9 +120,17 @@
     "term": "activityPartOfCapability",
     "definition": "A disposition to manifest an Activity. An Activity to be performed to achieve a desired effect under specified [performance] standards and conditions through combinations of ways and means.",
     "aliases": [],
+    "zh_aliases": [
+      "活动属于能力",
+      "活动归属能力"
+    ],
     "groups": [
       "02-activity",
       "03-capability"
+    ],
+    "zh_groups": [
+      "活动",
+      "能力"
     ],
     "association": true,
     "status": "a. In Model",
@@ -84,11 +141,22 @@
     "term": "activityPartOfProjectType",
     "definition": "A wholePart relationship between a Project and an Activity (Task) that is part of the Project",
     "aliases": [],
+    "zh_aliases": [
+      "活动属于项目类型"
+    ],
     "groups": [
       "02-activity",
       "09-project",
       "15-reification",
       "16-information-data"
+    ],
+    "zh_groups": [
+      "信息与数据",
+      "信息数据",
+      "具体化",
+      "实体化",
+      "活动",
+      "项目"
     ],
     "association": true,
     "status": "a. In Model",
@@ -99,6 +167,9 @@
     "term": "activityPerformableUnderCondition",
     "definition": "Represents that an activity was / is / can-be/ must-be conducted under certain conditions with a spatiotemporal overlap of the activity with the condition.",
     "aliases": [],
+    "zh_aliases": [
+      "活动可在条件下执行"
+    ],
     "groups": [
       "01-performer",
       "02-activity",
@@ -109,6 +180,19 @@
       "11-resource-flow",
       "12-pedigree"
     ],
+    "zh_groups": [
+      "主体",
+      "执行者",
+      "服务",
+      "活动",
+      "溯源",
+      "能力",
+      "血统",
+      "规则",
+      "资源流",
+      "资源流动",
+      "项目"
+    ],
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -118,6 +202,10 @@
     "term": "activityPerformedByPerformer",
     "definition": "An overlap between a Performer and an Activity that is non-specific as to whether:\n1. the Activity is solely performed by the Performer\n2. the Activity is performed by several Performers\n3. the Performer performs only this Activity\n4. the Performer performs other Activities",
     "aliases": [],
+    "zh_aliases": [
+      "活动由执行者执行",
+      "活动由主体执行"
+    ],
     "groups": [
       "01-performer",
       "02-activity",
@@ -131,6 +219,24 @@
       "15-reification",
       "16-information-data"
     ],
+    "zh_groups": [
+      "主体",
+      "信息与数据",
+      "信息数据",
+      "信息溯源",
+      "具体化",
+      "实体化",
+      "执行者",
+      "服务",
+      "活动",
+      "溯源",
+      "能力",
+      "血统",
+      "规则",
+      "资源流",
+      "资源流动",
+      "项目"
+    ],
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -140,6 +246,9 @@
     "term": "activityProducesResource",
     "definition": "Represents that an activity produces a resource",
     "aliases": [],
+    "zh_aliases": [
+      "活动产生资源"
+    ],
     "groups": [
       "02-activity",
       "03-capability",
@@ -153,6 +262,23 @@
       "15-reification",
       "16-information-data"
     ],
+    "zh_groups": [
+      "信息与数据",
+      "信息数据",
+      "信息溯源",
+      "具体化",
+      "实体化",
+      "服务",
+      "活动",
+      "溯源",
+      "能力",
+      "血统",
+      "规则",
+      "资源",
+      "资源流",
+      "资源流动",
+      "项目"
+    ],
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -162,8 +288,14 @@
     "term": "ActivityType",
     "definition": "Powertype of Activity",
     "aliases": [],
+    "zh_aliases": [
+      "活动类型"
+    ],
     "groups": [
       "02-activity"
+    ],
+    "zh_groups": [
+      "活动"
     ],
     "association": false,
     "status": "a. In Model",
@@ -174,8 +306,16 @@
     "term": "AdaptabilityMeasure",
     "definition": "A measure of the ease with which Performers satisfy differing Constraints and Capability and Service needs.",
     "aliases": [],
+    "zh_aliases": [
+      "适应性度量",
+      "适应性指标"
+    ],
     "groups": [
       "06-measure"
+    ],
+    "zh_groups": [
+      "度量",
+      "指标"
     ],
     "association": false,
     "status": "a. In Model",
@@ -186,7 +326,11 @@
     "term": "AdaptabilityMeasureType",
     "definition": "The Powertype of AdaptabilityMeasure.",
     "aliases": [],
+    "zh_aliases": [
+      "适应性度量类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -196,8 +340,16 @@
     "term": "Address",
     "definition": "The name of a location along with the location-finding scheme that allows a location to be found from the name.  Examples include postal address, email address, URL, datalink address.",
     "aliases": [],
+    "zh_aliases": [
+      "地址",
+      "地址信息"
+    ],
     "groups": [
       "07-location"
+    ],
+    "zh_groups": [
+      "位置",
+      "地理"
     ],
     "association": false,
     "status": "a. In Model",
@@ -208,7 +360,11 @@
     "term": "AddressType",
     "definition": "The Powertype of Address.",
     "aliases": [],
+    "zh_aliases": [
+      "地址类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -218,11 +374,25 @@
     "term": "Agreement",
     "definition": "A consent among parties regarding the terms and conditions of activities that said parties participate in.",
     "aliases": [],
+    "zh_aliases": [
+      "协议",
+      "协定"
+    ],
     "groups": [
       "01-performer",
       "05-guidance",
       "15-reification",
       "16-information-data"
+    ],
+    "zh_groups": [
+      "主体",
+      "信息与数据",
+      "信息数据",
+      "具体化",
+      "实体化",
+      "执行者",
+      "指南",
+      "指导"
     ],
     "association": false,
     "status": "a. In Model",
@@ -233,7 +403,11 @@
     "term": "AgreementType",
     "definition": "The Powertype of Agreement.",
     "aliases": [],
+    "zh_aliases": [
+      "协议类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -243,10 +417,20 @@
     "term": "ArchitecturalDescription",
     "definition": "Information describing an architecture such as an OV-5 Activity Model document.",
     "aliases": [],
+    "zh_aliases": [
+      "架构描述"
+    ],
     "groups": [
       "08-services",
       "15-reification",
       "16-information-data"
+    ],
+    "zh_groups": [
+      "信息与数据",
+      "信息数据",
+      "具体化",
+      "实体化",
+      "服务"
     ],
     "association": false,
     "status": "a. In Model",
@@ -257,7 +441,11 @@
     "term": "ArchitecturalDescriptionType",
     "definition": "The Powertype of ArchitecturalDescription.",
     "aliases": [],
+    "zh_aliases": [
+      "架构描述类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -267,8 +455,15 @@
     "term": "associationOfInformation",
     "definition": "A relationship or association between two elements of  information.",
     "aliases": [],
+    "zh_aliases": [
+      "信息的关联"
+    ],
     "groups": [
       "16-information-data"
+    ],
+    "zh_groups": [
+      "信息与数据",
+      "信息数据"
     ],
     "association": true,
     "status": "a. In Model",
@@ -279,8 +474,16 @@
     "term": "axesDescribedBy",
     "definition": "A relationship describing the straight lines about which bodies rotate",
     "aliases": [],
+    "zh_aliases": [
+      "坐标轴由描述",
+      "坐标轴描述关系"
+    ],
     "groups": [
       "07-location"
+    ],
+    "zh_groups": [
+      "位置",
+      "地理"
     ],
     "association": true,
     "status": "a. In Model",
@@ -294,8 +497,16 @@
       "proceeds",
       "succeeds"
     ],
+    "zh_aliases": [
+      "前后关系",
+      "时序前后"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": true,
     "status": "a. In Model",
@@ -306,8 +517,15 @@
     "term": "BeforeAfterType",
     "definition": "An association between two Individual Types signifying that the temporal end of all the Individuals of one Individual Type is before the temporal start of all the Individuals of the other Individual Type.",
     "aliases": [],
+    "zh_aliases": [
+      "前后关系类型"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": true,
     "status": "a. In Model",
@@ -318,9 +536,16 @@
     "term": "Capability",
     "definition": "The ability to achieve a Desired Effect under specified [performance] standards and conditions through combinations of ways and means [activities and resources] to perform a set of activities.",
     "aliases": [],
+    "zh_aliases": [
+      "能力"
+    ],
     "groups": [
       "03-capability",
       "08-services"
+    ],
+    "zh_groups": [
+      "服务",
+      "能力"
     ],
     "association": false,
     "status": "a. In Model",
@@ -331,10 +556,20 @@
     "term": "capabilityOfPerformer",
     "definition": "A couple that represents the capability that a performer manifests",
     "aliases": [],
+    "zh_aliases": [
+      "执行者的能力",
+      "主体能力"
+    ],
     "groups": [
       "03-capability",
       "06-measure",
       "08-services"
+    ],
+    "zh_groups": [
+      "度量",
+      "指标",
+      "服务",
+      "能力"
     ],
     "association": true,
     "status": "a. In Model",
@@ -345,8 +580,14 @@
     "term": "CapabilityType",
     "definition": "Category or type of capability",
     "aliases": [],
+    "zh_aliases": [
+      "能力类型"
+    ],
     "groups": [
       "03-capability"
+    ],
+    "zh_groups": [
+      "能力"
     ],
     "association": false,
     "status": "a. In Model",
@@ -357,8 +598,16 @@
     "term": "CircularArea",
     "definition": "The space enclosed by a circle.",
     "aliases": [],
+    "zh_aliases": [
+      "圆形区域",
+      "圆形范围"
+    ],
     "groups": [
       "07-location"
+    ],
+    "zh_groups": [
+      "位置",
+      "地理"
     ],
     "association": false,
     "status": "a. In Model",
@@ -369,7 +618,11 @@
     "term": "CircularAreaType",
     "definition": "Powertype Of CircularArea",
     "aliases": [],
+    "zh_aliases": [
+      "圆形区域类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -379,7 +632,11 @@
     "term": "CircularAreaTypeType",
     "definition": "The Powertype of CircularAreaType.",
     "aliases": [],
+    "zh_aliases": [
+      "圆形区域类型的类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -389,6 +646,10 @@
     "term": "Condition",
     "definition": "The state of an environment or situation in which a Performer performs or is disposed to perform.",
     "aliases": [],
+    "zh_aliases": [
+      "条件",
+      "状况"
+    ],
     "groups": [
       "01-performer",
       "03-capability",
@@ -397,6 +658,18 @@
       "10-rules",
       "11-resource-flow",
       "12-pedigree"
+    ],
+    "zh_groups": [
+      "主体",
+      "执行者",
+      "服务",
+      "溯源",
+      "能力",
+      "血统",
+      "规则",
+      "资源流",
+      "资源流动",
+      "项目"
     ],
     "association": false,
     "status": "a. In Model",
@@ -407,7 +680,11 @@
     "term": "ConditionType",
     "definition": "The Powertype of Condition.",
     "aliases": [],
+    "zh_aliases": [
+      "条件类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -417,8 +694,15 @@
     "term": "coordinateCenterDescribedBy",
     "definition": "A relationship describing the mid point of a position reference frame",
     "aliases": [],
+    "zh_aliases": [
+      "坐标中心由描述"
+    ],
     "groups": [
       "07-location"
+    ],
+    "zh_groups": [
+      "位置",
+      "地理"
     ],
     "association": true,
     "status": "a. In Model",
@@ -429,8 +713,15 @@
     "term": "Country",
     "definition": "A political state or nation or its territory.",
     "aliases": [],
+    "zh_aliases": [
+      "国家"
+    ],
     "groups": [
       "07-location"
+    ],
+    "zh_groups": [
+      "位置",
+      "地理"
     ],
     "association": false,
     "status": "a. In Model",
@@ -441,7 +732,11 @@
     "term": "CountryType",
     "definition": "Powertype Of Country",
     "aliases": [],
+    "zh_aliases": [
+      "国家类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -451,7 +746,11 @@
     "term": "CountryTypeType",
     "definition": "The Powertype of CountryType.",
     "aliases": [],
+    "zh_aliases": [
+      "国家类型的类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -461,9 +760,18 @@
     "term": "couple",
     "definition": "An ordered relationship (tuple) between two Things, i.e., that has two place positions.",
     "aliases": [],
+    "zh_aliases": [
+      "耦合关系"
+    ],
     "groups": [
       "00-foundation",
       "16-information-data"
+    ],
+    "zh_groups": [
+      "信息与数据",
+      "信息数据",
+      "基础",
+      "基础层"
     ],
     "association": true,
     "status": "a. In Model",
@@ -477,8 +785,15 @@
       "entity relationship",
       "class association"
     ],
+    "zh_aliases": [
+      "耦合关系类型"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": true,
     "status": "a. In Model",
@@ -489,8 +804,15 @@
     "term": "Data",
     "definition": "Representation of information in a formalized manner suitable for communication, interpretation, or processing by humans or by automatic means. Examples could be whole models, packages, entities, attributes, classes, domain values, enumeration values, records, tables, rows, columns, and fields.",
     "aliases": [],
+    "zh_aliases": [
+      "数据"
+    ],
     "groups": [
       "11-resource-flow"
+    ],
+    "zh_groups": [
+      "资源流",
+      "资源流动"
     ],
     "association": false,
     "status": "a. In Model",
@@ -501,9 +823,18 @@
     "term": "DataType",
     "definition": "Powertype of Data",
     "aliases": [],
+    "zh_aliases": [
+      "数据类型"
+    ],
     "groups": [
       "11-resource-flow",
       "16-information-data"
+    ],
+    "zh_groups": [
+      "信息与数据",
+      "信息数据",
+      "资源流",
+      "资源流动"
     ],
     "association": false,
     "status": "a. In Model",
@@ -514,6 +845,10 @@
     "term": "describedBy",
     "definition": "A tuple that asserts that Information describes a Thing.",
     "aliases": [],
+    "zh_aliases": [
+      "由描述",
+      "描述关系"
+    ],
     "groups": [
       "00-foundation",
       "07-location",
@@ -522,6 +857,20 @@
       "13-information-pedigree",
       "15-reification",
       "16-information-data"
+    ],
+    "zh_groups": [
+      "位置",
+      "信息与数据",
+      "信息数据",
+      "信息溯源",
+      "具体化",
+      "地理",
+      "基础",
+      "基础层",
+      "实体化",
+      "服务",
+      "溯源",
+      "血统"
     ],
     "association": true,
     "status": "a. In Model",
@@ -532,8 +881,16 @@
     "term": "DescriptionScheme",
     "definition": "A RepresentationScheme and DescriptionType whose members are intentionally descriptions",
     "aliases": [],
+    "zh_aliases": [
+      "描述方案",
+      "描述体系"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": false,
     "status": "a. In Model",
@@ -544,8 +901,15 @@
     "term": "descriptionSchemeInstance",
     "definition": "A representationSchemeInstance that asserts a Description is a member of a DescriptionScheme.",
     "aliases": [],
+    "zh_aliases": [
+      "描述方案实例"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": true,
     "status": "a. In Model",
@@ -556,9 +920,16 @@
     "term": "desiredEffect",
     "definition": "A desired state of a Resource",
     "aliases": [],
+    "zh_aliases": [
+      "期望效果"
+    ],
     "groups": [
       "03-capability",
       "09-project"
+    ],
+    "zh_groups": [
+      "能力",
+      "项目"
     ],
     "association": true,
     "status": "a. In Model",
@@ -569,8 +940,14 @@
     "term": "desiredEffectDirectsActivity",
     "definition": "The couple that represents how a desired effect directs an activity",
     "aliases": [],
+    "zh_aliases": [
+      "期望效果导向活动"
+    ],
     "groups": [
       "09-project"
+    ],
+    "zh_groups": [
+      "项目"
     ],
     "association": true,
     "status": "a. In Model",
@@ -581,8 +958,14 @@
     "term": "desiredEffectIsRealizedByProjectType",
     "definition": "The couple that represents how a desired effect is realized by a project type",
     "aliases": [],
+    "zh_aliases": [
+      "期望效果由项目类型实现"
+    ],
     "groups": [
       "09-project"
+    ],
+    "zh_groups": [
+      "项目"
     ],
     "association": true,
     "status": "a. In Model",
@@ -593,8 +976,14 @@
     "term": "desiredEffectOfCapability",
     "definition": "A couple that represents the whole part relationship between a desired effect and a capability",
     "aliases": [],
+    "zh_aliases": [
+      "能力的期望效果"
+    ],
     "groups": [
       "03-capability"
+    ],
+    "zh_groups": [
+      "能力"
     ],
     "association": true,
     "status": "a. In Model",
@@ -605,10 +994,19 @@
     "term": "desireMeasure",
     "definition": "A measureOfType that relates a DesiredEffect to a MeasureOfDesire",
     "aliases": [],
+    "zh_aliases": [
+      "期望度量关系"
+    ],
     "groups": [
       "03-capability",
       "06-measure",
       "09-project"
+    ],
+    "zh_groups": [
+      "度量",
+      "指标",
+      "能力",
+      "项目"
     ],
     "association": true,
     "status": "a. In Model",
@@ -619,7 +1017,12 @@
     "term": "DomainInformation",
     "definition": "Types of information within the scope or domain of the architecture.",
     "aliases": [],
+    "zh_aliases": [
+      "领域信息",
+      "域信息"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -629,7 +1032,11 @@
     "term": "DomainInformationType",
     "definition": "The Powertype of DomainInformation.",
     "aliases": [],
+    "zh_aliases": [
+      "领域信息类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -639,10 +1046,19 @@
     "term": "effectMeasure",
     "definition": "A measureOfType that relates a DesiredEffect to a MeasureOfEffect",
     "aliases": [],
+    "zh_aliases": [
+      "效果度量关系"
+    ],
     "groups": [
       "03-capability",
       "06-measure",
       "09-project"
+    ],
+    "zh_groups": [
+      "度量",
+      "指标",
+      "能力",
+      "项目"
     ],
     "association": true,
     "status": "a. In Model",
@@ -653,8 +1069,15 @@
     "term": "EllipticalArea",
     "definition": "The space enclosed by an ellipse.",
     "aliases": [],
+    "zh_aliases": [
+      "椭圆区域"
+    ],
     "groups": [
       "07-location"
+    ],
+    "zh_groups": [
+      "位置",
+      "地理"
     ],
     "association": false,
     "status": "a. In Model",
@@ -665,7 +1088,11 @@
     "term": "EllipticalAreaType",
     "definition": "Powertype Of EllipticalArea",
     "aliases": [],
+    "zh_aliases": [
+      "椭圆区域类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -675,7 +1102,11 @@
     "term": "EllipticalAreaTypeType",
     "definition": "The Powertype of EllipticalAreaType.",
     "aliases": [],
+    "zh_aliases": [
+      "椭圆区域类型的类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -685,8 +1116,15 @@
     "term": "endBoundary",
     "definition": "A temporal whole part couple that relates the temporal boundary to the whole.",
     "aliases": [],
+    "zh_aliases": [
+      "结束边界"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": true,
     "status": "a. In Model",
@@ -697,8 +1135,15 @@
     "term": "EndBoundaryType",
     "definition": "A temporal whole part couple that relates the temporal boundary to the whole taken over a Type.",
     "aliases": [],
+    "zh_aliases": [
+      "结束边界类型"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": true,
     "status": "a. In Model",
@@ -709,8 +1154,15 @@
     "term": "Facility",
     "definition": "A real property entity consisting of underlying land and one or more of the following: a building, a structure (including linear structures), a utility system, or pavement.",
     "aliases": [],
+    "zh_aliases": [
+      "设施"
+    ],
     "groups": [
       "07-location"
+    ],
+    "zh_groups": [
+      "位置",
+      "地理"
     ],
     "association": false,
     "status": "a. In Model",
@@ -725,8 +1177,15 @@
       "objectives",
       "desired outcomes"
     ],
+    "zh_aliases": [
+      "设施属于场地"
+    ],
     "groups": [
       "07-location"
+    ],
+    "zh_groups": [
+      "位置",
+      "地理"
     ],
     "association": true,
     "status": "a. In Model",
@@ -737,7 +1196,11 @@
     "term": "FacilityType",
     "definition": "Powertype Of Facility",
     "aliases": [],
+    "zh_aliases": [
+      "设施类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -747,7 +1210,11 @@
     "term": "FacilityTypeType",
     "definition": "The Powertype of FacilityType.",
     "aliases": [],
+    "zh_aliases": [
+      "设施类型的类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -757,8 +1224,15 @@
     "term": "FunctionalStandard",
     "definition": "Functional standards set forth rules, conditions, guidelines, and characteristics.",
     "aliases": [],
+    "zh_aliases": [
+      "功能标准"
+    ],
     "groups": [
       "05-guidance"
+    ],
+    "zh_groups": [
+      "指南",
+      "指导"
     ],
     "association": false,
     "status": "a. In Model",
@@ -769,7 +1243,11 @@
     "term": "FunctionalStandardType",
     "definition": "The Powertype of FunctionalStandard.",
     "aliases": [],
+    "zh_aliases": [
+      "功能标准类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -779,8 +1257,16 @@
     "term": "GeoFeature",
     "definition": "An object that encompasses meteorological, geographic, and control features mission significance",
     "aliases": [],
+    "zh_aliases": [
+      "地理要素",
+      "地理特征"
+    ],
     "groups": [
       "07-location"
+    ],
+    "zh_groups": [
+      "位置",
+      "地理"
     ],
     "association": false,
     "status": "a. In Model",
@@ -791,7 +1277,11 @@
     "term": "GeoFeatureType",
     "definition": "Powertype Of GeoFeature",
     "aliases": [],
+    "zh_aliases": [
+      "地理要素类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -801,7 +1291,11 @@
     "term": "GeoFeatureTypeType",
     "definition": "The Powertype of GeoFeatureType.",
     "aliases": [],
+    "zh_aliases": [
+      "地理要素类型的类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -811,10 +1305,22 @@
     "term": "GeoPoliticalExtent",
     "definition": "A geospatial extent whose boundaries are by declaration or agreement by political parties.",
     "aliases": [],
+    "zh_aliases": [
+      "地缘政治范围",
+      "政区范围"
+    ],
     "groups": [
       "00-foundation",
       "07-location",
       "11-resource-flow"
+    ],
+    "zh_groups": [
+      "位置",
+      "地理",
+      "基础",
+      "基础层",
+      "资源流",
+      "资源流动"
     ],
     "association": false,
     "status": "a. In Model",
@@ -825,8 +1331,15 @@
     "term": "GeoPoliticalExtentType",
     "definition": "Powertype Of GeoPoliticalExtent",
     "aliases": [],
+    "zh_aliases": [
+      "地缘政治范围类型"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": false,
     "status": "a. In Model",
@@ -837,8 +1350,15 @@
     "term": "GeoPoliticalExtentTypeType",
     "definition": "The Powertype of GeoPoliticalExtentType.",
     "aliases": [],
+    "zh_aliases": [
+      "地缘政治范围类型的类型"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": false,
     "status": "a. In Model",
@@ -849,8 +1369,15 @@
     "term": "GeoStationaryPoint",
     "definition": "Unidimensional Individual (dimensionless in space, existant over all time)",
     "aliases": [],
+    "zh_aliases": [
+      "地球静止点"
+    ],
     "groups": [
       "07-location"
+    ],
+    "zh_groups": [
+      "位置",
+      "地理"
     ],
     "association": false,
     "status": "a. In Model",
@@ -861,7 +1388,11 @@
     "term": "GeoStationaryPointType",
     "definition": "Powertype Of GeoStationaryPoint",
     "aliases": [],
+    "zh_aliases": [
+      "地球静止点类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -871,7 +1402,11 @@
     "term": "GeoStationaryPointTypeType",
     "definition": "The Powertype of GeoStationaryPointType.",
     "aliases": [],
+    "zh_aliases": [
+      "地球静止点类型的类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -881,9 +1416,19 @@
     "term": "Guidance",
     "definition": "An authoritative statement intended to lead or steer the execution of actions.",
     "aliases": [],
+    "zh_aliases": [
+      "指导",
+      "指南"
+    ],
     "groups": [
       "00-foundation",
       "05-guidance"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层",
+      "指南",
+      "指导"
     ],
     "association": false,
     "status": "a. In Model",
@@ -894,8 +1439,15 @@
     "term": "GuidanceType",
     "definition": "The Powertype of Guidance.",
     "aliases": [],
+    "zh_aliases": [
+      "指导类型"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": false,
     "status": "a. In Model",
@@ -906,11 +1458,25 @@
     "term": "Individual",
     "definition": "A Thing that has spatio-temporal extent.  Note - this may be something that existed in the past, exists now, or may exist in some future possible world.",
     "aliases": [],
+    "zh_aliases": [
+      "个体",
+      "实例"
+    ],
     "groups": [
       "00-foundation",
       "07-location",
       "12-pedigree",
       "14-org-structure"
+    ],
+    "zh_groups": [
+      "位置",
+      "地理",
+      "基础",
+      "基础层",
+      "溯源",
+      "组织",
+      "组织结构",
+      "血统"
     ],
     "association": false,
     "status": "a. In Model",
@@ -921,10 +1487,21 @@
     "term": "IndividualActivity",
     "definition": "Activities that are Individuals, i.e., that occur in space and time.",
     "aliases": [],
+    "zh_aliases": [
+      "个体活动"
+    ],
     "groups": [
       "12-pedigree",
       "15-reification",
       "16-information-data"
+    ],
+    "zh_groups": [
+      "信息与数据",
+      "信息数据",
+      "具体化",
+      "实体化",
+      "溯源",
+      "血统"
     ],
     "association": false,
     "status": "a. In Model",
@@ -935,6 +1512,9 @@
     "term": "IndividualPerformer",
     "definition": "A specific thing that can perform an action",
     "aliases": [],
+    "zh_aliases": [
+      "个体执行者"
+    ],
     "groups": [
       "00-foundation",
       "01-performer",
@@ -943,6 +1523,22 @@
       "14-org-structure",
       "15-reification",
       "16-information-data"
+    ],
+    "zh_groups": [
+      "主体",
+      "信息与数据",
+      "信息数据",
+      "具体化",
+      "基础",
+      "基础层",
+      "实体化",
+      "执行者",
+      "溯源",
+      "组织",
+      "组织结构",
+      "血统",
+      "资源流",
+      "资源流动"
     ],
     "association": false,
     "status": "a. In Model",
@@ -953,9 +1549,18 @@
     "term": "IndividualPersonRole",
     "definition": "Person roles defined by the role or roles they share that are relevant to an architecture.  Includes assigned materiel.",
     "aliases": [],
+    "zh_aliases": [
+      "个体人员角色"
+    ],
     "groups": [
       "01-performer",
       "14-org-structure"
+    ],
+    "zh_groups": [
+      "主体",
+      "执行者",
+      "组织",
+      "组织结构"
     ],
     "association": false,
     "status": "a. In Model",
@@ -966,8 +1571,15 @@
     "term": "individualPersonRolePartOfIndividualPerformer",
     "definition": "Whole part relationship between an individual person role and an individual performer",
     "aliases": [],
+    "zh_aliases": [
+      "个体人员角色属于个体执行者"
+    ],
     "groups": [
       "14-org-structure"
+    ],
+    "zh_groups": [
+      "组织",
+      "组织结构"
     ],
     "association": true,
     "status": "a. In Model",
@@ -978,6 +1590,9 @@
     "term": "IndividualResource",
     "definition": "Any specific physical or virtual entity of limited availability",
     "aliases": [],
+    "zh_aliases": [
+      "个体资源"
+    ],
     "groups": [
       "00-foundation",
       "04-resource",
@@ -985,6 +1600,19 @@
       "11-resource-flow",
       "12-pedigree",
       "14-org-structure"
+    ],
+    "zh_groups": [
+      "位置",
+      "地理",
+      "基础",
+      "基础层",
+      "溯源",
+      "组织",
+      "组织结构",
+      "血统",
+      "资源",
+      "资源流",
+      "资源流动"
     ],
     "association": false,
     "status": "a. In Model",
@@ -995,9 +1623,17 @@
     "term": "individualResourceInLocation",
     "definition": "A wholePart that asserts an IndividualResourceState is in a Location",
     "aliases": [],
+    "zh_aliases": [
+      "个体资源位于位置"
+    ],
     "groups": [
       "04-resource",
       "07-location"
+    ],
+    "zh_groups": [
+      "位置",
+      "地理",
+      "资源"
     ],
     "association": true,
     "status": "a. In Model",
@@ -1008,11 +1644,24 @@
     "term": "IndividualType",
     "definition": "The powertype of Individual.",
     "aliases": [],
+    "zh_aliases": [
+      "个体类型"
+    ],
     "groups": [
       "00-foundation",
       "06-measure",
       "12-pedigree",
       "14-org-structure"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层",
+      "度量",
+      "指标",
+      "溯源",
+      "组织",
+      "组织结构",
+      "血统"
     ],
     "association": false,
     "status": "a. In Model",
@@ -1023,8 +1672,15 @@
     "term": "IndividualTypeType",
     "definition": "A PlaceableType that is the Powertype of IndividualType",
     "aliases": [],
+    "zh_aliases": [
+      "个体类型的类型"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": false,
     "status": "a. In Model",
@@ -1035,6 +1691,9 @@
     "term": "Information",
     "definition": "Information is the state of a something of interest that is materialized -- in any medium or form -- and communicated or received.",
     "aliases": [],
+    "zh_aliases": [
+      "信息"
+    ],
     "groups": [
       "00-foundation",
       "07-location",
@@ -1044,6 +1703,22 @@
       "13-information-pedigree",
       "15-reification",
       "16-information-data"
+    ],
+    "zh_groups": [
+      "位置",
+      "信息与数据",
+      "信息数据",
+      "信息溯源",
+      "具体化",
+      "地理",
+      "基础",
+      "基础层",
+      "实体化",
+      "服务",
+      "溯源",
+      "血统",
+      "资源流",
+      "资源流动"
     ],
     "association": false,
     "status": "a. In Model",
@@ -1054,6 +1729,9 @@
     "term": "InformationType",
     "definition": "Category or type of information",
     "aliases": [],
+    "zh_aliases": [
+      "信息类型"
+    ],
     "groups": [
       "00-foundation",
       "08-services",
@@ -1062,6 +1740,20 @@
       "13-information-pedigree",
       "15-reification",
       "16-information-data"
+    ],
+    "zh_groups": [
+      "信息与数据",
+      "信息数据",
+      "信息溯源",
+      "具体化",
+      "基础",
+      "基础层",
+      "实体化",
+      "服务",
+      "溯源",
+      "血统",
+      "资源流",
+      "资源流动"
     ],
     "association": false,
     "status": "a. In Model",
@@ -1072,8 +1764,16 @@
     "term": "Installation",
     "definition": "A base, camp, post, station, yard, center, or other activity, including leased facilities, without regard to the duration of operational control. An installation may include one or more sites.",
     "aliases": [],
+    "zh_aliases": [
+      "驻地",
+      "设施部署"
+    ],
     "groups": [
       "07-location"
+    ],
+    "zh_groups": [
+      "位置",
+      "地理"
     ],
     "association": false,
     "status": "a. In Model",
@@ -1084,7 +1784,11 @@
     "term": "InstallationType",
     "definition": "Powertype Of Installation",
     "aliases": [],
+    "zh_aliases": [
+      "驻地类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1094,7 +1798,11 @@
     "term": "InstallationTypeType",
     "definition": "The Powertype of InstallationType.",
     "aliases": [],
+    "zh_aliases": [
+      "驻地类型的类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1104,8 +1812,15 @@
     "term": "jointAction",
     "definition": "Relating two parts of a joint action",
     "aliases": [],
+    "zh_aliases": [
+      "联合活动"
+    ],
     "groups": [
       "11-resource-flow"
+    ],
+    "zh_groups": [
+      "资源流",
+      "资源流动"
     ],
     "association": true,
     "status": "a. In Model",
@@ -1116,8 +1831,16 @@
     "term": "Line",
     "definition": "A geometric figure formed by a point moving along a fixed direction and the reverse direction.",
     "aliases": [],
+    "zh_aliases": [
+      "线",
+      "线段"
+    ],
     "groups": [
       "07-location"
+    ],
+    "zh_groups": [
+      "位置",
+      "地理"
     ],
     "association": false,
     "status": "a. In Model",
@@ -1128,8 +1851,15 @@
     "term": "linePartOfPlanarSurface",
     "definition": "A couple that represents the whole part relationship between Line and PlanarSurface",
     "aliases": [],
+    "zh_aliases": [
+      "线属于平面"
+    ],
     "groups": [
       "07-location"
+    ],
+    "zh_groups": [
+      "位置",
+      "地理"
     ],
     "association": true,
     "status": "a. In Model",
@@ -1140,7 +1870,11 @@
     "term": "LineType",
     "definition": "Powertype Of Line",
     "aliases": [],
+    "zh_aliases": [
+      "线类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1150,7 +1884,11 @@
     "term": "LineTypeType",
     "definition": "The Powertype of LineType.",
     "aliases": [],
+    "zh_aliases": [
+      "线类型的类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1160,9 +1898,19 @@
     "term": "Location",
     "definition": "A point or extent in space that may be referred to physically or logically.",
     "aliases": [],
+    "zh_aliases": [
+      "位置",
+      "地点"
+    ],
     "groups": [
       "00-foundation",
       "07-location"
+    ],
+    "zh_groups": [
+      "位置",
+      "地理",
+      "基础",
+      "基础层"
     ],
     "association": false,
     "status": "a. In Model",
@@ -1173,8 +1921,15 @@
     "term": "locationNamedByAddress",
     "definition": "A relationship that represents a location being named by an address",
     "aliases": [],
+    "zh_aliases": [
+      "位置由地址命名"
+    ],
     "groups": [
       "07-location"
+    ],
+    "zh_groups": [
+      "位置",
+      "地理"
     ],
     "association": true,
     "status": "a. In Model",
@@ -1185,6 +1940,9 @@
     "term": "LocationType",
     "definition": "The powertype of Location",
     "aliases": [],
+    "zh_aliases": [
+      "位置类型"
+    ],
     "groups": [
       "00-foundation",
       "01-performer",
@@ -1194,6 +1952,23 @@
       "13-information-pedigree",
       "15-reification",
       "16-information-data"
+    ],
+    "zh_groups": [
+      "主体",
+      "位置",
+      "信息与数据",
+      "信息数据",
+      "信息溯源",
+      "具体化",
+      "地理",
+      "基础",
+      "基础层",
+      "实体化",
+      "执行者",
+      "溯源",
+      "血统",
+      "资源流",
+      "资源流动"
     ],
     "association": false,
     "status": "a. In Model",
@@ -1204,8 +1979,15 @@
     "term": "LocationTypeType",
     "definition": "The Powertype of LocationType.",
     "aliases": [],
+    "zh_aliases": [
+      "位置类型的类型"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": false,
     "status": "a. In Model",
@@ -1216,8 +1998,16 @@
     "term": "MaintainabilityMeasure",
     "definition": "A category of measures of  the amount of time a Performer is able to conduct Activities over some time interval.",
     "aliases": [],
+    "zh_aliases": [
+      "可维护性度量",
+      "维修性指标"
+    ],
     "groups": [
       "06-measure"
+    ],
+    "zh_groups": [
+      "度量",
+      "指标"
     ],
     "association": false,
     "status": "a. In Model",
@@ -1228,7 +2018,11 @@
     "term": "MaintainabilityMeasureType",
     "definition": "The Powertype of MaintainabilityMeasure.",
     "aliases": [],
+    "zh_aliases": [
+      "可维护性度量类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1238,10 +2032,21 @@
     "term": "Materiel",
     "definition": "Equipment, apparatus or supplies that are of interest, without distinction as to its application for administrative or combat purposes.",
     "aliases": [],
+    "zh_aliases": [
+      "物资",
+      "装备物资"
+    ],
     "groups": [
       "01-performer",
       "04-resource",
       "11-resource-flow"
+    ],
+    "zh_groups": [
+      "主体",
+      "执行者",
+      "资源",
+      "资源流",
+      "资源流动"
     ],
     "association": false,
     "status": "a. In Model",
@@ -1252,9 +2057,17 @@
     "term": "materielPartOfPerformer",
     "definition": "A whole-part association between a Performer (whole) and the Materiel parts of the Performer.  (A Performer can have Personnel Type, System, Service, and Organizational components.)",
     "aliases": [],
+    "zh_aliases": [
+      "物资属于执行者"
+    ],
     "groups": [
       "01-performer",
       "04-resource"
+    ],
+    "zh_groups": [
+      "主体",
+      "执行者",
+      "资源"
     ],
     "association": true,
     "status": "a. In Model",
@@ -1265,8 +2078,14 @@
     "term": "MaterielType",
     "definition": "The Powertype of Materiel.",
     "aliases": [],
+    "zh_aliases": [
+      "物资类型"
+    ],
     "groups": [
       "04-resource"
+    ],
+    "zh_groups": [
+      "资源"
     ],
     "association": false,
     "status": "a. In Model",
@@ -1277,6 +2096,10 @@
     "term": "Measure",
     "definition": "The magnitude of some attribute of an individual.",
     "aliases": [],
+    "zh_aliases": [
+      "度量",
+      "指标"
+    ],
     "groups": [
       "00-foundation",
       "01-performer",
@@ -1291,6 +2114,28 @@
       "15-reification",
       "16-information-data"
     ],
+    "zh_groups": [
+      "主体",
+      "位置",
+      "信息与数据",
+      "信息数据",
+      "信息溯源",
+      "具体化",
+      "地理",
+      "基础",
+      "基础层",
+      "实体化",
+      "度量",
+      "执行者",
+      "指标",
+      "服务",
+      "溯源",
+      "能力",
+      "血统",
+      "资源流",
+      "资源流动",
+      "项目"
+    ],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1300,9 +2145,18 @@
     "term": "MeasureableSkill",
     "definition": "A Skill that can be measured numerically",
     "aliases": [],
+    "zh_aliases": [
+      "可度量技能"
+    ],
     "groups": [
       "01-performer",
       "06-measure"
+    ],
+    "zh_groups": [
+      "主体",
+      "度量",
+      "执行者",
+      "指标"
     ],
     "association": false,
     "status": "a. In Model",
@@ -1313,9 +2167,18 @@
     "term": "measureableSkillOfPersonRoleType",
     "definition": "skillPartOfPersonRoleType is a member of Measure",
     "aliases": [],
+    "zh_aliases": [
+      "人员角色类型的可度量技能"
+    ],
     "groups": [
       "01-performer",
       "06-measure"
+    ],
+    "zh_groups": [
+      "主体",
+      "度量",
+      "执行者",
+      "指标"
     ],
     "association": true,
     "status": "a. In Model",
@@ -1326,7 +2189,11 @@
     "term": "MeasureableSkillType",
     "definition": "The Powertype of MeasureableSkill.",
     "aliases": [],
+    "zh_aliases": [
+      "可度量技能类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1336,10 +2203,20 @@
     "term": "MeasureOfDesire",
     "definition": "DesiredEffect is a member of Measure",
     "aliases": [],
+    "zh_aliases": [
+      "期望度量",
+      "期望指标"
+    ],
     "groups": [
       "03-capability",
       "06-measure",
       "09-project"
+    ],
+    "zh_groups": [
+      "度量",
+      "指标",
+      "能力",
+      "项目"
     ],
     "association": false,
     "status": "a. In Model",
@@ -1350,7 +2227,11 @@
     "term": "MeasureOfDesireType",
     "definition": "The Powertype of MeasureOfDesire.",
     "aliases": [],
+    "zh_aliases": [
+      "期望度量类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1360,10 +2241,20 @@
     "term": "MeasureOfEffect",
     "definition": "Category of measures on Effect Objects",
     "aliases": [],
+    "zh_aliases": [
+      "效果度量",
+      "效能指标"
+    ],
     "groups": [
       "03-capability",
       "06-measure",
       "09-project"
+    ],
+    "zh_groups": [
+      "度量",
+      "指标",
+      "能力",
+      "项目"
     ],
     "association": false,
     "status": "a. In Model",
@@ -1374,7 +2265,11 @@
     "term": "MeasureOfEffectType",
     "definition": "The Powertype of MeasureOfEffect.",
     "aliases": [],
+    "zh_aliases": [
+      "效果度量类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1384,10 +2279,21 @@
     "term": "measureOfIndividual",
     "definition": "A propertyOfIndividual that asserts an Individual is an instance of a Measure - i.e. the Individual \"has\" a property corresponding to the Measure.\r\n\r\nExamples:\r\n\r\nA laptop weighing 2.2kg\r\nA car travelling between 40 and 50 km/h",
     "aliases": [],
+    "zh_aliases": [
+      "个体的度量"
+    ],
     "groups": [
       "00-foundation",
       "06-measure",
       "12-pedigree"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层",
+      "度量",
+      "指标",
+      "溯源",
+      "血统"
     ],
     "association": true,
     "status": "a. In Model",
@@ -1398,8 +2304,15 @@
     "term": "measureOfIndividualEndBoundary",
     "definition": "endBoundary is a member of Measure",
     "aliases": [],
+    "zh_aliases": [
+      "个体结束边界的度量"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": true,
     "status": "a. In Model",
@@ -1410,9 +2323,18 @@
     "term": "measureOfIndividualPoint",
     "definition": "Point is a member of Measure",
     "aliases": [],
+    "zh_aliases": [
+      "个体点的度量"
+    ],
     "groups": [
       "06-measure",
       "07-location"
+    ],
+    "zh_groups": [
+      "位置",
+      "地理",
+      "度量",
+      "指标"
     ],
     "association": true,
     "status": "a. In Model",
@@ -1423,8 +2345,15 @@
     "term": "measureOfIndividualStartBoundary",
     "definition": "startBoundary is a member of Measure",
     "aliases": [],
+    "zh_aliases": [
+      "个体起始边界的度量"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": true,
     "status": "a. In Model",
@@ -1435,10 +2364,21 @@
     "term": "measureOfType",
     "definition": "A propertyOfType that asserts an IndividualType is a subtype of a Measure - i.e. it asserts all members of the Individual type have a property corresponding to the Measure \r\n\r\nExamples:\r\n\r\nAll Porsche 911 2.2S have a mass between 900 and 960 kg\r\nAll atoms of mercury have an atomic weight of 200.59 &thinsp;g·mol&minus;1",
     "aliases": [],
+    "zh_aliases": [
+      "类型的度量"
+    ],
     "groups": [
       "00-foundation",
       "06-measure",
       "12-pedigree"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层",
+      "度量",
+      "指标",
+      "溯源",
+      "血统"
     ],
     "association": true,
     "status": "a. In Model",
@@ -1449,6 +2389,9 @@
     "term": "measureOfTypeActivity",
     "definition": "A measureOfType that relates an Activity to a Measure",
     "aliases": [],
+    "zh_aliases": [
+      "活动类型的度量"
+    ],
     "groups": [
       "01-performer",
       "03-capability",
@@ -1461,6 +2404,24 @@
       "15-reification",
       "16-information-data"
     ],
+    "zh_groups": [
+      "主体",
+      "信息与数据",
+      "信息数据",
+      "信息溯源",
+      "具体化",
+      "实体化",
+      "度量",
+      "执行者",
+      "指标",
+      "服务",
+      "溯源",
+      "能力",
+      "血统",
+      "资源流",
+      "资源流动",
+      "项目"
+    ],
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -1470,6 +2431,9 @@
     "term": "measureOfTypeCondition",
     "definition": "Condition is a member of Measure",
     "aliases": [],
+    "zh_aliases": [
+      "条件类型的度量"
+    ],
     "groups": [
       "01-performer",
       "03-capability",
@@ -1477,6 +2441,17 @@
       "08-services",
       "09-project",
       "11-resource-flow"
+    ],
+    "zh_groups": [
+      "主体",
+      "度量",
+      "执行者",
+      "指标",
+      "服务",
+      "能力",
+      "资源流",
+      "资源流动",
+      "项目"
     ],
     "association": true,
     "status": "a. In Model",
@@ -1487,8 +2462,15 @@
     "term": "measureOfTypeEndBoundaryType",
     "definition": "endBoundaryType is a member of Measure",
     "aliases": [],
+    "zh_aliases": [
+      "结束边界类型的度量"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": true,
     "status": "a. In Model",
@@ -1499,9 +2481,17 @@
     "term": "measureOfTypeProjectType",
     "definition": "ProjectType is a member of Measure",
     "aliases": [],
+    "zh_aliases": [
+      "项目类型的度量"
+    ],
     "groups": [
       "06-measure",
       "09-project"
+    ],
+    "zh_groups": [
+      "度量",
+      "指标",
+      "项目"
     ],
     "association": true,
     "status": "a. In Model",
@@ -1512,6 +2502,9 @@
     "term": "measureOfTypeResource",
     "definition": "ResourceType is a member of Measure",
     "aliases": [],
+    "zh_aliases": [
+      "资源类型的度量"
+    ],
     "groups": [
       "01-performer",
       "03-capability",
@@ -1525,6 +2518,25 @@
       "15-reification",
       "16-information-data"
     ],
+    "zh_groups": [
+      "主体",
+      "信息与数据",
+      "信息数据",
+      "信息溯源",
+      "具体化",
+      "实体化",
+      "度量",
+      "执行者",
+      "指标",
+      "服务",
+      "溯源",
+      "能力",
+      "血统",
+      "资源",
+      "资源流",
+      "资源流动",
+      "项目"
+    ],
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -1534,8 +2546,15 @@
     "term": "measureOfTypeStartBoundaryType",
     "definition": "startBoundaryType is a member of Measure",
     "aliases": [],
+    "zh_aliases": [
+      "起始边界类型的度量"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": true,
     "status": "a. In Model",
@@ -1546,8 +2565,15 @@
     "term": "measureOfTypeWholePartType",
     "definition": "wholePart is a member of Measure",
     "aliases": [],
+    "zh_aliases": [
+      "整体部分类型的度量"
+    ],
     "groups": [
       "06-measure"
+    ],
+    "zh_groups": [
+      "度量",
+      "指标"
     ],
     "association": true,
     "status": "a. In Model",
@@ -1558,6 +2584,9 @@
     "term": "MeasureType",
     "definition": "A category of Measures",
     "aliases": [],
+    "zh_aliases": [
+      "度量类型"
+    ],
     "groups": [
       "00-foundation",
       "03-capability",
@@ -1565,6 +2594,18 @@
       "07-location",
       "10-rules",
       "12-pedigree"
+    ],
+    "zh_groups": [
+      "位置",
+      "地理",
+      "基础",
+      "基础层",
+      "度量",
+      "指标",
+      "溯源",
+      "能力",
+      "血统",
+      "规则"
     ],
     "association": false,
     "status": "a. In Model",
@@ -1575,9 +2616,17 @@
     "term": "measureTypeApplicableToActivity",
     "definition": "Type instance relationship between Activity and MeasureType",
     "aliases": [],
+    "zh_aliases": [
+      "度量类型适用于活动"
+    ],
     "groups": [
       "06-measure",
       "10-rules"
+    ],
+    "zh_groups": [
+      "度量",
+      "指标",
+      "规则"
     ],
     "association": true,
     "status": "a. In Model",
@@ -1588,12 +2637,25 @@
     "term": "MeasureTypeUnitsOfMeasure",
     "definition": "The subtype of MeasureType that has units.",
     "aliases": [],
+    "zh_aliases": [
+      "度量的计量单位"
+    ],
     "groups": [
       "00-foundation",
       "03-capability",
       "06-measure",
       "07-location",
       "10-rules"
+    ],
+    "zh_groups": [
+      "位置",
+      "地理",
+      "基础",
+      "基础层",
+      "度量",
+      "指标",
+      "能力",
+      "规则"
     ],
     "association": false,
     "status": "a. In Model",
@@ -1604,9 +2666,19 @@
     "term": "Name",
     "definition": "The type of all utterances of a given name for a Thing. The exemplarText provides a written example of the uttered name.",
     "aliases": [],
+    "zh_aliases": [
+      "名称",
+      "命名"
+    ],
     "groups": [
       "00-foundation",
       "07-location"
+    ],
+    "zh_groups": [
+      "位置",
+      "地理",
+      "基础",
+      "基础层"
     ],
     "association": false,
     "status": "a. In Model",
@@ -1617,9 +2689,18 @@
     "term": "namedBy",
     "definition": "A couple that asserts that a Name describes a Thing.",
     "aliases": [],
+    "zh_aliases": [
+      "由命名"
+    ],
     "groups": [
       "00-foundation",
       "07-location"
+    ],
+    "zh_groups": [
+      "位置",
+      "地理",
+      "基础",
+      "基础层"
     ],
     "association": true,
     "status": "a. In Model",
@@ -1630,8 +2711,15 @@
     "term": "NameType",
     "definition": "A RepresentationType that is the Powertype of Name",
     "aliases": [],
+    "zh_aliases": [
+      "名称类型"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": false,
     "status": "a. In Model",
@@ -1642,8 +2730,16 @@
     "term": "NamingScheme",
     "definition": "A Type whose members are Names. What kind of name the name is.",
     "aliases": [],
+    "zh_aliases": [
+      "命名方案",
+      "命名体系"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": false,
     "status": "a. In Model",
@@ -1654,8 +2750,15 @@
     "term": "namingSchemeInstance",
     "definition": "A representationSchemeInstance that asserts a Name is a member of a NamingScheme.",
     "aliases": [],
+    "zh_aliases": [
+      "命名方案实例"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": true,
     "status": "a. In Model",
@@ -1666,8 +2769,15 @@
     "term": "NeedsSatisfactionMeasure",
     "definition": "A category of quality measures that address how well a system meets the user's needs and requirements.",
     "aliases": [],
+    "zh_aliases": [
+      "需求满足度度量"
+    ],
     "groups": [
       "06-measure"
+    ],
+    "zh_groups": [
+      "度量",
+      "指标"
     ],
     "association": false,
     "status": "a. In Model",
@@ -1678,7 +2788,11 @@
     "term": "NeedsSatisfactionMeasureType",
     "definition": "The Powertype of NeedsStatisfactionMeasure.",
     "aliases": [],
+    "zh_aliases": [
+      "需求满足度度量类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1692,11 +2806,24 @@
       "Agency",
       "Enterprise"
     ],
+    "zh_aliases": [
+      "组织"
+    ],
     "groups": [
       "01-performer",
       "11-resource-flow",
       "12-pedigree",
       "14-org-structure"
+    ],
+    "zh_groups": [
+      "主体",
+      "执行者",
+      "溯源",
+      "组织",
+      "组织结构",
+      "血统",
+      "资源流",
+      "资源流动"
     ],
     "association": false,
     "status": "a. In Model",
@@ -1707,8 +2834,15 @@
     "term": "OrganizationalMeasure",
     "definition": "A category of quality measures that address how costly a Performer is to operate and maintain.",
     "aliases": [],
+    "zh_aliases": [
+      "组织度量"
+    ],
     "groups": [
       "06-measure"
+    ],
+    "zh_groups": [
+      "度量",
+      "指标"
     ],
     "association": false,
     "status": "a. In Model",
@@ -1719,7 +2853,11 @@
     "term": "OrganizationalMeasureType",
     "definition": "The Powertype of OrganizationalMeasure.",
     "aliases": [],
+    "zh_aliases": [
+      "组织度量类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1729,11 +2867,24 @@
     "term": "OrganizationType",
     "definition": "A type of Organization",
     "aliases": [],
+    "zh_aliases": [
+      "组织类型"
+    ],
     "groups": [
       "01-performer",
       "11-resource-flow",
       "12-pedigree",
       "14-org-structure"
+    ],
+    "zh_groups": [
+      "主体",
+      "执行者",
+      "溯源",
+      "组织",
+      "组织结构",
+      "血统",
+      "资源流",
+      "资源流动"
     ],
     "association": false,
     "status": "a. In Model",
@@ -1744,7 +2895,11 @@
     "term": "OrganizationTypeType",
     "definition": "The Powertype of OrganizationType.",
     "aliases": [],
+    "zh_aliases": [
+      "组织类型的类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1754,9 +2909,18 @@
     "term": "overlap",
     "definition": "A couple of wholePart couples where the part in each couple is the same.",
     "aliases": [],
+    "zh_aliases": [
+      "重叠关系"
+    ],
     "groups": [
       "00-foundation",
       "14-org-structure"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层",
+      "组织",
+      "组织结构"
     ],
     "association": true,
     "status": "a. In Model",
@@ -1767,9 +2931,18 @@
     "term": "OverlapType",
     "definition": "An overlap in which the places are taken by Types only.",
     "aliases": [],
+    "zh_aliases": [
+      "重叠关系类型"
+    ],
     "groups": [
       "00-foundation",
       "14-org-structure"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层",
+      "组织",
+      "组织结构"
     ],
     "association": true,
     "status": "a. In Model",
@@ -1780,10 +2953,21 @@
     "term": "partiesToAnAgreement",
     "definition": "The two parties involved in an agreement",
     "aliases": [],
+    "zh_aliases": [
+      "协议参与方"
+    ],
     "groups": [
       "05-guidance",
       "15-reification",
       "16-information-data"
+    ],
+    "zh_groups": [
+      "信息与数据",
+      "信息数据",
+      "具体化",
+      "实体化",
+      "指南",
+      "指导"
     ],
     "association": true,
     "status": "a. In Model",
@@ -1794,12 +2978,27 @@
     "term": "PedigreeInformation",
     "definition": "Information describing pedigree",
     "aliases": [],
+    "zh_aliases": [
+      "溯源信息",
+      "血统信息"
+    ],
     "groups": [
       "00-foundation",
       "12-pedigree",
       "13-information-pedigree",
       "15-reification",
       "16-information-data"
+    ],
+    "zh_groups": [
+      "信息与数据",
+      "信息数据",
+      "信息溯源",
+      "具体化",
+      "基础",
+      "基础层",
+      "实体化",
+      "溯源",
+      "血统"
     ],
     "association": false,
     "status": "a. In Model",
@@ -1810,8 +3009,15 @@
     "term": "PedigreeInformationType",
     "definition": "The Powertype of PedigreeInformation.",
     "aliases": [],
+    "zh_aliases": [
+      "溯源信息类型"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": false,
     "status": "a. In Model",
@@ -1822,8 +3028,16 @@
     "term": "PerformanceMeasure",
     "definition": "A category of quality measures that address how well a Performer meets Capability needs.",
     "aliases": [],
+    "zh_aliases": [
+      "性能度量",
+      "性能指标"
+    ],
     "groups": [
       "06-measure"
+    ],
+    "zh_groups": [
+      "度量",
+      "指标"
     ],
     "association": false,
     "status": "a. In Model",
@@ -1834,7 +3048,11 @@
     "term": "PerformanceMeasureType",
     "definition": "The Powertype of PerformanceMeasure.",
     "aliases": [],
+    "zh_aliases": [
+      "性能度量类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1847,6 +3065,11 @@
       "Actor",
       "Agent",
       "Capability Configuration (MODAF)"
+    ],
+    "zh_aliases": [
+      "执行者",
+      "主体",
+      "执行主体"
     ],
     "groups": [
       "00-foundation",
@@ -1862,6 +3085,27 @@
       "15-reification",
       "16-information-data"
     ],
+    "zh_groups": [
+      "主体",
+      "信息与数据",
+      "信息数据",
+      "信息溯源",
+      "具体化",
+      "基础",
+      "基础层",
+      "实体化",
+      "执行者",
+      "服务",
+      "溯源",
+      "组织",
+      "组织结构",
+      "能力",
+      "血统",
+      "规则",
+      "资源流",
+      "资源流动",
+      "项目"
+    ],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1871,8 +3115,15 @@
     "term": "PerformerType",
     "definition": "The Powertype of Performer.",
     "aliases": [],
+    "zh_aliases": [
+      "执行者类型"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": false,
     "status": "a. In Model",
@@ -1885,11 +3136,24 @@
     "aliases": [
       "Role"
     ],
+    "zh_aliases": [
+      "人员角色类型"
+    ],
     "groups": [
       "01-performer",
       "11-resource-flow",
       "12-pedigree",
       "14-org-structure"
+    ],
+    "zh_groups": [
+      "主体",
+      "执行者",
+      "溯源",
+      "组织",
+      "组织结构",
+      "血统",
+      "资源流",
+      "资源流动"
     ],
     "association": false,
     "status": "a. In Model",
@@ -1900,9 +3164,18 @@
     "term": "personRoleTypePartOfPerformer",
     "definition": "A wholePart between a PersonRoleType and a Performer in which it performs",
     "aliases": [],
+    "zh_aliases": [
+      "人员角色类型属于执行者"
+    ],
     "groups": [
       "01-performer",
       "14-org-structure"
+    ],
+    "zh_groups": [
+      "主体",
+      "执行者",
+      "组织",
+      "组织结构"
     ],
     "association": true,
     "status": "a. In Model",
@@ -1913,7 +3186,11 @@
     "term": "PersonRoleTypeType",
     "definition": "The Powertype of PersonRoleType.",
     "aliases": [],
+    "zh_aliases": [
+      "人员角色类型的类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1923,9 +3200,18 @@
     "term": "PhysicalMeasure",
     "definition": "A category of measures of spatio-temporal extent of an Individual such as length, mass, energy, velocity, …",
     "aliases": [],
+    "zh_aliases": [
+      "物理度量"
+    ],
     "groups": [
       "06-measure",
       "07-location"
+    ],
+    "zh_groups": [
+      "位置",
+      "地理",
+      "度量",
+      "指标"
     ],
     "association": false,
     "status": "a. In Model",
@@ -1936,7 +3222,11 @@
     "term": "PhysicalMeasureType",
     "definition": "The Powertype of PhysicalMeasure.",
     "aliases": [],
+    "zh_aliases": [
+      "物理度量类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1946,8 +3236,16 @@
     "term": "PlanarSurface",
     "definition": "A two-dimensional portion of space.",
     "aliases": [],
+    "zh_aliases": [
+      "平面",
+      "平面区域"
+    ],
     "groups": [
       "07-location"
+    ],
+    "zh_groups": [
+      "位置",
+      "地理"
     ],
     "association": false,
     "status": "a. In Model",
@@ -1958,7 +3256,11 @@
     "term": "PlanarSurfaceType",
     "definition": "Powertype Of PlanarSurface",
     "aliases": [],
+    "zh_aliases": [
+      "平面类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1968,7 +3270,11 @@
     "term": "PlanarSurfaceTypeType",
     "definition": "The Powertype of PlanarSurfaceType.",
     "aliases": [],
+    "zh_aliases": [
+      "平面类型的类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1978,8 +3284,16 @@
     "term": "Point",
     "definition": "Unidimensional Individual (dimensionless in space, existant over all time)",
     "aliases": [],
+    "zh_aliases": [
+      "点",
+      "点位"
+    ],
     "groups": [
       "07-location"
+    ],
+    "zh_groups": [
+      "位置",
+      "地理"
     ],
     "association": false,
     "status": "a. In Model",
@@ -1990,8 +3304,15 @@
     "term": "pointPartOfLine",
     "definition": "A couple that represents the whole part relationship between a line and a point",
     "aliases": [],
+    "zh_aliases": [
+      "点属于线"
+    ],
     "groups": [
       "07-location"
+    ],
+    "zh_groups": [
+      "位置",
+      "地理"
     ],
     "association": true,
     "status": "a. In Model",
@@ -2002,8 +3323,15 @@
     "term": "pointPartOfPlanarSurface",
     "definition": "A couple that represents the whole part relationship between a planar surface and a point",
     "aliases": [],
+    "zh_aliases": [
+      "点属于平面"
+    ],
     "groups": [
       "07-location"
+    ],
+    "zh_groups": [
+      "位置",
+      "地理"
     ],
     "association": true,
     "status": "a. In Model",
@@ -2014,7 +3342,11 @@
     "term": "PointType",
     "definition": "Powertype Of Point",
     "aliases": [],
+    "zh_aliases": [
+      "点类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2024,7 +3356,11 @@
     "term": "PointTypeType",
     "definition": "The Powertype of PointType.",
     "aliases": [],
+    "zh_aliases": [
+      "点类型的类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2034,8 +3370,15 @@
     "term": "PolygonArea",
     "definition": "The space enclosed by a polygon.",
     "aliases": [],
+    "zh_aliases": [
+      "多边形区域"
+    ],
     "groups": [
       "07-location"
+    ],
+    "zh_groups": [
+      "位置",
+      "地理"
     ],
     "association": false,
     "status": "a. In Model",
@@ -2046,7 +3389,11 @@
     "term": "PolygonAreaType",
     "definition": "Powertype Of PolygonArea",
     "aliases": [],
+    "zh_aliases": [
+      "多边形区域类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2056,7 +3403,11 @@
     "term": "PolygonAreaTypeType",
     "definition": "The Powertype of PolygonAreaType.",
     "aliases": [],
+    "zh_aliases": [
+      "多边形区域类型的类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2066,8 +3417,14 @@
     "term": "portPartOfPerformer",
     "definition": "A an association of the whole Performer to its Port that is visible and interfaces with other Performers",
     "aliases": [],
+    "zh_aliases": [
+      "端口属于执行者"
+    ],
     "groups": [
       "08-services"
+    ],
+    "zh_groups": [
+      "服务"
     ],
     "association": true,
     "status": "a. In Model",
@@ -2078,7 +3435,11 @@
     "term": "PortType",
     "definition": "The Powertype of Port.",
     "aliases": [],
+    "zh_aliases": [
+      "端口类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2088,8 +3449,16 @@
     "term": "PositionReferenceFrame",
     "definition": "An arbitrary set of axes with reference to which the position or motion of something is described or physical laws are formulated.",
     "aliases": [],
+    "zh_aliases": [
+      "位置参考系",
+      "坐标参考系"
+    ],
     "groups": [
       "07-location"
+    ],
+    "zh_groups": [
+      "位置",
+      "地理"
     ],
     "association": false,
     "status": "a. In Model",
@@ -2100,7 +3469,11 @@
     "term": "PositionReferenceFrameType",
     "definition": "The Powertype of PositionReferenceFrame.",
     "aliases": [],
+    "zh_aliases": [
+      "位置参考系类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2110,8 +3483,16 @@
     "term": "Powertype",
     "definition": "A Type that is the is the set (i.e., Type) of all subsets (i.e., subTypes) that can be taken over the some Type.",
     "aliases": [],
+    "zh_aliases": [
+      "幂类型",
+      "类型层次"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": false,
     "status": "a. In Model",
@@ -2122,8 +3503,15 @@
     "term": "powertypeInstance",
     "definition": "An association that between of the sets within the powerType and the powerType.  A special form of typeInstance.",
     "aliases": [],
+    "zh_aliases": [
+      "幂类型实例"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": true,
     "status": "a. In Model",
@@ -2139,10 +3527,20 @@
       "Strategy",
       "Activity"
     ],
+    "zh_aliases": [
+      "项目"
+    ],
     "groups": [
       "09-project",
       "15-reification",
       "16-information-data"
+    ],
+    "zh_groups": [
+      "信息与数据",
+      "信息数据",
+      "具体化",
+      "实体化",
+      "项目"
     ],
     "association": false,
     "status": "a. In Model",
@@ -2153,10 +3551,20 @@
     "term": "ProjectType",
     "definition": "The powertype of Project",
     "aliases": [],
+    "zh_aliases": [
+      "项目类型"
+    ],
     "groups": [
       "09-project",
       "15-reification",
       "16-information-data"
+    ],
+    "zh_groups": [
+      "信息与数据",
+      "信息数据",
+      "具体化",
+      "实体化",
+      "项目"
     ],
     "association": false,
     "status": "a. In Model",
@@ -2167,7 +3575,11 @@
     "term": "ProjectTypeType",
     "definition": "The Powertype of ProjectType.",
     "aliases": [],
+    "zh_aliases": [
+      "项目类型的类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2177,10 +3589,21 @@
     "term": "Property",
     "definition": "An IndividualType whose members all exhibit a common trait or feature. Often the Individuals are states having a property (the state of being 18 degrees centigrade), where this property can be a CategoricalProperty (qv.) or a DispositionalProperty (qv.).",
     "aliases": [],
+    "zh_aliases": [
+      "属性"
+    ],
     "groups": [
       "00-foundation",
       "06-measure",
       "12-pedigree"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层",
+      "度量",
+      "指标",
+      "溯源",
+      "血统"
     ],
     "association": false,
     "status": "a. In Model",
@@ -2191,10 +3614,21 @@
     "term": "propertyOfIndividual",
     "definition": "A typeInstance that asserts an Individual is an instance of a Property - i.e. the Individual \"has\" a property \n\nExamples:\n\nA product being \"expensive\"\nA laptop weighing 2.2kg\nA car travelling between 40 and 50 km/h",
     "aliases": [],
+    "zh_aliases": [
+      "个体的属性"
+    ],
     "groups": [
       "00-foundation",
       "06-measure",
       "12-pedigree"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层",
+      "度量",
+      "指标",
+      "溯源",
+      "血统"
     ],
     "association": true,
     "status": "a. In Model",
@@ -2205,10 +3639,21 @@
     "term": "propertyOfType",
     "definition": "A superSubtype that asserts an IndividualType is a subtype of a Property - i.e. it asserts all members of the Individual type \"have\" a property \n\nExamples:\n\nAll London Buses are red\nAll Porsche 911 2.2S have a mass between 900 and 960 kg\nAll atoms of merc",
     "aliases": [],
+    "zh_aliases": [
+      "类型的属性"
+    ],
     "groups": [
       "00-foundation",
       "06-measure",
       "12-pedigree"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层",
+      "度量",
+      "指标",
+      "溯源",
+      "血统"
     ],
     "association": true,
     "status": "a. In Model",
@@ -2219,8 +3664,15 @@
     "term": "PropertyType",
     "definition": "The Powertype of Property.",
     "aliases": [],
+    "zh_aliases": [
+      "属性类型"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": false,
     "status": "a. In Model",
@@ -2231,9 +3683,19 @@
     "term": "RealProperty",
     "definition": "Land and improvements to land (i.e., facilities).",
     "aliases": [],
+    "zh_aliases": [
+      "不动产",
+      "房地产"
+    ],
     "groups": [
       "00-foundation",
       "07-location"
+    ],
+    "zh_groups": [
+      "位置",
+      "地理",
+      "基础",
+      "基础层"
     ],
     "association": false,
     "status": "a. In Model",
@@ -2244,8 +3706,15 @@
     "term": "RealPropertyType",
     "definition": "Powertype Of RealProperty",
     "aliases": [],
+    "zh_aliases": [
+      "不动产类型"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": false,
     "status": "a. In Model",
@@ -2256,8 +3725,15 @@
     "term": "RealPropertyTypeType",
     "definition": "The Powertype of RealPropertyType.",
     "aliases": [],
+    "zh_aliases": [
+      "不动产类型的类型"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": false,
     "status": "a. In Model",
@@ -2268,8 +3744,15 @@
     "term": "RectangularArea",
     "definition": "The space enclosed by a rectangle.",
     "aliases": [],
+    "zh_aliases": [
+      "矩形区域"
+    ],
     "groups": [
       "07-location"
+    ],
+    "zh_groups": [
+      "位置",
+      "地理"
     ],
     "association": false,
     "status": "a. In Model",
@@ -2280,7 +3763,11 @@
     "term": "RectangularAreaType",
     "definition": "Powertype Of RectangularArea",
     "aliases": [],
+    "zh_aliases": [
+      "矩形区域类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2290,7 +3777,11 @@
     "term": "RectangularAreaTypeType",
     "definition": "The Powertype of RectangularAreaType.",
     "aliases": [],
+    "zh_aliases": [
+      "矩形区域类型的类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2300,8 +3791,16 @@
     "term": "RegionOfCountry",
     "definition": "A large, usually continuous segment of a political state or nation or its territory.",
     "aliases": [],
+    "zh_aliases": [
+      "国家内区域",
+      "国内区域"
+    ],
     "groups": [
       "07-location"
+    ],
+    "zh_groups": [
+      "位置",
+      "地理"
     ],
     "association": false,
     "status": "a. In Model",
@@ -2312,8 +3811,15 @@
     "term": "regionOfCountryPartOfCountry",
     "definition": "A couple that represents the whole part relationship between a country and a region within it",
     "aliases": [],
+    "zh_aliases": [
+      "国家内区域属于国家"
+    ],
     "groups": [
       "07-location"
+    ],
+    "zh_groups": [
+      "位置",
+      "地理"
     ],
     "association": true,
     "status": "a. In Model",
@@ -2324,7 +3830,11 @@
     "term": "RegionOfCountryType",
     "definition": "Powertype Of RegionOfCountry",
     "aliases": [],
+    "zh_aliases": [
+      "国家内区域类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2334,7 +3844,11 @@
     "term": "RegionOfCountryTypeType",
     "definition": "The Powertype of RegionOfCountryType.",
     "aliases": [],
+    "zh_aliases": [
+      "国家内区域类型的类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2344,8 +3858,15 @@
     "term": "RegionOfWorld",
     "definition": "A large, usually continuous segment of a surface or space; area.",
     "aliases": [],
+    "zh_aliases": [
+      "世界区域"
+    ],
     "groups": [
       "07-location"
+    ],
+    "zh_groups": [
+      "位置",
+      "地理"
     ],
     "association": false,
     "status": "a. In Model",
@@ -2356,7 +3877,11 @@
     "term": "RegionOfWorldType",
     "definition": "Powertype Of RegionOfWorld",
     "aliases": [],
+    "zh_aliases": [
+      "世界区域类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2366,7 +3891,11 @@
     "term": "RegionOfWorldTypeType",
     "definition": "The Powertype of RegionOfWorldType.",
     "aliases": [],
+    "zh_aliases": [
+      "世界区域类型的类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2376,9 +3905,19 @@
     "term": "Representation",
     "definition": "A SignType where all the individual Signs are intended to signify the same Thing.",
     "aliases": [],
+    "zh_aliases": [
+      "表示",
+      "表示法"
+    ],
     "groups": [
       "00-foundation",
       "12-pedigree"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层",
+      "溯源",
+      "血统"
     ],
     "association": false,
     "status": "a. In Model",
@@ -2389,8 +3928,15 @@
     "term": "RepresentationScheme",
     "definition": "A RepresentationType that is a collection of Representations that are intended to be the preferred Representations in certain contexts.",
     "aliases": [],
+    "zh_aliases": [
+      "表示方案"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": false,
     "status": "a. In Model",
@@ -2401,8 +3947,15 @@
     "term": "representationSchemeInstance",
     "definition": "A typeInstance that asserts a Representation is a member of a RepresentationScheme.",
     "aliases": [],
+    "zh_aliases": [
+      "表示方案实例"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": true,
     "status": "a. In Model",
@@ -2413,6 +3966,9 @@
     "term": "RepresentationType",
     "definition": "A Type that is the Powertype of Representation",
     "aliases": [],
+    "zh_aliases": [
+      "表示类型"
+    ],
     "groups": [
       "00-foundation",
       "08-services",
@@ -2421,6 +3977,20 @@
       "13-information-pedigree",
       "15-reification",
       "16-information-data"
+    ],
+    "zh_groups": [
+      "信息与数据",
+      "信息数据",
+      "信息溯源",
+      "具体化",
+      "基础",
+      "基础层",
+      "实体化",
+      "服务",
+      "溯源",
+      "血统",
+      "资源流",
+      "资源流动"
     ],
     "association": false,
     "status": "a. In Model",
@@ -2431,9 +4001,18 @@
     "term": "representedBy",
     "definition": "A couple that asserts that a Representation represents a Thing.",
     "aliases": [],
+    "zh_aliases": [
+      "由表示"
+    ],
     "groups": [
       "00-foundation",
       "16-information-data"
+    ],
+    "zh_groups": [
+      "信息与数据",
+      "信息数据",
+      "基础",
+      "基础层"
     ],
     "association": true,
     "status": "a. In Model",
@@ -2444,6 +4023,9 @@
     "term": "Resource",
     "definition": "Data, Information, Performers, Materiel, or Personnel Types that are produced or consumed.",
     "aliases": [],
+    "zh_aliases": [
+      "资源"
+    ],
     "groups": [
       "00-foundation",
       "01-performer",
@@ -2458,6 +4040,27 @@
       "15-reification",
       "16-information-data"
     ],
+    "zh_groups": [
+      "主体",
+      "信息与数据",
+      "信息数据",
+      "信息溯源",
+      "具体化",
+      "基础",
+      "基础层",
+      "实体化",
+      "执行者",
+      "服务",
+      "溯源",
+      "组织",
+      "组织结构",
+      "能力",
+      "血统",
+      "资源",
+      "资源流",
+      "资源流动",
+      "项目"
+    ],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2467,6 +4070,9 @@
     "term": "resourceInLocationType",
     "definition": "The relationship that describes the location of a performer or type of performer",
     "aliases": [],
+    "zh_aliases": [
+      "资源位于位置类型"
+    ],
     "groups": [
       "01-performer",
       "04-resource",
@@ -2477,6 +4083,22 @@
       "15-reification",
       "16-information-data"
     ],
+    "zh_groups": [
+      "主体",
+      "位置",
+      "信息与数据",
+      "信息数据",
+      "信息溯源",
+      "具体化",
+      "地理",
+      "实体化",
+      "执行者",
+      "溯源",
+      "血统",
+      "资源",
+      "资源流",
+      "资源流动"
+    ],
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -2486,9 +4108,17 @@
     "term": "ResourceType",
     "definition": "The Powertype of Resource.",
     "aliases": [],
+    "zh_aliases": [
+      "资源类型"
+    ],
     "groups": [
       "00-foundation",
       "04-resource"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层",
+      "资源"
     ],
     "association": false,
     "status": "a. In Model",
@@ -2499,6 +4129,10 @@
     "term": "Rule",
     "definition": "A principle or condition that governs behavior; a prescribed guide for conduct or action",
     "aliases": [],
+    "zh_aliases": [
+      "规则",
+      "规则约束"
+    ],
     "groups": [
       "00-foundation",
       "01-performer",
@@ -2513,6 +4147,27 @@
       "15-reification",
       "16-information-data"
     ],
+    "zh_groups": [
+      "主体",
+      "信息与数据",
+      "信息数据",
+      "信息溯源",
+      "具体化",
+      "基础",
+      "基础层",
+      "实体化",
+      "度量",
+      "执行者",
+      "指标",
+      "服务",
+      "溯源",
+      "能力",
+      "血统",
+      "规则",
+      "资源流",
+      "资源流动",
+      "项目"
+    ],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2522,6 +4177,9 @@
     "term": "ruleConstrainsActivity",
     "definition": "An overlap between a Rule and the Activities it allows",
     "aliases": [],
+    "zh_aliases": [
+      "规则约束活动"
+    ],
     "groups": [
       "01-performer",
       "03-capability",
@@ -2534,6 +4192,23 @@
       "15-reification",
       "16-information-data"
     ],
+    "zh_groups": [
+      "主体",
+      "信息与数据",
+      "信息数据",
+      "信息溯源",
+      "具体化",
+      "实体化",
+      "执行者",
+      "服务",
+      "溯源",
+      "能力",
+      "血统",
+      "规则",
+      "资源流",
+      "资源流动",
+      "项目"
+    ],
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -2543,10 +4218,19 @@
     "term": "rulePartOfMeasureType",
     "definition": "A couple that represents the whole part relationship between types of measures and rules",
     "aliases": [],
+    "zh_aliases": [
+      "规则属于度量类型"
+    ],
     "groups": [
       "03-capability",
       "06-measure",
       "10-rules"
+    ],
+    "zh_groups": [
+      "度量",
+      "指标",
+      "能力",
+      "规则"
     ],
     "association": true,
     "status": "a. In Model",
@@ -2557,8 +4241,15 @@
     "term": "RuleType",
     "definition": "The Powertype of Rule.",
     "aliases": [],
+    "zh_aliases": [
+      "规则类型"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": false,
     "status": "a. In Model",
@@ -2569,7 +4260,11 @@
     "term": "SecurityAttributesGroup",
     "definition": "The group of Information Security Marking attributes in which the use of attributes 'classification' and 'ownerProducer' is required. This group is to be contrasted with group 'SecurityAttributesOptionGroup' in which use of those attributes is optional.",
     "aliases": [],
+    "zh_aliases": [
+      "安全属性组"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2579,7 +4274,11 @@
     "term": "SecurityAttributesGroupType",
     "definition": "The Powertype of SecurityAttributesGroup.",
     "aliases": [],
+    "zh_aliases": [
+      "安全属性组类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2589,11 +4288,23 @@
     "term": "Service",
     "definition": "A mechanism to enable access to a set of one or more capabilities , where the access is provided using a prescribed interface and is exercised consistent with constraints and policies as specified by the service description.  The mechanism is a Performer.  The \"capabilities\" accessed are Resources -- Information, Data, Materiel, Performers, and Geo-political Extents.",
     "aliases": [],
+    "zh_aliases": [
+      "服务"
+    ],
     "groups": [
       "01-performer",
       "08-services",
       "11-resource-flow",
       "12-pedigree"
+    ],
+    "zh_groups": [
+      "主体",
+      "执行者",
+      "服务",
+      "溯源",
+      "血统",
+      "资源流",
+      "资源流动"
     ],
     "association": false,
     "status": "a. In Model",
@@ -2606,10 +4317,20 @@
     "aliases": [
       "Service Interface Description (UPDM)"
     ],
+    "zh_aliases": [
+      "服务描述"
+    ],
     "groups": [
       "08-services",
       "15-reification",
       "16-information-data"
+    ],
+    "zh_groups": [
+      "信息与数据",
+      "信息数据",
+      "具体化",
+      "实体化",
+      "服务"
     ],
     "association": false,
     "status": "a. In Model",
@@ -2620,7 +4341,11 @@
     "term": "ServiceDescriptionType",
     "definition": "The Powertype of ServiceDescription.",
     "aliases": [],
+    "zh_aliases": [
+      "服务描述类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2630,9 +4355,17 @@
     "term": "serviceEnablesAccessToResource",
     "definition": "An overlap between the Service (i.e., mechanism) and the Resources (i.e., capabilities) to which it provides access.",
     "aliases": [],
+    "zh_aliases": [
+      "服务使能资源访问",
+      "服务提供资源访问"
+    ],
     "groups": [
       "04-resource",
       "08-services"
+    ],
+    "zh_groups": [
+      "服务",
+      "资源"
     ],
     "association": true,
     "status": "a. In Model",
@@ -2643,9 +4376,18 @@
     "term": "ServiceLevel",
     "definition": "A measurement of the performance of a system or service.",
     "aliases": [],
+    "zh_aliases": [
+      "服务级别"
+    ],
     "groups": [
       "00-foundation",
       "06-measure"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层",
+      "度量",
+      "指标"
     ],
     "association": false,
     "status": "a. In Model",
@@ -2656,8 +4398,15 @@
     "term": "ServiceLevelType",
     "definition": "The Powertype of ServiceLevel.",
     "aliases": [],
+    "zh_aliases": [
+      "服务级别类型"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": false,
     "status": "a. In Model",
@@ -2671,8 +4420,14 @@
       "Mediator (OASIS SOA RA)",
       "Service Interface (UPDM)"
     ],
+    "zh_aliases": [
+      "服务端口"
+    ],
     "groups": [
       "08-services"
+    ],
+    "zh_groups": [
+      "服务"
     ],
     "association": false,
     "status": "a. In Model",
@@ -2683,8 +4438,14 @@
     "term": "servicePortDescribedBy",
     "definition": "A tuple that asserts that Information describes a Thing.",
     "aliases": [],
+    "zh_aliases": [
+      "服务端口由描述"
+    ],
     "groups": [
       "08-services"
+    ],
+    "zh_groups": [
+      "服务"
     ],
     "association": true,
     "status": "a. In Model",
@@ -2695,7 +4456,11 @@
     "term": "ServicePortType",
     "definition": "The Powertype of ServicePort.",
     "aliases": [],
+    "zh_aliases": [
+      "服务端口类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2705,7 +4470,11 @@
     "term": "ServiceType",
     "definition": "The Powertype of Service.",
     "aliases": [],
+    "zh_aliases": [
+      "服务类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2715,8 +4484,16 @@
     "term": "Sign",
     "definition": "An Individual that signifies a Thing.\r\n\r\nExample: 'BOSTON' signifies BOSTON",
     "aliases": [],
+    "zh_aliases": [
+      "标志",
+      "标识"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": false,
     "status": "a. In Model",
@@ -2727,8 +4504,15 @@
     "term": "SignType",
     "definition": "An IndividualType that is the Powertype of Sign.",
     "aliases": [],
+    "zh_aliases": [
+      "标志类型"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": false,
     "status": "a. In Model",
@@ -2739,8 +4523,15 @@
     "term": "SignTypeType",
     "definition": "The Powertype of SignType.",
     "aliases": [],
+    "zh_aliases": [
+      "标志类型的类型"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": false,
     "status": "a. In Model",
@@ -2751,8 +4542,15 @@
     "term": "SingletonActivity",
     "definition": "A set of activities containing only one activity.",
     "aliases": [],
+    "zh_aliases": [
+      "单例活动"
+    ],
     "groups": [
       "12-pedigree"
+    ],
+    "zh_groups": [
+      "溯源",
+      "血统"
     ],
     "association": false,
     "status": "a. In Model",
@@ -2763,8 +4561,15 @@
     "term": "SingletonIndividualType",
     "definition": "A set of individuals containing only one individual.",
     "aliases": [],
+    "zh_aliases": [
+      "单例个体类型"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": false,
     "status": "a. In Model",
@@ -2775,10 +4580,20 @@
     "term": "SingletonResource",
     "definition": "A set of resources containing only one resource",
     "aliases": [],
+    "zh_aliases": [
+      "单例资源"
+    ],
     "groups": [
       "00-foundation",
       "04-resource",
       "12-pedigree"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层",
+      "溯源",
+      "血统",
+      "资源"
     ],
     "association": false,
     "status": "a. In Model",
@@ -2789,8 +4604,16 @@
     "term": "Site",
     "definition": "Physical (geographic) location that is or was owned by, leased to, or otherwise possessed. Each site is assigned to a single installation. A site may exist in one of three forms: (1) Land only, where there are no facilities present and where the land consists of either a single land parcel or two or more contiguous land parcels. (2)  Facility or facilities only, where the underlying land is neither owned nor controlled by the government. A stand-alone facility can be a site. If a facility is not a stand-alone facility, it must be assigned to a site. (3). Land and all the facilities thereon, where the land consists of either a single land parcel or two or more contiguous land parcels.",
     "aliases": [],
+    "zh_aliases": [
+      "场地",
+      "站点"
+    ],
     "groups": [
       "07-location"
+    ],
+    "zh_groups": [
+      "位置",
+      "地理"
     ],
     "association": false,
     "status": "a. In Model",
@@ -2801,8 +4624,15 @@
     "term": "sitePartOfInstallation",
     "definition": "A whole-part association representing that a Site (the part) is spatio-temporally contained within an Installation (the whole).",
     "aliases": [],
+    "zh_aliases": [
+      "场地属于驻地"
+    ],
     "groups": [
       "07-location"
+    ],
+    "zh_groups": [
+      "位置",
+      "地理"
     ],
     "association": true,
     "status": "a. In Model",
@@ -2813,7 +4643,11 @@
     "term": "SiteType",
     "definition": "Powertype Of Site",
     "aliases": [],
+    "zh_aliases": [
+      "场地类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2823,7 +4657,11 @@
     "term": "SiteTypeType",
     "definition": "The Powertype of SiteType.",
     "aliases": [],
+    "zh_aliases": [
+      "场地类型的类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2837,10 +4675,21 @@
       "Knowledge",
       "Ability"
     ],
+    "zh_aliases": [
+      "技能"
+    ],
     "groups": [
       "01-performer",
       "12-pedigree",
       "14-org-structure"
+    ],
+    "zh_groups": [
+      "主体",
+      "执行者",
+      "溯源",
+      "组织",
+      "组织结构",
+      "血统"
     ],
     "association": false,
     "status": "a. In Model",
@@ -2851,11 +4700,24 @@
     "term": "skillOfPersonRoleType",
     "definition": "A type property between a PersonRoleType and the Skills it entails",
     "aliases": [],
+    "zh_aliases": [
+      "人员角色类型的技能"
+    ],
     "groups": [
       "01-performer",
       "06-measure",
       "12-pedigree",
       "14-org-structure"
+    ],
+    "zh_groups": [
+      "主体",
+      "度量",
+      "执行者",
+      "指标",
+      "溯源",
+      "组织",
+      "组织结构",
+      "血统"
     ],
     "association": true,
     "status": "a. In Model",
@@ -2866,7 +4728,11 @@
     "term": "SkillType",
     "definition": "The Powertype of Skill.",
     "aliases": [],
+    "zh_aliases": [
+      "技能类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2876,8 +4742,16 @@
     "term": "SolidVolume",
     "definition": "The amount of space occupied by a three-dimensional object of definite shape; not liquid or gaseous.",
     "aliases": [],
+    "zh_aliases": [
+      "立体空间",
+      "三维体"
+    ],
     "groups": [
       "07-location"
+    ],
+    "zh_groups": [
+      "位置",
+      "地理"
     ],
     "association": false,
     "status": "a. In Model",
@@ -2888,7 +4762,11 @@
     "term": "SolidVolumeType",
     "definition": "Powertype Of SolidVolume",
     "aliases": [],
+    "zh_aliases": [
+      "立体空间类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2898,7 +4776,11 @@
     "term": "SolidVolumeTypeType",
     "definition": "The Powertype of SolidVolumeType.",
     "aliases": [],
+    "zh_aliases": [
+      "立体空间类型的类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2908,9 +4790,18 @@
     "term": "SpatialMeasure",
     "definition": "A category of measures of the spatio-temporal location of an Individual.",
     "aliases": [],
+    "zh_aliases": [
+      "空间度量"
+    ],
     "groups": [
       "06-measure",
       "07-location"
+    ],
+    "zh_groups": [
+      "位置",
+      "地理",
+      "度量",
+      "指标"
     ],
     "association": false,
     "status": "a. In Model",
@@ -2921,7 +4812,11 @@
     "term": "SpatialMeasureType",
     "definition": "The Powertype of SpatialMeasure.",
     "aliases": [],
+    "zh_aliases": [
+      "空间度量类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2931,9 +4826,18 @@
     "term": "Standard",
     "definition": "A formal agreement documenting generally accepted specifications or criteria for products, processes, procedures, policies, systems, and/or personnel.",
     "aliases": [],
+    "zh_aliases": [
+      "标准"
+    ],
     "groups": [
       "00-foundation",
       "05-guidance"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层",
+      "指南",
+      "指导"
     ],
     "association": false,
     "status": "a. In Model",
@@ -2944,8 +4848,15 @@
     "term": "StandardType",
     "definition": "The Powertype of Standard.",
     "aliases": [],
+    "zh_aliases": [
+      "标准类型"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": false,
     "status": "a. In Model",
@@ -2956,8 +4867,15 @@
     "term": "startBoundary",
     "definition": "The beginning of a temporalBoundary.",
     "aliases": [],
+    "zh_aliases": [
+      "起始边界"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": true,
     "status": "a. In Model",
@@ -2968,8 +4886,15 @@
     "term": "StartBoundaryType",
     "definition": "The beginning of a temporalBoundaryType.",
     "aliases": [],
+    "zh_aliases": [
+      "起始边界类型"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": true,
     "status": "a. In Model",
@@ -2980,8 +4905,16 @@
     "term": "superSubType",
     "definition": "An association in which one Type (the subtype) is a subset of the other Type (supertype).",
     "aliases": [],
+    "zh_aliases": [
+      "上下位类型",
+      "父类型子类型"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": true,
     "status": "a. In Model",
@@ -2992,8 +4925,16 @@
     "term": "Surface",
     "definition": "A portion of space having length and breadth but no thickness or regards to time.",
     "aliases": [],
+    "zh_aliases": [
+      "曲面",
+      "表面"
+    ],
     "groups": [
       "07-location"
+    ],
+    "zh_groups": [
+      "位置",
+      "地理"
     ],
     "association": false,
     "status": "a. In Model",
@@ -3004,7 +4945,11 @@
     "term": "SurfaceType",
     "definition": "Powertype Of Surface",
     "aliases": [],
+    "zh_aliases": [
+      "曲面类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3014,7 +4959,11 @@
     "term": "SurfaceTypeType",
     "definition": "The Powertype of SurfaceType.",
     "aliases": [],
+    "zh_aliases": [
+      "曲面类型的类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3024,10 +4973,21 @@
     "term": "System",
     "definition": "A functionally, physically, and/or behaviorally related group of regularly interacting or interdependent elements.",
     "aliases": [],
+    "zh_aliases": [
+      "系统"
+    ],
     "groups": [
       "01-performer",
       "11-resource-flow",
       "12-pedigree"
+    ],
+    "zh_groups": [
+      "主体",
+      "执行者",
+      "溯源",
+      "血统",
+      "资源流",
+      "资源流动"
     ],
     "association": false,
     "status": "a. In Model",
@@ -3038,7 +4998,11 @@
     "term": "SystemType",
     "definition": "The Powertype of System.",
     "aliases": [],
+    "zh_aliases": [
+      "系统类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3048,8 +5012,15 @@
     "term": "TechnicalStandard",
     "definition": "Technical standards document specific technical methodologies and practices to design and implement.",
     "aliases": [],
+    "zh_aliases": [
+      "技术标准"
+    ],
     "groups": [
       "05-guidance"
+    ],
+    "zh_groups": [
+      "指南",
+      "指导"
     ],
     "association": false,
     "status": "a. In Model",
@@ -3060,7 +5031,11 @@
     "term": "TechnicalStandardType",
     "definition": "The Powertype of TechnicalStandard.",
     "aliases": [],
+    "zh_aliases": [
+      "技术标准类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3070,8 +5045,15 @@
     "term": "temporalBoundary",
     "definition": "The start and end times for the spatio-temporal extent of an Individual",
     "aliases": [],
+    "zh_aliases": [
+      "时间边界"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": true,
     "status": "a. In Model",
@@ -3082,8 +5064,15 @@
     "term": "TemporalBoundaryType",
     "definition": "The start and end times for the Individual members of a Type.",
     "aliases": [],
+    "zh_aliases": [
+      "时间边界类型"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": true,
     "status": "a. In Model",
@@ -3094,8 +5083,16 @@
     "term": "TemporalMeasure",
     "definition": "A type of measure of time",
     "aliases": [],
+    "zh_aliases": [
+      "时间度量",
+      "时序度量"
+    ],
     "groups": [
       "06-measure"
+    ],
+    "zh_groups": [
+      "度量",
+      "指标"
     ],
     "association": false,
     "status": "a. In Model",
@@ -3106,7 +5103,11 @@
     "term": "TemporalMeasureType",
     "definition": "The Powertype of TemporalMeasure.",
     "aliases": [],
+    "zh_aliases": [
+      "时间度量类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3116,8 +5117,15 @@
     "term": "temporalWholePart",
     "definition": "A wholePart that asserts the spatial extent of the (whole) individual is co-extensive with the spatial extent of the (part) individual for a particular period of time.",
     "aliases": [],
+    "zh_aliases": [
+      "时间整体部分"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": true,
     "status": "a. In Model",
@@ -3128,8 +5136,15 @@
     "term": "TemporalWholePartType",
     "definition": "A couple between two Individual Types where for each member of the whole set, there is a corresponding member of the part set for which a wholePart relationship exists, and conversely",
     "aliases": [],
+    "zh_aliases": [
+      "时间整体部分类型"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": true,
     "status": "a. In Model",
@@ -3140,6 +5155,10 @@
     "term": "Thing",
     "definition": "The union of Individual, Type, and tuple.",
     "aliases": [],
+    "zh_aliases": [
+      "事物",
+      "万物"
+    ],
     "groups": [
       "00-foundation",
       "07-location",
@@ -3147,6 +5166,19 @@
       "13-information-pedigree",
       "15-reification",
       "16-information-data"
+    ],
+    "zh_groups": [
+      "位置",
+      "信息与数据",
+      "信息数据",
+      "信息溯源",
+      "具体化",
+      "地理",
+      "基础",
+      "基础层",
+      "实体化",
+      "溯源",
+      "血统"
     ],
     "association": false,
     "status": "a. In Model",
@@ -3157,9 +5189,18 @@
     "term": "Tuple",
     "definition": "A relationship between two or more things. Note: Tuples are identified by their places (i.e. the ends of the relationship).",
     "aliases": [],
+    "zh_aliases": [
+      "元组"
+    ],
     "groups": [
       "00-foundation",
       "16-information-data"
+    ],
+    "zh_groups": [
+      "信息与数据",
+      "信息数据",
+      "基础",
+      "基础层"
     ],
     "association": true,
     "status": "a. In Model",
@@ -3170,8 +5211,15 @@
     "term": "TupleType",
     "definition": "The powertype of tuple that provides the stereotype for tuples of Types.",
     "aliases": [],
+    "zh_aliases": [
+      "元组类型"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": true,
     "status": "a. In Model",
@@ -3182,9 +5230,18 @@
     "term": "Type",
     "definition": "A set (or class) of Things.  Note1: Types are identified by their members (i.e. all the things of that type). Note2: The IDEAS Foundation is a higher-order ontology, so Types may have members that are also Types.",
     "aliases": [],
+    "zh_aliases": [
+      "类型"
+    ],
     "groups": [
       "00-foundation",
       "12-pedigree"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层",
+      "溯源",
+      "血统"
     ],
     "association": false,
     "status": "a. In Model",
@@ -3195,8 +5252,15 @@
     "term": "typeInstance",
     "definition": "A Thing can be an instance of a Type - i.e. set membership. Note that IDEAS is a higher-order model, hence Types may be instances of Types.",
     "aliases": [],
+    "zh_aliases": [
+      "类型实例关系"
+    ],
     "groups": [
       "00-foundation"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层"
     ],
     "association": true,
     "status": "a. In Model",
@@ -3207,8 +5271,15 @@
     "term": "Vision",
     "definition": "An end that describes the future state of the enterprise, without regard to how it is to be achieved; a mental image of what the future will or could be like",
     "aliases": [],
+    "zh_aliases": [
+      "愿景",
+      "愿景描述"
+    ],
     "groups": [
       "09-project"
+    ],
+    "zh_groups": [
+      "项目"
     ],
     "association": false,
     "status": "a. In Model",
@@ -3219,8 +5290,14 @@
     "term": "visionIsRealizedByDesiredEffect",
     "definition": "The relationship that exists between a vision and the specific desired effect that realised it",
     "aliases": [],
+    "zh_aliases": [
+      "愿景由期望效果实现"
+    ],
     "groups": [
       "09-project"
+    ],
+    "zh_groups": [
+      "项目"
     ],
     "association": true,
     "status": "a. In Model",
@@ -3231,7 +5308,11 @@
     "term": "VisionType",
     "definition": "The Powertype of Vision.",
     "aliases": [],
+    "zh_aliases": [
+      "愿景类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3241,9 +5322,18 @@
     "term": "wholePart",
     "definition": "A couple that asserts one (part) Individual is part of another (whole) Individual.",
     "aliases": [],
+    "zh_aliases": [
+      "整体部分"
+    ],
     "groups": [
       "00-foundation",
       "14-org-structure"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层",
+      "组织",
+      "组织结构"
     ],
     "association": true,
     "status": "a. In Model",
@@ -3254,9 +5344,18 @@
     "term": "WholePartType",
     "definition": "A coupleType that asserts one Type (the part) has members that have a whole-part relation with a member of the other Type (whole).",
     "aliases": [],
+    "zh_aliases": [
+      "整体部分类型"
+    ],
     "groups": [
       "00-foundation",
       "14-org-structure"
+    ],
+    "zh_groups": [
+      "基础",
+      "基础层",
+      "组织",
+      "组织结构"
     ],
     "association": true,
     "status": "a. In Model",
@@ -3267,7 +5366,11 @@
     "term": "agreementSubtypeOfRule",
     "definition": "Agreement is a subtype of Rule.",
     "aliases": [],
+    "zh_aliases": [
+      "协议是规则的子类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -3277,7 +5380,11 @@
     "term": "functionalStandardIsRule",
     "definition": "FunctionalStandard is a subtype of Rule.",
     "aliases": [],
+    "zh_aliases": [
+      "功能标准是规则"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -3287,7 +5394,11 @@
     "term": "guidanceIsRule",
     "definition": "Guidance is a subtype of Rule.",
     "aliases": [],
+    "zh_aliases": [
+      "指导是规则"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -3297,7 +5408,11 @@
     "term": "individualPerformerPowertypeInstanceOfPerformer",
     "definition": "IndividualPerformer is a powertype instance of Performer.",
     "aliases": [],
+    "zh_aliases": [
+      "个体执行者的幂类型实例"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -3307,8 +5422,14 @@
     "term": "individualResourcePowertypeInstanceOfResource",
     "definition": "IndividualResource is a powertype instance of Resource.",
     "aliases": [],
+    "zh_aliases": [
+      "个体资源的幂类型实例"
+    ],
     "groups": [
       "04-resource"
+    ],
+    "zh_groups": [
+      "资源"
     ],
     "association": true,
     "status": "f. ERD-derived",
@@ -3319,7 +5440,12 @@
     "term": "informationPedigree",
     "definition": "Information and PedigreeInformation are associated via the informationPedigree tuple.",
     "aliases": [],
+    "zh_aliases": [
+      "信息溯源",
+      "信息血统"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -3329,7 +5455,11 @@
     "term": "measureOfDesireSubtypeOfMeasure",
     "definition": "MeasureOfDesire is a subtype of Measure.",
     "aliases": [],
+    "zh_aliases": [
+      "期望度量是度量的子类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -3339,7 +5469,11 @@
     "term": "measureOfEffectSubtypeOfMeasure",
     "definition": "MeasureOfEffect is a subtype of Measure.",
     "aliases": [],
+    "zh_aliases": [
+      "效果度量是度量的子类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -3349,7 +5483,11 @@
     "term": "measureableSkillSubtypeOfSkill",
     "definition": "MeasureableSkill is a subtype of Skill.",
     "aliases": [],
+    "zh_aliases": [
+      "可度量技能是技能的子类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -3359,7 +5497,11 @@
     "term": "organizationHasSkill",
     "definition": "Skill is a part of Organization (wholePart).",
     "aliases": [],
+    "zh_aliases": [
+      "组织拥有技能"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -3369,8 +5511,14 @@
     "term": "organizationPartOfResource",
     "definition": "Organization is a part of Resource (wholePart).",
     "aliases": [],
+    "zh_aliases": [
+      "组织属于资源"
+    ],
     "groups": [
       "04-resource"
+    ],
+    "zh_groups": [
+      "资源"
     ],
     "association": true,
     "status": "f. ERD-derived",
@@ -3381,7 +5529,11 @@
     "term": "organizationPowertypeInstanceOfOrganizationType",
     "definition": "Organization is a powertype instance of OrganizationType.",
     "aliases": [],
+    "zh_aliases": [
+      "组织的幂类型实例"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -3391,7 +5543,11 @@
     "term": "organizationSubtypeOfPerformer",
     "definition": "Organization is a subtype of Performer.",
     "aliases": [],
+    "zh_aliases": [
+      "组织是执行者的子类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -3401,7 +5557,11 @@
     "term": "organizationTypeInstanceOfOrganization",
     "definition": "Organization is a type instance of OrganizationType.",
     "aliases": [],
+    "zh_aliases": [
+      "组织类型实例"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -3411,7 +5571,11 @@
     "term": "pedigreeProducedByActivity",
     "definition": "Activity and PedigreeInformation are associated via the pedigreeProducedByActivity tuple.",
     "aliases": [],
+    "zh_aliases": [
+      "溯源由活动产生"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -3421,7 +5585,11 @@
     "term": "pedigreeWholePart",
     "definition": "PedigreeInformation is a part of PedigreeInformation (wholePart).",
     "aliases": [],
+    "zh_aliases": [
+      "溯源整体部分"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -3431,8 +5599,14 @@
     "term": "performerSubtypeOfResource",
     "definition": "Performer is a subtype of Resource.",
     "aliases": [],
+    "zh_aliases": [
+      "执行者是资源的子类型"
+    ],
     "groups": [
       "04-resource"
+    ],
+    "zh_groups": [
+      "资源"
     ],
     "association": true,
     "status": "f. ERD-derived",
@@ -3443,7 +5617,11 @@
     "term": "personRoleTypePartOfOrganization",
     "definition": "PersonRoleType is a part of Organization (wholePart).",
     "aliases": [],
+    "zh_aliases": [
+      "人员角色类型属于组织"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -3453,7 +5631,11 @@
     "term": "ruleConstrainsActivityPerformedByPerformer",
     "definition": "Rule and Activity are associated via the ruleConstrainsActivityPerformedByPerformer tuple.",
     "aliases": [],
+    "zh_aliases": [
+      "规则约束由执行者执行的活动"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -3463,7 +5645,11 @@
     "term": "ruleConstrainsPerformer",
     "definition": "Rule and Performer are associated via the ruleConstrainsPerformer tuple.",
     "aliases": [],
+    "zh_aliases": [
+      "规则约束执行者"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -3473,7 +5659,11 @@
     "term": "ruleConstraintOfActivityValidUnderCondition",
     "definition": "Rule and Condition are associated via the ruleConstraintOfActivityValidUnderCondition tuple.",
     "aliases": [],
+    "zh_aliases": [
+      "活动在条件下有效的规则约束"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -3483,7 +5673,11 @@
     "term": "serviceSubtypeOfPerformer",
     "definition": "Service is a subtype of Performer.",
     "aliases": [],
+    "zh_aliases": [
+      "服务是执行者的子类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -3493,7 +5687,11 @@
     "term": "standardIsRule",
     "definition": "Standard is a subtype of Rule.",
     "aliases": [],
+    "zh_aliases": [
+      "标准是规则"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -3503,7 +5701,11 @@
     "term": "systemSubtypeOfPerformer",
     "definition": "System is a subtype of Performer.",
     "aliases": [],
+    "zh_aliases": [
+      "系统是执行者的子类型"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -3513,7 +5715,11 @@
     "term": "technicalStandardIsRule",
     "definition": "TechnicalStandard is a subtype of Rule.",
     "aliases": [],
+    "zh_aliases": [
+      "技术标准是规则"
+    ],
     "groups": [],
+    "zh_groups": [],
     "association": true,
     "status": "f. ERD-derived",
     "erd": true

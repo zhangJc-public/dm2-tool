@@ -14,6 +14,8 @@ class KnowledgeSearchResult:
     aliases: list[str]
     groups: list[str]
     source: str
+    #: dm2-curated Chinese aliases (recall only; not part of the DoDAF record).
+    zh_aliases: list[str] = field(default_factory=list)
 
 
 @dataclass
@@ -228,6 +230,7 @@ class KnowledgeAPI:
                 aliases=r.alias,
                 groups=r.groups,
                 source=r.file_path,
+                zh_aliases=r.zh_alias,
             )
             for r in results
         ]

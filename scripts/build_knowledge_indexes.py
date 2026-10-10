@@ -4,15 +4,17 @@
 Reads (committed, human-curated sources):
   dm2-reference/dm2-data-dictionary.yaml   — 279 terms + monster matrix
   dm2-reference/dm2-metamodel-2.02.yaml    — 19 submodels, taxonomy, tuples
+  dm2-reference/dm2-term-zh-aliases.yaml   — curated Chinese aliases per term
 
 Emits (shipped, runtime-loaded compact indexes under dm2-reference/core/):
-  terms.json              — 279×{id, term, definition, aliases, groups, association, status, erd}
+  terms.json              — 279×{id, term, definition, aliases, zh_aliases, groups,
+                            association, status, erd}
   associations.json       — binary associations {label, endpoints, homes}
   taxonomy.json           — super-subtype parents/children + powertype pairs
   view-content-spec.json  — per-view necessary/optional terms + necessary associations
 
 Deterministic and zero-LLM: runtime never parses the 840 KB source YAMLs.
-Run after editing either source:  python3 scripts/build_knowledge_indexes.py
+Run after editing any source:  python3 scripts/build_knowledge_indexes.py
 """
 
 import json
@@ -28,6 +30,7 @@ CORE = REF / "core"
 
 DD_PATH = REF / "dm2-data-dictionary.yaml"
 MM_PATH = REF / "dm2-metamodel-2.02.yaml"
+ZH_ALIAS_PATH = REF / "dm2-term-zh-aliases.yaml"
 
 # ── submodel (dictionary x-marks) → 17 data-group scheme ──────────────────
 SUBMODEL_TO_GROUPS = {
@@ -84,16 +87,97 @@ def reconcile_groups(term: dict) -> list:
     return sorted(set(groups))
 
 
+# ── Chinese aliases (curated overlay) ─────────────────────────────────────
+def load_zh_aliases(path: Path, term_names: set, group_ids: set) -> tuple:
+    """Load and validate the curated Chinese alias overlay.
+
+    Fails loudly on every inconsistency: an unknown key would silently never
+    match, and a term without aliases is a query that still returns nothing —
+    which is exactly the failure this overlay exists to remove.
+
+    Returns ``(term_aliases, group_aliases)``.
+    """
+    if not path.exists():
+        sys.exit(f"中文别名源缺失: {path}")
+    data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    aliases = data.get("aliases") if isinstance(data, dict) else None
+    group_aliases = data.get("groups") if isinstance(data, dict) else None
+    if not isinstance(aliases, dict) or not aliases:
+        sys.exit(f"中文别名源格式错误（需要顶层 aliases: 映射）: {path}")
+
+    unknown = sorted(set(aliases) - term_names)
+    if unknown:
+        sys.exit("中文别名源含未知术语键:\n  " + "\n  ".join(unknown))
+
+    cleaned: dict = {}
+    problems = []
+    for term, values in aliases.items():
+        if not isinstance(values, list):
+            problems.append(f"{term}: 别名必须是列表")
+            continue
+        seen: list = []
+        for value in values:
+            alias = str(value).strip()
+            if not alias:
+                problems.append(f"{term}: 含空别名")
+            elif alias in seen:
+                problems.append(f"{term}: 别名重复 '{alias}'")
+            else:
+                seen.append(alias)
+        if not seen:
+            problems.append(f"{term}: 至少需要一条别名")
+        cleaned[term] = seen
+    if problems:
+        sys.exit("中文别名源校验失败:\n  " + "\n  ".join(sorted(problems)))
+
+    missing = sorted(term_names - set(cleaned))
+    if missing:
+        sys.exit(
+            f"以下术语缺少中文别名（共 {len(missing)} 个，中文查询将无法命中）:\n  "
+            + "\n  ".join(missing)
+        )
+
+    # Group aliases are optional as a section, but once present they must be complete.
+    cleaned_groups: dict = {}
+    if group_aliases is not None:
+        if not isinstance(group_aliases, dict):
+            sys.exit(f"中文别名源的 groups: 必须是映射: {path}")
+        unknown_groups = sorted(set(group_aliases) - group_ids)
+        if unknown_groups:
+            sys.exit("中文别名源含未知数据组键:\n  " + "\n  ".join(unknown_groups))
+        group_problems = []
+        for gid, values in group_aliases.items():
+            seen = [str(v).strip() for v in (values if isinstance(values, list) else [])]
+            seen = [v for v in seen if v]
+            if not seen:
+                group_problems.append(f"{gid}: 至少需要一条中文别名")
+            cleaned_groups[gid] = seen
+        missing_groups = sorted(group_ids - set(cleaned_groups))
+        if missing_groups:
+            group_problems.append("缺少数据组别名: " + ", ".join(missing_groups))
+        if group_problems:
+            sys.exit("中文别名源数据组校验失败:\n  " + "\n  ".join(group_problems))
+
+    return cleaned, cleaned_groups
+
+
 # ── terms.json ────────────────────────────────────────────────────────────
-def build_terms(dd_terms: list) -> list:
+def build_terms(dd_terms: list, zh_aliases: dict = None, zh_group_aliases: dict = None) -> list:
+    zh_aliases = zh_aliases or {}
+    zh_group_aliases = zh_group_aliases or {}
     terms = []
     for t in dd_terms:
+        groups = reconcile_groups(t)
         terms.append({
             "id": t.get("id", ""),
             "term": t.get("term", ""),
             "definition": t.get("definition", "") or "",
             "aliases": t.get("aliases") or [],
-            "groups": reconcile_groups(t),
+            "zh_aliases": zh_aliases.get(t.get("term", ""), []),
+            "groups": groups,
+            "zh_groups": sorted({
+                alias for gid in groups for alias in zh_group_aliases.get(gid, [])
+            }),
             "association": bool(t.get("association")),
             "status": t.get("status", ""),
             "erd": bool(t.get("erd_diagram")),
@@ -528,6 +612,32 @@ def reconcile_group_templates(projection: dict, associations: list, taxonomy: di
     return drift
 
 
+def data_group_ids() -> set:
+    """The 17 data-group ids, taken from the shipped group template directories."""
+    return {p.name for p in (CORE / "groups").iterdir() if p.is_dir()}
+
+
+def build_all(dd_terms: list, mm: dict, group_ids: set,
+              zh_alias_path: Path = ZH_ALIAS_PATH) -> dict:
+    """Assemble every derived index from the authoritative sources.
+
+    Both ``main()`` and the snapshot test go through here, so the test cannot
+    diverge from the real build (it used to call ``build_terms`` directly).
+    """
+    zh_aliases, zh_group_aliases = load_zh_aliases(
+        zh_alias_path, {t.get("term", "") for t in dd_terms}, group_ids
+    )
+    associations = build_associations(mm)
+    return {
+        "terms.json": build_terms(dd_terms, zh_aliases, zh_group_aliases),
+        "associations.json": associations,
+        "taxonomy.json": build_taxonomy(mm),
+        "view-content-spec.json": build_view_content_spec(dd_terms, associations),
+        "_zh_aliases": zh_aliases,
+        "_zh_group_aliases": zh_group_aliases,
+    }
+
+
 def main():
     import argparse
     parser = argparse.ArgumentParser(description="Build derived DM2 knowledge indexes.")
@@ -544,18 +654,17 @@ def main():
     dd_terms = dd if isinstance(dd, list) else dd.get("terms", [])
     mm = yaml.safe_load(MM_PATH.read_text(encoding="utf-8"))
 
-    terms = build_terms(dd_terms)
-    associations = build_associations(mm)
-    taxonomy = build_taxonomy(mm)
-    content_spec = build_view_content_spec(dd_terms, associations)
+    group_ids = data_group_ids()
+    outputs = build_all(dd_terms, mm, group_ids)
+    zh_aliases = outputs.pop("_zh_aliases")
+    zh_group_aliases = outputs.pop("_zh_group_aliases")
+
+    terms = outputs["terms.json"]
+    associations = outputs["associations.json"]
+    taxonomy = outputs["taxonomy.json"]
+    content_spec = outputs["view-content-spec.json"]
 
     CORE.mkdir(parents=True, exist_ok=True)
-    outputs = {
-        "terms.json": terms,
-        "associations.json": associations,
-        "taxonomy.json": taxonomy,
-        "view-content-spec.json": content_spec,
-    }
     for name, data in outputs.items():
         (CORE / name).write_text(
             json.dumps(data, ensure_ascii=False, indent=2, sort_keys=False) + "\n",
@@ -571,7 +680,9 @@ def main():
                    for a in v["necessary_associations"] if a.get("endpoint_types"))
     total_nassoc = sum(len(v["necessary_associations"]) for v in content_spec.values())
     print("Index build complete:")
-    print(f"  terms.json:               {len(terms)} terms")
+    print(f"  terms.json:               {len(terms)} terms "
+          f"({len(zh_aliases)} with curated Chinese aliases, "
+          f"{len(zh_group_aliases)} group alias sets)")
     print(f"  associations.json:        {len(associations)} tuples "
           f"({len(binary)} binary; {len(dd_assoc & assoc_labels)}/{len(dd_assoc)} "
           f"dictionary associations resolved)")

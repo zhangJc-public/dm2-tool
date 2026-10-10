@@ -168,6 +168,7 @@ File System Layer      ← .dm2/ 项目 + dm2-changes/ + dm2-archive/
 | D6 | `templates/` 是**死目录**（却被 git 跟踪），`CLAUDE.md` 称其被 `dm2 init` 使用 | `templates/init/.dm2/config.yaml` 已跟踪；全仓无代码引用；`init` 在 `main.py` 内联构造 `template_config` | 删除目录并修正 `CLAUDE.md` |
 | D7 | **CI 不校验 spec**——这是历史上 17 个 spec 烂掉的根因 | `test.yml` 仅有 `pytest` + `ruff check src/ test/` | CI 增加 `openspec validate --all` |
 | D10（运行时半边） | **知识库缺失时静默给空答案**：`get_reference_path()` 在两条候选都不存在时仍返回 `base`，索引器 glob 空目录后报成功 | 隔离 venv 中 `pip install .`：`dm2 knowledge stats` → 全 0、`dm2 concern list` → 空，**均 exit 0** | 由 `report-missing-knowledge-base` 修复：抛 `KnowledgeBaseNotFound`，中央报错输出 `KB_NOT_FOUND` 信封（人类模式给可操作提示）；`concerns.yaml` 同样处理；`test/test_missing_knowledge_base.py` 守护 |
+| D9 | `knowledge search` **中文召回为 0**（记录时以为只是内容层，实测连 `"resource flow"` 也 0：字典的定义/别名 279 条全英文） | `search "资源流"` → 0；`search Performer` → 10；`definition`/`aliases` 含中文的术语数 = 0 | 由 `add-chinese-term-aliases` 修复：新增策展源 `dm2-term-zh-aliases.yaml`（279 术语 + 17 数据组中文别名）→ `terms.json` 的 `zh_aliases`/`zh_groups`；检索分词（多 token AND）+ 三层排序；构建校验未知键/空别名/重复别名，测试守护「每术语必有别名」 |
 
 ### 显式判定为豁免（记录而非修复）
 
@@ -179,7 +180,6 @@ File System Layer      ← .dm2/ 项目 + dm2-changes/ + dm2-archive/
 
 | # | 项 | 证据 | 为何延后 |
 |---|---|---|---|
-| D9 | `knowledge search` 中文召回为 0 | `search "资源流"` → 0；`search Performer` → 10 | 属知识库**内容层**（需中文别名索引），与契约地基不同类，单独变更更清晰 |
 | D10（分发半边） | **`dm2-reference/` 不随包分发**：`package-data` 覆盖不到 `src/` 之外的路径（`dm2 = ["dm2-reference/core/**/*"]` 还指向 `src/dm2/` 下并不存在的路径），且代码靠从 `src/dm2/` 向上回溯定位知识库与 `concerns.yaml`——因此非 editable 安装拿不到运行时知识库 | 实测 `SOURCES.txt`：`dm2-reference/core/` 48 条；根 YAML、`scripts/`、`schemas/` 均 0 条 | 运行时半边已修（见上表），本项只剩**分发形态**决策：是否支持正式 wheel 分发。会显著改动打包布局，且文档与 CI 都只走 `pip install -e .`，当前无实际受害者。**2026-09-24 复核后判定：正式确立 editable-only**——隔离 venv 实测 sdist→wheel 会静默丢弃包外数据文件（wheel 的 `dm2/` 内零 json/yaml），非 editable 安装确定不可用（现在干净地报 `KB_NOT_FOUND` 而非空答案）；据此删除 MANIFEST.in 与 release.yml（后者会在打 tag 时把坏 wheel 发布到 PyPI）。待真实分发需求出现时，再以「运行时资产迁入 `src/dm2/`」的专门变更关闭本项 |
 
 ---
@@ -215,7 +215,6 @@ File System Layer      ← .dm2/ 项目 + dm2-changes/ + dm2-archive/
 | 非目标 | 理由 |
 |---|---|
 | DSH 产品面原生化（agent preset、`@local/dsh-tool-dm2` 原生工具插件、多工具分发） | 2026-10-10 起**开发环境**已切到 DSH + SDD（`.agents/skills` 承载 openspec 技能、`.dsh/skills` 承载 dm2 技能，见 §2）；产品面原生化仍延后，待开发环境稳定后单独立项 |
-| 中文检索召回（D9） | 知识库内容层问题，独立变更 |
 | 非交互式 `uninstall` / `--yes` | 判定为豁免（D8） |
 | 合并 `_require_project` 的多份拷贝 | 属重构，超出地基范围；本次仅补齐缺失的守卫并统一其语义，三份拷贝保持独立（不得下沉到 `utils`——那会形成向上依赖，破坏 I1） |
 | 既有 spec 体系的全面审计 | 本次仅补 Purpose 与新增两条契约 |
