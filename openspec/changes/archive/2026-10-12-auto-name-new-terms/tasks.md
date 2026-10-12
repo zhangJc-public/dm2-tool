@@ -38,4 +38,4 @@
 - [x] 6.2 `pytest test/` 全绿；`ruff check src/ test/ scripts/` 干净
 - [x] 6.3 `openspec validate --all --strict` 通过（本变更 delta 已 strict 干净；仓库另 5 个 spec 因 openspec 1.14.1 新增长文本警告而红，见 foundation §5 D11）
 - [x] 6.4 端到端人工验证：`knowledge compose CapabilityType`、`compose ZzzThing`（未登记）、`compose --json`
-- [ ] 6.5 `openspec archive auto-name-new-terms` 并复核基线
+- [x] 6.5 `openspec archive auto-name-new-terms` 并复核基线

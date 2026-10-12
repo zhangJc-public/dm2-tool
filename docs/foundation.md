@@ -117,7 +117,7 @@ File System Layer      ← .dm2/ 项目 + dm2-changes/ + dm2-archive/
 |---|---|---|
 | spec 数 | 38 | `ls -d openspec/specs/*/ \| wc -l` |
 | requirement 总数 | 164 | `grep -rh '^### Requirement:' openspec/specs/*/spec.md \| wc -l` |
-| spec 校验 | **本地 34 通过 / 5 失败**（本地 openspec 1.14.1 把「requirement 文本 >500 字符」由 INFO 升为 WARNING，strict 视其为失败）；**CI 锁定 1.13.1 仍 38/38 通过**。见 §5 D11 | `openspec validate --all --strict` |
+| spec 校验 | **本地 33 通过 / 5 失败**（本地 openspec 1.14.1 把「requirement 文本 >500 字符」由 INFO 升为 WARNING，strict 视其为失败）；**CI 锁定 1.13.1 仍 38/38 通过**。见 §5 D11 | `openspec validate --all --strict` |
 | 测试 | 456 passed | `pytest test/` |
 | 顶层命令 | 21 | `dm2 --help` |
 | 命令 JSON 契约 | 34 flag 门控 + 3 豁免（`completion`/`__complete`/`uninstall`，共 37） | 见 §5 D2/D3/D4 |
