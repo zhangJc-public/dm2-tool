@@ -89,11 +89,15 @@ class TestSnapshotFreshness:
 
 
 class TestChineseAliases:
-    """The curated Chinese overlay must be complete and consistent (D9)."""
+    """中文别名为**可选补充**；中文名的强制来源是组合（P4）。"""
 
-    def test_every_term_carries_a_chinese_alias(self, regenerated):
-        missing = [t["term"] for t in regenerated["terms.json"] if not t.get("zh_aliases")]
-        assert missing == [], f"缺中文别名的术语（中文查询将 0 命中）: {missing}"
+    def test_every_term_has_a_chinese_name(self, regenerated):
+        # 有策展别名，或有组合出的规范名——二者必有其一（不留无中文名的术语）
+        nameless = [
+            t["term"] for t in regenerated["terms.json"]
+            if not t.get("zh_aliases") and not t.get("canonical_zh")
+        ]
+        assert nameless == [], f"既无别名也无规范名的术语: {nameless}"
 
     def test_every_data_group_carries_chinese_aliases(self, builder, regenerated):
         source = yaml.safe_load(builder.ZH_ALIAS_PATH.read_text(encoding="utf-8"))
@@ -135,10 +139,23 @@ class TestChineseAliases:
         with pytest.raises(SystemExit):
             builder.load_zh_aliases(path, {"Activity"}, {"02-activity"})
 
-    def test_missing_alias_for_a_term_fails_the_build(self, builder, tmp_path):
+    def test_partial_alias_coverage_is_allowed(self, builder, tmp_path):
+        # P4：某术语没有策展别名不再让构建失败（规范名兜底）
+        path = self._source(tmp_path, {
+            "aliases": {"Activity": ["活动"]},
+            "groups": {"02-activity": ["活动"]},
+        })
+        terms, groups = builder.load_zh_aliases(
+            path, {"Activity", "Capability"}, {"02-activity"}
+        )
+        assert terms == {"Activity": ["活动"]}
+        assert groups == {"02-activity": ["活动"]}
+
+    def test_missing_groups_section_fails_the_build(self, builder, tmp_path):
+        # 数据组别名不能被组合替代，必须强制
         path = self._source(tmp_path, {"aliases": {"Activity": ["活动"]}})
         with pytest.raises(SystemExit):
-            builder.load_zh_aliases(path, {"Activity", "Capability"}, {"02-activity"})
+            builder.load_zh_aliases(path, {"Activity"}, {"02-activity"})
 
     def test_empty_alias_fails_the_build(self, builder, tmp_path):
         path = self._source(tmp_path, {"aliases": {"Activity": ["   "]}})
@@ -165,3 +182,32 @@ class TestChineseAliases:
         })
         with pytest.raises(SystemExit):
             builder.load_zh_aliases(path, {"Activity"}, {"02-activity", "03-capability"})
+
+
+class TestAutoNaming:
+    """P4：新术语由既有词元组成即自动命名；含未登记词元则构建失败。"""
+
+    @staticmethod
+    def _sources(builder):
+        dd = yaml.safe_load((builder.REF / "dm2-data-dictionary.yaml").read_text(encoding="utf-8"))
+        dd_terms = dd if isinstance(dd, list) else dd.get("terms", [])
+        mm = yaml.safe_load((builder.REF / "dm2-metamodel-2.02.yaml").read_text(encoding="utf-8"))
+        return dd_terms, mm
+
+    def test_new_term_is_named_by_composition(self, builder):
+        dd_terms, mm = self._sources(builder)
+        dd_terms = dd_terms + [
+            {"term": "CapabilityPartOfProject", "association": True, "definition": ""}
+        ]
+        outputs = builder.build_all(dd_terms, mm, builder.data_group_ids())
+        terms = {t["term"]: t for t in outputs["terms.json"]}
+        new_term = terms["CapabilityPartOfProject"]
+        # 零手写内容：既没有策展别名，也确实拿到了中文名
+        assert new_term["zh_aliases"] == []
+        assert new_term["canonical_zh"] == "能力属于项目"
+
+    def test_term_with_an_unregistered_token_fails_the_build(self, builder):
+        dd_terms, mm = self._sources(builder)
+        dd_terms = dd_terms + [{"term": "ZzzThing", "association": False, "definition": ""}]
+        with pytest.raises(SystemExit):
+            builder.build_all(dd_terms, mm, builder.data_group_ids())

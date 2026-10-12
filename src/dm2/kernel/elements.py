@@ -309,6 +309,34 @@ class ElementVocabulary:
             )
         return QueryPlan(query=query, segments=tuple(segments))
 
+    def describe(self, name: str) -> Dict[str, object]:
+        """描述任意术语名（已入库或待定）：词元、类型、中文、组合结果与未登记词元。
+
+        P4 的命名预检入口：新术语若由既有词元组成，直接给出规范中文名；否则
+        列出需要登记的词元——不猜、不部分拼凑。
+        """
+        tokens = split_tokens(name)
+        segments: List[Dict[str, str]] = []
+        unregistered: List[str] = []
+        for token in tokens:
+            if token in self.elements:
+                segments.append({"token": token, "kind": "element", "zh": self.elements[token]})
+            elif token in self.qualifiers:
+                segments.append({"token": token, "kind": "qualifier", "zh": self.qualifiers[token]})
+            else:
+                segments.append({"token": token, "kind": "unknown", "zh": ""})
+                if token not in unregistered:
+                    unregistered.append(token)
+        composed = self.compose(name) or ""
+        return {
+            "term": name,
+            "tokens": tokens,
+            "segments": segments,
+            "composed": composed,
+            "unregistered": unregistered,
+            "composable": bool(composed) and not unregistered,
+        }
+
     def unregistered_tokens(self, names: List[str]) -> Dict[str, List[str]]:
         """返回 ``{未登记词元: [来源术语名, ...]}``。"""
         missing: Dict[str, List[str]] = {}

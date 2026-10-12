@@ -367,3 +367,73 @@ class TestSearchExplanation:
         assert proc.returncode == 0, proc.stderr
         assert "命中理由" in proc.stdout
         assert "activity·consumes·resource" in proc.stdout
+
+
+class TestAutoNamedNewTerm:
+    """P4: a new term with no curated alias is searchable by its composed name."""
+
+    @staticmethod
+    def _index(tmp_path, term, canonical_zh, zh_aliases=()):
+        entry = {
+            "id": f"dodaf:{term}",
+            "term": term,
+            "definition": "synthetic term used to exercise auto-naming",
+            "aliases": [],
+            "zh_aliases": list(zh_aliases),
+            "groups": [],
+            "zh_groups": [],
+            "canonical_zh": canonical_zh,
+            "association": True,
+            "status": "",
+            "erd": False,
+        }
+        (tmp_path / "terms.json").write_text(
+            json.dumps([entry], ensure_ascii=False), encoding="utf-8"
+        )
+        from dm2.kernel.indexer import DM2KnowledgeIndexer
+
+        indexer = DM2KnowledgeIndexer(reference_kb_path=str(tmp_path))
+        indexer.load_all()
+        return indexer
+
+    def test_searchable_by_its_composed_name(self, tmp_path):
+        from dm2.kernel.elements import ElementVocabulary
+
+        vocab = ElementVocabulary.load()
+        name = "CapabilityPartOfProject"
+        indexer = self._index(tmp_path, name, vocab.compose(name))
+
+        assert [t.term for t in indexer.search_terms("能力属于项目")] == [name]
+
+    def test_searchable_by_a_pattern_query(self, tmp_path):
+        from dm2.kernel.elements import ElementVocabulary
+
+        vocab = ElementVocabulary.load()
+        name = "CapabilityPartOfProject"
+        indexer = self._index(tmp_path, name, vocab.compose(name))
+
+        matches = indexer.match_terms("能力 属于 项目")
+        assert [m.term.term for m in matches] == [name]
+        assert matches[0].explanation.kind == "pattern"
+
+    def test_compose_cli_reports_the_name_and_the_gap(self):
+        proc = run_cli(["knowledge", "compose", "CapabilityType", "--json"],
+                       capture_output=True, text=True)
+        assert proc.returncode == 0, proc.stderr
+        data = json.loads(proc.stdout)["data"]
+        assert data["composed"] == "能力类型"
+        assert data["composable"] is True
+
+        gap = run_cli(["knowledge", "compose", "ZzzThing", "--json"],
+                      capture_output=True, text=True)
+        assert gap.returncode == 0, "无法组合是诊断答案，不是命令失败"
+        gap_data = json.loads(gap.stdout)["data"]
+        assert gap_data["composed"] == ""
+        assert gap_data["unregistered"] == ["zzz"]
+
+    def test_compose_cli_human_output_names_the_missing_tokens(self):
+        proc = run_cli(["knowledge", "compose", "ZzzThing"],
+                       capture_output=True, text=True)
+        assert proc.returncode == 0, proc.stderr
+        assert "未登记词元" in proc.stdout
+        assert "zzz" in proc.stdout

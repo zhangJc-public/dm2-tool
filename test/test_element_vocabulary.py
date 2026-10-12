@@ -232,9 +232,42 @@ class TestReconciliation:
             f"已消失的分歧（请从清单删除）: {sorted(set(EXPECTED_DIVERGENCES) - names)}"
         )
 
-    def test_alias_layer_still_covers_every_term(self, aliases, terms):
-        missing = [term["term"] for term in terms if not aliases.get(term["term"])]
-        assert missing == []
+    def test_every_term_has_a_chinese_name(self, vocab, aliases, terms):
+        # P4：中文名可以来自策展别名，也可以来自组合结果——但必须有一个
+        nameless = [
+            term["term"] for term in terms
+            if not aliases.get(term["term"]) and not vocab.compose(term["term"])
+        ]
+        assert nameless == []
+
+
+class TestDescribe:
+    """P4：任意术语名的命名预检。"""
+
+    def test_registered_name_reports_each_segment(self, vocab):
+        data = vocab.describe("CapabilityType")
+        assert data["tokens"] == ["capability", "type"]
+        assert [(s["token"], s["kind"], s["zh"]) for s in data["segments"]] == [
+            ("capability", "element", "能力"),
+            ("type", "qualifier", "类型"),
+        ]
+        assert data["composed"] == "能力类型"
+        assert data["unregistered"] == []
+        assert data["composable"] is True
+
+    def test_unregistered_token_is_reported_not_guessed(self, vocab):
+        data = vocab.describe("ZzzThing")
+        assert data["unregistered"] == ["zzz"]
+        assert data["composed"] == ""
+        assert data["composable"] is False
+        assert data["segments"][0]["kind"] == "unknown"
+        assert data["segments"][0]["zh"] == ""
+
+    def test_description_is_deterministic(self, vocab):
+        first = vocab.describe("activityPartOfCapability")
+        second = vocab.describe("activityPartOfCapability")
+        assert first == second
+        assert first["composed"] == "活动属于能力"
 
 
 class TestBuildValidation:

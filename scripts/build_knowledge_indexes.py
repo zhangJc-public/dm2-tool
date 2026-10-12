@@ -102,9 +102,12 @@ def reconcile_groups(term: dict) -> list:
 def load_zh_aliases(path: Path, term_names: set, group_ids: set) -> tuple:
     """Load and validate the curated Chinese alias overlay.
 
-    Fails loudly on every inconsistency: an unknown key would silently never
-    match, and a term without aliases is a query that still returns nothing —
-    which is exactly the failure this overlay exists to remove.
+    Per-term coverage is **optional**: since the element vocabulary guarantees a
+    composed `canonical_zh` for every term, a term without a curated alias still
+    has a Chinese name. What stays mandatory is the ``groups`` section (the only
+    source of group-level Chinese recall, e.g. 「资源流」) plus the usual
+    key/value validation — an unknown key or an empty/duplicate alias still
+    fails the build.
 
     Returns ``(term_aliases, group_aliases)``.
     """
@@ -141,33 +144,27 @@ def load_zh_aliases(path: Path, term_names: set, group_ids: set) -> tuple:
     if problems:
         sys.exit("中文别名源校验失败:\n  " + "\n  ".join(sorted(problems)))
 
-    missing = sorted(term_names - set(cleaned))
-    if missing:
+    # Group aliases are mandatory: composition cannot replace them.
+    if not isinstance(group_aliases, dict) or not group_aliases:
         sys.exit(
-            f"以下术语缺少中文别名（共 {len(missing)} 个，中文查询将无法命中）:\n  "
-            + "\n  ".join(missing)
+            "中文别名源缺少 groups: 段（17 个数据组的中文别名是组级召回的唯一来源）"
         )
-
-    # Group aliases are optional as a section, but once present they must be complete.
+    unknown_groups = sorted(set(group_aliases) - group_ids)
+    if unknown_groups:
+        sys.exit("中文别名源含未知数据组键:\n  " + "\n  ".join(unknown_groups))
     cleaned_groups: dict = {}
-    if group_aliases is not None:
-        if not isinstance(group_aliases, dict):
-            sys.exit(f"中文别名源的 groups: 必须是映射: {path}")
-        unknown_groups = sorted(set(group_aliases) - group_ids)
-        if unknown_groups:
-            sys.exit("中文别名源含未知数据组键:\n  " + "\n  ".join(unknown_groups))
-        group_problems = []
-        for gid, values in group_aliases.items():
-            seen = [str(v).strip() for v in (values if isinstance(values, list) else [])]
-            seen = [v for v in seen if v]
-            if not seen:
-                group_problems.append(f"{gid}: 至少需要一条中文别名")
-            cleaned_groups[gid] = seen
-        missing_groups = sorted(group_ids - set(cleaned_groups))
-        if missing_groups:
-            group_problems.append("缺少数据组别名: " + ", ".join(missing_groups))
-        if group_problems:
-            sys.exit("中文别名源数据组校验失败:\n  " + "\n  ".join(group_problems))
+    group_problems = []
+    for gid, values in group_aliases.items():
+        seen = [str(v).strip() for v in (values if isinstance(values, list) else [])]
+        seen = [v for v in seen if v]
+        if not seen:
+            group_problems.append(f"{gid}: 至少需要一条中文别名")
+        cleaned_groups[gid] = seen
+    missing_groups = sorted(group_ids - set(cleaned_groups))
+    if missing_groups:
+        group_problems.append("缺少数据组别名: " + ", ".join(missing_groups))
+    if group_problems:
+        sys.exit("中文别名源数据组校验失败:\n  " + "\n  ".join(group_problems))
 
     return cleaned, cleaned_groups
 
@@ -715,6 +712,13 @@ def build_all(dd_terms: list, mm: dict, group_ids: set,
         t.get("term", ""): (vocabulary.compose(t.get("term", "")) or "")
         for t in dd_terms
     }
+    # 中文名的强制来源：组合（词元全覆盖保证）。缺名字的术语不得进入索引。
+    nameless = sorted(term for term, name in canonical.items() if not name)
+    if nameless:
+        sys.exit(
+            f"以下术语无法组合中文名（共 {len(nameless)} 个，请先登记缺失词元）:\n  "
+            + "\n  ".join(nameless)
+        )
     associations = build_associations(mm)
     return {
         "terms.json": build_terms(dd_terms, zh_aliases, zh_group_aliases, canonical),
@@ -774,7 +778,7 @@ def main():
     total_nassoc = sum(len(v["necessary_associations"]) for v in content_spec.values())
     print("Index build complete:")
     print(f"  terms.json:               {len(terms)} terms "
-          f"({len(zh_aliases)} with curated Chinese aliases, "
+          f"({len(zh_aliases)}/{len(terms)} with curated Chinese aliases — optional supplement, "
           f"{len(zh_group_aliases)} group alias sets)")
     print(f"  associations.json:        {len(associations)} tuples "
           f"({len(binary)} binary; {len(dd_assoc & assoc_labels)}/{len(dd_assoc)} "

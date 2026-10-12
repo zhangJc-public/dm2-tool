@@ -477,9 +477,11 @@ dm2 version --json                # JSON 格式
 
 ```bash
 dm2 knowledge search "capability"       # 搜索术语（名称/别名/定义）
-dm2 knowledge search "能力"             # 中文别名检索（279 个术语均有中文别名）
+dm2 knowledge search "能力"             # 中文检索（规范名 + 中文别名）
 dm2 knowledge search "资源流"           # 数据组中文别名 → 召回该组术语
 dm2 knowledge search "能力 活动"        # 多词按 token AND 匹配（每个词都要命中）
+dm2 knowledge search "活动 属于 能力" --explain  # 附加命中理由（词元模式）
+dm2 knowledge compose CapabilityType    # 命名预检：术语名 → 规范中文名（新术语用）
 dm2 knowledge concept Capability        # 查看概念详情
 dm2 knowledge term Performer            # 术语详情（定义/别名/数据组/必要视图/关联端点）
 dm2 knowledge taxonomy Performer        # 类型分类学（父类/子类/Type-Individual 配对）
@@ -495,7 +497,7 @@ dm2 knowledge stats                     # 知识库统计
 
 所有子命令支持 `--json` 输出。`term`/`taxonomy`/`associations`/`content` 四个子命令基于元模型派生索引（关联目录 + 分类学 + 视图内容规范），回答"这个视图该有什么内容"和"这两个类型怎么连"两类问题。
 
-**中文检索**：DM2 数据字典的术语定义与别名全部是英文，因此 dm2 额外策展了 `dm2-reference/dm2-term-zh-aliases.yaml`（279 个术语 + 17 个数据组的中文别名），构建时并入派生索引 `terms.json` 的 `zh_aliases` / `zh_groups`：
+**中文检索**：DM2 数据字典的术语定义与别名全部是英文，因此 dm2 用两层提供中文：**组合层是强制来源**（`dm2-element-vocabulary.yaml` → `canonical_zh`，279/279 全部可组合），**`dm2-reference/dm2-term-zh-aliases.yaml` 是可选补充**（额外同义词 + 17 个数据组的强制中文别名），构建时并入派生索引 `terms.json` 的 `zh_aliases` / `zh_groups`：
 
 - 查询按空白与中英文标点**分词**；单 token 走子串匹配，多 token 要求**每个 token 都命中**（词元或子串，见下「数据元模型」）
 - 排序分五层：**整串**精确命中（名称/别名/规范名）→ **词元模式**（查询分解出的词元序列按序出现在术语词元中）→ **结构化命中**（片段经词表归一后由词元命中）→ 名称/别名内子串 → 仅定义/数据组/规范名命中；段内按术语名字典序，结果可比
@@ -528,7 +530,7 @@ DM2 的 279 个术语名不是任意字符串，而是可结构化的「对象�
 - 与人工别名层**逐条对账**：实体覆盖 **173/173 = 100%**、关联 **102/106 = 96.2%**，4 条有意保留的分歧在 `test/test_element_vocabulary.py` 中显式登记（3 条是别名层措辞更优，1 条是相对从句超出组合语法）
 - 组合结果进入派生索引的 `canonical_zh`（**P2**），并驱动检索的**词元归一**：查询片段先经 `ElementVocabulary.tokens_for()` 映射为候选词元，结构化命中优先于纯子串命中
 - **反向分解**（**P3**）：`plan_query()` 把查询解析为「数据元 + 限定词」序列并产出词元模式，按**顺序子序列**匹配术语词元——`活动 属于 能力` 命中 `activityPartOfCapability` 的词元模式 `activity·part·capability`，而反序查询只落到结构化层；`--explain` 输出这条理由
-- **P4**（新术语自动命名）仍待做
+- **新术语自动命名**（**P4**）：新增术语只要由既有词元组成，就**自动**获得规范中文名并可直接检索，无需手写别名；含未登记词元则**构建失败**，要求先登记词元。`dm2 knowledge compose <术语名>` 是这条流程的预检入口（未登记词元会列出来）。因此约束分工是：**词元全覆盖（强制）→ 中文名（自动）；策展别名（可选补充）+ 数据组别名（强制）**
 
 ### `dm2 change` — 架构变更管理（AI Agent 接口）
 

@@ -57,6 +57,30 @@ def _explain_text(match: dict) -> str:
 
 
 @knowledge_app.command()
+def compose(
+    term: str = typer.Argument(..., help="术语名（可尚未入库，用于命名预检）"),
+    json_flag: bool = typer.Option(False, "--json", "-j", help="输出结构化 JSON（供 AI Agent 使用）"),
+):
+    """组合术语名的规范中文名（新术语命名预检）"""
+    from dm2.kernel.elements import ElementVocabulary
+    vocab = ElementVocabulary.load()
+    data = vocab.describe(term)
+    if json_flag:
+        from dm2.cli.json_output import json_success
+        json_success(data)
+        return
+    if data["composable"]:
+        typer.echo(f"{term} → {data['composed']}")
+        for segment in data["segments"]:
+            typer.echo(f"  {segment['token']}（{segment['kind']}）→ {segment['zh']}")
+        return
+    typer.echo(f"{term} → 无法组合")
+    if data["unregistered"]:
+        typer.echo("  未登记词元: " + ", ".join(data["unregistered"]))
+        typer.echo("  请先在 dm2-reference/dm2-element-vocabulary.yaml 登记这些词元")
+
+
+@knowledge_app.command()
 def concept(
     name: str = typer.Argument(..., help="概念名称"),
     json_flag: bool = typer.Option(False, "--json", "-j", help="输出结构化 JSON（供 AI Agent 使用）"),

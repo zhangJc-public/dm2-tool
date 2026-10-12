@@ -8,6 +8,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **新术语自动命名**（OpenSpec 变更 `auto-name-new-terms`，P4，检索质量路线收官）：
+  - **解除「每个术语必须手写别名」**：`dm2-term-zh-aliases.yaml` 允许按术语部分覆盖；
+    中文名的强制来源改为组合结果 `canonical_zh`（构建期校验非空），别名层降级为可选同义词补充
+  - **数据组别名转为强制**：`groups:` 段必须存在且覆盖 17 个数据组（组级中文召回无法由组合替代）
+  - 新增 `dm2 knowledge compose <术语名>`：命名预检——输出词元分解、各词元中文、
+    组合结果与**未登记词元**清单（无法组合时 `composed` 为空、退出码仍为 0，因为那是诊断答案）
+  - 构建报告新增「策展别名覆盖 X/279」与「组合覆盖」，缺口可见但不致命
+  - 实测：合成新术语 `CapabilityPartOfProject`（零手写内容）自动得到 `能力属于项目`，
+    可被「能力属于项目」与「能力 属于 项目」（词元模式）检索到；含 `zzz` 这类未登记词元则构建失败
 - **检索可解释与顺序敏感匹配**（OpenSpec 变更 `explain-search-matches`，P3）：
   - `ElementVocabulary.plan_query()` 把中文查询**反向分解**为「数据元 + 限定词」序列
     （`活动 属于 能力` → element/qualifier/element），产出词元模式候选
