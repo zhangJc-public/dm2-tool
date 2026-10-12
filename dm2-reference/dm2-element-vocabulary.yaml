@@ -1,0 +1,299 @@
+# dm2-tool 数据元 / 限定词词表（GB/T 18391 · ISO/IEC 11179 对象类 + 特性 + 表示）
+#
+# 作用：把 DM2 术语名按「数据元 + 限定词 + 组合语法」结构化，从而
+#   1) 由词表确定性地组合出规范中文名（替代逐条手写 279 条别名）；
+#   2) 支撑检索侧的词元归一与查询分解（P2/P3）；
+#   3) 新术语若由既有词元组成即可自动命名，否则构建失败要求登记词元。
+#
+# 血统：本文件是 dm2 策展的**模型层**，不改动 DoDAF 数据字典；
+#       中文别名（dm2-term-zh-aliases.yaml）保留为显示/同义词层，二者对账。
+#
+# 三类条目：
+#   elements   — 对象类（数据元的名词部分）
+#   qualifiers — 限定词：结构词（of/type/instance/by…）与关系谓词（consumes/part…）
+#   templates  — 组合语法：connectors 是必须连续出现的词元串，
+#                {A} = 连接词之前的词元串，{B} = 之后的词元串，两者递归组合
+#
+# 组合顺序：先取**最长** connectors 匹配的模板，槽位递归；无模板命中时按
+#           elements/qualifiers 逐词元拼接；最后应用结构规则
+#           （结尾 `type type` → 「{前缀}的类型」；结尾 `type` → 「{前缀}类型」）。
+#
+# 强约束：术语名分解出的每个词元都必须登记在 elements 或 qualifiers 中，
+#         且只能登记一次；未登记词元会让构建失败（不允许静默降级）。
+
+version: 1
+
+elements:
+  # 核心对象类
+  activity: 活动
+  capability: 能力
+  resource: 资源
+  performer: 执行者
+  individual: 个体
+  organization: 组织
+  service: 服务
+  measure: 度量
+  boundary: 边界
+  standard: 标准
+  rule: 规则
+  skill: 技能
+  system: 系统
+  project: 项目
+  vision: 愿景
+  thing: 事物
+  country: 国家
+  line: 线
+  point: 点
+  surface: 曲面
+  condition: 条件
+  property: 属性
+  representation: 表示
+  guidance: 指导
+  data: 数据
+  information: 信息
+  agreement: 协议
+  name: 名称
+  sign: 标志
+  tuple: 元组
+  couple: 耦合
+  overlap: 重叠
+  materiel: 物资
+  facility: 设施
+  site: 场地
+  installation: 驻地
+  address: 地址
+  location: 位置
+  person: 人员
+  role: 角色
+  effect: 效果
+  desire: 期望
+  region: 区域
+  area: 区域
+  scheme: 方案
+  description: 描述
+  group: 组
+  level: 级别
+  units: 单位
+  association: 关联
+  parties: 参与方
+  frame: 参考系
+  reference: 参考
+  position: 位置
+  # 修饰性对象类
+  geo: 地理
+  political: 政治
+  temporal: 时间
+  spatial: 空间
+  planar: 平面
+  circular: 圆形
+  elliptical: 椭圆
+  rectangular: 矩形
+  polygon: 多边形
+  solid: 立体
+  volume: 空间
+  stationary: 静止
+  feature: 要素
+  extent: 范围
+  functional: 功能
+  technical: 技术
+  architectural: 架构
+  organizational: 组织
+  adaptability: 适应性
+  maintainability: 可维护性
+  measureable: 可度量
+  performance: 性能
+  physical: 物理
+  security: 安全
+  attributes: 属性
+  needs: 需求
+  satisfaction: 满足度
+  singleton: 单例
+  real: 不动产
+  world: 世界
+  domain: 领域
+  naming: 命名
+  joint: 联合
+  action: 活动
+  axes: 坐标轴
+  coordinate: 坐标
+  center: 中心
+  end: 结束
+  start: 起始
+  pedigree: 溯源
+  port: 端口
+
+# 复合数据元：多词元整体才是一个对象类（ISO 11179 的 object class 可以是词组）。
+# 组合时在词元串中按**最长**匹配优先于逐词元拼接。
+compounds:
+  planar surface: 平面
+  geo political: 地缘政治
+  geo stationary: 地球静止
+  measure of desire: 期望度量
+  measure of effect: 效果度量
+  region of country: 国家内区域
+  region of world: 世界区域
+  real property: 不动产
+  position reference frame: 位置参考系
+  measure type units of measure: 度量的计量单位
+
+qualifiers:
+  # 结构词
+  of: 的
+  type: 类型
+  by: 由
+  is: 是
+  in: 位于
+  to: 到
+  under: 在…下
+  an: ""
+  whole: 整体
+  part: 属于
+  instance: 实例
+  subtype: 子类型
+  super: 父
+  sub: 子
+  powertype: 幂类型
+  before: 前
+  after: 后
+  # 关系谓词
+  consumes: 消耗
+  produces: 产生
+  produced: 产生
+  performed: 执行
+  performable: 可执行
+  described: 描述
+  desired: 期望
+  realized: 实现
+  named: 命名
+  represented: 表示
+  maps: 映射
+  directs: 导向
+  enables: 使能
+  access: 访问
+  constrains: 约束
+  constraint: 约束
+  valid: 有效
+  applicable: 适用
+  has: 拥有
+
+templates:
+  # ── 关系句式（按 connectors 长度降序、再按特异度排列）────────────────
+  - id: is-realized-by
+    connectors: [is, realized, by]
+    zh: "{A}由{B}实现"
+  - id: enables-access-to
+    connectors: [enables, access, to]
+    zh: "{A}使能{B}访问"
+  - id: performable-under
+    connectors: [performable, under]
+    zh: "{A}可在{B}下执行"
+  - id: performed-by
+    connectors: [performed, by]
+    zh: "{A}由{B}执行"
+  - id: produced-by
+    connectors: [produced, by]
+    zh: "{A}由{B}产生"
+  - id: valid-under
+    connectors: [valid, under]
+    zh: "{A}在{B}下有效"
+  - id: subtype-of
+    connectors: [subtype, of]
+    zh: "{A}是{B}的子类型"
+  - id: powertype-instance-of
+    connectors: [powertype, instance, of]
+    zh: "{A}是{B}的幂类型实例"
+  - id: type-instance-of
+    connectors: [type, instance, of]
+    zh: "{A}是{B}的类型实例"
+  - id: part-of
+    connectors: [part, of]
+    zh: "{A}属于{B}"
+  - id: described-by
+    connectors: [described, by]
+    zh: "{A}由描述"
+  - id: named-by
+    connectors: [named, by]
+    zh: "{A}由{B}命名"
+  - id: represented-by
+    connectors: [represented, by]
+    zh: "{A}由表示"
+  - id: maps-to
+    connectors: [maps, to]
+    zh: "{A}映射到{B}"
+  - id: applicable-to
+    connectors: [applicable, to]
+    zh: "{A}适用于{B}"
+  - id: parties-to-an
+    connectors: [parties, to, an]
+    zh: "{B}参与方"
+  - id: scheme-instance
+    connectors: [scheme, instance]
+    zh: "{A}方案实例"
+  - id: whole-part
+    connectors: [whole, part]
+    zh: "{A}整体部分"
+  - id: super-sub-type
+    connectors: [super, sub, type]
+    zh: 上下位类型
+  - id: before-after
+    connectors: [before, after]
+    zh: "{A}前后"
+  - id: before-after-type
+    connectors: [before, after, type]
+    zh: 前后关系类型
+  - id: couple-type
+    connectors: [couple, type]
+    zh: 耦合关系类型
+  - id: overlap-type
+    connectors: [overlap, type]
+    zh: 重叠关系类型
+  - id: powertype-instance
+    connectors: [powertype, instance]
+    zh: "{A}幂类型实例"
+  - id: type-instance
+    connectors: [type, instance]
+    zh: "{A}类型实例"
+  - id: joint-action
+    connectors: [joint, action]
+    zh: 联合活动
+  - id: consumes
+    connectors: [consumes]
+    zh: "{A}消耗{B}"
+  - id: produces
+    connectors: [produces]
+    zh: "{A}产生{B}"
+  - id: constrains
+    connectors: [constrains]
+    zh: "{A}约束{B}"
+  - id: directs
+    connectors: [directs]
+    zh: "{A}导向{B}"
+  - id: has
+    connectors: [has]
+    zh: "{A}拥有{B}"
+  - id: in-location
+    connectors: [in]
+    zh: "{A}位于{B}"
+  - id: association-of
+    connectors: [association, of]
+    zh: "{B}的关联"
+  - id: rule-constraint-of
+    connectors: [rule, constraint, of]
+    zh: "{B}的规则约束"
+  - id: measure-of-type
+    connectors: [measure, of, type]
+    zh: "{B}类型的度量"
+    strip_leading_type: [B]
+    collapse_type: true
+  - id: measure-of
+    connectors: [measure, of]
+    zh: "{B}的度量"
+  - id: is
+    connectors: [is]
+    zh: "{A}是{B}"
+  - id: of
+    connectors: [of]
+    zh: "{B}的{A}"
+  - id: boundary
+    connectors: [boundary]
+    zh: "{A}边界"

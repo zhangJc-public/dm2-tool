@@ -30,6 +30,8 @@ DoDAF Meta Model 2.02 系统工程辅助工具。
 ├── dm2-reference/           ← 运行时 + 构建资产（权威源与派生索引）
 │   ├── dm2-data-dictionary.yaml ← 权威源：DM2 数据字典（279 术语 + 怪物矩阵）
 │   ├── dm2-metamodel-2.02.yaml  ← 权威源：DM2 逻辑数据模型（19 子模型）
+│   ├── dm2-term-zh-aliases.yaml ← 权威源：术语/数据组中文别名（显示与检索层）
+│   ├── dm2-element-vocabulary.yaml ← 权威源：数据元 + 限定词 + 复合数据元 + 关系模板（GB/T 18391 模型层）
 │   ├── group-to-views.yaml  ← 数据组→视图映射（basis 证据标注）
 │   ├── concerns.yaml        ← 关切模板库
 │   └── core/                ← 派生索引 + views.yaml + groups/（打包发布）
@@ -89,6 +91,7 @@ DM2_DEBUG=1 dm2 analyze ...   # 显示索引器诊断（默认静默，保证 --
 | `src/dm2/core/adapters/` | AI 工具适配器：`claude.py`（ClaudeCodeAdapter）、`dsh.py`（DshAdapter）+ `get_adapter()` 注册表 |
 | `src/dm2/core/pedigree/` | 视图溯源（DM2 Pedigree）：`model.py`（数据模型，事实层/理由层分离）、`store.py`（原子 YAML 存取）、`recorder.py`（事实层捕获）、`completeness.py`（核心字段与 `trace.enabled`）、`schema.yaml`（结构声明） |
 | `src/dm2/kernel/indexer.py` | 术语/概念/视图模板加载（术语源 = `core/terms.json`） |
+| `src/dm2/kernel/elements.py` | 数据元/限定词组合器：`dm2-element-vocabulary.yaml` → 规范中文名（纯函数、零 LLM） |
 | `src/dm2/kernel/metamodel/` | `MetamodelIndex`：关联目录/分类学/视图内容规范查询 |
 | `src/dm2/engine/` | 视图生成 pipeline 各步骤 |
 | `src/dm2/cognitive/` | Cynefin 复杂度评估（五维域投票+硬触发，含 Disorder；`cynefin_deriver.py` 外部化 YAML 词库，CLI/pipeline 共用）+ 6W 分析 |
@@ -121,6 +124,7 @@ DM2_DEBUG=1 dm2 analyze ...   # 显示索引器诊断（默认静默，保证 --
 - **路径优先** — `get_reference_path()` 优先 `.dm2/reference/` 本地副本，回退到包内置 `dm2-reference/core/`。
 - **分发形态：editable-only** — 唯一支持 `pip install -e .`，不发布 wheel/sdist 到 PyPI。非 editable 安装因包外数据文件不入 wheel 而无法工作，会以 `KB_NOT_FOUND` 明确失败（证据与判定见 `docs/foundation.md` §5 D10）。需要正式 wheel 分发时，先做「运行时资产迁入 `src/dm2/`」的变更。
 - **索引派生** — 改权威源 YAML（`dm2-data-dictionary.yaml` / `dm2-metamodel-2.02.yaml` / `dm2-term-zh-aliases.yaml`）后必须重跑 `python3 scripts/build_knowledge_indexes.py` 再生成派生 JSON（快照测试 `test/test_knowledge_indexes.py` 会拦截未再生成的索引）；组模板 `relationships:` 槽位用 `--fix-templates` 从关联目录投影同步。运行时只加载紧凑 JSON，不解析 840KB 源 YAML。`dm2-term-zh-aliases.yaml` 是中文召回的唯一来源：**每个术语都必须有中文别名**（测试强制），别名键必须是现有术语名（构建时校验），否则中文查询静默 0 命中。
+- **数据元模型（GB/T 18391）** — `dm2-reference/dm2-element-vocabulary.yaml` 是术语名的结构权威源：数据元（对象类）+ 限定词 + 复合数据元 + 关系模板；组合器 `src/dm2/kernel/elements.py` 生成规范中文名（纯函数、零 LLM）。**术语名分解出的每个词元都必须登记**，否则 `scripts/build_knowledge_indexes.py` 构建失败——新术语不能绕过模型。组合结果与人工别名层逐条对账（`test/test_element_vocabulary.py`：实体 100%、关联 96.2%，4 条分歧显式登记，新增分歧即失败）。改词表/模板后必须重跑构建与对账测试。
 - **约定优先于配置** — 文件名、目录结构是系统约定的接口，减少配置项。如需动态行为，走模板生成而非运行时配置。
 - **测试风格** — 使用 pytest，测试放在 `test/` 目录，与 `src/dm2/` 结构对应。
 

@@ -17,6 +17,7 @@ Deterministic and zero-LLM: runtime never parses the 840 KB source YAMLs.
 Run after editing any source:  python3 scripts/build_knowledge_indexes.py
 """
 
+import collections
 import json
 import re
 import sys
@@ -31,6 +32,10 @@ CORE = REF / "core"
 DD_PATH = REF / "dm2-data-dictionary.yaml"
 MM_PATH = REF / "dm2-metamodel-2.02.yaml"
 ZH_ALIAS_PATH = REF / "dm2-term-zh-aliases.yaml"
+VOCAB_PATH = REF / "dm2-element-vocabulary.yaml"
+
+#: 术语名 → 词元（与 src/dm2/kernel/elements.py 同一规则）
+_TOKEN_RE = re.compile(r"[A-Z]+(?![a-z])|[A-Z][a-z0-9]*|[a-z0-9]+")
 
 # ── submodel (dictionary x-marks) → 17 data-group scheme ──────────────────
 SUBMODEL_TO_GROUPS = {
@@ -159,6 +164,75 @@ def load_zh_aliases(path: Path, term_names: set, group_ids: set) -> tuple:
             sys.exit("中文别名源数据组校验失败:\n  " + "\n  ".join(group_problems))
 
     return cleaned, cleaned_groups
+
+
+# ── 数据元 / 限定词词表校验（GB/T 18391 模型层）──────────────────────────
+def validate_element_vocabulary(path: Path, term_names: list) -> dict:
+    """Validate the data element / qualifier vocabulary.
+
+    Fails loudly on: a token registered twice, a token used by a term but never
+    registered, a template with an unregistered connector, a template missing
+    connectors or a Chinese template, and a duplicate template id.
+    """
+    if not path.exists():
+        sys.exit(f"数据元词表缺失: {path}")
+    data = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    elements = {str(k).casefold(): str(v) for k, v in (data.get("elements") or {}).items()}
+    qualifiers = {str(k).casefold(): str(v) for k, v in (data.get("qualifiers") or {}).items()}
+    compounds = {
+        " ".join(str(k).casefold().split()): str(v)
+        for k, v in (data.get("compounds") or {}).items()
+    }
+    templates = data.get("templates") or []
+
+    problems = []
+    both = sorted(set(elements) & set(qualifiers))
+    if both:
+        problems.append("词元同时登记为数据元与限定词: " + ", ".join(both))
+
+    known = set(elements) | set(qualifiers)
+    for phrase in compounds:
+        known.update(phrase.split())
+
+    missing: dict = {}
+    for name in term_names:
+        for token in (m.casefold() for m in _TOKEN_RE.findall(name)):
+            if token not in known:
+                missing.setdefault(token, [])
+                if name not in missing[token]:
+                    missing[token].append(name)
+    if missing:
+        detail = "; ".join(
+            f"{token}（{len(names)} 处，如 {names[0]}）"
+            for token, names in sorted(missing.items())
+        )
+        problems.append("未登记词元: " + detail)
+
+    ids = [str(t.get("id", "")) for t in templates]
+    duplicates = sorted(i for i, count in collections.Counter(ids).items() if count > 1)
+    if duplicates:
+        problems.append("模板 id 重复: " + ", ".join(duplicates))
+    for item in templates:
+        tid = str(item.get("id", "?"))
+        connectors = [str(c).casefold() for c in (item.get("connectors") or [])]
+        zh = str(item.get("zh", ""))
+        if not connectors:
+            problems.append(f"模板 {tid}: 缺 connectors")
+        if not zh:
+            problems.append(f"模板 {tid}: 缺 zh")
+        unknown = [c for c in connectors if c not in known]
+        if unknown:
+            problems.append(f"模板 {tid}: 连接词未登记 {unknown}")
+
+    if problems:
+        sys.exit("数据元词表校验失败:\n  " + "\n  ".join(problems))
+
+    return {
+        "elements": len(elements),
+        "qualifiers": len(qualifiers),
+        "compounds": len(compounds),
+        "templates": len(templates),
+    }
 
 
 # ── terms.json ────────────────────────────────────────────────────────────
@@ -655,6 +729,9 @@ def main():
     mm = yaml.safe_load(MM_PATH.read_text(encoding="utf-8"))
 
     group_ids = data_group_ids()
+    vocab_stats = validate_element_vocabulary(
+        VOCAB_PATH, [t.get("term", "") for t in dd_terms]
+    )
     outputs = build_all(dd_terms, mm, group_ids)
     zh_aliases = outputs.pop("_zh_aliases")
     zh_group_aliases = outputs.pop("_zh_group_aliases")
@@ -690,6 +767,9 @@ def main():
           f"{len(taxonomy['powertype_pairs'])} powertype pairs")
     print(f"  view-content-spec.json:   {n_views} views, {total_nassoc} necessary "
           f"associations ({resolved} with endpoint types)")
+    print(f"  dm2-element-vocabulary:   {vocab_stats['elements']} elements + "
+          f"{vocab_stats['qualifiers']} qualifiers + {vocab_stats['compounds']} compounds, "
+          f"{vocab_stats['templates']} templates (all term tokens registered)")
 
     # ── group template relationship reconciliation ──
     if args.check_templates or args.fix_templates:

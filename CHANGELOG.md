@@ -8,6 +8,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **数据元 / 限定词模型**（OpenSpec 变更 `add-data-element-qualifier-model`，P1：模型与校验）：
+  - 新增策展权威源 `dm2-reference/dm2-element-vocabulary.yaml`：95 个数据元 + 36 个限定词 +
+    10 个复合数据元 + 39 条关系模板，按 GB/T 18391（ISO/IEC 11179）对象类 + 特性 + 表示建模
+  - 新增组合器 `src/dm2/kernel/elements.py`：整串/前缀复合数据元 → 最长连接词模板 → 结构规则
+    （`XTypeType` → 「XType的类型」）→ 逐词元拼接；纯函数、零 LLM，未登记词元返回 `None`
+  - 构建期强校验：术语名分解出的每个词元都必须登记，模板必须良构，违规即构建失败
+  - 对账测试 `test/test_element_vocabulary.py`：组合名复现人工别名，实体 173/173 = 100%、
+    关联 102/106 = 96.2%；4 条有意保留的分歧显式登记，新增分歧会让测试失败
+  - 7 条别名首选名对齐规范组合名（`desireMeasure` → 期望度量 等），旧写法保留为同义词
+  - P1 不改运行时检索行为
 - **中文术语检索召回**（OpenSpec 变更 `add-chinese-term-aliases`，关闭地基缺口 D9）：
   - 新增策展权威源 `dm2-reference/dm2-term-zh-aliases.yaml`：279 个术语 + 17 个数据组的中文别名；
     构建时校验未知术语键、未知数据组键、空别名、重复别名与遗漏术语，违规即失败

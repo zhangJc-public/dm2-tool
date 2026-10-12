@@ -995,6 +995,7 @@
     "definition": "A measureOfType that relates a DesiredEffect to a MeasureOfDesire",
     "aliases": [],
     "zh_aliases": [
+      "期望度量",
       "期望度量关系"
     ],
     "groups": [
@@ -1047,6 +1048,7 @@
     "definition": "A measureOfType that relates a DesiredEffect to a MeasureOfEffect",
     "aliases": [],
     "zh_aliases": [
+      "效果度量",
       "效果度量关系"
     ],
     "groups": [
@@ -5253,6 +5255,7 @@
     "definition": "A Thing can be an instance of a Type - i.e. set membership. Note that IDEAS is a higher-order model, hence Types may be instances of Types.",
     "aliases": [],
     "zh_aliases": [
+      "类型实例",
       "类型实例关系"
     ],
     "groups": [
@@ -5409,6 +5412,7 @@
     "definition": "IndividualPerformer is a powertype instance of Performer.",
     "aliases": [],
     "zh_aliases": [
+      "个体执行者是执行者的幂类型实例",
       "个体执行者的幂类型实例"
     ],
     "groups": [],
@@ -5423,6 +5427,7 @@
     "definition": "IndividualResource is a powertype instance of Resource.",
     "aliases": [],
     "zh_aliases": [
+      "个体资源是资源的幂类型实例",
       "个体资源的幂类型实例"
     ],
     "groups": [
@@ -5530,6 +5535,7 @@
     "definition": "Organization is a powertype instance of OrganizationType.",
     "aliases": [],
     "zh_aliases": [
+      "组织是组织类型的幂类型实例",
       "组织的幂类型实例"
     ],
     "groups": [],
@@ -5558,6 +5564,7 @@
     "definition": "Organization is a type instance of OrganizationType.",
     "aliases": [],
     "zh_aliases": [
+      "组织是组织的类型实例",
       "组织类型实例"
     ],
     "groups": [],
