@@ -9,20 +9,7 @@ that dm2 produces state, instructions, and validation results rather than archit
 ## Requirements
 
 ### Requirement: dm2 packages depend only downward
-Every module under `src/dm2/` SHALL belong to one of five ordered dependency levels, and SHALL
-import only modules at the same level or a lower one:
-
-| Level | Packages |
-|---|---|
-| L0（叶子） | `utils` |
-| L1 | `config`, `kernel` |
-| L2 | `cognitive`, `reasoning`, `core` |
-| L3 | `engine` |
-| L4（入口） | `cli` |
-
-This ordering is the package-level view of the four-layer model described in
-`docs/foundation.md`; the layer names there are conceptual, the levels here are what the
-architecture test enforces.
+Every module under `src/dm2/` SHALL belong to one of five ordered dependency levels and SHALL import only modules at the same level or a lower one. The levels are the enforceable form of the four-layer model in `docs/foundation.md`; that document's layer names are conceptual, the levels here are what the architecture test enforces.
 
 #### Scenario: No upward import exists
 - **WHEN** the imports of every module under `src/dm2/` are scanned and mapped to levels
@@ -41,6 +28,10 @@ architecture test enforces.
 - **WHEN** a new module is added under `src/dm2/`
 - **THEN** its imports SHALL satisfy the level rule for the package it lives in
 - **AND** a violation SHALL fail the architecture test rather than be waived
+
+#### Scenario: The five levels are fixed
+- **THEN** L0 SHALL be `utils`; L1 `config`, `kernel`; L2 `cognitive`, `reasoning`, `core`; L3 `engine`; L4 `cli`
+- **AND** an import SHALL be allowed only when the target level is lower than or equal to the source level
 
 ### Requirement: dm2 does not generate architecture content
 dm2 SHALL produce state, structured instructions, and validation results, and SHALL NOT generate

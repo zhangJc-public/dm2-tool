@@ -6,7 +6,7 @@ Enable `dm2 cynefin` and the Step 1+2 pipeline to derive Cynefin dimension votes
 ## Requirements
 
 ### Requirement: Auto-derive Cynefin parameters from description
-The `dm2 cynefin` command SHALL automatically derive an **evidence pack** from a natural language description: five semantic dimension tendency prefill values (`clear` / `complicated` / `complex`, or abstaining) with matched evidence, a context-validated crisis flag (see the context-rule lexicon requirement), a scale profile (estimated system count, time span, stakeholder count), and a signal report explaining candidate matches that were excluded or left unconfirmed. Purely derived results SHALL be labeled `resolution: "heuristic"`. Derivation SHALL remain polarity-safe: negated lexemes (e.g. 「不确定」「不明确」「未稳定」) SHALL match their negated polarity and MUST NOT be re-matched by an inner positive lexeme.
+The `dm2 cynefin` command SHALL derive an **evidence pack** from a natural-language description: five dimension tendency prefills with matched evidence, a context-validated crisis flag, a scale profile, and a signal report of excluded or unconfirmed candidates. Purely derived results SHALL be labeled `resolution: "heuristic"`, and derivation SHALL be polarity-safe — a negated lexeme SHALL match its negated polarity and MUST NOT be re-matched by an inner positive lexeme.
 
 #### Scenario: Derive with --desc flag
 - **WHEN** user runs `dm2 cynefin --desc "..."` or `dm2 cynefin -d "..."`
@@ -35,8 +35,7 @@ The `dm2 cynefin` command SHALL automatically derive an **evidence pack** from a
 - **THEN** the command SHALL succeed and output domain `Disorder` with `needs_clarification: true`
 
 ### Requirement: Single shared deriver for CLI and pipeline
-
-The CLI cynefin command and the Step 1+2 pipeline (`Step1IntentScope`) SHALL invoke one shared deriver component for text analysis and one shared analyzer for domain resolution. The legacy implementations `_derive_cynefin_from_description` (CLI) and `_infer_cynefin_values` (pipeline) SHALL be removed. The deriver's lexicon and polarity rules SHALL live in an externalized YAML configuration (`dm2-reference/core/cynefin-keywords.yaml`, packaged with the wheel and copied to `.dm2/reference/` by `dm2 init`) rather than inline Python literals.
+The CLI cynefin command and the Step 1+2 pipeline (`Step1IntentScope`) SHALL invoke one shared deriver for text analysis and one shared analyzer for domain resolution; the legacy `_derive_cynefin_from_description` and `_infer_cynefin_values` SHALL be removed. Lexicon and polarity rules SHALL live in `dm2-reference/core/cynefin-keywords.yaml` (packaged, and copied to `.dm2/reference/` by `dm2 init`), not in inline Python literals.
 
 #### Scenario: Identical input yields identical assessment
 - **WHEN** the same Chinese description is assessed once via `dm2 cynefin -d` and once through `Step1IntentScope.execute()`
@@ -77,8 +76,7 @@ When the pipeline's Cynefin assessment resolves to `Disorder`, the Step 1+2 resu
 - **AND** the pipeline SHALL continue producing its remaining Step 1+2 outputs normally
 
 ### Requirement: Versioned context-rule lexicon
-
-The deriver's lexicon SHALL be a versioned externalized YAML (`dm2-reference/core/cynefin-keywords.yaml`, copied to `.dm2/reference/` by `dm2 init`). Version 2 SHALL support context rules: each crisis signal defines candidate terms, `require_near` gate terms matched within a character window, and `exclude` planning compounds whose spans veto overlapping candidates. Crisis candidates that fail a gate SHALL be reported `weak`; candidates overlapping an exclusion span SHALL be reported `excluded`. Dimension tendency lists remain supported and MAY also use the exclude/gate fields. A v1 lexicon lacking the v2 structure SHALL produce a clear error naming the file and the expected version, not a silent misparse.
+The lexicon SHALL be a versioned externalized YAML. Version 2 SHALL support context rules: candidate terms, `require_near` gate terms within a character window, and `exclude` compounds that veto overlapping candidates — an unconfirmed candidate SHALL be reported `weak`, and a candidate inside an exclusion span SHALL be reported `excluded`. Dimension lists MAY use the same fields. A v1 lexicon SHALL fail with an error naming the file and the expected version, never a silent misparse.
 
 #### Scenario: Gate makes a crisis candidate valid
 - **WHEN** text contains 「应急处置中」or「全站中断」
@@ -109,8 +107,7 @@ The JSON output SHALL include a structured `signal_report` array (one entry per 
 - **THEN** the Step 1+2 output SHALL surface the warnings and SHALL label the domain as heuristic; pipeline execution SHALL NOT be blocked
 
 ### Requirement: Rubric form delivery and adjudication commands
-
-The CLI SHALL emit the assessment rubric (questions, three level anchors, prefill tendency and evidence per dimension) inside the `-d` JSON and standalone via `--rubric-only`. A completed adjudication SHALL be submitted either through explicit dimension options or through `--domain <Domain>` (direct verdict, evidence pack retained). Adjudicated results persisted to `.dm2/analysis-state.yaml` SHALL include `resolution: "adjudicated"` and, when `--domain` was used, the mechanically suggested domain for comparison.
+The CLI SHALL emit the assessment rubric — questions, three level anchors, and per-dimension prefill tendency with evidence — inside the `-d` JSON and standalone via `--rubric-only`. Adjudication SHALL be submitted through explicit dimension options or `--domain <Domain>` (a direct verdict that retains the evidence pack). Persisted adjudications SHALL record `resolution: "adjudicated"`, plus the suggested domain when `--domain` was used.
 
 #### Scenario: Agent fetches the form
 - **WHEN** `dm2 cynefin --rubric-only --json` runs

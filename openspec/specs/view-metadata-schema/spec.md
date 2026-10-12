@@ -89,12 +89,7 @@ The `relationships:` frontmatter slots in the 17 data-group templates (`dm2-refe
   remain unchanged
 
 ### Requirement: View definition includes pedigree metadata
-Each generated view file (Markdown) SHALL include a `pedigree` block in its YAML frontmatter. The frontmatter pedigree SHALL contain the minimum information needed to identify the view's provenance and follow the full trace:
-
-- `pedigree_id` (string, required): UUID linking to the full record at `.dm2/pedigree/<view_id>.yaml`
-- `author` (object, required): Subset of full record — `type`, `model` (when AI Agent), `operator`
-- `creation_date` (ISO-8601 datetime, required)
-- `source` (object, required): Reference subset — `standard`, `section`, `dm2_terms_used` (array of `{term, definition_ref}`)
+Each generated view file (Markdown) SHALL include a `pedigree` block in its YAML frontmatter carrying the minimum information needed to identify the view's provenance and follow the full trace. The block's required fields and their shapes are fixed as tabulated.
 
 #### Scenario: Generated view includes pedigree frontmatter
 - **WHEN** a view is written to the output path
@@ -115,3 +110,11 @@ Each generated view file (Markdown) SHALL include a `pedigree` block in its YAML
 - **WHEN** multiple views exist in the project
 - **THEN** each view's `pedigree.pedigree_id` SHALL be unique
 - **AND** SHALL match the corresponding full record in `.dm2/pedigree/<view_id>.yaml`
+
+#### Scenario: The pedigree frontmatter fields are fixed
+- **THEN** the block SHALL contain:
+
+- `pedigree_id` (string, required): UUID linking to the full record at `.dm2/pedigree/<view_id>.yaml`
+- `author` (object, required): subset of the full record — `type`, `model` (when AI Agent), `operator`
+- `creation_date` (ISO-8601 datetime, required)
+- `source` (object, required): reference subset — `standard`, `section`, `dm2_terms_used` (array of `{term, definition_ref}`)

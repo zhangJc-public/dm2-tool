@@ -36,4 +36,4 @@
 - [x] 6.1 `openspec validate comply-with-openspec-1-14-style --strict` 通过
 - [x] 6.2 `pytest test/` 与 `ruff check src/ test/ scripts/` 保持全绿（本变更不动代码，用于确认没有意外副作用）
 - [x] 6.3 归档后 `openspec validate --all --strict` → **38 通过 / 0 失败**
-- [ ] 6.4 `openspec archive comply-with-openspec-1-14-style` 并复核基线
+- [x] 6.4 `openspec archive comply-with-openspec-1-14-style` 并复核基线
