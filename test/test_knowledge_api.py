@@ -250,3 +250,48 @@ class TestChineseSearchRecall:
         # Group-level recall is attributable: every hit belongs to the 资源流 group.
         assert all("11-resource-flow" in r["groups"] for r in out["data"]["results"])
         assert any(r["zh_aliases"] for r in out["data"]["results"])
+
+
+class TestElementNormalizedSearch:
+    """P2: query segments normalize through the data element vocabulary."""
+
+    def test_structural_match_outranks_substring_match(self, api):
+        results = api.search_terms("能力 活动")
+        terms = [r.term for r in results]
+        # 关系术语由词元（capability + activity）命中，应领先纯文本命中
+        assert terms[:2] == ["activityMapsToCapabilityType", "activityPartOfCapability"]
+        assert terms.index("Activity") > 1
+
+    def test_english_multi_token_gets_the_same_treatment(self, api):
+        terms = [r.term for r in api.search_terms("activity capability")]
+        assert terms[:2] == ["activityMapsToCapabilityType", "activityPartOfCapability"]
+
+    def test_single_token_alias_still_ranks_first(self, api):
+        assert api.search_terms("能力")[0].term == "Capability"
+        assert api.search_terms("执行者")[0].term == "Performer"
+        assert api.search_terms("类型")[0].term == "Type"
+
+    def test_canonical_name_is_searchable(self, api):
+        assert api.search_terms("结束边界类型的度量")[0].term == "measureOfTypeEndBoundaryType"
+        assert api.search_terms("国家类型的类型")[0].term == "CountryTypeType"
+
+    def test_result_exposes_the_canonical_name(self, api):
+        capability = next(r for r in api.search_terms("能力") if r.term == "Capability")
+        assert capability.canonical_zh == "能力"
+
+    def test_segment_without_vocabulary_entry_falls_back_to_substring(self, api):
+        # 「资源流」不是词元，走子串兜底 → 召回不回退
+        results = api.search_terms("资源流")
+        assert results
+        assert all("11-resource-flow" in r.groups for r in results)
+
+    def test_cli_envelope_carries_canonical_zh(self):
+        from test._cli import run_cli
+
+        proc = run_cli(["knowledge", "search", "能力", "--json"], capture_output=True, text=True)
+        assert proc.returncode == 0, proc.stderr
+        out = json.loads(proc.stdout)
+        assert out["status"] == "success"
+        top = out["data"]["results"][0]
+        assert top["term"] == "Capability"
+        assert top["canonical_zh"] == "能力"

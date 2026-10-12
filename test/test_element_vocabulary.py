@@ -132,6 +132,28 @@ class TestComposition:
         assert vocab.compose("RegionOfCountryType") == "国家内区域类型"
 
 
+class TestReverseLookup:
+    """检索归一依赖的反查：中文词条 → 候选词元。"""
+
+    def test_single_token_entry(self, vocab):
+        assert vocab.tokens_for("能力") == ["capability"]
+
+    def test_one_to_many_entry(self, vocab):
+        assert set(vocab.tokens_for("区域")) == {"area", "region"}
+
+    def test_english_token_resolves_to_itself(self, vocab):
+        assert vocab.tokens_for("performer") == ["performer"]
+        assert vocab.tokens_for("Performer") == ["performer"]
+
+    def test_compound_entry_maps_to_its_tokens(self, vocab):
+        assert set(vocab.tokens_for("平面")) == {"planar", "surface"}
+
+    def test_unknown_segment_returns_empty(self, vocab):
+        assert vocab.tokens_for("资源流") == []
+        assert vocab.tokens_for("") == []
+        assert vocab.tokens_for("zzz") == []
+
+
 class TestReconciliation:
     def test_entity_coverage(self, vocab, terms, aliases):
         exact, diverged = _reconcile(vocab, terms, aliases, association=False)

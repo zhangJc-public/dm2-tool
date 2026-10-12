@@ -12,6 +12,7 @@ from enum import Enum
 from pathlib import Path
 from typing import Optional
 
+from dm2.kernel.elements import split_tokens
 from dm2.utils.frontmatter import FrontmatterParser
 from dm2.utils.paths import get_reference_path, get_vault_path
 
@@ -88,6 +89,8 @@ class DM2Term:
     zh_alias: list[str] = field(default_factory=list)
     # 所属数据组的中文别名（同源派生），让「资源流」这类组级查询能召回组内术语
     zh_group: list[str] = field(default_factory=list)
+    # 数据元/限定词组合器产出的规范中文名（构建期派生，P2 起可检索）
+    canonical_zh: str = ""
 
 
 @dataclass
@@ -135,6 +138,20 @@ class DM2KnowledgeIndexer:
         self._terms_cache: dict[str, DM2Term] = {}
         self._concepts_cache: dict[str, DM2Concept] = {}
         self._view_templates: dict[str, ViewTemplate] = {}
+        self._vocabulary = None
+
+    @property
+    def vocabulary(self):
+        """数据元/限定词词表（懒加载；不可用时返回 None，检索退回子串匹配）。"""
+        if self._vocabulary is None:
+            try:
+                from dm2.kernel.elements import ElementVocabulary
+
+                self._vocabulary = ElementVocabulary.load()
+            except Exception as exc:  # 词表缺失不应让检索整体失败
+                _diag(f"[DM2 Indexer] Element vocabulary unavailable: {exc}")
+                self._vocabulary = False
+        return self._vocabulary or None
 
     def load_all(self):
         """加载所有 DM2 知识"""
@@ -192,6 +209,7 @@ class DM2KnowledgeIndexer:
                 association=bool(item.get("association")),
                 zh_alias=zh_aliases if isinstance(zh_aliases, list) else [],
                 zh_group=item.get("zh_groups") or [],
+                canonical_zh=item.get("canonical_zh", "") or "",
             )
             self._terms_cache[term.term] = term
 
@@ -328,16 +346,24 @@ class DM2KnowledgeIndexer:
         return self._terms_cache.get(term_name)
 
     def search_terms(self, query: str) -> list[DM2Term]:
-        """Match terms on name, definition, aliases, curated Chinese aliases, groups.
+        """Match terms on name, definition, aliases, Chinese aliases, groups, canonical name.
 
         A single-token query keeps the original substring behaviour. A multi-token
-        query requires **every** token to appear somewhere in the term's searchable
-        text, which is what makes ``能力 分类`` / ``capability taxonomy`` precise
-        instead of matching most of the dictionary.
+        query requires **every** token to be satisfied — either as a substring of
+        the term's searchable text, or through the data element vocabulary (P2:
+        ``能力`` normalizes to the ``capability`` token). Ranking prefers, in
+        order: exact name/alias, name/alias substring, structural (vocabulary)
+        match, then definition/group-only hits.
         """
         tokens = _search_tokens(query)
         if not tokens:
             return []
+
+        vocabulary = self.vocabulary
+        segments: list[tuple[str, list[str]]] = [
+            (token, vocabulary.tokens_for(token) if vocabulary else [])
+            for token in tokens
+        ]
 
         scored: list[tuple[int, str, DM2Term]] = []
         for term in self._terms_cache.values():
@@ -348,20 +374,49 @@ class DM2KnowledgeIndexer:
                 *[str(z) for z in term.zh_alias],
                 *[str(g) for g in term.groups],
                 *[str(g) for g in term.zh_group],
+                term.canonical_zh,
             ]).casefold()
-            if not all(token in haystack for token in tokens):
+
+            # 结构化匹配：含候选词元的段必须**全部**由词元命中；否则退回子串。
+            # 纳入判定始终是「每个 token 都被满足（词元或子串）」，因此召回不回退。
+            term_tokens = {t.casefold() for t in split_tokens(term.term)}
+            structural_segments = 0
+            structural_hits = 0
+            satisfied = True
+            for token, candidates in segments:
+                by_text = token in haystack
+                if not candidates:
+                    if not by_text:
+                        satisfied = False
+                        break
+                    continue
+                structural_segments += 1
+                if term_tokens & set(candidates):
+                    structural_hits += 1
+                elif not by_text:
+                    satisfied = False
+                    break
+            if not satisfied:
                 continue
-            # Tier 0: a token IS the term name or a whole curated/standard alias.
-            # Tier 1: a token appears inside some name/alias. Tier 2: definition
-            # or group hit only. Ranked ordering keeps the likely answer first.
+            structural = structural_segments > 0 and structural_hits == structural_segments
+
             names = {term.term.casefold(), *[str(z).casefold() for z in term.zh_alias]}
             names.update(str(a).casefold() for a in term.alias)
-            if names & set(tokens):
+            # Tier 0 只认「整串」精确命中（单词查询即该词本身）；多词查询下
+            # 单个词恰好等于某别名不应压过结构化命中，否则 `能力 活动` 会被
+            # `Activity`（别名「活动」）抢到首条。
+            query_key = " ".join(tokens)
+            exact = names & {query_key}
+            if len(tokens) == 1:
+                exact |= names & set(tokens)
+            if exact:
                 tier = 0
-            elif any(token in name for token in tokens for name in names):
+            elif structural:
                 tier = 1
-            else:
+            elif any(token in name for token in tokens for name in names):
                 tier = 2
+            else:
+                tier = 3
             scored.append((tier, term.term.casefold(), term))
         scored.sort(key=lambda item: (item[0], item[1]))
         return [term for _, _, term in scored]

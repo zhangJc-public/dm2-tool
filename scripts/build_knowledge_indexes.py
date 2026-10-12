@@ -29,6 +29,12 @@ ROOT = Path(__file__).resolve().parent.parent
 REF = ROOT / "dm2-reference"
 CORE = REF / "core"
 
+# 组合器来自 src/dm2（未安装时也能直接运行本脚本）
+if str(ROOT / "src") not in sys.path:
+    sys.path.insert(0, str(ROOT / "src"))
+
+from dm2.kernel.elements import ElementVocabulary  # noqa: E402
+
 DD_PATH = REF / "dm2-data-dictionary.yaml"
 MM_PATH = REF / "dm2-metamodel-2.02.yaml"
 ZH_ALIAS_PATH = REF / "dm2-term-zh-aliases.yaml"
@@ -236,9 +242,11 @@ def validate_element_vocabulary(path: Path, term_names: list) -> dict:
 
 
 # ── terms.json ────────────────────────────────────────────────────────────
-def build_terms(dd_terms: list, zh_aliases: dict = None, zh_group_aliases: dict = None) -> list:
+def build_terms(dd_terms: list, zh_aliases: dict = None, zh_group_aliases: dict = None,
+                canonical: dict = None) -> list:
     zh_aliases = zh_aliases or {}
     zh_group_aliases = zh_group_aliases or {}
+    canonical = canonical or {}
     terms = []
     for t in dd_terms:
         groups = reconcile_groups(t)
@@ -252,6 +260,7 @@ def build_terms(dd_terms: list, zh_aliases: dict = None, zh_group_aliases: dict 
             "zh_groups": sorted({
                 alias for gid in groups for alias in zh_group_aliases.get(gid, [])
             }),
+            "canonical_zh": canonical.get(t.get("term", ""), ""),
             "association": bool(t.get("association")),
             "status": t.get("status", ""),
             "erd": bool(t.get("erd_diagram")),
@@ -701,14 +710,20 @@ def build_all(dd_terms: list, mm: dict, group_ids: set,
     zh_aliases, zh_group_aliases = load_zh_aliases(
         zh_alias_path, {t.get("term", "") for t in dd_terms}, group_ids
     )
+    vocabulary = ElementVocabulary.load(VOCAB_PATH)
+    canonical = {
+        t.get("term", ""): (vocabulary.compose(t.get("term", "")) or "")
+        for t in dd_terms
+    }
     associations = build_associations(mm)
     return {
-        "terms.json": build_terms(dd_terms, zh_aliases, zh_group_aliases),
+        "terms.json": build_terms(dd_terms, zh_aliases, zh_group_aliases, canonical),
         "associations.json": associations,
         "taxonomy.json": build_taxonomy(mm),
         "view-content-spec.json": build_view_content_spec(dd_terms, associations),
         "_zh_aliases": zh_aliases,
         "_zh_group_aliases": zh_group_aliases,
+        "_canonical": canonical,
     }
 
 
@@ -735,6 +750,7 @@ def main():
     outputs = build_all(dd_terms, mm, group_ids)
     zh_aliases = outputs.pop("_zh_aliases")
     zh_group_aliases = outputs.pop("_zh_group_aliases")
+    canonical = outputs.pop("_canonical")
 
     terms = outputs["terms.json"]
     associations = outputs["associations.json"]
@@ -770,6 +786,12 @@ def main():
     print(f"  dm2-element-vocabulary:   {vocab_stats['elements']} elements + "
           f"{vocab_stats['qualifiers']} qualifiers + {vocab_stats['compounds']} compounds, "
           f"{vocab_stats['templates']} templates (all term tokens registered)")
+    composed_ent = sum(1 for t in dd_terms if not t.get("association") and canonical.get(t.get("term")))
+    total_ent = sum(1 for t in dd_terms if not t.get("association"))
+    composed_rel = sum(1 for t in dd_terms if t.get("association") and canonical.get(t.get("term")))
+    total_rel = sum(1 for t in dd_terms if t.get("association"))
+    print(f"  canonical_zh:             entities {composed_ent}/{total_ent}, "
+          f"associations {composed_rel}/{total_rel} composed")
 
     # ── group template relationship reconciliation ──
     if args.check_templates or args.fix_templates:

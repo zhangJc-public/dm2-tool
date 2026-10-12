@@ -8,6 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **检索接入数据元模型**（OpenSpec 变更 `wire-element-model-into-search`，P2）：
+  - 派生索引 `terms.json` 新增 `canonical_zh`（组合器产出的规范中文名，279/279 全部组合成功），
+    构建期生成、快照测试守护
+  - 检索新增**词元归一**：查询片段经 `ElementVocabulary.tokens_for()` 映射为候选词元
+    （`能力` → capability、`区域` → {area, region}），一对多按「段内 OR」处理
+  - 排序改为四层：**整串**精确命中 → **结构化命中**（含候选词元的段全部由词元命中）→
+    名称/别名子串 → 仅定义/数据组/规范名；无法归一的片段仍走子串，**召回不回退**
+  - 实测：`能力 活动` 由 `activityMapsToCapabilityType` / `activityPartOfCapability` 领先
+    （此前首条是 `Activity`）；`activity capability` 同样受益；规范名可检索
+    （`结束边界类型的度量` → `measureOfTypeEndBoundaryType`）
+  - `knowledge search --json` 结果项新增 `canonical_zh`（既有字段不变）
 - **数据元 / 限定词模型**（OpenSpec 变更 `add-data-element-qualifier-model`，P1：模型与校验）：
   - 新增策展权威源 `dm2-reference/dm2-element-vocabulary.yaml`：95 个数据元 + 36 个限定词 +
     10 个复合数据元 + 39 条关系模板，按 GB/T 18391（ISO/IEC 11179）对象类 + 特性 + 表示建模

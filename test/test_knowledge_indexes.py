@@ -36,6 +36,7 @@ def regenerated(builder):
     outputs = builder.build_all(dd_terms, mm, builder.data_group_ids())
     outputs.pop("_zh_aliases")
     outputs.pop("_zh_group_aliases")
+    outputs.pop("_canonical")
     return outputs
 
 
@@ -102,6 +103,17 @@ class TestChineseAliases:
         members = [t for t in regenerated["terms.json"] if "11-resource-flow" in t["groups"]]
         assert members, "resource-flow group has no terms"
         assert all("资源流" in t["zh_groups"] for t in members)
+
+    def test_every_term_carries_a_composed_canonical_name(self, regenerated):
+        missing = [t["term"] for t in regenerated["terms.json"] if not t.get("canonical_zh")]
+        assert missing == [], f"缺 canonical_zh 的术语: {missing}"
+
+    def test_canonical_name_matches_the_composer(self, regenerated):
+        from dm2.kernel.elements import ElementVocabulary
+
+        vocab = ElementVocabulary.load()
+        for term in regenerated["terms.json"]:
+            assert term["canonical_zh"] == vocab.compose(term["term"])
 
     @staticmethod
     def _source(tmp_path, data):

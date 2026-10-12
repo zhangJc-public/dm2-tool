@@ -48,6 +48,8 @@ class ElementVocabulary:
     qualifiers: Dict[str, str] = field(default_factory=dict)
     templates: List[RelationTemplate] = field(default_factory=list)
     compounds: Dict[str, str] = field(default_factory=dict)
+    #: 反查：中文词条 → 候选词元（一对多，如 区域 → [area, region]）
+    reverse: Dict[str, List[str]] = field(default_factory=dict)
 
     # ── 加载 ──────────────────────────────────────────────────────────
     @classmethod
@@ -76,7 +78,30 @@ class ElementVocabulary:
             " ".join(str(key).casefold().split()): str(value)
             for key, value in (data.get("compounds") or {}).items()
         }
-        return cls(elements=elements, qualifiers=qualifiers, templates=templates, compounds=compounds)
+        reverse: Dict[str, List[str]] = {}
+
+        def _add_reverse(zh: str, tokens: List[str]) -> None:
+            if not zh:
+                return
+            bucket = reverse.setdefault(zh, [])
+            for token in tokens:
+                if token not in bucket:
+                    bucket.append(token)
+
+        for token, zh in elements.items():
+            _add_reverse(zh, [token])
+        for token, zh in qualifiers.items():
+            _add_reverse(zh, [token])
+        for phrase, zh in compounds.items():
+            _add_reverse(zh, phrase.split())
+
+        return cls(
+            elements=elements,
+            qualifiers=qualifiers,
+            templates=templates,
+            compounds=compounds,
+            reverse=reverse,
+        )
 
     # ── 查询 ──────────────────────────────────────────────────────────
     def registered(self, token: str) -> bool:
@@ -190,6 +215,23 @@ class ElementVocabulary:
         if best is None:
             return None
         return best[1], best[2], best[3]
+
+    def tokens_for(self, text: str) -> List[str]:
+        """中文/英文片段 → 候选词元（一对多；无命中返回空列表）。
+
+        检索归一用：查询片段先尝试中文反查（`能力` → ``['capability']``、
+        `区域` → ``['area', 'region']``），再尝试英文词元本身。
+        """
+        key = text.strip()
+        if not key:
+            return []
+        candidates = self.reverse.get(key)
+        if candidates:
+            return list(candidates)
+        folded = key.casefold()
+        if self.registered(folded):
+            return [folded]
+        return []
 
     def unregistered_tokens(self, names: List[str]) -> Dict[str, List[str]]:
         """返回 ``{未登记词元: [来源术语名, ...]}``。"""

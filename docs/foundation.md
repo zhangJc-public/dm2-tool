@@ -118,7 +118,7 @@ File System Layer      ← .dm2/ 项目 + dm2-changes/ + dm2-archive/
 | spec 数 | 38 | `ls -d openspec/specs/*/ \| wc -l` |
 | requirement 总数 | 162 | `grep -rh '^### Requirement:' openspec/specs/*/spec.md \| wc -l` |
 | spec 校验 | 38 项通过 / 0 失败（strict 无警告） | `openspec validate --all --strict` |
-| 测试 | 415 passed | `pytest test/` |
+| 测试 | 429 passed | `pytest test/` |
 | 顶层命令 | 21 | `dm2 --help` |
 | 命令 JSON 契约 | 34 flag 门控 + 3 豁免（`completion`/`__complete`/`uninstall`，共 37） | 见 §5 D2/D3/D4 |
 | 知识库 | 279 术语 / 52 视图 / 17 数据组 | `dm2 knowledge stats --json` |
@@ -145,6 +145,12 @@ File System Layer      ← .dm2/ 项目 + dm2-changes/ + dm2-archive/
 > 构建期强制词元全覆盖，组合结果与人工别名层对账（实体 100%、关联 96.2%，4 条分歧显式登记）。
 > 这是 D9 之后的检索质量路线 **P1（模型与校验）**；P2 词元归一检索、P3 查询分解与命中理由、
 > P4 新术语自动命名仍待做，P1 本身不改运行时行为。
+>
+> 2026-10-12：`wire-element-model-into-search` 归档（**P2**，只更新 `dm2-metamodel-knowledge`
+> 两个 requirement，spec/requirement 总数不变），数字变为 38 spec / 162 requirement / 429 测试。
+> `terms.json` 新增 `canonical_zh`；检索新增词元归一（`能力` → capability）与结构化命中分层，
+> 实测 `能力 活动` 由关系术语领先（此前首条是 `Activity`），规范名可检索；无法归一的片段回退子串，
+> 召回不回退。P3/P4 仍待做。
 
 **已验证的强项**（本次不改其行为，仅用测试锁定）：
 

@@ -16,6 +16,8 @@ class KnowledgeSearchResult:
     source: str
     #: dm2-curated Chinese aliases (recall only; not part of the DoDAF record).
     zh_aliases: list[str] = field(default_factory=list)
+    #: Canonical Chinese name composed from the data element / qualifier model.
+    canonical_zh: str = ""
 
 
 @dataclass
@@ -231,6 +233,7 @@ class KnowledgeAPI:
                 groups=r.groups,
                 source=r.file_path,
                 zh_aliases=r.zh_alias,
+                canonical_zh=r.canonical_zh,
             )
             for r in results
         ]

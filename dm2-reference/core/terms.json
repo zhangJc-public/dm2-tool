@@ -49,6 +49,7 @@
       "资源流动",
       "项目"
     ],
+    "canonical_zh": "活动",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -91,6 +92,7 @@
       "资源流动",
       "项目"
     ],
+    "canonical_zh": "活动消耗资源",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -111,6 +113,7 @@
       "活动",
       "能力"
     ],
+    "canonical_zh": "活动映射到能力类型",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -132,6 +135,7 @@
       "活动",
       "能力"
     ],
+    "canonical_zh": "活动属于能力",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -158,6 +162,7 @@
       "活动",
       "项目"
     ],
+    "canonical_zh": "活动属于项目类型",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -193,6 +198,7 @@
       "资源流动",
       "项目"
     ],
+    "canonical_zh": "活动可在条件下执行",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -237,6 +243,7 @@
       "资源流动",
       "项目"
     ],
+    "canonical_zh": "活动由执行者执行",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -279,6 +286,7 @@
       "资源流动",
       "项目"
     ],
+    "canonical_zh": "活动产生资源",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -297,6 +305,7 @@
     "zh_groups": [
       "活动"
     ],
+    "canonical_zh": "活动类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -317,6 +326,7 @@
       "度量",
       "指标"
     ],
+    "canonical_zh": "适应性度量",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -331,6 +341,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "适应性度量类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -351,6 +362,7 @@
       "位置",
       "地理"
     ],
+    "canonical_zh": "地址",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -365,6 +377,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "地址类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -394,6 +407,7 @@
       "指南",
       "指导"
     ],
+    "canonical_zh": "协议",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -408,6 +422,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "协议类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -432,6 +447,7 @@
       "实体化",
       "服务"
     ],
+    "canonical_zh": "架构描述",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -446,6 +462,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "架构描述类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -465,6 +482,7 @@
       "信息与数据",
       "信息数据"
     ],
+    "canonical_zh": "信息的关联",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -485,6 +503,7 @@
       "位置",
       "地理"
     ],
+    "canonical_zh": "坐标轴由描述",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -508,6 +527,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "前后",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -527,6 +547,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "前后关系类型",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -547,6 +568,7 @@
       "服务",
       "能力"
     ],
+    "canonical_zh": "能力",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -571,6 +593,7 @@
       "服务",
       "能力"
     ],
+    "canonical_zh": "执行者的能力",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -589,6 +612,7 @@
     "zh_groups": [
       "能力"
     ],
+    "canonical_zh": "能力类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -609,6 +633,7 @@
       "位置",
       "地理"
     ],
+    "canonical_zh": "圆形区域",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -623,6 +648,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "圆形区域类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -637,6 +663,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "圆形区域类型的类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -671,6 +698,7 @@
       "资源流动",
       "项目"
     ],
+    "canonical_zh": "条件",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -685,6 +713,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "条件类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -704,6 +733,7 @@
       "位置",
       "地理"
     ],
+    "canonical_zh": "坐标中心由描述",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -723,6 +753,7 @@
       "位置",
       "地理"
     ],
+    "canonical_zh": "国家",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -737,6 +768,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "国家类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -751,6 +783,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "国家类型的类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -773,6 +806,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "耦合",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -795,6 +829,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "耦合关系类型",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -814,6 +849,7 @@
       "资源流",
       "资源流动"
     ],
+    "canonical_zh": "数据",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -836,6 +872,7 @@
       "资源流",
       "资源流动"
     ],
+    "canonical_zh": "数据类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -872,6 +909,7 @@
       "溯源",
       "血统"
     ],
+    "canonical_zh": "由描述",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -892,6 +930,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "描述方案",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -911,6 +950,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "描述方案实例",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -931,6 +971,7 @@
       "能力",
       "项目"
     ],
+    "canonical_zh": "期望效果",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -949,6 +990,7 @@
     "zh_groups": [
       "项目"
     ],
+    "canonical_zh": "期望效果导向活动",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -967,6 +1009,7 @@
     "zh_groups": [
       "项目"
     ],
+    "canonical_zh": "期望效果由项目类型实现",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -985,6 +1028,7 @@
     "zh_groups": [
       "能力"
     ],
+    "canonical_zh": "能力的期望效果",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -1009,6 +1053,7 @@
       "能力",
       "项目"
     ],
+    "canonical_zh": "期望度量",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -1024,6 +1069,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "领域信息",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1038,6 +1084,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "领域信息类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1062,6 +1109,7 @@
       "能力",
       "项目"
     ],
+    "canonical_zh": "效果度量",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -1081,6 +1129,7 @@
       "位置",
       "地理"
     ],
+    "canonical_zh": "椭圆区域",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1095,6 +1144,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "椭圆区域类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1109,6 +1159,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "椭圆区域类型的类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1128,6 +1179,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "结束边界",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -1147,6 +1199,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "结束边界类型",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -1166,6 +1219,7 @@
       "位置",
       "地理"
     ],
+    "canonical_zh": "设施",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1189,6 +1243,7 @@
       "位置",
       "地理"
     ],
+    "canonical_zh": "设施属于场地",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -1203,6 +1258,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "设施类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1217,6 +1273,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "设施类型的类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1236,6 +1293,7 @@
       "指南",
       "指导"
     ],
+    "canonical_zh": "功能标准",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1250,6 +1308,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "功能标准类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1270,6 +1329,7 @@
       "位置",
       "地理"
     ],
+    "canonical_zh": "地理要素",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1284,6 +1344,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "地理要素类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1298,6 +1359,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "地理要素类型的类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1324,6 +1386,7 @@
       "资源流",
       "资源流动"
     ],
+    "canonical_zh": "地缘政治范围",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1343,6 +1406,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "地缘政治范围类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1362,6 +1426,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "地缘政治范围类型的类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1381,6 +1446,7 @@
       "位置",
       "地理"
     ],
+    "canonical_zh": "地球静止点",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1395,6 +1461,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "地球静止点类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1409,6 +1476,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "地球静止点类型的类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1432,6 +1500,7 @@
       "指南",
       "指导"
     ],
+    "canonical_zh": "指导",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1451,6 +1520,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "指导类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1480,6 +1550,7 @@
       "组织结构",
       "血统"
     ],
+    "canonical_zh": "个体",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1505,6 +1576,7 @@
       "溯源",
       "血统"
     ],
+    "canonical_zh": "个体活动",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1542,6 +1614,7 @@
       "资源流",
       "资源流动"
     ],
+    "canonical_zh": "个体执行者",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1564,6 +1637,7 @@
       "组织",
       "组织结构"
     ],
+    "canonical_zh": "个体人员角色",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1583,6 +1657,7 @@
       "组织",
       "组织结构"
     ],
+    "canonical_zh": "个体人员角色属于个体执行者",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -1616,6 +1691,7 @@
       "资源流",
       "资源流动"
     ],
+    "canonical_zh": "个体资源",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1637,6 +1713,7 @@
       "地理",
       "资源"
     ],
+    "canonical_zh": "个体资源位于位置",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -1665,6 +1742,7 @@
       "组织结构",
       "血统"
     ],
+    "canonical_zh": "个体类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1684,6 +1762,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "个体类型的类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1722,6 +1801,7 @@
       "资源流",
       "资源流动"
     ],
+    "canonical_zh": "信息",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1757,6 +1837,7 @@
       "资源流",
       "资源流动"
     ],
+    "canonical_zh": "信息类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1777,6 +1858,7 @@
       "位置",
       "地理"
     ],
+    "canonical_zh": "驻地",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1791,6 +1873,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "驻地类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1805,6 +1888,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "驻地类型的类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1824,6 +1908,7 @@
       "资源流",
       "资源流动"
     ],
+    "canonical_zh": "联合活动",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -1844,6 +1929,7 @@
       "位置",
       "地理"
     ],
+    "canonical_zh": "线",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1863,6 +1949,7 @@
       "位置",
       "地理"
     ],
+    "canonical_zh": "线属于平面",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -1877,6 +1964,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "线类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1891,6 +1979,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "线类型的类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1914,6 +2003,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "位置",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1933,6 +2023,7 @@
       "位置",
       "地理"
     ],
+    "canonical_zh": "位置由地址命名",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -1972,6 +2063,7 @@
       "资源流",
       "资源流动"
     ],
+    "canonical_zh": "位置类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -1991,6 +2083,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "位置类型的类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2011,6 +2104,7 @@
       "度量",
       "指标"
     ],
+    "canonical_zh": "可维护性度量",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2025,6 +2119,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "可维护性度量类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2050,6 +2145,7 @@
       "资源流",
       "资源流动"
     ],
+    "canonical_zh": "物资",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2071,6 +2167,7 @@
       "执行者",
       "资源"
     ],
+    "canonical_zh": "物资属于执行者",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -2089,6 +2186,7 @@
     "zh_groups": [
       "资源"
     ],
+    "canonical_zh": "物资类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2138,6 +2236,7 @@
       "资源流动",
       "项目"
     ],
+    "canonical_zh": "度量",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2160,6 +2259,7 @@
       "执行者",
       "指标"
     ],
+    "canonical_zh": "可度量技能",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2182,6 +2282,7 @@
       "执行者",
       "指标"
     ],
+    "canonical_zh": "人员角色类型的可度量技能",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -2196,6 +2297,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "可度量技能类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2220,6 +2322,7 @@
       "能力",
       "项目"
     ],
+    "canonical_zh": "期望度量",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2234,6 +2337,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "期望度量类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2258,6 +2362,7 @@
       "能力",
       "项目"
     ],
+    "canonical_zh": "效果度量",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2272,6 +2377,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "效果度量类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2297,6 +2403,7 @@
       "溯源",
       "血统"
     ],
+    "canonical_zh": "个体的度量",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -2316,6 +2423,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "个体结束边界的度量",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -2338,6 +2446,7 @@
       "度量",
       "指标"
     ],
+    "canonical_zh": "个体点的度量",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -2357,6 +2466,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "个体起始边界的度量",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -2382,6 +2492,7 @@
       "溯源",
       "血统"
     ],
+    "canonical_zh": "类型的度量",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -2424,6 +2535,7 @@
       "资源流动",
       "项目"
     ],
+    "canonical_zh": "活动类型的度量",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -2455,6 +2567,7 @@
       "资源流动",
       "项目"
     ],
+    "canonical_zh": "条件类型的度量",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -2474,6 +2587,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "结束边界类型的度量",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -2495,6 +2609,7 @@
       "指标",
       "项目"
     ],
+    "canonical_zh": "项目类型的度量",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -2539,6 +2654,7 @@
       "资源流动",
       "项目"
     ],
+    "canonical_zh": "资源类型的度量",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -2558,6 +2674,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "起始边界类型的度量",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -2577,6 +2694,7 @@
       "度量",
       "指标"
     ],
+    "canonical_zh": "整体部分类型的度量",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -2609,6 +2727,7 @@
       "血统",
       "规则"
     ],
+    "canonical_zh": "度量类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2630,6 +2749,7 @@
       "指标",
       "规则"
     ],
+    "canonical_zh": "度量类型适用于活动",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -2659,6 +2779,7 @@
       "能力",
       "规则"
     ],
+    "canonical_zh": "度量的计量单位",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2682,6 +2803,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "名称",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2704,6 +2826,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "由命名",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -2723,6 +2846,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "名称类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2743,6 +2867,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "命名方案",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2762,6 +2887,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "命名方案实例",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -2781,6 +2907,7 @@
       "度量",
       "指标"
     ],
+    "canonical_zh": "需求满足度度量",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2795,6 +2922,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "需求满足度度量类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2827,6 +2955,7 @@
       "资源流",
       "资源流动"
     ],
+    "canonical_zh": "组织",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2846,6 +2975,7 @@
       "度量",
       "指标"
     ],
+    "canonical_zh": "组织度量",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2860,6 +2990,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "组织度量类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2888,6 +3019,7 @@
       "资源流",
       "资源流动"
     ],
+    "canonical_zh": "组织类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2902,6 +3034,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "组织类型的类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -2924,6 +3057,7 @@
       "组织",
       "组织结构"
     ],
+    "canonical_zh": "重叠",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -2946,6 +3080,7 @@
       "组织",
       "组织结构"
     ],
+    "canonical_zh": "重叠关系类型",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -2971,6 +3106,7 @@
       "指南",
       "指导"
     ],
+    "canonical_zh": "协议参与方",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -3002,6 +3138,7 @@
       "溯源",
       "血统"
     ],
+    "canonical_zh": "溯源信息",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3021,6 +3158,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "溯源信息类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3041,6 +3179,7 @@
       "度量",
       "指标"
     ],
+    "canonical_zh": "性能度量",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3055,6 +3194,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "性能度量类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3108,6 +3248,7 @@
       "资源流动",
       "项目"
     ],
+    "canonical_zh": "执行者",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3127,6 +3268,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "执行者类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3157,6 +3299,7 @@
       "资源流",
       "资源流动"
     ],
+    "canonical_zh": "人员角色类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3179,6 +3322,7 @@
       "组织",
       "组织结构"
     ],
+    "canonical_zh": "人员角色类型属于执行者",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -3193,6 +3337,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "人员角色类型的类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3215,6 +3360,7 @@
       "度量",
       "指标"
     ],
+    "canonical_zh": "物理度量",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3229,6 +3375,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "物理度量类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3249,6 +3396,7 @@
       "位置",
       "地理"
     ],
+    "canonical_zh": "平面",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3263,6 +3411,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "平面类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3277,6 +3426,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "平面类型的类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3297,6 +3447,7 @@
       "位置",
       "地理"
     ],
+    "canonical_zh": "点",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3316,6 +3467,7 @@
       "位置",
       "地理"
     ],
+    "canonical_zh": "点属于线",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -3335,6 +3487,7 @@
       "位置",
       "地理"
     ],
+    "canonical_zh": "点属于平面",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -3349,6 +3502,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "点类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3363,6 +3517,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "点类型的类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3382,6 +3537,7 @@
       "位置",
       "地理"
     ],
+    "canonical_zh": "多边形区域",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3396,6 +3552,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "多边形区域类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3410,6 +3567,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "多边形区域类型的类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3428,6 +3586,7 @@
     "zh_groups": [
       "服务"
     ],
+    "canonical_zh": "端口属于执行者",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -3442,6 +3601,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "端口类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3462,6 +3622,7 @@
       "位置",
       "地理"
     ],
+    "canonical_zh": "位置参考系",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3476,6 +3637,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "位置参考系类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3496,6 +3658,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "幂类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3515,6 +3678,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "幂类型实例",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -3544,6 +3708,7 @@
       "实体化",
       "项目"
     ],
+    "canonical_zh": "项目",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3568,6 +3733,7 @@
       "实体化",
       "项目"
     ],
+    "canonical_zh": "项目类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3582,6 +3748,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "项目类型的类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3607,6 +3774,7 @@
       "溯源",
       "血统"
     ],
+    "canonical_zh": "属性",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3632,6 +3800,7 @@
       "溯源",
       "血统"
     ],
+    "canonical_zh": "个体的属性",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -3657,6 +3826,7 @@
       "溯源",
       "血统"
     ],
+    "canonical_zh": "类型的属性",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -3676,6 +3846,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "属性类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3699,6 +3870,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "不动产",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3718,6 +3890,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "不动产类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3737,6 +3910,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "不动产类型的类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3756,6 +3930,7 @@
       "位置",
       "地理"
     ],
+    "canonical_zh": "矩形区域",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3770,6 +3945,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "矩形区域类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3784,6 +3960,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "矩形区域类型的类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3804,6 +3981,7 @@
       "位置",
       "地理"
     ],
+    "canonical_zh": "国家内区域",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3823,6 +4001,7 @@
       "位置",
       "地理"
     ],
+    "canonical_zh": "国家内区域属于国家",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -3837,6 +4016,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "国家内区域类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3851,6 +4031,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "国家内区域类型的类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3870,6 +4051,7 @@
       "位置",
       "地理"
     ],
+    "canonical_zh": "世界区域",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3884,6 +4066,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "世界区域类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3898,6 +4081,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "世界区域类型的类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3921,6 +4105,7 @@
       "溯源",
       "血统"
     ],
+    "canonical_zh": "表示",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3940,6 +4125,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "表示方案",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -3959,6 +4145,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "表示方案实例",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -3994,6 +4181,7 @@
       "资源流",
       "资源流动"
     ],
+    "canonical_zh": "表示类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -4016,6 +4204,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "由表示",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -4063,6 +4252,7 @@
       "资源流动",
       "项目"
     ],
+    "canonical_zh": "资源",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -4101,6 +4291,7 @@
       "资源流",
       "资源流动"
     ],
+    "canonical_zh": "资源位于位置类型",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -4122,6 +4313,7 @@
       "基础层",
       "资源"
     ],
+    "canonical_zh": "资源类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -4170,6 +4362,7 @@
       "资源流动",
       "项目"
     ],
+    "canonical_zh": "规则",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -4211,6 +4404,7 @@
       "资源流动",
       "项目"
     ],
+    "canonical_zh": "规则约束活动",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -4234,6 +4428,7 @@
       "能力",
       "规则"
     ],
+    "canonical_zh": "规则属于度量类型",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -4253,6 +4448,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "规则类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -4267,6 +4463,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "安全属性组",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -4281,6 +4478,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "安全属性组类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -4308,6 +4506,7 @@
       "资源流",
       "资源流动"
     ],
+    "canonical_zh": "服务",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -4334,6 +4533,7 @@
       "实体化",
       "服务"
     ],
+    "canonical_zh": "服务描述",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -4348,6 +4548,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "服务描述类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -4369,6 +4570,7 @@
       "服务",
       "资源"
     ],
+    "canonical_zh": "服务使能资源访问",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -4391,6 +4593,7 @@
       "度量",
       "指标"
     ],
+    "canonical_zh": "服务级别",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -4410,6 +4613,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "服务级别类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -4431,6 +4635,7 @@
     "zh_groups": [
       "服务"
     ],
+    "canonical_zh": "服务端口",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -4449,6 +4654,7 @@
     "zh_groups": [
       "服务"
     ],
+    "canonical_zh": "服务端口由描述",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -4463,6 +4669,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "服务端口类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -4477,6 +4684,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "服务类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -4497,6 +4705,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "标志",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -4516,6 +4725,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "标志类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -4535,6 +4745,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "标志类型的类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -4554,6 +4765,7 @@
       "溯源",
       "血统"
     ],
+    "canonical_zh": "单例活动",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -4573,6 +4785,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "单例个体类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -4597,6 +4810,7 @@
       "血统",
       "资源"
     ],
+    "canonical_zh": "单例资源",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -4617,6 +4831,7 @@
       "位置",
       "地理"
     ],
+    "canonical_zh": "场地",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -4636,6 +4851,7 @@
       "位置",
       "地理"
     ],
+    "canonical_zh": "场地属于驻地",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -4650,6 +4866,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "场地类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -4664,6 +4881,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "场地类型的类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -4693,6 +4911,7 @@
       "组织结构",
       "血统"
     ],
+    "canonical_zh": "技能",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -4721,6 +4940,7 @@
       "组织结构",
       "血统"
     ],
+    "canonical_zh": "人员角色类型的技能",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -4735,6 +4955,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "技能类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -4755,6 +4976,7 @@
       "位置",
       "地理"
     ],
+    "canonical_zh": "立体空间",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -4769,6 +4991,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "立体空间类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -4783,6 +5006,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "立体空间类型的类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -4805,6 +5029,7 @@
       "度量",
       "指标"
     ],
+    "canonical_zh": "空间度量",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -4819,6 +5044,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "空间度量类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -4841,6 +5067,7 @@
       "指南",
       "指导"
     ],
+    "canonical_zh": "标准",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -4860,6 +5087,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "标准类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -4879,6 +5107,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "起始边界",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -4898,6 +5127,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "起始边界类型",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -4918,6 +5148,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "上下位类型",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -4938,6 +5169,7 @@
       "位置",
       "地理"
     ],
+    "canonical_zh": "曲面",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -4952,6 +5184,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "曲面类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -4966,6 +5199,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "曲面类型的类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -4991,6 +5225,7 @@
       "资源流",
       "资源流动"
     ],
+    "canonical_zh": "系统",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -5005,6 +5240,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "系统类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -5024,6 +5260,7 @@
       "指南",
       "指导"
     ],
+    "canonical_zh": "技术标准",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -5038,6 +5275,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "技术标准类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -5057,6 +5295,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "时间边界",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -5076,6 +5315,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "时间边界类型",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -5096,6 +5336,7 @@
       "度量",
       "指标"
     ],
+    "canonical_zh": "时间度量",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -5110,6 +5351,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "时间度量类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -5129,6 +5371,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "时间整体部分",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -5148,6 +5391,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "时间整体部分类型",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -5182,6 +5426,7 @@
       "溯源",
       "血统"
     ],
+    "canonical_zh": "事物",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -5204,6 +5449,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "元组",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -5223,6 +5469,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "元组类型",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -5245,6 +5492,7 @@
       "溯源",
       "血统"
     ],
+    "canonical_zh": "类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -5265,6 +5513,7 @@
       "基础",
       "基础层"
     ],
+    "canonical_zh": "类型实例",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -5284,6 +5533,7 @@
     "zh_groups": [
       "项目"
     ],
+    "canonical_zh": "愿景",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -5302,6 +5552,7 @@
     "zh_groups": [
       "项目"
     ],
+    "canonical_zh": "愿景由期望效果实现",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -5316,6 +5567,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "愿景类型",
     "association": false,
     "status": "a. In Model",
     "erd": false
@@ -5338,6 +5590,7 @@
       "组织",
       "组织结构"
     ],
+    "canonical_zh": "整体部分",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -5360,6 +5613,7 @@
       "组织",
       "组织结构"
     ],
+    "canonical_zh": "整体部分类型",
     "association": true,
     "status": "a. In Model",
     "erd": false
@@ -5374,6 +5628,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "协议是规则的子类型",
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -5388,6 +5643,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "功能标准是规则",
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -5402,6 +5658,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "指导是规则",
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -5417,6 +5674,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "个体执行者是执行者的幂类型实例",
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -5436,6 +5694,7 @@
     "zh_groups": [
       "资源"
     ],
+    "canonical_zh": "个体资源是资源的幂类型实例",
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -5451,6 +5710,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "信息溯源",
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -5465,6 +5725,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "期望度量是度量的子类型",
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -5479,6 +5740,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "效果度量是度量的子类型",
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -5493,6 +5755,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "可度量技能是技能的子类型",
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -5507,6 +5770,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "组织拥有技能",
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -5525,6 +5789,7 @@
     "zh_groups": [
       "资源"
     ],
+    "canonical_zh": "组织属于资源",
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -5540,6 +5805,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "组织是组织类型的幂类型实例",
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -5554,6 +5820,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "组织是执行者的子类型",
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -5569,6 +5836,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "组织是组织的类型实例",
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -5583,6 +5851,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "溯源由活动产生",
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -5597,6 +5866,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "溯源整体部分",
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -5615,6 +5885,7 @@
     "zh_groups": [
       "资源"
     ],
+    "canonical_zh": "执行者是资源的子类型",
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -5629,6 +5900,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "人员角色类型属于组织",
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -5643,6 +5915,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "规则约束活动由执行者执行",
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -5657,6 +5930,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "规则约束执行者",
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -5671,6 +5945,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "活动在条件下有效的规则约束",
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -5685,6 +5960,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "服务是执行者的子类型",
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -5699,6 +5975,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "标准是规则",
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -5713,6 +5990,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "系统是执行者的子类型",
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
@@ -5727,6 +6005,7 @@
     ],
     "groups": [],
     "zh_groups": [],
+    "canonical_zh": "技术标准是规则",
     "association": true,
     "status": "f. ERD-derived",
     "erd": true
