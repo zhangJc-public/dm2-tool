@@ -40,4 +40,4 @@
 - [x] 6.2 `pytest test/` 全绿；`ruff check src/ test/ scripts/` 干净
 - [x] 6.3 `openspec validate --all --strict` 通过
 - [x] 6.4 人工抽查：任取 10 个术语核对组合名与 DM2 语义一致
-- [ ] 6.5 `openspec archive add-data-element-qualifier-model` 并复核基线
+- [x] 6.5 `openspec archive add-data-element-qualifier-model` 并复核基线

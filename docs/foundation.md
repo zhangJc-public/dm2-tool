@@ -115,10 +115,10 @@ File System Layer      ← .dm2/ 项目 + dm2-changes/ + dm2-archive/
 
 | 指标 | 数值 | 复现命令 |
 |---|---|---|
-| spec 数 | 37 | `ls -d openspec/specs/*/ \| wc -l` |
-| requirement 总数 | 159 | `grep -rh '^### Requirement:' openspec/specs/*/spec.md \| wc -l` |
-| spec 校验 | 37 项通过 / 0 失败（strict 无警告） | `openspec validate --all --strict` |
-| 测试 | 389 passed | `pytest test/` |
+| spec 数 | 38 | `ls -d openspec/specs/*/ \| wc -l` |
+| requirement 总数 | 162 | `grep -rh '^### Requirement:' openspec/specs/*/spec.md \| wc -l` |
+| spec 校验 | 38 项通过 / 0 失败（strict 无警告） | `openspec validate --all --strict` |
+| 测试 | 415 passed | `pytest test/` |
 | 顶层命令 | 21 | `dm2 --help` |
 | 命令 JSON 契约 | 34 flag 门控 + 3 豁免（`completion`/`__complete`/`uninstall`，共 37） | 见 §5 D2/D3/D4 |
 | 知识库 | 279 术语 / 52 视图 / 17 数据组 | `dm2 knowledge stats --json` |
@@ -138,12 +138,19 @@ File System Layer      ← .dm2/ 项目 + dm2-changes/ + dm2-archive/
 > 2026-10-10：`add-chinese-term-aliases` 归档（关闭 D9，只更新 `dm2-metamodel-knowledge` 一个 spec：
 > +1 requirement / ~2 modified），数字变为 37 spec / 159 requirement / 389 测试；
 > 术语检索新增中文别名与分词召回，来源为 `dm2-reference/dm2-term-zh-aliases.yaml`。
+>
+> 2026-10-12：`add-data-element-qualifier-model` 归档（新增 `dm2-element-vocabulary` spec，+3 requirement），
+> 数字变为 38 spec / 162 requirement / 415 测试。术语名改按 GB/T 18391 的
+> 「数据元 + 限定词 + 关系模板」建模（`dm2-element-vocabulary.yaml` + `src/dm2/kernel/elements.py`），
+> 构建期强制词元全覆盖，组合结果与人工别名层对账（实体 100%、关联 96.2%，4 条分歧显式登记）。
+> 这是 D9 之后的检索质量路线 **P1（模型与校验）**；P2 词元归一检索、P3 查询分解与命中理由、
+> P4 新术语自动命名仍待做，P1 本身不改运行时行为。
 
 **已验证的强项**（本次不改其行为，仅用测试锁定）：
 
 - **S1 分层干净**：见 §2，无反向依赖 → 已由 `test_architecture_boundaries.py` 守护。
-- **S2 规范有规模**：37 spec / 159 requirement，strict 全量校验通过 → 已由 CI `spec` job 守护。
-- **S3 质量关口存在**：389 测试绿、ruff 干净、CI 覆盖 3.9–3.12；代码经 3.9.6 实跑验证兼容。
+- **S2 规范有规模**：38 spec / 162 requirement，strict 全量校验通过 → 已由 CI `spec` job 守护。
+- **S3 质量关口存在**：415 测试绿、ruff 干净、CI 覆盖 3.9–3.12；代码经 3.9.6 实跑验证兼容。
 - **S4 零 LLM 已规范化**：`dm2-no-llm-dependency` 覆盖源码、打包与用户可见面。
 - **S5 适配缝已验证**：`ToolAdapter` 由 claude/dsh 两个目标证实可用。
 - **S6 信封覆盖率高**：37 个命令中 34 个输出统一信封，另 3 个为显式豁免 → 已由 `test_cli_json_contract.py` 守护。
