@@ -12,7 +12,7 @@ from enum import Enum
 from pathlib import Path
 from typing import Optional
 
-from dm2.kernel.elements import split_tokens
+from dm2.kernel.elements import first_pattern_match, split_tokens
 from dm2.utils.frontmatter import FrontmatterParser
 from dm2.utils.paths import get_reference_path, get_vault_path
 
@@ -91,6 +91,57 @@ class DM2Term:
     zh_group: list[str] = field(default_factory=list)
     # 数据元/限定词组合器产出的规范中文名（构建期派生，P2 起可检索）
     canonical_zh: str = ""
+
+
+#: 命中层级 → 语义（顺序即优先级）
+MATCH_KINDS = ("exact", "pattern", "structural", "substring", "text")
+
+
+@dataclass(frozen=True)
+class SegmentMatch:
+    """查询片段是如何被满足的。"""
+
+    segment: str
+    #: token（经词表归一后由词元命中）/ text（只作为文本命中）/ unknown（未识别）
+    route: str
+    entry: str = ""
+    tokens: tuple = ()
+    matched: str = ""
+
+
+@dataclass(frozen=True)
+class MatchExplanation:
+    """一条结果的命中理由（tier 越小越强）。"""
+
+    tier: int
+    kind: str
+    segments: tuple = ()
+    pattern: tuple = ()
+
+    def to_dict(self) -> dict:
+        return {
+            "tier": self.tier,
+            "kind": self.kind,
+            "pattern": list(self.pattern),
+            "segments": [
+                {
+                    "segment": s.segment,
+                    "route": s.route,
+                    "entry": s.entry,
+                    "tokens": list(s.tokens),
+                    "matched": s.matched,
+                }
+                for s in self.segments
+            ],
+        }
+
+
+@dataclass(frozen=True)
+class TermMatch:
+    """术语 + 命中理由。"""
+
+    term: DM2Term
+    explanation: MatchExplanation
 
 
 @dataclass
@@ -346,26 +397,36 @@ class DM2KnowledgeIndexer:
         return self._terms_cache.get(term_name)
 
     def search_terms(self, query: str) -> list[DM2Term]:
-        """Match terms on name, definition, aliases, Chinese aliases, groups, canonical name.
+        """术语检索的薄包装（签名与既有调用点不变）。"""
+        return [match.term for match in self.match_terms(query)]
 
-        A single-token query keeps the original substring behaviour. A multi-token
-        query requires **every** token to be satisfied — either as a substring of
-        the term's searchable text, or through the data element vocabulary (P2:
-        ``能力`` normalizes to the ``capability`` token). Ranking prefers, in
-        order: exact name/alias, name/alias substring, structural (vocabulary)
-        match, then definition/group-only hits.
+    def match_terms(self, query: str) -> list[TermMatch]:
+        """Match terms and explain each hit (P3).
+
+        Inclusion is unchanged from P2: every query token must be satisfied as a
+        substring of the term's searchable text or through the vocabulary, so
+        recall never regresses. Ranking is now five tiers:
+
+        0 ``exact``      the whole query equals a name / alias / canonical name
+        1 ``pattern``    the query's token pattern is an ordered subsequence of
+                         the term's tokens (structure, not just concepts)
+        2 ``structural`` every vocabulary-resolvable segment matched by tokens
+        3 ``substring``  a query token appears inside a name / alias
+        4 ``text``       only the definition, groups or canonical name matched
         """
         tokens = _search_tokens(query)
         if not tokens:
             return []
 
         vocabulary = self.vocabulary
+        plan = vocabulary.plan_query(query) if vocabulary else None
         segments: list[tuple[str, list[str]]] = [
             (token, vocabulary.tokens_for(token) if vocabulary else [])
             for token in tokens
         ]
+        patterns = plan.token_patterns if plan else []
 
-        scored: list[tuple[int, str, DM2Term]] = []
+        scored: list[tuple[int, str, DM2Term, MatchExplanation]] = []
         for term in self._terms_cache.values():
             haystack = " ".join([
                 term.term,
@@ -377,31 +438,49 @@ class DM2KnowledgeIndexer:
                 term.canonical_zh,
             ]).casefold()
 
-            # 结构化匹配：含候选词元的段必须**全部**由词元命中；否则退回子串。
-            # 纳入判定始终是「每个 token 都被满足（词元或子串）」，因此召回不回退。
-            term_tokens = {t.casefold() for t in split_tokens(term.term)}
+            term_token_list = split_tokens(term.term)
+            term_tokens = set(term_token_list)
+
+            # 纳入判定：每个 token 都要被满足（词元或子串）——召回不回退
+            segment_matches: list[SegmentMatch] = []
             structural_segments = 0
             structural_hits = 0
             satisfied = True
             for token, candidates in segments:
                 by_text = token in haystack
                 if not candidates:
+                    segment_matches.append(
+                        SegmentMatch(segment=token, route="text" if by_text else "unknown")
+                    )
                     if not by_text:
                         satisfied = False
                         break
                     continue
                 structural_segments += 1
-                if term_tokens & set(candidates):
+                hit = next((c for c in candidates if c in term_tokens), "")
+                if hit:
                     structural_hits += 1
-                elif not by_text:
+                    segment_matches.append(SegmentMatch(
+                        segment=token, route="token", entry=token,
+                        tokens=tuple(candidates), matched=hit,
+                    ))
+                    continue
+                segment_matches.append(SegmentMatch(
+                    segment=token, route="text" if by_text else "unknown",
+                    entry=token, tokens=tuple(candidates),
+                ))
+                if not by_text:
                     satisfied = False
                     break
             if not satisfied:
                 continue
             structural = structural_segments > 0 and structural_hits == structural_segments
+            pattern = first_pattern_match(term_token_list, patterns) if patterns else None
 
             names = {term.term.casefold(), *[str(z).casefold() for z in term.zh_alias]}
             names.update(str(a).casefold() for a in term.alias)
+            if term.canonical_zh:
+                names.add(term.canonical_zh.casefold())
             # Tier 0 只认「整串」精确命中（单词查询即该词本身）；多词查询下
             # 单个词恰好等于某别名不应压过结构化命中，否则 `能力 活动` 会被
             # `Activity`（别名「活动」）抢到首条。
@@ -409,17 +488,28 @@ class DM2KnowledgeIndexer:
             exact = names & {query_key}
             if len(tokens) == 1:
                 exact |= names & set(tokens)
+
             if exact:
-                tier = 0
+                tier, kind = 0, "exact"
+            elif pattern is not None:
+                tier, kind = 1, "pattern"
             elif structural:
-                tier = 1
+                tier, kind = 2, "structural"
             elif any(token in name for token in tokens for name in names):
-                tier = 2
+                tier, kind = 3, "substring"
             else:
-                tier = 3
-            scored.append((tier, term.term.casefold(), term))
+                tier, kind = 4, "text"
+
+            explanation = MatchExplanation(
+                tier=tier, kind=kind,
+                segments=tuple(segment_matches),
+                pattern=tuple(pattern or ()),
+            )
+            scored.append((tier, term.term.casefold(), term, explanation))
+
         scored.sort(key=lambda item: (item[0], item[1]))
-        return [term for _, _, term in scored]
+        return [TermMatch(term=term, explanation=explanation)
+                for _, _, term, explanation in scored]
 
     def get_concept(self, name: str) -> Optional[DM2Concept]:
         return self._concepts_cache.get(name)

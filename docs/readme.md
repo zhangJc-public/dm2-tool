@@ -498,9 +498,17 @@ dm2 knowledge stats                     # 知识库统计
 **中文检索**：DM2 数据字典的术语定义与别名全部是英文，因此 dm2 额外策展了 `dm2-reference/dm2-term-zh-aliases.yaml`（279 个术语 + 17 个数据组的中文别名），构建时并入派生索引 `terms.json` 的 `zh_aliases` / `zh_groups`：
 
 - 查询按空白与中英文标点**分词**；单 token 走子串匹配，多 token 要求**每个 token 都命中**（词元或子串，见下「数据元模型」）
-- 排序分层：**整串**精确命中（术语名或完整别名）→ **结构化命中**（查询片段经数据元词表归一后由词元命中）→ 名称/别名内子串 → 仅定义/数据组/规范名命中；段内按术语名字典序，结果可比
+- 排序分五层：**整串**精确命中（名称/别名/规范名）→ **词元模式**（查询分解出的词元序列按序出现在术语词元中）→ **结构化命中**（片段经词表归一后由词元命中）→ 名称/别名内子串 → 仅定义/数据组/规范名命中；段内按术语名字典序，结果可比
+- `--explain`（`-e`）附加**命中理由**：JSON 加 `match` 字段（`tier`/`kind`/`pattern`/`segments`），人类模式打印一行理由；不加该 flag 时输出与原来完全一致
 - 数据组中文别名会继承到组内术语，所以「资源流」这类**组级**中文查询也能召回（DM2 没有 `ResourceFlow` 术语——它是数据组）
 - `search --json` 的结果项给出标准 `aliases`、策展的 `zh_aliases` 与组合出的 `canonical_zh`，用于区分「来自标准」「dm2 中文对照」与「模型组合的规范名」
+
+```bash
+dm2 knowledge search "能力"                       # → Capability 居首
+dm2 knowledge search "能力 活动"                  # → 关系术语领先（词元归一）
+dm2 knowledge search "活动 属于 能力" --explain    # → activityPartOfCapability（词元模式命中）
+dm2 knowledge search "活动 属于 能力" -e -j        # → JSON 附带 match 命中理由
+```
 
 ### 数据元模型（GB/T 18391 · ISO/IEC 11179）
 
@@ -519,7 +527,8 @@ DM2 的 279 个术语名不是任意字符串，而是可结构化的「对象�
 - 组合器 `src/dm2/kernel/elements.py` 是纯函数、零 LLM
 - 与人工别名层**逐条对账**：实体覆盖 **173/173 = 100%**、关联 **102/106 = 96.2%**，4 条有意保留的分歧在 `test/test_element_vocabulary.py` 中显式登记（3 条是别名层措辞更优，1 条是相对从句超出组合语法）
 - 组合结果进入派生索引的 `canonical_zh`（**P2**），并驱动检索的**词元归一**：查询片段先经 `ElementVocabulary.tokens_for()` 映射为候选词元，结构化命中优先于纯子串命中
-- **P3**（查询分解与命中理由）、**P4**（新术语自动命名）仍待做
+- **反向分解**（**P3**）：`plan_query()` 把查询解析为「数据元 + 限定词」序列并产出词元模式，按**顺序子序列**匹配术语词元——`活动 属于 能力` 命中 `activityPartOfCapability` 的词元模式 `activity·part·capability`，而反序查询只落到结构化层；`--explain` 输出这条理由
+- **P4**（新术语自动命名）仍待做
 
 ### `dm2 change` — 架构变更管理（AI Agent 接口）
 

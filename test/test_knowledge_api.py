@@ -295,3 +295,75 @@ class TestElementNormalizedSearch:
         top = out["data"]["results"][0]
         assert top["term"] == "Capability"
         assert top["canonical_zh"] == "能力"
+
+
+class TestSearchExplanation:
+    """P3: order-sensitive pattern matching and explainable hits."""
+
+    def test_pattern_match_beats_structural_match(self, api):
+        results = api.search_terms("活动 属于 能力", explain=True)
+        assert results
+        top = results[0]
+        assert top.term == "activityPartOfCapability"
+        assert top.match["kind"] == "pattern"
+        assert top.match["tier"] == 1
+        assert top.match["pattern"] == ["activity", "part", "capability"]
+
+    def test_reversed_query_is_not_a_pattern_match(self, api):
+        top = api.search_terms("能力 属于 活动", explain=True)[0]
+        assert top.term == "activityPartOfCapability"
+        assert top.match["kind"] == "structural"
+        assert top.match["pattern"] == []
+
+    def test_every_query_segment_is_explained(self, api):
+        top = api.search_terms("活动 属于 能力", explain=True)[0]
+        segments = top.match["segments"]
+        assert [s["segment"] for s in segments] == ["活动", "属于", "能力"]
+        assert all(s["route"] == "token" for s in segments)
+        assert [s["matched"] for s in segments] == ["activity", "part", "capability"]
+
+    def test_match_kind_is_from_the_closed_set(self, api):
+        allowed = {"exact", "pattern", "structural", "substring", "text"}
+        for query in ["能力", "活动 属于 能力", "能力 活动", "资源流", "zzznope"]:
+            for result in api.search_terms(query, explain=True):
+                assert result.match["kind"] in allowed
+
+    def test_unrecognized_segment_is_routed_to_text(self, api):
+        top = api.search_terms("资源流", explain=True)[0]
+        assert top.match["kind"] == "text"
+        assert top.match["segments"][0]["route"] == "text"
+
+    def test_explanation_is_opt_in(self, api):
+        assert api.search_terms("能力")[0].match is None
+        assert api.search_terms("能力", explain=True)[0].match is not None
+
+    def test_cli_json_omits_match_without_explain(self):
+        from test._cli import run_cli
+
+        proc = run_cli(["knowledge", "search", "能力", "--json"], capture_output=True, text=True)
+        assert proc.returncode == 0, proc.stderr
+        assert "match" not in json.loads(proc.stdout)["data"]["results"][0]
+
+    def test_cli_explain_json_carries_the_reason(self):
+        from test._cli import run_cli
+
+        proc = run_cli(
+            ["knowledge", "search", "活动 属于 能力", "--explain", "--json"],
+            capture_output=True, text=True,
+        )
+        assert proc.returncode == 0, proc.stderr
+        assert proc.stderr == "", f"stderr not clean: {proc.stderr!r}"
+        top = json.loads(proc.stdout)["data"]["results"][0]
+        assert top["term"] == "activityPartOfCapability"
+        assert top["match"]["kind"] == "pattern"
+
+    def test_cli_explain_human_output_contains_the_reason(self):
+        from test._cli import run_cli
+
+        proc = run_cli(
+            ["knowledge", "search", "活动 消耗 资源", "--explain"],
+            capture_output=True, text=True,
+        )
+        assert proc.returncode == 0, proc.stderr
+        assert "命中理由" in proc.stdout
+        assert "activity·consumes·resource" in proc.stdout

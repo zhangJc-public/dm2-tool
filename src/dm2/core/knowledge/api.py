@@ -18,6 +18,8 @@ class KnowledgeSearchResult:
     zh_aliases: list[str] = field(default_factory=list)
     #: Canonical Chinese name composed from the data element / qualifier model.
     canonical_zh: str = ""
+    #: Match explanation (only populated when the caller asks for it).
+    match: Optional[dict] = None
 
 
 @dataclass
@@ -223,19 +225,21 @@ class KnowledgeAPI:
             "homes": a.get("homes", []),
         }
 
-    def search_terms(self, query: str) -> list[KnowledgeSearchResult]:
-        results = self._indexer.search_terms(query)
+    def search_terms(self, query: str, explain: bool = False) -> list[KnowledgeSearchResult]:
+        """Term search; with ``explain=True`` each result carries its match reason."""
+        matches = self._indexer.match_terms(query)
         return [
             KnowledgeSearchResult(
-                term=r.term,
-                definition=r.definition,
-                aliases=r.alias,
-                groups=r.groups,
-                source=r.file_path,
-                zh_aliases=r.zh_alias,
-                canonical_zh=r.canonical_zh,
+                term=m.term.term,
+                definition=m.term.definition,
+                aliases=m.term.alias,
+                groups=m.term.groups,
+                source=m.term.file_path,
+                zh_aliases=m.term.zh_alias,
+                canonical_zh=m.term.canonical_zh,
+                match=m.explanation.to_dict() if explain else None,
             )
-            for r in results
+            for m in matches
         ]
 
     def get_concept(self, name: str) -> Optional[ConceptResult]:

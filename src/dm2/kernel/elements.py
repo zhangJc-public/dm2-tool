@@ -17,6 +17,9 @@ import yaml
 #: 术语名 → 词元：CamelCase 边界，含全大写缩写段（如 GeoStationaryPoint）
 _TOKEN_RE = re.compile(r"[A-Z]+(?![a-z])|[A-Z][a-z0-9]*|[a-z0-9]+")
 
+#: 查询片段切分：空白 + 中英文标点（与 indexer._search_tokens 同一口径）
+_QUERY_SPLIT_RE = re.compile(r"[\s,，、;；:：/\\|()（）\[\]【】\"'“”‘’]+")
+
 #: 词表位于 dm2-reference/（与 src/ 同级），非运行时资产
 DEFAULT_VOCABULARY_PATH = (
     Path(__file__).resolve().parents[3] / "dm2-reference" / "dm2-element-vocabulary.yaml"
@@ -38,6 +41,62 @@ class RelationTemplate:
     strip_leading_type: Tuple[str, ...] = ()
     #: 渲染后折叠重复的「类型类型」→「类型」（如 measureOfTypeEndBoundaryType）
     collapse_type: bool = False
+
+
+@dataclass(frozen=True)
+class QuerySegment:
+    """查询分解出的一个片段。"""
+
+    text: str
+    #: element（对象类）/ qualifier（结构词或关系谓词）/ unknown（词表无此词条）
+    kind: str
+    #: 反查命中的中文词条（英文片段为其本身；unknown 为空串）
+    entry: str = ""
+    #: 候选词元（unknown 为空元组）
+    tokens: Tuple[str, ...] = ()
+
+
+@dataclass(frozen=True)
+class QueryPlan:
+    """查询的反向分解：片段序列 + 词元模式候选。"""
+
+    query: str
+    segments: Tuple[QuerySegment, ...]
+
+    @property
+    def recognized(self) -> bool:
+        """每个片段都在词表中有条目时才算可解析（模式匹配的前提）。"""
+        return bool(self.segments) and all(s.kind != "unknown" for s in self.segments)
+
+    @property
+    def token_patterns(self) -> List[Tuple[str, ...]]:
+        """所有候选词元组合（笛卡尔积，片段与候选都很小）。"""
+        if not self.recognized:
+            return []
+        patterns: List[Tuple[str, ...]] = [()]
+        for segment in self.segments:
+            patterns = [prefix + (token,) for prefix in patterns for token in segment.tokens]
+        return patterns
+
+
+def pattern_matches(tokens: List[str], pattern: Tuple[str, ...]) -> bool:
+    """判断 pattern 是否为 tokens 的**顺序子序列**（允许中间夹其他词元）。"""
+    position = 0
+    for token in pattern:
+        while position < len(tokens) and tokens[position] != token:
+            position += 1
+        if position == len(tokens):
+            return False
+        position += 1
+    return True
+
+
+def first_pattern_match(tokens: List[str], patterns: List[Tuple[str, ...]]) -> Optional[Tuple[str, ...]]:
+    """返回第一个匹配成功的模式（保持词表给出的候选顺序）。"""
+    for pattern in patterns:
+        if pattern_matches(tokens, pattern):
+            return pattern
+    return None
 
 
 @dataclass
@@ -232,6 +291,23 @@ class ElementVocabulary:
         if self.registered(folded):
             return [folded]
         return []
+
+    def plan_query(self, query: str) -> QueryPlan:
+        """把查询反向分解为「数据元 + 限定词」序列（零 LLM，纯词表查表）。"""
+        segments: List[QuerySegment] = []
+        for piece in _QUERY_SPLIT_RE.split(query.strip()):
+            if not piece:
+                continue
+            tokens = self.tokens_for(piece)
+            if not tokens:
+                segments.append(QuerySegment(text=piece, kind="unknown"))
+                continue
+            entry = piece if piece in self.reverse else piece.casefold()
+            kind = "element" if all(t in self.elements for t in tokens) else "qualifier"
+            segments.append(
+                QuerySegment(text=piece, kind=kind, entry=entry, tokens=tuple(tokens))
+            )
+        return QueryPlan(query=query, segments=tuple(segments))
 
     def unregistered_tokens(self, names: List[str]) -> Dict[str, List[str]]:
         """返回 ``{未登记词元: [来源术语名, ...]}``。"""

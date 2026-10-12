@@ -154,6 +154,63 @@ class TestReverseLookup:
         assert vocab.tokens_for("zzz") == []
 
 
+class TestQueryDecomposition:
+    """P3：把中文查询反向分解为「数据元 + 限定词」序列。"""
+
+    def test_relation_query_decomposes_into_element_qualifier_element(self, vocab):
+        plan = vocab.plan_query("活动 属于 能力")
+        kinds = [s.kind for s in plan.segments]
+        assert kinds == ["element", "qualifier", "element"]
+        assert [s.text for s in plan.segments] == ["活动", "属于", "能力"]
+        assert plan.recognized
+
+    def test_unrecognized_segment_is_not_guessed(self, vocab):
+        plan = vocab.plan_query("资源流")
+        assert not plan.recognized
+        assert plan.segments[0].kind == "unknown"
+        assert plan.segments[0].tokens == ()
+        assert plan.token_patterns == []
+
+    def test_patterns_cover_candidate_combinations(self, vocab):
+        plan = vocab.plan_query("活动 属于 能力")
+        assert ("activity", "part", "capability") in plan.token_patterns
+
+    def test_english_query_is_recognized(self, vocab):
+        plan = vocab.plan_query("activity capability")
+        assert plan.recognized
+        assert plan.token_patterns == [("activity", "capability")]
+
+
+class TestPatternMatching:
+    """P3：词元模式按顺序子序列匹配（允许中间夹其他词元）。"""
+
+    def test_structural_words_in_between_do_not_break_the_match(self):
+        from dm2.kernel.elements import pattern_matches
+
+        tokens = ["activity", "part", "of", "capability"]
+        assert pattern_matches(tokens, ("activity", "part", "capability"))
+
+    def test_a_different_relation_does_not_match(self):
+        from dm2.kernel.elements import pattern_matches
+
+        tokens = ["activity", "maps", "to", "capability", "type"]
+        assert not pattern_matches(tokens, ("activity", "part", "capability"))
+
+    def test_word_order_matters(self):
+        from dm2.kernel.elements import pattern_matches
+
+        tokens = ["activity", "part", "of", "capability"]
+        assert not pattern_matches(tokens, ("capability", "part", "activity"))
+
+    def test_first_match_keeps_vocabulary_candidate_order(self):
+        from dm2.kernel.elements import first_pattern_match
+
+        patterns = [("action", "part", "capability"), ("activity", "part", "capability")]
+        assert first_pattern_match(["activity", "part", "capability"], patterns) == (
+            "activity", "part", "capability",
+        )
+
+
 class TestReconciliation:
     def test_entity_coverage(self, vocab, terms, aliases):
         exact, diverged = _reconcile(vocab, terms, aliases, association=False)

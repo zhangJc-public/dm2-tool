@@ -11,13 +11,19 @@ knowledge_app = typer.Typer(help="DM2 知识库查询", no_args_is_help=True)
 def search(
     query: str = typer.Argument(..., help="搜索关键词"),
     limit: int = typer.Option(10, "--limit", "-n", help="返回结果数量"),
+    explain: bool = typer.Option(False, "--explain", "-e", help="附加命中理由（词元归一/模式匹配）"),
     json_flag: bool = typer.Option(False, "--json", "-j", help="输出结构化 JSON（供 AI Agent 使用）"),
 ):
-    """搜索 DM2 术语（名称、别名、定义）"""
+    """搜索 DM2 术语（名称、别名、定义、中文别名、规范名）"""
     from dm2.core.knowledge.api import KnowledgeAPI
     api = KnowledgeAPI()
-    results = api.search_terms(query)[:limit]
-    data = [asdict(r) for r in results]
+    results = api.search_terms(query, explain=explain)[:limit]
+    data = []
+    for r in results:
+        item = asdict(r)
+        if item.get("match") is None:  # 未请求解释时不出现在输出里
+            item.pop("match", None)
+        data.append(item)
     if json_flag:
         from dm2.cli.json_output import json_success
         json_success({"query": query, "count": len(data), "results": data})
@@ -29,6 +35,25 @@ def search(
             typer.echo(f"  别名: {', '.join(r['aliases'])}")
         if r.get('zh_aliases'):
             typer.echo(f"  中文别名: {', '.join(r['zh_aliases'])}")
+        if r.get('match'):
+            typer.echo(f"  命中理由: {_explain_text(r['match'])}")
+
+
+def _explain_text(match: dict) -> str:
+    """把命中理由渲染成一行人类可读文本。"""
+    kind = match.get("kind", "")
+    pattern = match.get("pattern") or []
+    segments = match.get("segments") or []
+    if kind == "exact":
+        return "整串精确命中（名称/别名/规范名）"
+    if kind == "pattern":
+        return f"词元模式匹配: {'·'.join(pattern)}"
+    if kind == "structural":
+        hits = ", ".join(f"{s['segment']}→{s['matched']}" for s in segments if s["route"] == "token")
+        return f"词元匹配: {hits}"
+    if kind == "substring":
+        return "名称/别名子串命中"
+    return "定义/数据组/规范名子串命中"
 
 
 @knowledge_app.command()

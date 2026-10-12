@@ -8,6 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **检索可解释与顺序敏感匹配**（OpenSpec 变更 `explain-search-matches`，P3）：
+  - `ElementVocabulary.plan_query()` 把中文查询**反向分解**为「数据元 + 限定词」序列
+    （`活动 属于 能力` → element/qualifier/element），产出词元模式候选
+  - 新增最高优先级结构层**词元模式**：查询词元按序出现在术语词元中即命中
+    （顺序子序列，允许夹结构词）——`活动 属于 能力` 由 `activityPartOfCapability` 领先；
+    反序查询 `能力 属于 活动` 不判为模式，退到结构化层
+  - 排序扩为五层：整串精确 → 词元模式 → 结构化 → 名称/别名子串 → 仅文本
+  - 新增 `dm2 knowledge search --explain`（`-e`）：JSON 结果项附加 `match`
+    （`tier`/`kind`/`pattern`/`segments`），人类模式打印一行命中理由；
+    **不加该 flag 时输出与之前完全一致**（`match` 不出现）
+  - `DM2KnowledgeIndexer.match_terms()` 提供「术语 + 解释」，`search_terms` 保持原签名
 - **检索接入数据元模型**（OpenSpec 变更 `wire-element-model-into-search`，P2）：
   - 派生索引 `terms.json` 新增 `canonical_zh`（组合器产出的规范中文名，279/279 全部组合成功），
     构建期生成、快照测试守护
