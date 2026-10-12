@@ -42,4 +42,4 @@
 - [x] 6.2 `pytest test/` 全绿；`ruff check src/ test/ scripts/` 干净
 - [x] 6.3 `openspec validate --all --strict` 通过
 - [x] 6.4 端到端人工验证：`search "活动 属于 能力" --explain`、`search "能力 活动" --explain`、`search "资源流"`（无解释）
-- [ ] 6.5 `openspec archive explain-search-matches` 并复核基线
+- [x] 6.5 `openspec archive explain-search-matches` 并复核基线

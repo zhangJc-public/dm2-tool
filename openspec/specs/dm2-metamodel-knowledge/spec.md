@@ -83,9 +83,14 @@ not the 840 KB source YAMLs.
   candidate tokens SHALL rank above terms that only satisfy the segment as text
 - **AND** a segment that matches no vocabulary entry SHALL fall back to
   substring matching, so recall never regresses
-- **AND** a query is "fully structural" only when **every** vocabulary-resolvable
-  segment is matched by tokens, so a term satisfying one segment as text cannot
-  claim the structural rank
+
+#### Scenario: Ranking prefers the query whose structure matches
+- **WHEN** a query's token pattern matches a term's decomposition as an ordered
+  subsequence
+- **THEN** that term SHALL rank above terms that only match the same concepts
+  in a different order or relation
+- **AND** an exact whole-query match (name, alias, or canonical name) SHALL
+  still rank first
 
 #### Scenario: Structural matches rank above substring-only matches
 - **WHEN** a query such as `能力 活动` matches relation terms structurally and
@@ -114,6 +119,19 @@ association, and view-content-spec queries, all in the standard
   groups, and the views marking the term necessary or optional
 - **AND** when the term is an association, the response SHALL include its
   endpoint types and roles
+
+#### Scenario: Search results can explain themselves
+- **WHEN** the agent executes `dm2 knowledge search "活动 属于 能力" --explain --json`
+- **THEN** each result SHALL carry a `match` object with the match `tier` and
+  `kind`, the matched token `pattern` where applicable, and one entry per query
+  segment describing how that segment was routed (token or text)
+- **AND** the `kind` SHALL be one of `exact`, `pattern`, `structural`,
+  `substring`, `text`
+
+#### Scenario: Explanation is opt-in
+- **WHEN** `dm2 knowledge search "能力" --json` runs without `--explain`
+- **THEN** each result SHALL NOT contain a `match` field
+- **AND** the remaining result fields SHALL be unchanged from the previous release
 
 #### Scenario: Taxonomy lookup
 - **WHEN** the AI agent executes `dm2 knowledge taxonomy Performer --json`

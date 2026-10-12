@@ -116,7 +116,7 @@ File System Layer      ← .dm2/ 项目 + dm2-changes/ + dm2-archive/
 | 指标 | 数值 | 复现命令 |
 |---|---|---|
 | spec 数 | 38 | `ls -d openspec/specs/*/ \| wc -l` |
-| requirement 总数 | 163 | `grep -rh '^### Requirement:' openspec/specs/*/spec.md \| wc -l` |
+| requirement 总数 | 164 | `grep -rh '^### Requirement:' openspec/specs/*/spec.md \| wc -l` |
 | spec 校验 | 38 项通过 / 0 失败（strict 无警告） | `openspec validate --all --strict` |
 | 测试 | 446 passed | `pytest test/` |
 | 顶层命令 | 21 | `dm2 --help` |
@@ -152,8 +152,8 @@ File System Layer      ← .dm2/ 项目 + dm2-changes/ + dm2-archive/
 > 实测 `能力 活动` 由关系术语领先（此前首条是 `Activity`），规范名可检索；无法归一的片段回退子串，
 > 召回不回退。P3/P4 仍待做。
 >
-> 2026-10-12：`explain-search-matches` 归档（**P3**：`dm2-element-vocabulary` +1 requirement，
-> `dm2-metamodel-knowledge` 原地更新），数字变为 38 spec / 163 requirement / 446 测试。
+> 2026-10-12：`explain-search-matches` 归档（**P3**：`dm2-element-vocabulary` +2 requirement，
+> `dm2-metamodel-knowledge` 原地更新），数字变为 38 spec / 164 requirement / 446 测试。
 > 新增查询**反向分解**（`plan_query`）与**词元模式**层（顺序子序列匹配），排序扩为五层；
 > `knowledge search --explain` 输出命中理由（`match`：tier/kind/pattern/segments），
 > 默认输出不变。实测 `活动 属于 能力` 以词元模式命中 `activityPartOfCapability`，
@@ -162,7 +162,7 @@ File System Layer      ← .dm2/ 项目 + dm2-changes/ + dm2-archive/
 **已验证的强项**（本次不改其行为，仅用测试锁定）：
 
 - **S1 分层干净**：见 §2，无反向依赖 → 已由 `test_architecture_boundaries.py` 守护。
-- **S2 规范有规模**：38 spec / 163 requirement，strict 全量校验通过 → 已由 CI `spec` job 守护。
+- **S2 规范有规模**：38 spec / 164 requirement，strict 全量校验通过 → 已由 CI `spec` job 守护。
 - **S3 质量关口存在**：446 测试绿、ruff 干净、CI 覆盖 3.9–3.12；代码经 3.9.6 实跑验证兼容。
 - **S4 零 LLM 已规范化**：`dm2-no-llm-dependency` 覆盖源码、打包与用户可见面。
 - **S5 适配缝已验证**：`ToolAdapter` 由 claude/dsh 两个目标证实可用。
