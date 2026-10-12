@@ -77,6 +77,8 @@ python3 -m dm2.cli.main --help  # 查看所有命令
 pytest test/                  # 运行测试
 ruff check src/ test/         # Lint（与 CI 口径一致）
 openspec validate --all --strict  # 规范关口（与 CI 的 spec job 一致；strict 会把警告也视为失败）
+                                  # 1.14 起还要求 requirement 正文 ≤500 字符：枚举/表格/示例请放进场景
+                                  # 本地与 CI 必须同版本（当前 1.14.1），否则会出现「本地红 / CI 绿」
 DM2_DEBUG=1 dm2 analyze ...   # 显示索引器诊断（默认静默，保证 --json 的 2>&1 流纯净）
 ```
 

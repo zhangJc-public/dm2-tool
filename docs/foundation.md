@@ -117,7 +117,7 @@ File System Layer      ← .dm2/ 项目 + dm2-changes/ + dm2-archive/
 |---|---|---|
 | spec 数 | 38 | `ls -d openspec/specs/*/ \| wc -l` |
 | requirement 总数 | 164 | `grep -rh '^### Requirement:' openspec/specs/*/spec.md \| wc -l` |
-| spec 校验 | **本地 33 通过 / 5 失败**（本地 openspec 1.14.1 把「requirement 文本 >500 字符」由 INFO 升为 WARNING，strict 视其为失败）；**CI 锁定 1.13.1 仍 38/38 通过**。见 §5 D11 | `openspec validate --all --strict` |
+| spec 校验 | 38 项通过 / 0 失败（strict 无警告；openspec 1.14.1 的额外风格规则要求 requirement 正文 ≤500 字符，本仓库已满足） | `openspec validate --all --strict` |
 | 测试 | 456 passed | `pytest test/` |
 | 顶层命令 | 21 | `dm2 --help` |
 | 命令 JSON 契约 | 34 flag 门控 + 3 豁免（`completion`/`__complete`/`uninstall`，共 37） | 见 §5 D2/D3/D4 |
@@ -165,6 +165,8 @@ File System Layer      ← .dm2/ 项目 + dm2-changes/ + dm2-archive/
 > 但数据组别名（17 组）转为**强制**。新增 `dm2 knowledge compose` 命名预检：
 > 新术语由既有词元组成即自动命名（实测合成术语 `CapabilityPartOfProject` 零手写内容得到
 > 「能力属于项目」并可检索），含未登记词元则构建失败并列出缺失词元。
+>
+> 2026-10-13：`comply-with-openspec-1-14-style` 归档——纯规范文本重构，无代码与行为变更；11 条 requirement 正文符合 1.14 风格规则，CI 与本地同版本同口径，strict 关口恢复 38/38。数字不变：38 spec / 166 requirement / 456 测试。
 
 **已验证的强项**（本次不改其行为，仅用测试锁定）：
 
@@ -200,6 +202,7 @@ File System Layer      ← .dm2/ 项目 + dm2-changes/ + dm2-archive/
 | D7 | **CI 不校验 spec**——这是历史上 17 个 spec 烂掉的根因 | `test.yml` 仅有 `pytest` + `ruff check src/ test/` | CI 增加 `openspec validate --all` |
 | D10（运行时半边） | **知识库缺失时静默给空答案**：`get_reference_path()` 在两条候选都不存在时仍返回 `base`，索引器 glob 空目录后报成功 | 隔离 venv 中 `pip install .`：`dm2 knowledge stats` → 全 0、`dm2 concern list` → 空，**均 exit 0** | 由 `report-missing-knowledge-base` 修复：抛 `KnowledgeBaseNotFound`，中央报错输出 `KB_NOT_FOUND` 信封（人类模式给可操作提示）；`concerns.yaml` 同样处理；`test/test_missing_knowledge_base.py` 守护 |
 | D9 | `knowledge search` **中文召回为 0**（记录时以为只是内容层，实测连 `"resource flow"` 也 0：字典的定义/别名 279 条全英文） | `search "资源流"` → 0；`search Performer` → 10；`definition`/`aliases` 含中文的术语数 = 0 | 由 `add-chinese-term-aliases` 修复：新增策展源 `dm2-term-zh-aliases.yaml`（279 术语 + 17 数据组中文别名）→ `terms.json` 的 `zh_aliases`/`zh_groups`；检索分词（多 token AND）+ 三层排序；构建校验未知键/空别名/重复别名，测试守护「每术语必有别名」 |
+| D11 | `openspec` 升级到 1.14.1 后，新风格规则（requirement 正文 >500 字符 → WARNING）让本地 strict 关口对 5 个既有 spec 判红，而 CI 因锁定 1.13.1 判绿——本地与 CI 口径不一致 | `openspec --version` → 1.14.1；`validate --all --strict` → 33/5 失败，失败项只有该警告 | 由 `comply-with-openspec-1-14-style` 修复：11 条 requirement 正文压到 ≤487 字符（表格/字段清单/示例移入场景，既有场景逐字保留、SHALL 语义不减），CI 同步升到 `@fission-ai/openspec@1.14.1`，两侧均为 38/38 |
 
 ### 显式判定为豁免（记录而非修复）
 
@@ -213,7 +216,6 @@ File System Layer      ← .dm2/ 项目 + dm2-changes/ + dm2-archive/
 |---|---|---|---|
 | D10（分发半边） | **`dm2-reference/` 不随包分发**：`package-data` 覆盖不到 `src/` 之外的路径（`dm2 = ["dm2-reference/core/**/*"]` 还指向 `src/dm2/` 下并不存在的路径），且代码靠从 `src/dm2/` 向上回溯定位知识库与 `concerns.yaml`——因此非 editable 安装拿不到运行时知识库 | 实测 `SOURCES.txt`：`dm2-reference/core/` 48 条；根 YAML、`scripts/`、`schemas/` 均 0 条 | 运行时半边已修（见上表），本项只剩**分发形态**决策：是否支持正式 wheel 分发。会显著改动打包布局，且文档与 CI 都只走 `pip install -e .`，当前无实际受害者。**2026-09-24 复核后判定：正式确立 editable-only**——隔离 venv 实测 sdist→wheel 会静默丢弃包外数据文件（wheel 的 `dm2/` 内零 json/yaml），非 editable 安装确定不可用（现在干净地报 `KB_NOT_FOUND` 而非空答案）；据此删除 MANIFEST.in 与 release.yml（后者会在打 tag 时把坏 wheel 发布到 PyPI）。待真实分发需求出现时，再以「运行时资产迁入 `src/dm2/`」的专门变更关闭本项 |
 
-| D11 | **`openspec` 升级到 1.14.1 后 strict 关口对既有 spec 变红**：新版本把「requirement 文本 >500 字符」从 INFO 提升为 WARNING（`validate --strict` 视警告为失败），与本次变更无关 | `openspec --version` → 1.14.1（本机 2026-10-12 23:41 从 1.13.1 升级）；`openspec validate --all --strict` → 33 通过 / 5 失败，失败项只有该警告；受影响 5 spec / 11 requirement：`dm2-architecture-boundaries`(1)、`dm2-cynefin-auto-derive`(4)、`dm2-cynefin-model`(4)、`view-metadata-schema`(1)、`view-provenance`(1) | **CI 仍绿，但只因版本锁定**：`.github/workflows/test.yml` 装的是 `@fission-ai/openspec@1.13.1` 并跑 `--strict`，故 CI 通过；**本地工具升到 1.14.1 后与 CI 口径不一致**，本地 strict 关口变红。两条路：**(A)** 改写这 11 条 requirement（把示例与边界情况移入场景）后把 CI 也升到 1.14.x——属**规范文本重构**，应以专门变更交付；**(B)** 本地装回 CI 锁定的 1.13.1，保持口径一致。在选定前，本仓库「本地 strict 全绿」的表述不再成立 |
 
 
 ---

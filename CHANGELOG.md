@@ -125,6 +125,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial release structure for GitHub
 
 ### Changed
+- **规范文本重构以符合 OpenSpec 1.14 风格规则**（OpenSpec 变更 `comply-with-openspec-1-14-style`）：
+  5 个 spec 的 11 条 requirement 正文从 503–1550 字符压到 262–487 字符——只把表格、字段清单
+  与示例移入场景（既有场景逐字保留，被移出内容以新增场景承载），SHALL 语义一条不减。
+  CI 的 openspec 版本从 `1.13.1` 对齐到 `1.14.1`，本地与 CI 的 strict 关口恢复同口径
+  （此前本地 1.14.1 判红 5 个 spec、CI 锁 1.13.1 判绿）。无代码与行为变更。
 - **BREAKING** `dm2 validate` 不再无条件把视图置为 `verified`：溯源缺核心字段
   （`author`/`creation_date`/`source`）时保持 `generated` 并报 `rule: pedigree` 错误。
   旧项目可选：跑 `dm2 trace migrate` 后用 `dm2 trace record` 补核心字段，

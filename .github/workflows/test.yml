@@ -47,7 +47,10 @@ jobs:
           node-version: '20'
 
       - name: Install OpenSpec
-        run: npm install -g @fission-ai/openspec@1.13.1
+        # Keep this pinned and in step with the developer's local tool: 1.14 added a
+        # strict style rule (requirement prose <= 500 characters) that this corpus now
+        # satisfies, so local and CI agree again. See docs/foundation.md D11.
+        run: npm install -g @fission-ai/openspec@1.14.1
 
       - name: Validate specs and changes
         run: openspec validate --all --strict
