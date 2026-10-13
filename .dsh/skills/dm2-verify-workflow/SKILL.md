@@ -4,8 +4,8 @@ description: "Verify generated DoDAF views for completeness, correctness, and co
 user-invocable: true
 metadata:
   author: "dm2"
-  version: "0.1.0"
-  generatedBy: "dm2-tool/0.1.0"
+  version: "0.2.0"
+  generatedBy: "dm2-tool/0.2.0"
 ---
 
 Verify that generated DoDAF views are complete, correct, and coherent.

@@ -4,8 +4,8 @@ description: "Start a new DoDAF architecture analysis using dm2. Use when the us
 user-invocable: true
 metadata:
   author: "dm2"
-  version: "0.1.0"
-  generatedBy: "dm2-tool/0.1.0"
+  version: "0.2.0"
+  generatedBy: "dm2-tool/0.2.0"
 ---
 
 Start a new dm2 architecture analysis session.

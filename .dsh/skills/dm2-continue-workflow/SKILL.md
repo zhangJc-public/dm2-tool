@@ -4,8 +4,8 @@ description: "Continue an in-progress dm2 architecture analysis or view generati
 user-invocable: true
 metadata:
   author: "dm2"
-  version: "0.1.0"
-  generatedBy: "dm2-tool/0.1.0"
+  version: "0.2.0"
+  generatedBy: "dm2-tool/0.2.0"
 ---
 
 Continue working on a dm2 architecture analysis or view generation session.

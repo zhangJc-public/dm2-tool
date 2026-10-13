@@ -4,8 +4,8 @@ description: "Archive multiple completed dm2 architecture changes at once. Use w
 user-invocable: true
 metadata:
   author: "dm2"
-  version: "0.1.0"
-  generatedBy: "dm2-tool/0.1.0"
+  version: "0.2.0"
+  generatedBy: "dm2-tool/0.2.0"
 ---
 
 Archive multiple completed dm2 architecture changes in a single operation.

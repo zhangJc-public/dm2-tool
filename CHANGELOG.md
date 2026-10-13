@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-10-13
+
 ### Added
 - **新术语自动命名**（OpenSpec 变更 `auto-name-new-terms`，P4，检索质量路线收官）：
   - **解除「每个术语必须手写别名」**：`dm2-term-zh-aliases.yaml` 允许按术语部分覆盖；
@@ -182,7 +184,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   三类校验（视图 ID 有效性 / 数据组覆盖 / basis 完整性）
 - `.gitignore` updated to allow `.claude/` directory
 
-## [0.1.0] - YYYY-MM-DD
+## [0.1.0] - 2026-05-16
 
 ### Added
 - dm2 CLI with 17 commands
