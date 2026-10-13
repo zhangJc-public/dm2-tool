@@ -11,11 +11,24 @@ Two invariants are covered:
 """
 
 import json
+import re
 
 import pytest
 from typer.testing import CliRunner
 
 from dm2.cli.main import app
+
+#: Rich styles help output with ANSI escapes whenever it decides the
+#: environment is colour-capable — which includes GitHub Actions, where CI
+#: runs. It splits an option name such as ``--json`` into separately-styled
+#: runs (``-\x1b[0m\x1b[1;36m-json``), so the literal substring is no longer
+#: present in the raw stream. Strip escapes before matching on the text.
+_ANSI_SGR = re.compile(r"\x1b\[[0-9;]*m")
+
+
+def _plain(text: str) -> str:
+    """Return ``text`` with ANSI SGR escape sequences removed."""
+    return _ANSI_SGR.sub("", text)
 
 #: Commands that cannot honour the JSON contract, each for a stated reason.
 #: ``completion`` prints a shell script; ``__complete`` is an internal shell protocol;
@@ -85,7 +98,7 @@ def test_every_non_exempt_command_accepts_json():
         if path[-1] in EXEMPT:
             continue
         result = runner.invoke(app, [*path, "--help"])
-        if "--json" not in result.stdout:
+        if "--json" not in _plain(result.stdout):
             offenders.append(" ".join(path))
     assert not offenders, f"以下命令未接受 --json（或应加入豁免清单）: {offenders}"
 

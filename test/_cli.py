@@ -11,6 +11,8 @@ coupling: these tests exercise the CLI the same way regardless of how (or
 whether) the package is installed.
 """
 
+from __future__ import annotations
+
 import os
 import subprocess
 import sys
