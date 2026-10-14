@@ -118,7 +118,7 @@ File System Layer      ← .dm2/ 项目 + dm2-changes/ + dm2-archive/
 | spec 数 | 38 | `ls -d openspec/specs/*/ \| wc -l` |
 | requirement 总数 | 166 | `grep -rh '^### Requirement:' openspec/specs/*/spec.md \| wc -l` |
 | spec 校验 | 38 项通过 / 0 失败（strict 无警告；openspec 1.14.1 的额外风格规则要求 requirement 正文 ≤500 字符，本仓库已满足） | `openspec validate --all --strict` |
-| 测试 | 481 passed | `pytest test/` |
+| 测试 | 678 passed | `pytest test/` |
 | 顶层命令 | 21 | `dm2 --help` |
 | 命令 JSON 契约 | 34 flag 门控 + 3 豁免（`completion`/`__complete`/`uninstall`，共 37） | 见 §5 D2/D3/D4 |
 | 知识库 | 279 术语 / 52 视图 / 17 数据组 | `dm2 knowledge stats --json` |
@@ -169,12 +169,14 @@ File System Layer      ← .dm2/ 项目 + dm2-changes/ + dm2-archive/
 > 2026-10-13：`comply-with-openspec-1-14-style` 归档——纯规范文本重构，无代码与行为变更；11 条 requirement 正文符合 1.14 风格规则，CI 与本地同版本同口径，strict 关口恢复 38/38。数字不变：38 spec / 166 requirement / 456 测试。
 >
 > 2026-10-14：**CI 首次全绿**（D12 修复，21 个积压提交推送 + `v0.2.0` 发版）。同一轮修掉 D13（模板 CLI 调用）并补其守护，测试 456 → **481**（+25 条模板调用可解析性用例）。同时订正本表两处滞后数字：requirement 164 → 166（`auto-name-new-terms` 归档时已变，表与 S2 未跟改）、测试 456 → 481。数字：38 spec / 166 requirement / 481 测试。
+>
+> 2026-10-14：**`engine/` 全层补测试（D14）**——这是该层第一次有覆盖。新增 9 个测试文件、**197 条用例**（`test_view_generator` / `test_step6_documentation` / `test_six_w_analyzer` / `test_consistency` / `test_step1_intent_scope` / `test_step3_data_requirements` / `test_step5_analysis` / `test_pipeline_state` / `test_pipeline_orchestrator`），测试 481 → **678**。其中 12 条缺陷按「先补网、后修复」的次序就地**钉住**（测试注释里以 `DEFECT-N` 标注 + 文件头说明），修复时测试转红即提醒改写期望；编排骨架经核实符合规格、直接锁死。数字：38 spec / 166 requirement / 678 测试。
 
 **已验证的强项**（本次不改其行为，仅用测试锁定）：
 
 - **S1 分层干净**：见 §2，无反向依赖 → 已由 `test_architecture_boundaries.py` 守护。
 - **S2 规范有规模**：38 spec / 166 requirement，strict 全量校验通过 → 已由 CI `spec` job 守护。
-- **S3 质量关口存在**：481 测试绿、ruff 干净、CI 覆盖 3.9–3.12；代码经 3.9.6 实跑验证兼容。
+- **S3 质量关口存在**：678 测试绿、ruff 干净、CI 覆盖 3.9–3.12；代码经 3.9.6 实跑验证兼容。
 - **S4 零 LLM 已规范化**：`dm2-no-llm-dependency` 覆盖源码、打包与用户可见面。
 - **S5 适配缝已验证**：`ToolAdapter` 由 claude/dsh 两个目标证实可用。
 - **S6 信封覆盖率高**：37 个命令中 34 个输出统一信封，另 3 个为显式豁免 → 已由 `test_cli_json_contract.py` 守护。
@@ -219,6 +221,7 @@ File System Layer      ← .dm2/ 项目 + dm2-changes/ + dm2-archive/
 | # | 项 | 证据 | 为何延后 |
 |---|---|---|---|
 | D10（分发半边） | **`dm2-reference/` 不随包分发**：`package-data` 覆盖不到 `src/` 之外的路径（`dm2 = ["dm2-reference/core/**/*"]` 还指向 `src/dm2/` 下并不存在的路径），且代码靠从 `src/dm2/` 向上回溯定位知识库与 `concerns.yaml`——因此非 editable 安装拿不到运行时知识库 | 实测 `SOURCES.txt`：`dm2-reference/core/` 48 条；根 YAML、`scripts/`、`schemas/` 均 0 条 | 运行时半边已修（见上表），本项只剩**分发形态**决策：是否支持正式 wheel 分发。会显著改动打包布局，且文档与 CI 都只走 `pip install -e .`，当前无实际受害者。**2026-09-24 复核后判定：正式确立 editable-only**——隔离 venv 实测 sdist→wheel 会静默丢弃包外数据文件（wheel 的 `dm2/` 内零 json/yaml），非 editable 安装确定不可用（现在干净地报 `KB_NOT_FOUND` 而非空答案）；据此删除 MANIFEST.in 与 release.yml（后者会在打 tag 时把坏 wheel 发布到 PyPI）。待真实分发需求出现时，再以「运行时资产迁入 `src/dm2/`」的专门变更关闭本项 |
+| **D14** | **legacy V1 引擎的 12 处缺陷**——`src/dm2/engine/` 全层 + `six_w_analyzer` / `consistency`。该层只经 `dm2 run` **不带 `--agent`** 到达（`src/dm2/cli/main.py:1391`），此前**零测试覆盖**，故长期无人发现。**2026-10-14 已全部补上表征测试并就地钉住**（每条缺陷在测试文件里以 `DEFECT-N` 标注，修复后该测试即失败，提醒改写期望） | **A 产出错误内容**：`D1` `view_generator._find_template_file` 用绝对 pattern 调 `Path.glob` 必抛 `NotImplementedError`（且它要找的 `dm2-reference/core/详细分析/` 目录根本不存在）；`D2` 该异常从 `fill()` 直接外抛；`D3` `step6` 的裸 `except Exception` 吞掉它，把 OV-1/OV-2/OV-5a 写成 `视图生成待 LLM 填充`——**该占位文案违反自家 `dm2-no-llm-dependency` 契约**；`D4` `six_w_analyzer` 声明 7 个实体桶只实现 3 个（`resource`/`capability`/`location`/`measure` 恒空，CLI 又过滤空桶，故用户看不到）；`D5` 中文正则贪心，匹配吞掉相邻整句。<br>**B 静默失效**：`D6` `consistency` 时序环检测不可达（`['prerequisite'] = []` 恒空 → `_find_cycles` 恒返回空；`_find_cycles` 本身正确，缺陷在调用方）——而 step5 规格明确要求 circular dependency detection；`D7` `step1` 的 `DM2_GROUP_TOKEN_ESTIMATES` 键（`"01-Performer"`）与调用方传入的裸名（`"Performer"`）**零重叠**，也与真实目录名（`00-foundation`）对不上，17 条估值全失效；`D8` `step1` 每个 6W 写了两条反问，只用 `templates[0]`；且 WHY 为主维度时回退分支重复追加同一问题。<br>**C 空占位**：`D9` `step3` `required_concepts` 恒 `[]`；`D10` `_build_taxonomy(…, concepts)` 的 `concepts` 参数函数体未用；`D11` `step5` 溯因推理端点恒为 `"未知"` / `"(从描述提取)"`；`D12` `step5` `TOCBottleneck.out_degree` 写死 `1` | **本轮只补测试、不改代码**（用户指示先建安全网）。守护文件：`test_view_generator.py`(D1/D2)、`test_step6_documentation.py`(D3)、`test_six_w_analyzer.py`(D4/D5)、`test_consistency.py`(D6)、`test_step1_intent_scope.py`(D7/D8)、`test_step3_data_requirements.py`(D9/D10)、`test_step5_analysis.py`(D11/D12)。编排骨架（`pipeline_orchestrator` / `state_manager`）经核实**符合规格**，已锁入 `test_pipeline_orchestrator.py` / `test_pipeline_state.py`。修复按 D1→D3→D4→D6/D7→其余 的优先级另开轮次 |
 
 
 
