@@ -3,9 +3,23 @@ Consistency Checker - 视图一致性检查器
 检查 DoDAF 视图间的逻辑一致性
 """
 
+import re
 from dataclasses import dataclass, field
 from enum import Enum
 from typing import Dict, List
+
+#: A declared prerequisite / successor edge. The text before the marker is the
+#: subject, the text after it is the target. An edge needs both ends, so a line
+#: whose marker has nothing before it contributes nothing rather than inventing
+#: a node.
+_TEMPORAL_EDGE = re.compile(
+    r"(?P<subject>[^\n:：]+?)"
+    r"\s*(?P<kind>prerequisite|pre|前置|successor|post|后继)"
+    r"\s*[:：]\s*(?P<target>[^\n,，]+)",
+    re.IGNORECASE,
+)
+
+_SUCCESSOR_KINDS = {"successor", "post", "后继"}
 
 
 class IssueSeverity(str, Enum):
@@ -148,21 +162,20 @@ class ConsistencyChecker:
 
     def _check_temporal_consistency(self, views_data: Dict[str, str]):
         """检查时序一致性（检查循环依赖）"""
-        import re
+        temporal_relations: Dict[str, Dict[str, List[str]]] = {}
 
-        temporal_relations = {}
-        for view_id, content in views_data.items():
-            # 匹配前置和后继关系
-            prereq_pattern = r'(?:prerequisite|pre|前置)[:\s]+([^\n,]+)'
-            succ_pattern = r'(?:successor|post|后继)[:\s]+([^\n,]+)'
-
-            for match in re.finditer(prereq_pattern, content, re.IGNORECASE):
-                node = match.group(1).strip()
-                temporal_relations.setdefault(node, {})['prerequisite'] = []
-
-            for match in re.finditer(succ_pattern, content, re.IGNORECASE):
-                node = match.group(1).strip()
-                temporal_relations.setdefault(node, {})['successor'] = []
+        for content in views_data.values():
+            for match in _TEMPORAL_EDGE.finditer(content):
+                subject = match.group("subject").strip()
+                target = match.group("target").strip()
+                if not subject or not target:
+                    continue
+                kind = (
+                    "successor"
+                    if match.group("kind").lower() in _SUCCESSOR_KINDS
+                    else "prerequisite"
+                )
+                temporal_relations.setdefault(subject, {}).setdefault(kind, []).append(target)
 
         # 检测循环
         cycles = self._find_cycles(temporal_relations)

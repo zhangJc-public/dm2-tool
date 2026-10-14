@@ -1,27 +1,14 @@
 """Tests for ConsistencyChecker (dm2.reasoning.consistency).
 
 The checker is what ``dm2 validate`` runs, and its four rules are named in the
-class docstring. This module had no test coverage before this file.
+class docstring.
 
-DEFECT-6 is pinned rather than asserted as correct.
-
-DEFECT-6  Rule 4 (temporal consistency) can never fire. ``_check_temporal_
-          consistency`` parses the names on either side of a prerequisite /
-          successor marker, then assigns an *empty list* as that node's targets
-          (``temporal_relations.setdefault(node, {})['prerequisite'] = []``).
-          The successor list is filled the same way. ``_find_cycles`` therefore
-          walks an adjacency map whose every value is empty and always returns
-          ``[]``, so the ``if cycles:`` branch that raises ``circular_dependency``
-          is unreachable.
-
-          ``_find_cycles`` itself is correct — the tests below exercise it
-          directly — so the fix belongs in the caller.
-
-The step5-analysis spec requires this rule explicitly: "circular dependency
-detection" is one of the four checks Step 5 SHALL run.
+Rule 4 (temporal consistency) used to be unreachable: the parser read the name
+after a prerequisite / successor marker and then assigned that node an *empty*
+target list, so ``_find_cycles`` walked an adjacency map of empty lists and the
+``circular_dependency`` branch could never fire. The parser now records the edge
+it reads — subject before the marker, target after it — and the rule is live.
 """
-
-import re
 
 import pytest
 
@@ -32,6 +19,14 @@ CYCLIC_VIEWS = {
     "OV-6c": (
         "活动A prerequisite: 活动B\n"
         "活动B prerequisite: 活动A\n"
+    ),
+}
+
+#: The same shape, without the cycle.
+ACYCLIC_VIEWS = {
+    "OV-6c": (
+        "活动A prerequisite: 活动B\n"
+        "活动B prerequisite: 活动C\n"
     ),
 }
 
@@ -74,26 +69,47 @@ class TestFindCycles:
         assert checker._find_cycles(relations) == []
 
 
-class TestTemporalRuleIsUnreachable:
-    """DEFECT-6: rule 4 can never report anything."""
+class TestTemporalRule:
+    """Spec: a declared prerequisite cycle is reported at ERROR severity."""
 
-    def test_cyclic_content_produces_no_circular_dependency_issue(self, checker):
+    def test_cyclic_prerequisites_are_reported(self, checker):
         issues = checker.check_views(CYCLIC_VIEWS)
+
+        cycles = [i for i in issues if i.issue_type == "circular_dependency"]
+        assert len(cycles) == 1
+        assert cycles[0].severity is IssueSeverity.ERROR
+
+    def test_the_report_names_the_nodes_on_the_cycle(self, checker):
+        issues = checker.check_views(CYCLIC_VIEWS)
+        cycle = next(i for i in issues if i.issue_type == "circular_dependency")
+
+        assert "活动A" in cycle.suggestion
+        assert "活动B" in cycle.suggestion
+
+    def test_acyclic_prerequisites_are_not_reported(self, checker):
+        issues = checker.check_views(ACYCLIC_VIEWS)
 
         assert not [i for i in issues if i.issue_type == "circular_dependency"]
 
-    def test_every_node_gets_an_empty_target_list(self, checker):
-        """The line that makes the rule vacuous."""
-        relations = {}
-        for text in CYCLIC_VIEWS.values():
-            for match in re.finditer(
-                r"(?:prerequisite|pre|前置)[:\s]+([^\n,]+)", text, re.IGNORECASE
-            ):
-                node = match.group(1).strip()
-                relations.setdefault(node, {})["prerequisite"] = []
+    def test_successor_cycles_are_reported_too(self, checker):
+        views = {"OV-6c": "活动A successor: 活动B\n活动B successor: 活动A\n"}
 
-        assert relations
-        assert all(v["prerequisite"] == [] for v in relations.values())
+        issues = checker.check_views(views)
+
+        assert any(i.issue_type == "circular_dependency" for i in issues)
+
+    def test_a_marker_without_a_subject_contributes_no_edge(self, checker):
+        """An edge needs two ends; one is not invented."""
+        views = {"OV-6c": "prerequisite: 活动B\n"}
+
+        issues = checker.check_views(views)
+
+        assert not [i for i in issues if i.issue_type == "circular_dependency"]
+
+    def test_views_without_temporal_markers_are_ignored(self, checker):
+        issues = checker.check_views({"OV-5a": "## 活动\n- 检测流量\n"})
+
+        assert not [i for i in issues if i.issue_type == "circular_dependency"]
 
 
 class TestActivityPerformerBinding:

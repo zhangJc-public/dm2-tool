@@ -51,7 +51,7 @@ DoDAF Meta Model 2.02 系统工程辅助工具。
 Agent Interface Layer  ← CLI --json + Knowledge API
 Core Engine Layer      ← Instructions Engine + Artifact Graph + Change Manager + Pipeline V2
 Knowledge Base Layer   ← DM2KnowledgeIndexer + KnowledgeAPI
-File System Layer      ← .dm2/ 项目 + dm2-changes/ + output/
+File System Layer      ← .dm2/ 项目（含 .dm2/output/）+ dm2-changes/
 ```
 
 **核心模式**: CLI 是大脑，AI 是手脚。CLI 管理状态、生成指令；AI Agent 根据指令执行任务。

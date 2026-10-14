@@ -1,15 +1,13 @@
 """Tests for Step6Documentation (dm2.engine.pipeline.step6_documentation).
 
 Step 6 is what turns the pipeline's analysis into the documents a user ends up
-reading, and it had no test coverage at all before this file.
+reading.
 
-DEFECT-3 is pinned rather than asserted as correct. It is the downstream half of
-DEFECT-1/DEFECT-2 in test_view_generator.py: because ``ViewTemplateFiller.fill``
-raises for every registered view, the ``except Exception`` below swallows the
-error and every per-view document is written as placeholder text. The
-placeholder also names an LLM, which the project's own contract forbids
-(openspec/specs/dm2-no-llm-dependency: source must not import, declare or
-document an LLM dependency).
+It used to write the literal string ``视图生成待 LLM 填充`` into every per-view
+document: the filler raised (see test_view_generator.py), a bare ``except``
+swallowed it, and a placeholder stood in for the view. Those tests now assert
+the documents are real, carry their wikilinks, name no LLM, and that a view
+which genuinely cannot be produced is reported as missing instead of written.
 """
 
 import pytest
@@ -47,24 +45,77 @@ class TestExecuteContract:
         assert result.output_dir
 
 
-class TestPerViewDocumentsArePlaceholders:
-    """DEFECT-3: every per-view document is placeholder text, never real content."""
+class TestPerViewDocumentsCarryContent:
+    """Spec: a view document carries generated content, not placeholder text."""
 
     @pytest.mark.parametrize("view_id", ["OV-1", "OV-2", "OV-5a"])
-    def test_view_body_is_the_placeholder(self, result, view_id):
-        assert result.views[view_id] == f"# {view_id}\n\n视图生成待 LLM 填充"
+    def test_view_body_opens_with_its_heading(self, result, view_id):
+        assert result.views[view_id].startswith(f"# {view_id} ")
 
-    def test_placeholder_names_an_llm(self, result):
-        """The project is zero-LLM by contract; this string contradicts it."""
-        assert "LLM" in result.views["OV-1"]
+    @pytest.mark.parametrize("view_id", ["OV-1", "OV-2", "OV-5a"])
+    def test_view_body_carries_generated_sections(self, result, view_id):
+        body = result.views[view_id]
 
-    def test_no_wikilinks_reach_the_view_documents(self, result):
-        """``_add_wikilinks`` runs after ``fill`` raised, so it never applies.
+        assert len(body) > 100
+        assert "**视图类型**: " in body
+        assert "## " in body
 
-        The step6-documentation spec requires generated view documents to carry
-        ``[[wikilinks]]`` back to DM2 concepts.
-        """
-        assert "[[" not in result.views["OV-1"]
+    @pytest.mark.parametrize("view_id", ["OV-1", "OV-2", "OV-5a"])
+    def test_view_body_has_wikilinks(self, result, view_id):
+        """Spec: view documents link back to the concepts they use."""
+        assert "[[" in result.views[view_id]
+        assert "## 关联知识" in result.views[view_id]
+
+    def test_no_view_no_llm(self, result):
+        for view_id, body in result.views.items():
+            assert "LLM" not in body, view_id
+
+    def test_no_placeholder_notice_survives(self, result):
+        """The old stand-in text is gone from every generated document."""
+        for view_id, body in result.views.items():
+            assert "待 LLM 填充" not in body, view_id
+
+    def test_nothing_failed_when_the_filler_works(self, result):
+        assert result.failed_views == []
+
+
+class TestFailedViewsAreReportedNotWritten:
+    """A view that cannot be produced is reported as missing."""
+
+    def _failing_step6(self, monkeypatch):
+        step6 = Step6Documentation()
+
+        def boom(view_id, data):
+            raise RuntimeError("filler unavailable")
+
+        monkeypatch.setattr(step6.filler, "fill", boom)
+        return step6
+
+    def test_failure_is_recorded(self, monkeypatch):
+        step6 = self._failing_step6(monkeypatch)
+
+        result = step6.execute(DESCRIPTION, ANALYSIS)
+
+        assert set(result.failed_views) == {"OV-1", "OV-2", "OV-5a"}
+        assert result.views == {}
+
+    def test_no_document_is_written_for_a_failed_view(self, monkeypatch, tmp_project):
+        step6 = self._failing_step6(monkeypatch)
+        result = step6.execute(DESCRIPTION, ANALYSIS)
+
+        step6.save_views(result, tmp_project / ".dm2" / "output")
+
+        assert not (tmp_project / ".dm2" / "output" / "OV-1.md").exists()
+        assert (tmp_project / ".dm2" / "output" / "composite-view.md").exists()
+
+    def test_failed_views_are_named_in_the_summary(self, monkeypatch):
+        step6 = self._failing_step6(monkeypatch)
+        result = step6.execute(DESCRIPTION, ANALYSIS)
+
+        summary = step6.format_output(result)
+
+        assert "未能生成" in summary
+        assert "LLM" not in summary
 
 
 class TestCompositeView:
@@ -200,7 +251,7 @@ class TestSaveViews:
     """Spec: step 6 writes view files and registers them as ``generated``."""
 
     def test_writes_composite_and_per_view_files(self, step6, result, tmp_project):
-        out = step6.save_views(result, tmp_project / "output")
+        out = step6.save_views(result, tmp_project / ".dm2" / "output")
 
         assert (out / "composite-view.md").exists()
         for view_id in ("OV-1", "OV-2", "OV-5a"):
@@ -209,7 +260,7 @@ class TestSaveViews:
     def test_registers_each_view_in_the_view_manager(self, step6, result, tmp_project):
         from dm2.core.views.manager import ViewManager
 
-        step6.save_views(result, tmp_project / "output")
+        step6.save_views(result, tmp_project / ".dm2" / "output")
 
         registered = {v.id for v in ViewManager(project_root=tmp_project).list_views()}
         assert {"OV-1", "OV-2", "OV-5a"} <= registered

@@ -65,24 +65,26 @@ REVERSE_QUESTION_TEMPLATES = {
     ],
 }
 
+# 每个数据组的上下文预算权重。**键就是 SIX_W_TO_DM2_GROUPS 的取值**——调用方传
+# 什么名字，这里就键什么名字。此前键写成目录名形式（"01-Performer"），与调用方
+# 传的裸名零重叠，整张表形同虚设；测试守着「6W 可选中的每个数据组都有权重」，
+# 再漂移就会直接失败。
+#: 反问条数上限。step1-intent-scope 规格要求 2-3 条。
+MAX_CLARIFICATION_QUESTIONS = 3
+
 DM2_GROUP_TOKEN_ESTIMATES = {
-    "00-基础模式": 2000,
-    "01-Performer": 3000,
-    "02-Activity": 4000,
-    "03-Capability": 3000,
-    "04-Resource": 3500,
-    "05-Guidance": 2500,
-    "06-Measure": 2000,
-    "07-Location": 1500,
-    "08-Services": 3000,
-    "09-Project": 2500,
-    "10-Rules": 3000,
-    "11-ResourceFlow": 3500,
-    "12-Pedigree": 1500,
-    "13-InformationPedigree": 1500,
-    "14-OrganizationalStructure": 2000,
-    "15-ReificationLevels": 1500,
-    "16-InformationAndData": 4000,
+    "Performer": 3000,
+    "Activity": 4000,
+    "Capability": 3000,
+    "Resource": 3500,
+    "Guidance": 2500,
+    "Measure": 2000,
+    "Location": 1500,
+    "Service": 3000,
+    "Project": 2500,
+    "Rules": 3000,
+    "Information": 4000,
+    "Organization": 2000,
 }
 
 
@@ -150,18 +152,29 @@ class Step1IntentScope:
     def _generate_clarification_questions(
         self, primary: SixW, secondary: list[SixW]
     ) -> list[str]:
-        questions = []
-        all_ws = [primary] + list(secondary)
+        """生成互不相同的反向质问（规格要求 2-3 条）。
 
-        for w in all_ws[:3]:
+        主维度贡献它的**两条**问题——它是描述着墨最多、同时也最需要被追问清
+        楚的地方；随后各次要维度各贡献一条，直到凑满上限。重复项一律丢弃，
+        因此主维度是 Why 时不会把它刚问过的那条再问一遍。
+        """
+        questions: list[str] = []
+
+        def ask(text: str) -> None:
+            if text and text not in questions:
+                questions.append(text)
+
+        for text in REVERSE_QUESTION_TEMPLATES.get(primary, []):
+            ask(text)
+
+        for w in secondary:
+            if len(questions) >= MAX_CLARIFICATION_QUESTIONS:
+                break
             templates = REVERSE_QUESTION_TEMPLATES.get(w, [])
             if templates:
-                questions.append(templates[0])
+                ask(templates[0])
 
-        if len(questions) < 2:
-            questions.append(REVERSE_QUESTION_TEMPLATES[SixW.WHY][0])
-
-        return questions
+        return questions[:MAX_CLARIFICATION_QUESTIONS]
 
     def _select_data_groups(self, primary: SixW, secondary: list[SixW]) -> list[str]:
         groups = set()

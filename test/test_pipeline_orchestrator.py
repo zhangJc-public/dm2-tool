@@ -81,6 +81,31 @@ class TestFullRun:
         data = yaml.safe_load((tmp_project / ".dm2" / "state.yaml").read_text(encoding="utf-8"))
         assert data["pipeline"]["description"] == DESCRIPTION
 
+    def test_view_files_land_in_dot_dm2_output(self, orchestrator, tmp_project):
+        """Spec: Step 6 puts generated views in `.dm2/output/`.
+
+        The orchestrator used to pass a bare ``output/`` while its own step's
+        spec, docstring and result field all said ``.dm2/output/``.
+        """
+        orchestrator.run(DESCRIPTION)
+
+        out = tmp_project / ".dm2" / "output"
+        assert (out / "composite-view.md").exists()
+        for view_id in ("OV-1", "OV-2", "OV-5a"):
+            assert (out / f"{view_id}.md").exists(), view_id
+
+    def test_view_files_are_not_empty_documents(self, orchestrator, tmp_project):
+        orchestrator.run(DESCRIPTION)
+
+        out = tmp_project / ".dm2" / "output"
+        for path in out.glob("*.md"):
+            assert len(path.read_text(encoding="utf-8")) > 100, path
+
+    def test_no_bare_output_directory_is_created(self, orchestrator, tmp_project):
+        orchestrator.run(DESCRIPTION)
+
+        assert not (tmp_project / "output").exists()
+
 
 class TestStepOnly:
     def test_runs_just_the_requested_step(self, orchestrator, tmp_project):

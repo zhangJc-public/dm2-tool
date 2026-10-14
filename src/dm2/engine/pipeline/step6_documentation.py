@@ -13,16 +13,14 @@ Step 6: Documentation + Knowledge Feedback (文档化 + 知识回流)
 from __future__ import annotations
 
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
 
 from dm2.cognitive.six_w_analyzer import SixWAnalyzer
 from dm2.core.agent.instructions import InstructionBuilder
 from dm2.core.knowledge.api import KnowledgeAPI
-from dm2.engine.view_generator import (
-    ViewTemplateFiller,
-)
+from dm2.engine.view_generator import ViewTemplateFiller
 from dm2.kernel.indexer import DM2KnowledgeIndexer
 
 
@@ -40,6 +38,9 @@ class DocumentationResult:
     wikilinks_map: dict[str, list[str]]
     knowledge_delta: KnowledgeDelta
     output_dir: str
+    #: Views the filler could not produce. They are reported, not written: a
+    #: document that says generation is outstanding reads as if it were a view.
+    failed_views: list[str] = field(default_factory=list)
 
 
 class Step6Documentation:
@@ -91,6 +92,7 @@ class Step6Documentation:
 
         # 4. 生成各个独立视图的草稿
         views = {}
+        failed_views: list[str] = []
         view_data = {
             "overview": description[:500],
             "details": analysis_text[:500] if analysis_text else description[:500],
@@ -102,10 +104,13 @@ class Step6Documentation:
         for view_id in ["OV-1", "OV-2", "OV-5a"]:
             try:
                 filled = self.filler.fill(view_id, view_data)
-                filled = self._add_wikilinks(filled, wikilinks_map)
-                views[view_id] = filled
             except Exception:
-                views[view_id] = f"# {view_id}\n\n视图生成待 LLM 填充"
+                # A view we cannot produce is reported as missing rather than
+                # written as a document — a file whose body says generation is
+                # outstanding reads as if the view had been produced.
+                failed_views.append(view_id)
+                continue
+            views[view_id] = self._add_wikilinks(filled, wikilinks_map)
 
         # 5. 知识回流摘要
         knowledge_delta = self._build_knowledge_delta(entities, relationships, analysis_text)
@@ -116,6 +121,7 @@ class Step6Documentation:
             wikilinks_map=wikilinks_map,
             knowledge_delta=knowledge_delta,
             output_dir=".dm2/output/",
+            failed_views=failed_views,
         )
 
     def _extract_entities(
@@ -309,6 +315,10 @@ class Step6Documentation:
             f"- **{vid}**: {len(content)} 字符"
             for vid, content in result.views.items()
         )
+        if result.failed_views:
+            views_summary += "\n" + "\n".join(
+                f"- **{vid}**: 未能生成（未写入文件）" for vid in result.failed_views
+            )
 
         wikilinks_summary = "\n".join(
             f"- **{entity}**: {' '.join(f'[[{link}]]' for link in links[:3])}"
@@ -360,9 +370,13 @@ class Step6Documentation:
             view_path = output_dir / f"{vid}.md"
             view_path.write_text(content, encoding='utf-8')
 
-        # Register generated views with ViewManager
+        # Register generated views with ViewManager. The output directory is
+        # <project>/.dm2/output, so its parent is *not* the project root —
+        # resolve the root by walking up for the project marker instead.
         from dm2.core.views.manager import ViewManager
-        vm = ViewManager(project_root=output_dir.parent)
+        from dm2.utils.paths import get_project_root
+
+        vm = ViewManager(project_root=get_project_root(output_dir))
         for vid in result.views:
             vm.register_view(vid)
 

@@ -49,6 +49,20 @@ class AnalysisResult:
     consistency_issues: list[ConsistencyIssue]
 
 
+#: 每种原子关联连接的两个 DM2 类型。溯因推理总要报出一对端点：模式**缺失**时
+#: 没有可点的实例，但关系仍有端点，那就是这两个类型；用占位符代替等于把「不
+#: 知道」当成数据写进报告。模式**命中**时同样报这对类型，证据写在 rationale 里。
+PATTERN_ENDPOINTS = {
+    PatternType.ACTIVITY_PERFORMER: ("Activity", "Performer"),
+    PatternType.RESOURCE_FLOW: ("Resource", "Resource"),
+    PatternType.CAPABILITY_ACTIVITY: ("Capability", "Activity"),
+    PatternType.WHOLE_PART: ("Whole", "Part"),
+    PatternType.BEFORE_AFTER: ("Before", "After"),
+    PatternType.RULE_CONSTRAINT: ("Rule", "Constraint"),
+    PatternType.OVERLAP: ("Overlapping element", "Overlapping element"),
+    PatternType.SUPER_SUBTYPE: ("Supertype", "Subtype"),
+}
+
 OODA_PATTERNS = {
     "Observe": [r"(?:采集|收集|监控|检测|感知|探针|传感器|日志|事件|告警|数据源)", r"\b(?:collect|monitor|detect|sense|observe|log|event|alert)\b"],
     "Orient": [r"(?:分析|评估|研判|关联|上下文|情境|态势|画像|建模|风险评估)", r"\b(?:analy[sz]e|assess|correlate|context|situat|model|risk)\b"],
@@ -113,20 +127,22 @@ class Step5Analysis:
 
         for pattern_type, label in expected_patterns.items():
             if pattern_type not in found_patterns:
+                endpoint_a, endpoint_b = PATTERN_ENDPOINTS[pattern_type]
                 inferences.append(AbductiveInference(
-                    entity_a="未知",
-                    entity_b="未知",
+                    entity_a=endpoint_a,
+                    entity_b=endpoint_b,
                     inferred_relation=label,
                     confidence=0.45,
                     rationale=f"未检测到 {label} 模式，架构可能缺少此类关系。"
-                             f"建议补充相关实体和关联。",
+                             f"建议补充 {endpoint_a} 与 {endpoint_b} 之间的关联。",
                 ))
 
         # 从已匹配模式推断完整关系
         for match in pattern_matches:
+            endpoint_a, endpoint_b = PATTERN_ENDPOINTS[match.pattern_type]
             inferences.append(AbductiveInference(
-                entity_a="(从描述提取)",
-                entity_b="(从描述提取)",
+                entity_a=endpoint_a,
+                entity_b=endpoint_b,
                 inferred_relation=match.description,
                 confidence=match.confidence,
                 rationale=f"匹配文本: {match.matched_text[:80]}",
@@ -206,16 +222,36 @@ class Step5Analysis:
             # 找出入度最高/出度最低的节点（引用次数最多的即潜在瓶颈）
             sorted_nodes = sorted(node_refs.items(), key=lambda x: x[1], reverse=True)
             bottleneck_node, ref_count = sorted_nodes[0]
+            out_degree = self._cooccurrence_degree(
+                bottleneck_node, list(node_refs), combined
+            )
 
             bottlenecks.append(TOCBottleneck(
                 node=bottleneck_node,
                 in_degree=ref_count,
-                out_degree=1,
+                out_degree=out_degree,
                 impact=f"'{bottleneck_node}' 在描述中被引用 {ref_count} 次，"
+                       f"与 {out_degree} 个其他流节点出现在同一句中，"
                        f"可能是架构中的关键约束点。如果该节点失效，整个流程可能中断。",
             ))
 
         return bottlenecks
+
+    @staticmethod
+    def _cooccurrence_degree(node: str, others: list[str], text: str) -> int:
+        """与 ``node`` 出现在同一句里的其他流节点数。
+
+        分析层的输入是散文，没有边模型可供读度数。共现度是能从输入导出的量，
+        且**逐节点**计算——同一段描述里换个瓶颈节点，得数通常就不同；写死一个
+        常数则会让每张架构图都报出同样的「出度」。
+        """
+        segments = [s for s in re.split(r"[。；;.\n]", text) if node in s]
+        linked: set[str] = set()
+        for segment in segments:
+            for other in others:
+                if other != node and other in segment:
+                    linked.add(other)
+        return len(linked)
 
     def _prepare_views_data(self, data_text: str) -> dict[str, str]:
         """将数据文本转换为一致性检查器可用的格式"""

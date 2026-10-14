@@ -1,34 +1,24 @@
 """Tests for ViewTemplateFiller (dm2.engine.view_generator).
 
-This module is the one place that turns a view template into document text, and
-it feeds Step 6. It had no test coverage at all before this file.
+This module is the one place that turns a view's metadata into document text,
+and it feeds Step 6.
 
-Two behaviours are pinned here rather than asserted as correct, and each is
-marked ``DEFECT`` with the reason. They are pinned so that the fix has a safety
-net: when the test starts failing, that is the signal the defect was addressed
-and the test needs to be rewritten to the correct expectation.
-
-DEFECT-1  ``_find_template_file`` can never succeed. ``patterns`` are built by
-          joining onto ``reference_root``, which is absolute, and ``Path.glob``
-          rejects absolute patterns outright (``NotImplementedError``). The
-          template directory it looks for (``dm2-reference/core/详细分析/``)
-          does not exist either, so even a fixed glob would find nothing.
-
-DEFECT-2  Because ``fill`` calls ``_find_template_file`` before any try/except,
-          DEFECT-1 propagates out of ``fill`` for every registered view.
+The filler used to try a file-template lookup before falling back to generating
+from metadata. That lookup could never succeed — it handed an absolute pattern
+to ``Path.glob``, which rejects them — so ``fill`` raised for every registered
+view and Step 6 wrote placeholder text instead of documents. The lookup and its
+file-filling helper are gone; these tests assert the behaviour that replaced
+them, and would catch the failure coming back.
 """
 
 import pytest
 
-from dm2.engine.view_generator import (
-    ArchitectureInput,
-    GenerationResult,
-    ViewTemplateFiller,
-)
+from dm2.engine.view_generator import ViewTemplateFiller
 from dm2.kernel.indexer import DM2KnowledgeIndexer
 
-#: Views Step 6 asks the filler for, plus one more from a different viewpoint.
-KNOWN_VIEWS = ["OV-1", "OV-2", "OV-5a", "CV-1"]
+#: One view per structural branch, plus a fourth viewpoint.
+OV_VIEWS = ["OV-1", "OV-2", "OV-5a"]
+OTHER_VIEWS = ["CV-1"]
 
 
 @pytest.fixture(scope="module")
@@ -48,70 +38,59 @@ class TestKnownViewLookup:
     def test_reference_views_are_registered(self, indexer):
         """Guard: the filler is only meaningful when templates actually load."""
         assert len(indexer.get_all_views()) == 52
-        for view_id in KNOWN_VIEWS:
+        for view_id in OV_VIEWS + OTHER_VIEWS:
             assert indexer.get_view_template(view_id) is not None, view_id
 
     def test_unknown_view_returns_an_error_string(self, filler):
         """An unregistered id is reported as text, not raised."""
         result = filler.fill("NOPE-9", {})
+
         assert result == "# Error: Unknown view NOPE-9"
 
 
-class TestTemplateFileLookup:
-    """DEFECT-1: the lookup is structurally incapable of finding a template."""
+class TestFillProducesDocuments:
+    """``fill`` must return content for every registered view, never raise."""
 
-    def test_find_template_file_raises_for_every_known_view(self, filler):
-        for view_id in KNOWN_VIEWS:
-            with pytest.raises(NotImplementedError, match="Non-relative patterns"):
-                filler._find_template_file(view_id)
+    @pytest.mark.parametrize("view_id", OV_VIEWS + OTHER_VIEWS)
+    def test_fill_returns_a_document(self, filler, view_id):
+        out = filler.fill(view_id, {"overview": "OVW", "details": "DET"})
 
-    def test_reference_root_is_absolute(self, indexer):
-        """The precondition that makes the glob absolute and therefore invalid."""
-        assert indexer.reference_root.is_absolute()
+        assert out.startswith(f"# {view_id} ")
+        assert "Error" not in out
 
-    def test_the_directory_it_searches_for_does_not_exist(self, indexer):
-        """DEFECT-1, second half: the target directory is absent as well."""
-        assert not (indexer.reference_root / "详细分析").exists()
+    @pytest.mark.parametrize("view_id", OV_VIEWS + OTHER_VIEWS)
+    def test_document_carries_the_view_metadata(self, filler, view_id):
+        out = filler.fill(view_id, {})
 
+        assert "**视图类型**: " in out
+        assert "**涉及数据组**: " in out
 
-class TestFillPropagatesTheDefect:
-    """DEFECT-2: ``fill`` always raises for a registered view."""
+    def test_no_view_in_the_catalogue_raises(self, filler, indexer):
+        """The whole catalogue, not just a sample: nothing is exempt."""
+        for template in indexer.get_all_views():
+            out = filler.fill(template.view_id, {})
+            assert out.startswith(f"# {template.view_id} "), template.view_id
 
-    @pytest.mark.parametrize("view_id", KNOWN_VIEWS)
-    def test_fill_raises_for_known_views(self, filler, view_id):
-        with pytest.raises(NotImplementedError):
-            filler.fill(view_id, {"overview": "x"})
+    def test_caller_data_reaches_the_document(self, filler):
+        out = filler.fill("OV-1", {"overview": "UNIQUE-OVERVIEW-MARKER"})
 
+        assert "UNIQUE-OVERVIEW-MARKER" in out
 
-class TestFillFromFile:
-    """The file-filling path itself is sound; it is simply unreachable."""
+    def test_missing_data_leaves_sections_present_but_empty(self, filler):
+        """Sections are structure, not data: they survive an empty payload."""
+        out = filler.fill("OV-1", {})
 
-    def test_substitutes_placeholders(self, filler, tmp_path):
-        template = tmp_path / "OV-1.md"
-        template.write_text("# OV-1 {name}\n\n{body}\n", encoding="utf-8")
-
-        out = filler._fill_from_file(template, {"name": "Alpha", "body": "Details"})
-
-        assert out == "# OV-1 Alpha\n\nDetails\n"
-
-    def test_leaves_unknown_placeholders_alone(self, filler, tmp_path):
-        template = tmp_path / "OV-2.md"
-        template.write_text("{known} and {missing}", encoding="utf-8")
-
-        out = filler._fill_from_file(template, {"known": "yes"})
-
-        assert out == "yes and {missing}"
+        assert "## 1. 概览" in out
+        assert "## 2. 详细描述" in out
 
 
 class TestFillFromScratch:
-    """Directly exercised: the generator produces a usable skeleton."""
+    """The per-viewpoint structure the generator emits."""
 
     def test_ov_prefix_gets_overview_details_and_mermaid(self, filler):
         out = filler._fill_from_scratch("OV-1", {"overview": "OVW", "details": "DET"})
 
         assert out.startswith("# OV-1 ")
-        assert "**视图类型**: " in out
-        assert "**涉及数据组**: " in out
         assert "## 1. 概览" in out and "OVW" in out
         assert "## 2. 详细描述" in out and "DET" in out
         assert "```mermaid" in out
@@ -135,19 +114,3 @@ class TestFillFromScratch:
 
         assert out.startswith("# CV-1 ")
         assert "## 1." not in out
-
-
-class TestUnusedDataclasses:
-    """``GenerationResult`` and ``ArchitectureInput`` have no consumers."""
-
-    def test_generation_result_defaults(self):
-        result = GenerationResult(view_id="OV-1", content="x", success=True)
-
-        assert result.error == ""
-        assert result.metadata == {}
-
-    def test_architecture_input_defaults(self):
-        data = ArchitectureInput(description="d")
-
-        assert data.image_paths == []
-        assert data.metadata == {}

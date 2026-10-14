@@ -1,25 +1,19 @@
 """Tests for Step3DataRequirements (dm2.engine.pipeline.step3_data_requirements).
 
 Step 3+4 turns the scope from Step 1+2 into concrete DM2 data groups, then asks
-the knowledge base what it knows about them. It had no test coverage before this
-file.
+the knowledge base what it knows about them.
 
-DEFECT-9 and DEFECT-10 are pinned rather than asserted as correct.
-
-DEFECT-9   ``DataRequirement.required_concepts`` is declared as a list but every
-           instance is built with ``required_concepts=[]``. No caller reads it
-           back either, so the field is inert.
-
-DEFECT-10  ``_build_taxonomy(requirements, concepts)`` accepts the retrieved
-           concepts and never looks at them; the taxonomy is derived from
-           ``requirements`` alone. The caller passes a real value, so the
-           argument reads as meaningful when it is not.
+Two inert pieces of API used to live here and are now gone:
+``DataRequirement.required_concepts`` was declared, always built as ``[]`` and
+read by nobody, and ``_build_taxonomy(requirements, concepts)`` took the
+retrieved concepts and never looked at them. Neither is a spec-level behaviour,
+so both were removed rather than implemented.
 """
 
 import pytest
 
+from dm2.cognitive.six_w_analyzer import DM2_GROUP_TO_ENTITY_TYPES
 from dm2.engine.pipeline.step3_data_requirements import (
-    DM2_GROUP_TO_ENTITY_TYPES,
     DataRequirement,
     Step3DataRequirements,
 )
@@ -81,42 +75,44 @@ class TestBuildRequirements:
             for g in groups:
                 assert DM2_GROUP_TO_ENTITY_TYPES.get(g), g
 
-    def test_required_concepts_is_always_empty(self, step3):
-        """DEFECT-9: declared as data, never populated."""
-        for groups in ([], ["Location"], ["Performer", "Organization"]):
-            for req in step3._build_requirements("Where", ["Who"], groups):
-                assert req.required_concepts == []
+    def test_a_requirement_carries_only_what_is_used(self):
+        """The inert ``required_concepts`` field is gone, not left empty."""
+        req = DataRequirement("Where", ["location"], ["Location"])
+
+        assert not hasattr(req, "required_concepts")
+        assert (req.dimension, req.entity_types, req.dm2_groups) == (
+            "Where",
+            ["location"],
+            ["Location"],
+        )
 
 
 class TestTaxonomy:
     def test_keys_are_dimension_scoped(self, step3):
-        reqs = [DataRequirement("Where", ["location"], ["Location"], [])]
+        reqs = [DataRequirement("Where", ["location"], ["Location"])]
 
-        taxonomy = step3._build_taxonomy(reqs, [])
+        taxonomy = step3._build_taxonomy(reqs)
 
         assert list(taxonomy) == ["6W-Where"]
 
     def test_entries_are_prefixed_by_kind(self, step3):
-        reqs = [DataRequirement("Where", ["location"], ["Location"], [])]
+        reqs = [DataRequirement("Where", ["location"], ["Location"])]
 
-        taxonomy = step3._build_taxonomy(reqs, [])
+        taxonomy = step3._build_taxonomy(reqs)
 
         assert "entity:location" in taxonomy["6W-Where"]
         assert "group:Location" in taxonomy["6W-Where"]
 
-    def test_concepts_argument_does_not_affect_the_result(self, step3):
-        """DEFECT-10: the parameter is accepted and ignored."""
-        reqs = [DataRequirement("Where", ["location"], ["Location"], [])]
+    def test_the_taxonomy_takes_only_requirements(self):
+        """The unused ``concepts`` parameter is gone, not merely ignored."""
+        import inspect
 
-        without = step3._build_taxonomy(reqs, [])
-        with_concepts = step3._build_taxonomy(
-            reqs, [{"source": "x", "content": "location", "relevance": 1.0}]
-        )
+        params = list(inspect.signature(Step3DataRequirements._build_taxonomy).parameters)
 
-        assert without == with_concepts
+        assert params == ["self", "requirements"]
 
     def test_empty_requirements_yield_an_empty_taxonomy(self, step3):
-        assert step3._build_taxonomy([], []) == {}
+        assert step3._build_taxonomy([]) == {}
 
 
 class TestGapDetection:
@@ -127,14 +123,14 @@ class TestGapDetection:
         assert "未检索到任何相关概念" in gaps[0]
 
     def test_dimension_without_matching_concepts_is_flagged(self, step3):
-        reqs = [DataRequirement("Where", ["location"], ["Location"], [])]
+        reqs = [DataRequirement("Where", ["location"], ["Location"])]
 
         gaps = step3._detect_gaps(reqs, [], [])
 
         assert any("Where 维度" in g for g in gaps)
 
     def test_dimension_with_matching_concepts_is_not_flagged(self, step3):
-        reqs = [DataRequirement("Where", ["location"], ["Location"], [])]
+        reqs = [DataRequirement("Where", ["location"], ["Location"])]
         concepts = [{"source": "s", "content": "A Location is a place.", "relevance": 1.0}]
 
         gaps = step3._detect_gaps(reqs, concepts, [])

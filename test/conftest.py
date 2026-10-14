@@ -16,7 +16,9 @@ def tmp_project():
         )
         (root / "dm2-changes").mkdir()
         (root / "dm2-archive").mkdir()
-        (root / "output").mkdir()
+        # Generated views live inside the project state dir (step6-documentation
+        # spec: `.dm2/output/`), not in a bare `output/` at the project root.
+        (root / ".dm2" / "output").mkdir()
         yield root
 
 

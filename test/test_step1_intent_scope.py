@@ -1,20 +1,15 @@
 """Tests for Step1IntentScope (dm2.engine.pipeline.step1_intent_scope).
 
 Step 1+2 is the first thing ``dm2 run`` executes and it decides the scope every
-later step inherits. It had no test coverage before this file.
+later step inherits.
 
-DEFECT-7 and DEFECT-8 are pinned rather than asserted as correct.
-
-DEFECT-7  ``DM2_GROUP_TOKEN_ESTIMATES`` is unreachable. Its keys are numbered
-          ("01-Performer") while the only caller passes bare DM2 group names
-          ("Performer"), so the intersection is empty and every lookup falls
-          through to the 2500 default. The table matches neither its callers nor
-          the real group directory names (which are lower-case English, e.g.
-          ``dm2-reference/core/groups/00-foundation``).
-
-DEFECT-8  ``_generate_clarification_questions`` only ever reads
-          ``templates[0]``, so the second reverse-question written for each of
-          the six dimensions can never be asked.
+Two defects used to live here. ``DM2_GROUP_TOKEN_ESTIMATES`` was keyed by group
+directory names ("01-Performer") while its only caller passed bare names
+("Performer"), so the intersection was empty and every group cost the same
+default; the table is now keyed by what callers pass, with a coverage test. And
+``_generate_clarification_questions`` read only ``templates[0]`` of each
+dimension, with a fallback that re-asked a question already asked whenever the
+primary was ``Why``; it now asks distinct questions and reaches both templates.
 """
 
 import pytest
@@ -22,6 +17,7 @@ import pytest
 from dm2.cognitive.six_w_analyzer import SIX_W_TO_DM2_GROUPS, SixW
 from dm2.engine.pipeline.step1_intent_scope import (
     DM2_GROUP_TOKEN_ESTIMATES,
+    MAX_CLARIFICATION_QUESTIONS,
     REVERSE_QUESTION_TEMPLATES,
     Step1IntentScope,
 )
@@ -35,48 +31,56 @@ def step1():
 
 
 class TestClarificationQuestions:
-    """Spec: at least 2 clarification questions before scope definition."""
+    """Spec: 2-3 distinct clarification questions before scope definition."""
 
-    def test_at_least_two_questions_are_produced(self, step1):
-        questions = step1._generate_clarification_questions(SixW.WHAT, [])
+    @pytest.mark.parametrize("w", list(SixW))
+    def test_between_two_and_three_questions(self, step1, w):
+        questions = step1._generate_clarification_questions(w, [])
 
-        assert len(questions) >= 2
+        assert 2 <= len(questions) <= MAX_CLARIFICATION_QUESTIONS
+
+    @pytest.mark.parametrize("w", list(SixW))
+    def test_questions_are_distinct(self, step1, w):
+        """A repeated question addresses no second ambiguity."""
+        questions = step1._generate_clarification_questions(w, [])
+
+        assert len(questions) == len(set(questions))
+
+    def test_a_why_primary_does_not_repeat_itself(self, step1):
+        """The case the old fallback collapsed into a duplicate."""
+        questions = step1._generate_clarification_questions(SixW.WHY, [])
+
+        assert len(questions) == len(set(questions))
+        assert questions.count(REVERSE_QUESTION_TEMPLATES[SixW.WHY][0]) == 1
+
+    @pytest.mark.parametrize("w", list(SixW))
+    def test_both_templates_of_a_dimension_are_reachable(self, step1, w):
+        """Every dimension writes two questions; both must be askable."""
+        questions = step1._generate_clarification_questions(w, [])
+
+        for template in REVERSE_QUESTION_TEMPLATES[w]:
+            assert template in questions, w
 
     def test_questions_come_from_the_matched_dimensions(self, step1):
         questions = step1._generate_clarification_questions(SixW.WHERE, [])
 
-        assert REVERSE_QUESTION_TEMPLATES[SixW.WHERE][0] in questions
+        assert set(questions) <= set(REVERSE_QUESTION_TEMPLATES[SixW.WHERE])
 
-    def test_secondary_dimensions_contribute_questions(self, step1):
+    def test_a_secondary_dimension_contributes_when_there_is_room(self, step1):
         questions = step1._generate_clarification_questions(SixW.WHAT, [SixW.WHO])
 
         assert REVERSE_QUESTION_TEMPLATES[SixW.WHO][0] in questions
 
-    def test_at_most_three_dimensions_are_asked_about(self, step1):
+    def test_secondaries_are_capped_by_the_limit(self, step1):
         questions = step1._generate_clarification_questions(
             SixW.WHAT, [SixW.HOW, SixW.WHERE, SixW.WHO]
         )
 
-        assert len(questions) <= 3
+        assert len(questions) == MAX_CLARIFICATION_QUESTIONS
 
-    def test_a_why_primary_does_not_repeat_itself(self, step1):
-        """DEFECT-8a: the fallback re-appends a question already asked.
-
-        With WHY as the primary the loop already contributes
-        ``REVERSE_QUESTION_TEMPLATES[WHY][0]``; the ``len < 2`` fallback then
-        appends the very same string.
-        """
-        questions = step1._generate_clarification_questions(SixW.WHY, [])
-
-        assert len(questions) != len(set(questions))
-
-    def test_the_second_template_of_each_dimension_is_unreachable(self, step1):
-        """DEFECT-8: every dimension has two questions; only the first is used."""
-        for w, templates in REVERSE_QUESTION_TEMPLATES.items():
-            assert len(templates) == 2, w
-            for secondary in ([], [SixW.HOW], [SixW.WHERE], [SixW.WHO, SixW.WHEN]):
-                questions = step1._generate_clarification_questions(w, secondary)
-                assert templates[1] not in questions, (w, secondary)
+    def test_every_dimension_has_two_questions_to_draw_on(self):
+        for w in SixW:
+            assert len(REVERSE_QUESTION_TEMPLATES[w]) >= 2, w
 
 
 class TestDataGroupSelection:
@@ -104,35 +108,53 @@ class TestDataGroupSelection:
 
 
 class TestContextBudget:
-    """DEFECT-7: the weight table is never consulted."""
+    """Spec: the estimate reflects the groups in scope, so scopes differ in cost."""
 
-    def test_table_keys_never_match_what_callers_pass(self, step1):
-        callable_groups = {g for w in SixW for g in SIX_W_TO_DM2_GROUPS[w]}
+    @staticmethod
+    def _selectable_groups():
+        return {g for w in SixW for g in SIX_W_TO_DM2_GROUPS[w]}
 
-        assert callable_groups
-        assert set(DM2_GROUP_TOKEN_ESTIMATES) & callable_groups == set()
+    def test_every_selectable_group_has_a_weight(self):
+        """The drift guard: a group a 6W dimension can select must be costed."""
+        selectable = self._selectable_groups()
 
-    def test_table_keys_never_match_the_real_group_directories(self, step1):
-        groups_dir = step1.indexer.reference_root / "groups"
-        real = {p.name for p in groups_dir.iterdir() if p.is_dir()} if groups_dir.is_dir() else set()
+        assert selectable
+        assert not (selectable - set(DM2_GROUP_TOKEN_ESTIMATES))
 
-        assert real
-        assert set(DM2_GROUP_TOKEN_ESTIMATES) & real == set()
+    def test_the_table_has_no_unreachable_keys(self):
+        """A key no caller can pass is dead weight — the shape of the old defect."""
+        selectable = self._selectable_groups()
 
-    def test_every_group_falls_through_to_the_default(self, step1):
-        callable_groups = {g for w in SixW for g in SIX_W_TO_DM2_GROUPS[w]}
+        assert not (set(DM2_GROUP_TOKEN_ESTIMATES) - selectable)
 
-        for g in callable_groups:
-            assert DM2_GROUP_TOKEN_ESTIMATES.get(g, 2500) == 2500, g
+    def test_budget_is_base_plus_the_groups_own_weight(self, step1):
+        weight = DM2_GROUP_TOKEN_ESTIMATES["Performer"]
 
-    def test_budget_is_base_plus_the_default_per_group(self, step1):
-        assert step1._estimate_context_budget(["Performer"], 0) == 2000 + 2500
+        assert step1._estimate_context_budget(["Performer"], 0) == 2000 + weight
+
+    def test_a_costlier_group_costs_more(self, step1):
+        """A larger group must not be lost to a shared default."""
+        cheap = step1._estimate_context_budget(["Location"], 0)
+        dear = step1._estimate_context_budget(["Activity"], 0)
+
+        assert DM2_GROUP_TOKEN_ESTIMATES["Activity"] > DM2_GROUP_TOKEN_ESTIMATES["Location"]
+        assert dear > cheap
+
+    def test_two_estimates_of_the_same_shape_still_differ(self, step1):
+        """Two groups each, same description length, different totals."""
+        a = step1._estimate_context_budget(["Location", "Location"], 0)
+        b = step1._estimate_context_budget(["Activity", "Activity"], 0)
+
+        assert a != b
 
     def test_budget_grows_with_the_description_length(self, step1):
         short = step1._estimate_context_budget([], 0)
         long = step1._estimate_context_budget([], 400)
 
         assert long - short == 100
+
+    def test_an_empty_scope_costs_only_the_base(self, step1):
+        assert step1._estimate_context_budget([], 0) == 2000
 
 
 class TestScopeBoundaries:

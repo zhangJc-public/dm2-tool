@@ -74,7 +74,7 @@ class PipelineOrchestrator:
         print("✅ DoDAF 6步融合流程完成！")
         print(f"   迭代次数: {state.iteration}")
         print(f"   产物位置: {self.project_root / '.dm2' / 'steps' / ''}")
-        print(f"   视图输出: {self.project_root / 'output' / ''}")
+        print(f"   视图输出: {self.project_root / '.dm2' / 'output' / ''}")
         print()
         print("💡 如需迭代优化，运行: dm2 run --resume （将自动回 Step 1）")
 
@@ -149,8 +149,9 @@ class PipelineOrchestrator:
             content = self.step6.format_output(result)
             output_path.write_text(content, encoding='utf-8')
 
-            # 保存视图文件
-            output_dir = self.project_root / "output"
+            # 保存视图文件到 .dm2/output/（step6-documentation 规格指定的位置，
+            # 与 DocumentationResult.output_dir 一致）
+            output_dir = self.project_root / ".dm2" / "output"
             self.step6.save_views(result, output_dir)
 
             print("   ✓ Composite View: 已生成")

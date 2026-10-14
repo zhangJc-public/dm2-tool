@@ -2,26 +2,22 @@
 
 ``dm2 analyze`` is one of the commands a user runs directly, and its
 ``extracted_entities`` field is part of the documented JSON output
-(``schemas/analyze.json``). This module had no test coverage before this file.
+(``schemas/analyze.json``).
 
-DEFECT-4 is pinned rather than asserted as correct.
-
-DEFECT-4  ``_extract_entities`` declares seven entity buckets but defines
-          patterns for only three of them (system / organization / activity).
-          ``resource``, ``capability``, ``location`` and ``measure`` are
-          initialised empty and never filled, whatever the input says. The
-          ``analyze`` command filters empty buckets out of its JSON
-          (src/dm2/cli/main.py:791), so they vanish from the output entirely.
-
-DEFECT-5  The Chinese patterns are greedy character classes
-          (``[一-龥]*(?:系统|防火墙|…)``), so a match swallows every adjacent
-          Chinese word up to the suffix. The extracted "entity" is usually a
-          whole clause rather than a name.
+Two defects used to live here: the class declared seven entity buckets and
+defined patterns for only three (``resource`` / ``capability`` / ``location`` /
+``measure`` were never filled, and ``analyze`` filters empty buckets out of its
+JSON, so they vanished entirely), and the Chinese patterns were greedy on both
+sides, so a match swallowed the whole clause. The buckets are now driven by
+``ENTITY_BUCKET_PATTERNS`` — a bucket exists because it has patterns — and
+matches stop at the keyword they are anchored to.
 """
 
 import pytest
 
 from dm2.cognitive.six_w_analyzer import (
+    DM2_GROUP_TO_ENTITY_TYPES,
+    ENTITY_BUCKET_PATTERNS,
     SIX_W_PATTERNS,
     SIX_W_TO_DM2_GROUPS,
     SIX_W_TO_VIEWS,
@@ -29,11 +25,16 @@ from dm2.cognitive.six_w_analyzer import (
     SixWAnalyzer,
 )
 
-#: Buckets the class declares but never populates.
-DEAD_BUCKETS = ["resource", "capability", "location", "measure"]
-
-#: Buckets that do get populated.
-LIVE_BUCKETS = ["system", "organization", "activity"]
+#: Every bucket the extraction reports, in declaration order.
+ALL_BUCKETS = [
+    "system",
+    "organization",
+    "activity",
+    "resource",
+    "capability",
+    "location",
+    "measure",
+]
 
 
 @pytest.fixture(scope="module")
@@ -41,70 +42,113 @@ def analyzer():
     return SixWAnalyzer()
 
 
-class TestEntityBuckets:
-    """DEFECT-4: seven buckets declared, three implemented."""
+#: One description per bucket that names an entity of exactly that type.
+BUCKET_SAMPLES = {
+    "system": "防火墙系统",
+    "organization": "安全部门",
+    "activity": "检测流量",
+    "resource": "核心数据资源",
+    "capability": "态势感知能力",
+    "location": "天津机房",
+    "measure": "可用性指标",
+}
 
-    def test_all_seven_buckets_are_present_in_the_result(self, analyzer):
+
+class TestEntityBuckets:
+    """All seven buckets are declared and all seven can be filled."""
+
+    def test_every_bucket_is_present_in_the_result(self, analyzer):
         entities = analyzer._extract_entities("任意输入")
 
-        assert list(entities) == LIVE_BUCKETS + DEAD_BUCKETS
+        assert list(entities) == ALL_BUCKETS
 
-    @pytest.mark.parametrize("bucket", LIVE_BUCKETS)
-    def test_live_buckets_can_be_populated(self, analyzer, bucket):
-        """Each implemented bucket has at least one input that fills it."""
-        samples = {
-            "system": "防火墙系统",
-            "organization": "安全部门",
-            "activity": "检测流量",
+    def test_the_bucket_set_is_driven_by_the_pattern_table(self, analyzer):
+        """A bucket exists because it has patterns — not by separate bookkeeping."""
+        assert list(ENTITY_BUCKET_PATTERNS) == ALL_BUCKETS
+
+    def test_every_bucket_has_patterns(self):
+        for bucket, patterns in ENTITY_BUCKET_PATTERNS.items():
+            assert patterns, bucket
+
+    @pytest.mark.parametrize("bucket", ALL_BUCKETS)
+    def test_each_bucket_can_be_populated(self, analyzer, bucket):
+        assert analyzer._extract_entities(BUCKET_SAMPLES[bucket])[bucket]
+
+    @pytest.mark.parametrize("bucket", ALL_BUCKETS)
+    def test_each_bucket_can_be_recognised_in_english(self, analyzer, bucket):
+        english = {
+            "system": "a firewall",
+            "organization": "the security department",
+            "activity": "monitor traffic",
+            "resource": "the data asset",
+            "capability": "this capability",
+            "location": "the site",
+            "measure": "a metric",
         }
 
-        assert analyzer._extract_entities(samples[bucket])[bucket]
+        assert analyzer._extract_entities(english[bucket])[bucket]
 
-    @pytest.mark.parametrize("bucket", DEAD_BUCKETS)
-    def test_dead_buckets_are_never_populated(self, analyzer, bucket):
-        """No input fills them: the patterns were never written."""
-        inputs = [
-            "需要评估这个能力",          # capability
-            "位于天津的机房",            # location
-            "资源包括服务器",            # resource
-            "性能度量指标",              # measure
-            "capability location resource measure",
-        ]
-
-        for text in inputs:
-            assert analyzer._extract_entities(text)[bucket] == []
-
-    def test_capability_and_location_words_do_not_reach_the_output(self, analyzer):
-        """The exact case reported from a live run."""
+    def test_capability_and_location_reach_the_output(self, analyzer):
+        """The exact case reported from a live run, now working."""
         entities = analyzer._extract_entities("需要评估能力与地理位置")
 
-        assert entities["capability"] == []
-        assert entities["location"] == []
+        assert entities["capability"]
+        assert entities["location"]
 
-    def test_buckets_are_deduplicated(self, analyzer):
-        entities = analyzer._extract_entities("防火墙系统 防火墙系统")
+    @pytest.mark.parametrize("bucket", ALL_BUCKETS)
+    def test_buckets_are_deduplicated(self, analyzer, bucket):
+        text = f"{BUCKET_SAMPLES[bucket]} {BUCKET_SAMPLES[bucket]}"
 
-        assert len(entities["system"]) == 1
+        assert len(analyzer._extract_entities(text)[bucket]) == 1
 
 
-class TestGreedyChinesePatterns:
-    """DEFECT-5: matches swallow neighbouring words."""
+class TestBucketVocabularyCoverage:
+    """The drift guard: a group a 6W dimension can select must have entity types."""
 
-    def test_system_match_swallows_the_whole_clause(self, analyzer):
+    def test_every_selectable_group_has_entity_types(self):
+        selectable = {g for w in SixW for g in SIX_W_TO_DM2_GROUPS[w]}
+
+        assert selectable
+        for group in selectable:
+            assert DM2_GROUP_TO_ENTITY_TYPES.get(group), group
+
+    def test_the_four_buckets_that_were_dead_are_covered_by_their_group(self):
+        """resource / capability / location / measure share a name with a group."""
+        for bucket in ("resource", "capability", "location", "measure"):
+            assert DM2_GROUP_TO_ENTITY_TYPES.get(bucket.capitalize()), bucket
+
+
+class TestMatchBoundaries:
+    """A match ends at its anchor and does not run on through the clause."""
+
+    def test_system_match_stops_at_the_type_suffix(self, analyzer):
         entities = analyzer._extract_entities("防火墙系统检测网络威胁")
 
-        assert entities["system"] == ["防火墙系统检测网络威胁"]
+        assert entities["system"] == ["防火墙系统"]
 
-    def test_the_same_clause_is_also_reported_as_an_activity(self, analyzer):
-        """One clause lands in several buckets, so the buckets are not disjoint."""
-        entities = analyzer._extract_entities("防火墙系统检测网络威胁")
-
-        assert entities["activity"] == ["防火墙系统检测网络威胁"]
-
-    def test_organization_match_swallows_a_verb_phrase(self, analyzer):
+    def test_activity_match_carries_no_subject(self, analyzer):
         entities = analyzer._extract_entities("安全团队负责监控")
 
-        assert entities["organization"] == ["安全团队负责监控"]
+        assert "监控" in entities["activity"]
+        assert all("安全团队" not in a for a in entities["activity"])
+
+    def test_organisation_match_stops_before_the_predicate(self, analyzer):
+        entities = analyzer._extract_entities("安全团队负责监控")
+
+        assert entities["organization"] == ["安全团队"]
+
+    def test_locations_and_capabilities_stay_disjoint(self, analyzer):
+        entities = analyzer._extract_entities("需要评估能力与地理位置")
+
+        assert not set(entities["capability"]) & set(entities["location"])
+
+    def test_one_match_is_not_reported_in_several_buckets(self, analyzer):
+        entities = analyzer._extract_entities(
+            "某安全运营平台检测网络威胁，安全团队负责监控，需要评估能力与地理位置"
+        )
+
+        reported = [m for bucket in ALL_BUCKETS for m in entities[bucket]]
+        assert len(reported) == len(set(reported)), reported
 
 
 class TestSixWScoring:

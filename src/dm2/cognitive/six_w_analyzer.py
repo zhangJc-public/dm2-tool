@@ -86,6 +86,61 @@ SIX_W_TO_DM2_GROUPS = {
     SixW.WHY: ["Rules", "Guidance", "Capability"],
 }
 
+# DM2 数据组 → 该组覆盖的实体类型。Step 3 用它把数据组展开成实体类型，6W 分析器
+# 用同一份词表给实体桶配词——**单一来源**，避免两处各自演化后再也对不上。
+# 键即数据组名（与 SIX_W_TO_DM2_GROUPS 的取值同一命名空间）。
+DM2_GROUP_TO_ENTITY_TYPES: dict[str, list[str]] = {
+    "Resource": ["resource", "information", "data", "material"],
+    "Information": ["information", "data", "knowledge"],
+    "Project": ["project", "milestone", "phase"],
+    "Capability": ["capability", "function", "ability"],
+    "Activity": ["activity", "process", "task", "operation"],
+    "Service": ["service", "endpoint", "interface"],
+    "Measure": ["measure", "metric", "KPI", "indicator"],
+    "Location": ["location", "site", "facility", "environment"],
+    "Performer": ["performer", "system", "organization", "role"],
+    "Organization": ["organization", "department", "team", "unit"],
+    "Rules": ["rule", "constraint", "policy", "standard"],
+    "Guidance": ["guidance", "directive", "strategy", "goal"],
+}
+
+# 实体桶 → 匹配模式。七个桶与 DM2 数据组同名，**每个桶都必须有模式**：新增桶而
+# 忘了配词，TestBucketCoverage 会直接失败，而不是让那个桶恒空。
+ENTITY_BUCKET_PATTERNS: dict[str, list[str]] = {
+    "system": [
+        r"[一-龥]*(?:系统|防火墙|USG|网关|交换机|路由器|服务器|平台|探针|终端)",
+        r"\b(?:firewall|router|switch|server|platform|system|endpoint)\b",
+    ],
+    "organization": [
+        r"[一-龥]*(?:公司|部门|机构|组织|团队|厂商|集成商|甲方|乙方|中心|局|院)",
+        r"\b(?:company|department|team|organization|vendor|integrator)\b",
+    ],
+    # 活动的锚点是**动词**，桶的形状与名词桶不同：名词桶是「修饰语 + 类型词」，取
+    # 整个名词短语；动词桶只取动词本身。任何长度不定的前后缀都会越界——前缀会把
+    # 主语吞进来（"安全团队负责监控"），后缀会把本属别的实体的词吞进来
+    # （"分析引擎检测威胁" 里的「引擎」是系统名的一部分）。只取动词则永不越界。
+    "activity": [
+        r"(?:检测|防御|监控|审计|认证|授权|加密|传输|存储|处理|分析|处置|响应|阻断)",
+        r"\b(?:detect|defend|monitor|audit|authenticate|authorize|encrypt|transmit|process)\b",
+    ],
+    "resource": [
+        r"[一-龥]*(?:资源|数据|信息|资料|素材|数据库|存储|镜像|资产)",
+        r"\b(?:resource|information|data|material|storage|asset)\b",
+    ],
+    "capability": [
+        r"[一-龥]*(?:能力|功能|本领|技能)",
+        r"\b(?:capability|function|ability|skill)\b",
+    ],
+    "location": [
+        r"[一-龥]*(?:位置|地点|场所|区域|机房|环境|设施|站点|园区|楼|厅)",
+        r"\b(?:location|site|facility|environment|region|zone)\b",
+    ],
+    "measure": [
+        r"[一-龥]*(?:指标|度量|测度|阈值|基线|时限)",
+        r"\b(?:measure|metric|indicator|threshold|baseline|kpi)\b",
+    ],
+}
+
 
 class SixWAnalyzer:
     """6W 问题分析器"""
@@ -154,41 +209,17 @@ class SixWAnalyzer:
         )
 
     def _extract_entities(self, query: str) -> dict[str, list[str]]:
-        """从查询中提取实体"""
-        entities = {
-            "system": [],
-            "organization": [],
-            "activity": [],
-            "resource": [],
-            "capability": [],
-            "location": [],
-            "measure": [],
-        }
+        """从查询中提取实体，逐桶去重。
 
-        # 简单的实体模式匹配
-        system_patterns = [
-            r"[一-龥]*(?:系统|防火墙|USG|网关|交换机|路由器|服务器|平台)[一-龥]*",
-            r"\b(?:firewall|firewall|router|switch|server|platform|system)\b",
-        ]
-        org_patterns = [
-            r"[一-龥]*(?:公司|部门|机构|组织|团队|厂商|集成商|甲方|乙方)[一-龥]*",
-            r"\b(?:company|department|team|organization|vendor|integrator)\b",
-        ]
-        activity_patterns = [
-            r"[一-龥]*(?:检测|防御|监控|审计|认证|授权|加密|传输|存储|处理|分析)[一-龥]*",
-            r"\b(?:detect|defend|monitor|audit|authenticate|authorize|encrypt|transmit|process)\b",
-        ]
-
-        for pattern in system_patterns:
-            entities["system"].extend(re.findall(pattern, query))
-        for pattern in org_patterns:
-            entities["organization"].extend(re.findall(pattern, query))
-        for pattern in activity_patterns:
-            entities["activity"].extend(re.findall(pattern, query))
-
-        # 去重
-        for key in entities:
-            entities[key] = list(set(entities[key]))
+        桶集合由 ENTITY_BUCKET_PATTERNS 决定——它有几个桶，结果就有几个桶，
+        不会出现「声明了却没人填」的桶。
+        """
+        entities: dict[str, list[str]] = {}
+        for bucket, patterns in ENTITY_BUCKET_PATTERNS.items():
+            found: list[str] = []
+            for pattern in patterns:
+                found.extend(re.findall(pattern, query))
+            entities[bucket] = list(set(found))
 
         return entities
 

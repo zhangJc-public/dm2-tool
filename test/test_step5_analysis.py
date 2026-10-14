@@ -1,27 +1,21 @@
 """Tests for Step5Analysis (dm2.engine.pipeline.step5_analysis).
 
-Step 5 is where the pipeline claims to do abductive reasoning, OODA resilience
-analysis, TOC bottleneck identification and consistency checking — four things
-the step5-analysis spec names as requirements. It had no test coverage before
-this file.
+Step 5 is where the pipeline does abductive reasoning, OODA resilience analysis,
+TOC bottleneck identification and consistency checking — the four things the
+step5-analysis spec names.
 
-DEFECT-11 and DEFECT-12 are pinned rather than asserted as correct.
-
-DEFECT-11  Every abductive inference is built with placeholder endpoints:
-           ``"未知"`` for the "pattern not detected" inferences and
-           ``"(从描述提取)"`` for the "pattern matched" ones. The dataclass has
-           ``entity_a`` / ``entity_b`` fields, so consumers see a two-ended
-           relation whose ends are never actually identified.
-
-DEFECT-12  ``TOCBottleneck.out_degree`` is hardcoded to ``1`` for every
-           bottleneck. The spec asks the step to "identify the single most
-           constraining node and quantify its impact"; the out-degree is the
-           only degree field present and it carries no information.
+Two defects used to live here. Every abductive inference carried a placeholder
+endpoint (``"未知"`` or ``"(从描述提取)"``), so a two-ended relation never named
+its ends; inferences now report the DM2 types the relation connects. And
+``TOCBottleneck.out_degree`` was hardcoded to ``1``, printed as ``入度/出度`` in
+the step document; it is now a per-node co-occurrence count derived from the
+architecture under analysis.
 """
 
 import pytest
 
 from dm2.engine.pipeline.step5_analysis import (
+    PATTERN_ENDPOINTS,
     AbductiveInference,
     AnalysisResult,
     OODABreakpoint,
@@ -60,23 +54,46 @@ class TestAbductiveReasoning:
             assert inf.rationale
             assert 0.0 < inf.confidence <= 1.0
 
-    def test_entity_endpoints_are_placeholders(self, step5):
-        """DEFECT-11: the endpoints are never identified."""
+    PLACEHOLDERS = {"未知", "(从描述提取)"}
+
+    def test_no_inference_uses_an_unnamed_placeholder(self, step5):
+        """Spec: an inference names the entities it concerns."""
+        for text in ("", PATTERNED, DESCRIPTION):
+            for inf in step5._abductive_reasoning(text, ""):
+                assert inf.entity_a not in self.PLACEHOLDERS, inf
+                assert inf.entity_b not in self.PLACEHOLDERS, inf
+
+    def test_a_missing_pattern_inference_names_the_types_it_would_connect(self, step5):
+        """No instance was observed, but the relation still has two ends."""
         inferences = step5._abductive_reasoning("", "")
+        binding = next(i for i in inferences if i.inferred_relation == "Activity-Performer 绑定")
 
-        assert inferences
-        assert all(i.entity_a == "未知" and i.entity_b == "未知" for i in inferences)
+        assert binding.entity_a == "Activity"
+        assert binding.entity_b == "Performer"
 
-    def test_matched_patterns_use_a_different_placeholder(self, step5):
-        """DEFECT-11, second form."""
-        matched = [
-            i for i in step5._abductive_reasoning(PATTERNED, "")
-            if i.entity_a != "未知"
-        ]
+    def test_a_missing_pattern_inference_says_what_to_add(self, step5):
+        inferences = step5._abductive_reasoning("", "")
+        binding = next(i for i in inferences if i.inferred_relation == "Activity-Performer 绑定")
+
+        assert "Activity" in binding.rationale
+        assert "Performer" in binding.rationale
+
+    def test_a_matched_pattern_inference_names_its_types(self, step5):
+        matched = step5._abductive_reasoning(PATTERNED, "")
 
         assert matched
-        assert all(i.entity_a == "(从描述提取)" for i in matched)
-        assert all(i.entity_b == "(从描述提取)" for i in matched)
+        assert all(i.entity_a and i.entity_b for i in matched)
+
+    def test_a_matched_pattern_inference_quotes_the_evidence(self, step5):
+        matched = step5._abductive_reasoning(PATTERNED, "")
+
+        assert any("匹配文本" in i.rationale for i in matched)
+
+    def test_every_pattern_type_has_endpoints(self):
+        """A pattern without endpoints would reintroduce the placeholder."""
+        for pattern_type, endpoints in PATTERN_ENDPOINTS.items():
+            assert len(endpoints) == 2, pattern_type
+            assert all(endpoints), pattern_type
 
 
 class TestOODAAnalysis:
@@ -115,13 +132,41 @@ class TestTOCAnalysis:
         assert len(bottlenecks) == 1
         assert bottlenecks[0].node == "分析引擎"
 
-    def test_out_degree_is_hardcoded_to_one(self, step5):
-        """DEFECT-12: the field carries no information."""
-        text = "分析引擎 分析引擎 存储服务"
+    def test_out_degree_is_derived_not_fixed(self, step5):
+        """Spec: degrees come from the architecture, not from a constant."""
+        lone = step5._toc_analysis("分析引擎处理数据。存储服务保存结果。", "")
+        paired = step5._toc_analysis(
+            "采集模块汇聚流量，分析引擎与存储服务交换数据，采集模块也写入存储服务。", ""
+        )
 
-        bottlenecks = step5._toc_analysis(text, "")
+        assert lone[0].out_degree == 0
+        assert paired[0].out_degree == 2
+        assert lone[0].out_degree != paired[0].out_degree
+
+    def test_out_degree_counts_nodes_sharing_a_sentence(self, step5):
+        """A node alone in its sentence has nowhere to flow to."""
+        bottlenecks = step5._toc_analysis(
+            "分析引擎与存储服务交换数据。采集模块单独工作。", ""
+        )
 
         assert bottlenecks[0].out_degree == 1
+
+    def test_out_degree_is_per_node(self, step5):
+        """Two nodes in one architecture need not share a degree."""
+        text = "分析引擎与存储服务交换数据。存储服务独自归档。"
+
+        assert step5._cooccurrence_degree("分析引擎", ["分析引擎", "存储服务"], text) == 1
+        assert step5._cooccurrence_degree("存储服务", ["分析引擎", "存储服务"], text) == 1
+
+    def test_cooccurrence_degree_ignores_the_node_itself(self, step5):
+        assert step5._cooccurrence_degree("分析引擎", ["分析引擎"], "分析引擎分析引擎") == 0
+
+    def test_impact_reports_the_derived_degree(self, step5):
+        bottlenecks = step5._toc_analysis(
+            "采集模块汇聚流量，分析引擎与存储服务交换数据，采集模块也写入存储服务。", ""
+        )
+
+        assert str(bottlenecks[0].out_degree) in bottlenecks[0].impact
 
     def test_in_degree_reflects_the_reference_count(self, step5):
         text = "分析引擎 分析引擎 存储服务"
@@ -167,11 +212,29 @@ class TestExecute:
         assert "ooda_breakpoints" in payload
         assert "toc_bottlenecks" in payload
 
-    def test_consistency_issues_are_not_reported_for_cyclic_input(self, step5):
-        """DEFECT-6 reaches here too: the temporal rule is unreachable."""
-        result = step5.execute("活动A prerequisite: 活动B\n活动B prerequisite: 活动A")
+    def test_a_declared_cycle_reaches_the_consistency_issues(self, step5):
+        """The temporal rule works end to end through Step 5.
 
-        assert not [i for i in result.consistency_issues if i.issue_type == "circular_dependency"]
+        The relations must arrive as view content: ``_prepare_views_data``
+        splits the data text on view headings, so the same text in the
+        description argument would never be checked.
+        """
+        result = step5.execute(
+            "某系统",
+            "## OV-6c\n活动A prerequisite: 活动B\n活动B prerequisite: 活动A\n",
+        )
+
+        assert [i for i in result.consistency_issues if i.issue_type == "circular_dependency"]
+
+    def test_an_acyclic_architecture_reports_no_cycle(self, step5):
+        result = step5.execute(
+            "某系统",
+            "## OV-6c\n活动A prerequisite: 活动B\n活动B prerequisite: 活动C\n",
+        )
+
+        assert not [
+            i for i in result.consistency_issues if i.issue_type == "circular_dependency"
+        ]
 
 
 class TestDataclasses:

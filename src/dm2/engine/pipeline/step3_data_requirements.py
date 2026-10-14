@@ -15,24 +15,13 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 
-from dm2.cognitive.six_w_analyzer import SIX_W_TO_DM2_GROUPS, SixW
+from dm2.cognitive.six_w_analyzer import (
+    DM2_GROUP_TO_ENTITY_TYPES,
+    SIX_W_TO_DM2_GROUPS,
+    SixW,
+)
 from dm2.kernel.indexer import DM2KnowledgeIndexer
 from dm2.kernel.rag import ObsidianRAGEngine
-
-DM2_GROUP_TO_ENTITY_TYPES: dict[str, list[str]] = {
-    "Resource": ["resource", "information", "data", "material"],
-    "Information": ["information", "data", "knowledge"],
-    "Project": ["project", "milestone", "phase"],
-    "Capability": ["capability", "function", "ability"],
-    "Activity": ["activity", "process", "task", "operation"],
-    "Service": ["service", "endpoint", "interface"],
-    "Measure": ["measure", "metric", "KPI", "indicator"],
-    "Location": ["location", "site", "facility", "environment"],
-    "Performer": ["performer", "system", "organization", "role"],
-    "Organization": ["organization", "department", "team", "unit"],
-    "Rules": ["rule", "constraint", "policy", "standard"],
-    "Guidance": ["guidance", "directive", "strategy", "goal"],
-}
 
 
 @dataclass
@@ -40,7 +29,6 @@ class DataRequirement:
     dimension: str
     entity_types: list[str]
     dm2_groups: list[str]
-    required_concepts: list[str]
 
 
 @dataclass
@@ -93,7 +81,7 @@ class Step3DataRequirements:
                     })
 
         # 3. 组织分类
-        taxonomy = self._build_taxonomy(requirements, retrieved_concepts)
+        taxonomy = self._build_taxonomy(requirements)
 
         # 4. 缺口检测
         gaps = self._detect_gaps(requirements, retrieved_concepts, retrieved_terms)
@@ -138,14 +126,11 @@ class Step3DataRequirements:
                 dimension=w.value,
                 entity_types=list(set(entity_types)),
                 dm2_groups=matched_groups,
-                required_concepts=[],
             ))
 
         return requirements
 
-    def _build_taxonomy(
-        self, requirements: list[DataRequirement], concepts: list[dict]
-    ) -> dict[str, list[str]]:
+    def _build_taxonomy(self, requirements: list[DataRequirement]) -> dict[str, list[str]]:
         taxonomy: dict[str, list[str]] = {}
         for req in requirements:
             key = f"6W-{req.dimension}"
