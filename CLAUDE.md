@@ -15,7 +15,8 @@ DoDAF Meta Model 2.02 系统工程辅助工具。
 │   ├── skills/              ← 22 个技能，全部生成：10 个 dm2-*（入库）+ 12 个 openspec-*（不入库）
 │   └── commands/            ← 全部生成：10 个 dm2（入库）+ 12 个 opsx（不入库）
 ├── .agents/skills/           ← 生成物、不入库：openspec 的 12 个 SDD 技能；DSH 以 project-agents 发现
-├── .dsh/skills/              ← 生成物、入库：10 个 dm2-* DSH 技能（`dm2 init --tool dsh` 的产品面）
+├── .dsh/skills/              ← 生成物：10 个 dm2-*（入库，`dm2 init --tool dsh` 的产品面）
+│                             ＋ 12 个 openspec-*（不入库，openspec 1.14 起 dsh 为一等目标）
 ├── src/dm2/                  ← Python 包
 │   ├── cli/                 ← CLI 入口 + 命令实现
 │   ├── core/                ← 核心引擎（AI Agent 接口）；core/pedigree/ = 视图溯源（Pedigree）
@@ -63,7 +64,7 @@ File System Layer      ← .dm2/ 项目（含 .dm2/output/）+ dm2-changes/
 - `dsh`：`init --tool dsh` → `.dsh/skills/`（10 个 SKILL.md，`user-invocable: true`，无 commands；正文经 `DshAdapter.render_skill_body` 重写 `/dm2:*`、`AskUserQuestion`、`python3 -m dm2.cli.main`）
 注册表入口：`dm2.core.adapters.get_adapter(tool_id)`。
 
-> **SDD 开发环境**：本仓库用 OpenSpec 的厂商中立目标 `agents` 把 12 个 `openspec-*` 技能写入 `.agents/skills/`，DSH 以 `project-agents` 发现（`.dsh/skills` 为 `project-dsh`，优先级更高）。这批技能不入库，由 `openspec init/update` 重建。
+> **SDD 开发环境**：本仓库用 OpenSpec 的厂商中立目标 `agents` 把 12 个 `openspec-*` 技能写入 `.agents/skills/`，DSH 以 `project-agents` 发现（`.dsh/skills` 为 `project-dsh`，优先级更高）。**openspec 1.14 起 `dsh` 也是一等目标**，同一批技能会另写一份到 `.dsh/skills/openspec-*`，因而经 `project-dsh` 被发现。两处都不入库，由 `openspec init/update` 重建。
 
 ## 开发
 
@@ -103,6 +104,7 @@ DM2_DEBUG=1 dm2 analyze ...   # 显示索引器诊断（默认静默，保证 --
 | `scripts/render_agent_config.py` | 技能模板 → 入库 agent 产物（`.claude/` + `.dsh/`），幂等重建 |
 | `.dsh/skills/` | dm2 自产 DSH 技能面（入库）；DSH 以 `project-dsh` 发现 |
 | `.agents/skills/` | openspec SDD 技能面（不入库）；DSH 以 `project-agents` 发现 |
+| `.dsh/skills/openspec-*` | openspec 1.14 起同时写出的 dsh 目标副本（不入库）；DSH 以 `project-dsh` 发现，优先级高于上面一行 |
 | `dm2-reference/core/` | views.yaml、派生索引（terms/associations/taxonomy/view-content-spec.json）、数据组模板 |
 | `schemas/` | 各命令 JSON 输出形状的 JSON Schema 声明；由 `test/test_cli_output_schemas.py` 对照真实输出执行 |
 | `test/` | 测试套件 |
@@ -115,7 +117,8 @@ DM2_DEBUG=1 dm2 analyze ...   # 显示索引器诊断（默认静默，保证 --
 - **零 LLM 依赖** — dm2-tool 完全不调用 LLM API。analyze/cynefin 纯本地执行，generate 输出结构化指令（AI Agent 消费），所有分析基于关键词匹配和模板填充。LLM 配置已被清除。契约见 `openspec/specs/dm2-no-llm-dependency`：源码不导入、打包不声明、文档不教学 LLM 依赖与 API key。
 - **架构边界** — 包按五级依赖序组织，依赖只能**向下**：`utils`(L0) < `config`/`kernel`(L1) < `cognitive`/`reasoning`/`core`(L2) < `engine`(L3) < `cli`(L4)。`utils` 是叶子层，任何包都不得 import `cli`。契约见 `openspec/specs/dm2-architecture-boundaries`，由 `test/test_architecture_boundaries.py` 守护；**新增包必须显式登记层级**，否则测试失败。
 - **生成物不可手改** — `.claude/skills/dm2-*`、`.claude/commands/dm2/`、`.dsh/skills/dm2-*` 由 `dm2 init` 从 `src/dm2/core/templates/workflows/` 生成；手改会在下次生成时被覆盖。改技能先改 Python 模板，再跑 `python3 scripts/render_agent_config.py` 重新生成入库产物。
-- **生成物归属决定是否入库** — dm2 自己生成的 agent 指令**入库**（它是 dm2 的产品面），由 `test/test_generated_agent_config.py` 做字节一致性守护：改了模板却没重新生成即失败。第三方工具生成的（`.claude/skills/openspec-*`、`.claude/commands/opsx/`、`.agents/skills/openspec-*`、`.agents/skills/.openspec-target`）**不入库**——它们的生命周期不归 dm2，用各自工具的 init/update 命令重建（见「开发」）。
+- **生成物归属决定是否入库** — dm2 自己生成的 agent 指令**入库**（它是 dm2 的产品面），由 `test/test_generated_agent_config.py` 做字节一致性守护：改了模板却没重新生成即失败。第三方工具生成的（`.claude/skills/openspec-*`、`.claude/commands/opsx/`、`.agents/skills/openspec-*`、`.agents/skills/.openspec-target`、`.dsh/skills/openspec-*`）**不入库**——它们的生命周期不归 dm2，用各自工具的 init/update 命令重建（见「开发」）。
+  > ⚠️ **忽略规则对已跟踪文件无效**：`.gitignore` 写了规则不等于文件就不在版本控制里，必须先 `git rm --cached`。2026-10-14 修过一次：`5778d16` 的信息写着「stop tracking」却一个文件都没删，那 22 个产物（`.claude/commands/opsx/` 11 + `.claude/skills/openspec-*` 11）因此一直留在索引里，规则空转了很久。
 - **规范驱动** — 行为变更走 OpenSpec 变更：`openspec new change <name>` → proposal/design/tasks + delta spec → 实现 → `openspec archive`。规范（`openspec/specs/`）是行为的权威来源，实现与规范不符即为缺陷。
 - **开发环境（DSH + SDD）** — 开发在 DeepSeek Harness 中进行：技能面为 `.dsh/skills/dm2-*`（dm2 自产，入库）与 `.agents/skills/openspec-*`（SDD 工作流，不入库）。DSH 无项目级命令目录，用户经技能入口触发；行为变更仍必须走上面的 OpenSpec 流程，关口 `openspec validate --all --strict` 不变。
 - **CLI 输出结构化 JSON** — 契约见 `openspec/specs/cli-json-contract`：读写项目/架构状态的命令接受 `--json`/`-j`，输出 `{"status":"success","data":{...}}` 或 `{"status":"error","error":{"code":"...","message":"..."}}`；JSON 模式下 stdout 只含信封（诊断走 stderr），项目守卫失败也必须返回信封。豁免（不得视为缺陷）：`completion`（输出 shell 脚本）、隐藏 `__complete`、`uninstall`（交互式人工维护）。

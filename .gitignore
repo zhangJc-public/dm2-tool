@@ -17,6 +17,10 @@ build/
 # .claude/commands/dm2/、.dsh/skills/dm2-*）入库并由 test_generated_agent_config.py 守护。
 .claude/skills/openspec-*/
 .claude/commands/opsx/
-# DSH 以 project-agents 发现 .agents/skills；openspec 的 agents 目标写在这里。
+# openspec 的 agents 目标写在这里；DSH 以 project-agents 发现它。
 .agents/skills/openspec-*/
 .agents/skills/.openspec-target
+# openspec 1.14 起 dsh 也是一等目标，同一批技能会再写一份到 .dsh/skills/ 下
+# （DSH 以 project-dsh 发现，优先级高于 project-agents）。它同样不入库——
+# .dsh/skills/ 里入库的只有 dm2 自产的 dm2-*。
+.dsh/skills/openspec-*/
