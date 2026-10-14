@@ -36,7 +36,7 @@ Fast-forward through architecture analysis and view generation — run everythin
 
 4. **Run 6W analysis to get recommended views**
    ```bash
-   dm2 analyze "<description>" --json
+   dm2 analyze -d "<description>" --json
    ```
    Parse `recommended_views` to get the list of views to generate.
 

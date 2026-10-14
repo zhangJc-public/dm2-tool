@@ -116,9 +116,9 @@ File System Layer      ← .dm2/ 项目 + dm2-changes/ + dm2-archive/
 | 指标 | 数值 | 复现命令 |
 |---|---|---|
 | spec 数 | 38 | `ls -d openspec/specs/*/ \| wc -l` |
-| requirement 总数 | 164 | `grep -rh '^### Requirement:' openspec/specs/*/spec.md \| wc -l` |
+| requirement 总数 | 166 | `grep -rh '^### Requirement:' openspec/specs/*/spec.md \| wc -l` |
 | spec 校验 | 38 项通过 / 0 失败（strict 无警告；openspec 1.14.1 的额外风格规则要求 requirement 正文 ≤500 字符，本仓库已满足） | `openspec validate --all --strict` |
-| 测试 | 456 passed | `pytest test/` |
+| 测试 | 481 passed | `pytest test/` |
 | 顶层命令 | 21 | `dm2 --help` |
 | 命令 JSON 契约 | 34 flag 门控 + 3 豁免（`completion`/`__complete`/`uninstall`，共 37） | 见 §5 D2/D3/D4 |
 | 知识库 | 279 术语 / 52 视图 / 17 数据组 | `dm2 knowledge stats --json` |
@@ -167,12 +167,14 @@ File System Layer      ← .dm2/ 项目 + dm2-changes/ + dm2-archive/
 > 「能力属于项目」并可检索），含未登记词元则构建失败并列出缺失词元。
 >
 > 2026-10-13：`comply-with-openspec-1-14-style` 归档——纯规范文本重构，无代码与行为变更；11 条 requirement 正文符合 1.14 风格规则，CI 与本地同版本同口径，strict 关口恢复 38/38。数字不变：38 spec / 166 requirement / 456 测试。
+>
+> 2026-10-14：**CI 首次全绿**（D12 修复，21 个积压提交推送 + `v0.2.0` 发版）。同一轮修掉 D13（模板 CLI 调用）并补其守护，测试 456 → **481**（+25 条模板调用可解析性用例）。同时订正本表两处滞后数字：requirement 164 → 166（`auto-name-new-terms` 归档时已变，表与 S2 未跟改）、测试 456 → 481。数字：38 spec / 166 requirement / 481 测试。
 
 **已验证的强项**（本次不改其行为，仅用测试锁定）：
 
 - **S1 分层干净**：见 §2，无反向依赖 → 已由 `test_architecture_boundaries.py` 守护。
-- **S2 规范有规模**：38 spec / 164 requirement，strict 全量校验通过 → 已由 CI `spec` job 守护。
-- **S3 质量关口存在**：456 测试绿、ruff 干净、CI 覆盖 3.9–3.12；代码经 3.9.6 实跑验证兼容。
+- **S2 规范有规模**：38 spec / 166 requirement，strict 全量校验通过 → 已由 CI `spec` job 守护。
+- **S3 质量关口存在**：481 测试绿、ruff 干净、CI 覆盖 3.9–3.12；代码经 3.9.6 实跑验证兼容。
 - **S4 零 LLM 已规范化**：`dm2-no-llm-dependency` 覆盖源码、打包与用户可见面。
 - **S5 适配缝已验证**：`ToolAdapter` 由 claude/dsh 两个目标证实可用。
 - **S6 信封覆盖率高**：37 个命令中 34 个输出统一信封，另 3 个为显式豁免 → 已由 `test_cli_json_contract.py` 守护。
@@ -203,6 +205,8 @@ File System Layer      ← .dm2/ 项目 + dm2-changes/ + dm2-archive/
 | D10（运行时半边） | **知识库缺失时静默给空答案**：`get_reference_path()` 在两条候选都不存在时仍返回 `base`，索引器 glob 空目录后报成功 | 隔离 venv 中 `pip install .`：`dm2 knowledge stats` → 全 0、`dm2 concern list` → 空，**均 exit 0** | 由 `report-missing-knowledge-base` 修复：抛 `KnowledgeBaseNotFound`，中央报错输出 `KB_NOT_FOUND` 信封（人类模式给可操作提示）；`concerns.yaml` 同样处理；`test/test_missing_knowledge_base.py` 守护 |
 | D9 | `knowledge search` **中文召回为 0**（记录时以为只是内容层，实测连 `"resource flow"` 也 0：字典的定义/别名 279 条全英文） | `search "资源流"` → 0；`search Performer` → 10；`definition`/`aliases` 含中文的术语数 = 0 | 由 `add-chinese-term-aliases` 修复：新增策展源 `dm2-term-zh-aliases.yaml`（279 术语 + 17 数据组中文别名）→ `terms.json` 的 `zh_aliases`/`zh_groups`；检索分词（多 token AND）+ 三层排序；构建校验未知键/空别名/重复别名，测试守护「每术语必有别名」 |
 | D11 | `openspec` 升级到 1.14.1 后，新风格规则（requirement 正文 >500 字符 → WARNING）让本地 strict 关口对 5 个既有 spec 判红，而 CI 因锁定 1.13.1 判绿——本地与 CI 口径不一致 | `openspec --version` → 1.14.1；`validate --all --strict` → 33/5 失败，失败项只有该警告 | 由 `comply-with-openspec-1-14-style` 修复：11 条 requirement 正文压到 ≤487 字符（表格/字段清单/示例移入场景，既有场景逐字保留、SHALL 语义不减），CI 同步升到 `@fission-ai/openspec@1.14.1`，两侧均为 38/38 |
+| **D12** | **CI 从未绿过**——`Tests` 与 `Verify` 自初始提交起每一次运行都失败，而本地 macOS 全绿，故长期无人察觉 | 两个根因都只在 CI 环境成立：① `test/_cli.py` 在函数签名里用了 PEP 604（`str | None`）却没有 `from __future__ import annotations`——签名注解是定义期求值，3.9 直接 `TypeError`，且只有 2 个测试文件 import 它，于是 pytest 报 2 个 collection error 后**中止整个 3.9 作业**（一个测试都没跑）；② `test_cli_json_contract.py` 断言 `"--json" in result.stdout`，而 rich 在 `GITHUB_ACTIONS` 下判定环境支持颜色，把选项名拆成 `-\x1b[0m\x1b[1;36m-json`，字面量被转义序列打断，35 个命令全部误报 | ① 补 `from __future__ import annotations`；② 断言前剥离 ANSI SGR 序列。复现方法：`GITHUB_ACTIONS=true pytest` 暴露 ②，`uv python install 3.9` 建真 3.9 venv 暴露 ①（`ruff` 拦不住 ①——本仓库只选 `E/F/W/I`，未开 pyupgrade 的 `UP007`）。3.9.25 / 3.11.16 / 3.13.12 × GITHUB_ACTIONS 开与关共 6 组全绿 |
+| **D13** | **工作流模板里的 CLI 调用无人校验**——模板是 `.claude/skills/` 与 `.dsh/skills/` 的源，一条 CLI 拒绝的命令会作为「坏指令」发给用户 | 实测 `analyze "<description>" --json`（该命令只接受 `--desc`/`-d`）出现在 ff 与 onboard 模板，渲染进 4 个入库 SKILL.md，运行即 exit 2「Got unexpected extra argument(s)」。另有两处同类：`verify.py` 让 agent 写 `dm2-changes/<name>/reports/verify.md`（`ChangeManager.create` 只建 `analysis`/`views`/`delta-specs`，从不建 `reports/`）；`onboard.py` 宣传 `/dm2:knowledge ...`（`.claude/commands/dm2/` 下无该斜杠命令） | 由本轮修复：`analyze -d`、报告改存 `analysis/`（与 `apply`/`ff` 写 trace 的目录一致）、`/dm2:knowledge` 改 `dm2 knowledge`（模板正文其余位置已在用该裸形式）。**新增守护** `test/test_workflow_templates.py::TestTemplateCliInvocations`：抽出模板里每条 `python3 -m dm2.cli.main …` 调用，用真实解析器验证可解析（不执行）。⚠️ 两个陷阱都踩过并已记入该测试注释：`make_context` 在根上因 `TyperGroup.allow_extra_args=True` 从不下降；`isinstance(cmd, click.Group)` 恒假，因 `TyperGroup` 派生自 `click.Command` |
 
 ### 显式判定为豁免（记录而非修复）
 

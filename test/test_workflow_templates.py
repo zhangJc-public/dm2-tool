@@ -7,11 +7,15 @@ Pins instruction-text contracts from the wire-view-dependency-supplement change:
 - dsh adapter: .dsh/skills output with Claude-specific references rewritten
 """
 import re
+import shlex
 
 import pytest
+import typer
 import yaml
+from typer.main import get_command
 
 import dm2.core.templates.workflows  # noqa: F401 — side-effect: populates WORKFLOWS
+from dm2.cli.main import app
 from dm2.core.templates import WORKFLOWS
 
 
@@ -230,3 +234,96 @@ class TestApplyTraceRequirements:
     def test_guardrails_mention_automatic_human_edit_capture(self):
         instr = _workflow("apply").skill.instructions
         assert "content hash" in instr
+
+
+# ---------------------------------------------------------------------------
+# Every CLI invocation a template tells an agent to run must actually parse.
+# The templates are the source of the shipped .claude/ and .dsh/ skills, so a
+# command the CLI rejects reaches users as a broken instruction. That was a
+# real defect: `analyze "<description>"` (the flag is `--desc`/`-d`) shipped in
+# the ff and onboard skills and exited 2 with "unexpected extra argument".
+# ---------------------------------------------------------------------------
+
+_INVOCATION = re.compile(r"python3 -m dm2\.cli\.main\s+([^\n`]+)")
+
+#: A token standing in for a value the agent fills in at run time.
+_PLACEHOLDER = re.compile(r"^<[^>]+>$")
+
+
+def _template_invocations() -> dict[str, list[str]]:
+    """Map each distinct bare CLI invocation to the templates that use it.
+
+    Shell expressions (pipes, redirections) are skipped: they are not a single
+    command line and cannot be parsed as one.
+    """
+    found: dict[str, list[str]] = {}
+    for wf in WORKFLOWS:
+        for kind, body in (("skill", wf.skill.instructions), ("command", wf.command.body)):
+            for match in _INVOCATION.finditer(body):
+                raw = match.group(1).strip()
+                if "|" in raw or "2>&1" in raw:
+                    continue
+                found.setdefault(raw, []).append(f"{wf.workflow_id}/{kind}")
+    return found
+
+
+def _click():
+    """The click module the command tree is actually built from.
+
+    typer >= 0.27 vendors click as ``typer._click`` and no longer declares it a
+    dependency, so a bare ``pip install -e .`` — which is how CI installs —
+    leaves ``import click`` failing. Older typer depends on the real package.
+    Preferring ``typer._click`` when present keeps the Context class consistent
+    with the commands, whichever combination the interpreter has.
+    """
+    if hasattr(typer, "_click"):
+        from typer import _click
+
+        return _click
+    import click
+
+    return click
+
+
+def _parse_against_cli(argv: list[str]) -> None:
+    """Parse ``argv`` against the real dm2 CLI without executing anything.
+
+    Two traps make the obvious approaches silently useless, and both did:
+    ``make_context`` on the root never descends (``TyperGroup`` sets
+    ``allow_extra_args``), and ``isinstance(cmd, click.Group)`` is always false
+    because ``TyperGroup`` derives from ``click.Command``. So the command path
+    is resolved by duck-typing on ``get_command`` and the leaf's ``parse_args``
+    does the real work.
+    """
+    click = _click()
+    command = get_command(app)
+    ctx = click.Context(command)
+    remaining = list(argv)
+    while hasattr(command, "get_command") and remaining and not remaining[0].startswith("-"):
+        name = remaining.pop(0)
+        sub = command.get_command(ctx, name)
+        if sub is None:
+            raise click.exceptions.UsageError(f"No such command '{name}'.")
+        ctx = click.Context(sub, parent=ctx)
+        command = sub
+    command.parse_args(ctx, remaining)
+
+
+class TestTemplateCliInvocations:
+    """Templates must only instruct the agent to run commands the CLI accepts."""
+
+    def test_invocations_were_actually_found(self):
+        """Guard against the scan matching nothing and passing vacuously."""
+        found = _template_invocations()
+        assert len(found) > 20, sorted(found)
+
+    @pytest.mark.parametrize(
+        "invocation", sorted(_template_invocations()), ids=lambda s: s[:60]
+    )
+    def test_invocation_parses(self, invocation):
+        where = ", ".join(sorted(set(_template_invocations()[invocation])))
+        argv = ["DUMMY" if _PLACEHOLDER.match(tok) else tok for tok in shlex.split(invocation)]
+        try:
+            _parse_against_cli(argv)
+        except _click().exceptions.UsageError as exc:
+            pytest.fail(f"`{invocation}` is rejected by the CLI ({exc.format_message()}); used in {where}")

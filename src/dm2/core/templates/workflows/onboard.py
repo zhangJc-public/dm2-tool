@@ -128,7 +128,7 @@ Each dimension maps to specific DoDAF views.
 
 **DO:**
 ```bash
-python3 -m dm2.cli.main analyze "<description>" --json
+python3 -m dm2.cli.main analyze -d "<description>" --json
 ```
 
 **SHOW:**
@@ -235,13 +235,13 @@ You just completed a dm2 architecture modeling cycle:
  | `/dm2:verify`    | Verify view completeness and consistency   |
  | `/dm2:archive`   | Archive a completed analysis               |
 
-**Knowledge queries:**
+**Knowledge queries** (CLI commands):
 
  | Command                       | What it does                    |
  |-------------------------------|---------------------------------|
- | `/dm2:knowledge search <q>` | Search DM2 terms                |
- | `/dm2:knowledge views`      | List all 52 DoDAF views         |
- | `/dm2:knowledge view <id>`  | View metadata and dependencies  |
+ | `dm2 knowledge search <q>`    | Search DM2 terms                |
+ | `dm2 knowledge views`         | List all 52 DoDAF views         |
+ | `dm2 knowledge view <id>`     | View metadata and dependencies  |
 
 ---
 

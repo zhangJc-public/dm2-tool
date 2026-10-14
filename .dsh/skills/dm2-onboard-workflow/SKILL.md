@@ -131,7 +131,7 @@ Each dimension maps to specific DoDAF views.
 
 **DO:**
 ```bash
-dm2 analyze "<description>" --json
+dm2 analyze -d "<description>" --json
 ```
 
 **SHOW:**
@@ -238,13 +238,13 @@ You just completed a dm2 architecture modeling cycle:
  | the `dm2-verify-workflow` skill    | Verify view completeness and consistency   |
  | the `dm2-archive-workflow` skill   | Archive a completed analysis               |
 
-**Knowledge queries:**
+**Knowledge queries** (CLI commands):
 
  | Command                       | What it does                    |
  |-------------------------------|---------------------------------|
- | `dm2 knowledge search <q>` | Search DM2 terms                |
- | `dm2 knowledge views`      | List all 52 DoDAF views         |
- | `dm2 knowledge view <id>`  | View metadata and dependencies  |
+ | `dm2 knowledge search <q>`    | Search DM2 terms                |
+ | `dm2 knowledge views`         | List all 52 DoDAF views         |
+ | `dm2 knowledge view <id>`     | View metadata and dependencies  |
 
 ---
 

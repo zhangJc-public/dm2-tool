@@ -144,4 +144,4 @@ Use clear markdown with:
 - Code references in format: `view_id::section_name`
 - Specific, actionable recommendations
 
-Save the report to `dm2-changes/<name>/reports/verify.md`.
+Save the report to `dm2-changes/<name>/analysis/verify.md`.
