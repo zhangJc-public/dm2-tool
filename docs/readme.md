@@ -793,12 +793,13 @@ ls dm2-changes/<name>/views/   # 生成的视图文件
 
 ```yaml
 views:
-  include_mermaid: true       # 生成视图中包含 Mermaid 图表
+  include_mermaid: true       # 图类视图注入内联 Mermaid 段落（false 则不注入）
   include_timestamps: true    # 生成视图中包含时间戳
+  diagram_output: mermaid     # 图类视图的输出通道：mermaid（内联）| svg（独立文件，以图片引用嵌入）
 
 consistency:
   check_enabled: true         # 启用手动一致性检查
-  strict_mode: false          # 严格模式（警告 → 错误）
+  strict_mode: false          # 严格模式（警告 → 错误，含视图表征一致性告警）
 
 dm2:
   language: zh                # 界面语言
