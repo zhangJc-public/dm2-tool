@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- **workflow 模板的 `--reasoning-file` 骨架不完整**：`propose` 模板只给出 `reasoning:` 三个字段，
+  `apply` 用点号记法（`source.standard`）却未说明 `source` 是 `reasoning:` 的**同级**而非子级，
+  且两者都未提及 `author`。按模板执行的 Agent 会写出 `pedigree_status: incomplete` 的记录——
+  `trace record` 仍以退出码 0 写入，但该视图永远无法进入 `verified`，变更无法归档。
+  （实测于一个 26 视图的架构：全部 26 条 pedigree 均被卡住）
+  - `propose.py` / `apply.py` 补全完整骨架，并显式标注 `source` / `author` /
+    `known_limitations` 为**顶层键**；规范结构直接取自 `test_cli_trace.py::REASONING_YAML`
+  - 新增两条守卫测试（修复前红、修复后绿）：
+    `test_reasoning_file_skeleton_covers_top_level_provenance`、
+    `test_reasoning_file_nesting_is_explicit`
+  - 重新生成 `.claude/skills/` 与 `.dsh/skills/` 产物
+  - **不改运行时行为**：`_merge_payload` 的读取位置与 `trace record` 的退出码语义保持不变
+
 ## [0.2.0] - 2026-10-13
 
 ### Added

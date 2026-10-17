@@ -149,10 +149,26 @@ Run a complete DoDAF architecture analysis and generate planning artifacts with 
    dm2 trace record <View-ID> --summary "<why this view is in the set>" --reasoning-file dm2-changes/<name>/analysis/trace-<View-ID>.yaml
    ```
 
-   The `--reasoning-file` is valid YAML with this structure:
+   The `--reasoning-file` is valid YAML with this structure. **`source`, `author`,
+   `confidence`, `reliability` and `known_limitations` are TOP-LEVEL keys** — only
+   `summary` / `decision_factors` / `alternatives_considered` live under `reasoning:`:
 
    ```yaml
-   reasoning:
+   source:                                  # <- top level
+     standard: "DoDAF V2.02 Vol 2"
+     section: "<from `dm2 knowledge view <View-ID>`>"
+     dm2_terms_used:
+       - term: "Activity"
+         definition_ref: "dm2/reference/terms.json#Activity"
+   author:                                  # <- top level
+     type: agent-autonomous                 # human | agent-assisted | agent-autonomous
+     model: "<model id>"
+     operator: "<operator>"
+   confidence: 0.8                          # optional
+   reliability: medium                      # optional: low | medium | high
+   known_limitations:                       # <- top level
+     - "<what you are uncertain about>"
+   reasoning:                               # <- only these three nest here
      summary: "<one-paragraph rationale>"
      decision_factors:
        - factor: "data group activation: 03-capability"
@@ -162,6 +178,10 @@ Run a complete DoDAF architecture analysis and generate planning artifacts with 
        - option: "Generate OV-5a instead of CV-2"
          rejected_because: "User description focuses on capability taxonomy"
    ```
+
+   **Omitting `author` or `source` leaves the pedigree `incomplete`**: `trace record` still
+   exits 0 and writes the record, but the view can never reach `verified` and the change
+   cannot be archived. Check `pedigree_status` in the command output before moving on.
 
    - `decision_factors[].factor` and `decision_factors[].source` are required; `alternatives_considered[].option` and `.rejected_because` are required. Malformed input is rejected with `INVALID_ARG` — fix the file and retry.
    - `--summary` carries the short rationale; the file carries the structured factors.

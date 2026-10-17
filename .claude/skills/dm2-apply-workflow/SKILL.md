@@ -82,11 +82,17 @@ Implement the architecture views planned in `/dm2:propose` by reading tasks.md a
       ```bash
       python3 -m dm2.cli.main trace record <view_id> --summary "<content approach>" --reasoning-file "dm2-changes/<name>/analysis/trace-<View-ID>.yaml"
       ```
-      The YAML file MUST contain:
-      - `decision_factors` — the input data, analysis results, and DM2 terms that drove the content; every entry needs `factor` and `source`
-      - `alternatives_considered` — content approaches weighed and why each was rejected (`option` + `rejected_because`)
-      - `known_limitations` — aspects the Agent is uncertain about
-      - `source.standard: "DoDAF V2.02 Vol 2"`, `source.section` (from `views.yaml`), and `source.dm2_terms_used` listing every DM2 term referenced by the view with its `definition_ref`
+      The YAML file MUST contain. Note the nesting: **`source`, `author` and
+      `known_limitations` are TOP-LEVEL keys**; only `summary` / `decision_factors` /
+      `alternatives_considered` live under `reasoning:`.
+      - `decision_factors` — (under `reasoning:`) the input data, analysis results, and DM2 terms that drove the content; every entry needs `factor` and `source`
+      - `alternatives_considered` — (under `reasoning:`) content approaches weighed and why each was rejected (`option` + `rejected_because`)
+      - `known_limitations` — (top level) aspects the Agent is uncertain about
+      - `source` — (top level) with `standard: "DoDAF V2.02 Vol 2"`, `section` (from `views.yaml`), and `dm2_terms_used` — i.e. `source.dm2_terms_used` — listing every DM2 term referenced by the view with its `definition_ref`
+      - `author` — (top level) `type` (`human` | `agent-assisted` | `agent-autonomous`), plus `model` and `operator`
+
+      Omitting `author` or `source` yields an `incomplete` pedigree: the command still exits 0,
+      but the view can never reach `verified`. Check `pedigree_status` in the output.
 
       **If `dm2 trace record` fails, halt generation for that view**, report the failure to the human, and leave the task unchecked in tasks.md with the note `trace record failed`. Do NOT continue to the next view as if this view were complete.
 

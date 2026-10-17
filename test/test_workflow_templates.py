@@ -212,6 +212,20 @@ class TestProposeTraceRequirements:
         assert "decision_factors" in instr
         assert "alternatives_considered" in instr
 
+    def test_reasoning_file_skeleton_covers_top_level_provenance(self):
+        """A template-following agent must produce a `complete` pedigree first try.
+
+        `source` / `author` / `known_limitations` are read from the YAML top level
+        (see ``dm2.cli.commands.trace._merge_payload``); only the reasoning fields nest
+        under ``reasoning:``. The documented skeleton must therefore show all of them,
+        or agents write records that can never reach ``verified``.
+        """
+        instr = _workflow("propose").skill.instructions
+        for key in ("source:", "author:", "known_limitations:", "reasoning:"):
+            assert key in instr, f"propose skeleton must document {key}"
+        assert "TOP-LEVEL" in instr
+        assert "incomplete" in instr
+
 
 class TestApplyTraceRequirements:
     """`apply` must record generation reasoning for every view."""
@@ -225,6 +239,13 @@ class TestApplyTraceRequirements:
         assert "known_limitations" in instr
         assert "DoDAF V2.02 Vol 2" in instr
         assert "source.dm2_terms_used" in instr
+
+    def test_reasoning_file_nesting_is_explicit(self):
+        """`source`/`author`/`known_limitations` are top-level, not nested."""
+        instr = _workflow("apply").skill.instructions
+        assert "TOP-LEVEL" in instr
+        assert "`author`" in instr
+        assert "incomplete" in instr
 
     def test_trace_failure_halts_that_view(self):
         instr = _workflow("apply").skill.instructions
