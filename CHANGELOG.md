@@ -7,7 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **`views.diagram_output`**：图类视图的输出通道，取值 `mermaid`（默认，内联）或 `svg`
+  （独立文件，以图片引用嵌入）。设为 `svg` 时不再注入 `## Mermaid 图表` 段落，改注入
+  「独立 SVG 文件」段落并同步调整规则；`diagram_output` 的优先级高于 `include_mermaid`。
+- **视图表征一致性检查**：`dm2 validate` 新增 `RepresentationChecker`，比对视图在
+  `views.yaml` 中声明的 `representation` 与实际内容（Mermaid 图型 / 外部图引用 / 无图）。
+  默认 WARNING，`consistency.strict_mode: true` 时升级为 ERROR。外部图引用
+  （`.svg` / `.png` / `.jpg`）视为满足图示要求，因此以独立图绘制的项目不会被误报。
+
+### Changed
+- `dm2 init` 的配置骨架改为从 `config.manager.DEFAULTS` 派生，不再手抄一份默认值
+  （原手抄字典已漏掉 `trace.enabled`）。新项目会显式写入 `views.diagram_output`。
+
 ### Fixed
+- **`views.include_mermaid` 是无效果的开关**：该键在 `README.md` / `docs/readme.md` 中被
+  当作可用特性记录，也存在于 `DEFAULTS`，但**没有任何代码读取它** —— 指令生成器无条件注入
+  Mermaid 段落，因此设为 `false` 毫无作用。现已在 `InstructionBuilder` 中接入。
 - **workflow 模板的 `--reasoning-file` 骨架不完整**：`propose` 模板只给出 `reasoning:` 三个字段，
   `apply` 用点号记法（`source.standard`）却未说明 `source` 是 `reasoning:` 的**同级**而非子级，
   且两者都未提及 `author`。按模板执行的 Agent 会写出 `pedigree_status: incomplete` 的记录——

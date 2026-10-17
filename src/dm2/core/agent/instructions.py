@@ -6,6 +6,37 @@ from typing import Optional
 from dm2.core.artifacts.graph import ArtifactGraph
 from dm2.core.knowledge.api import KnowledgeAPI
 
+#: Diagram output channels for diagram-bearing views.
+DIAGRAM_OUTPUT_MERMAID = "mermaid"
+DIAGRAM_OUTPUT_SVG = "svg"
+
+
+def _view_config(key: str, default):
+    """Read a ``views.*`` config value, falling back to ``default``.
+
+    The import is function-local on purpose: ``dm2.core`` shares a dependency
+    level with ``dm2.config`` and must stay importable in isolation (see
+    ``core/pedigree/completeness.py`` for the same pattern). Outside a dm2
+    project — or with a broken config file — the documented defaults still
+    apply, because instruction generation must never fail on config.
+    """
+    try:
+        from dm2.config.manager import get
+        return get(key, default)
+    except Exception:
+        return default
+
+
+def _mermaid_enabled() -> bool:
+    """`views.include_mermaid` — whether to inject an inline Mermaid section."""
+    return bool(_view_config("views.include_mermaid", True))
+
+
+def _diagram_output() -> str:
+    """`views.diagram_output` — ``mermaid`` (default) or ``svg``; unknown falls back."""
+    value = str(_view_config("views.diagram_output", DIAGRAM_OUTPUT_MERMAID)).strip().lower()
+    return DIAGRAM_OUTPUT_SVG if value == DIAGRAM_OUTPUT_SVG else DIAGRAM_OUTPUT_MERMAID
+
 
 @dataclass
 class InstructionContext:
@@ -173,6 +204,10 @@ class InstructionBuilder:
         if rep and rep in REPRESENTATION_LABELS:
             rules.append(f"该视图必须以{REPRESENTATION_LABELS[rep]}形式呈现")
 
+        # Diagram output channel rule
+        if rep in REPRESENTATION_TO_MERMAID and _diagram_output() == DIAGRAM_OUTPUT_SVG:
+            rules.append("图类内容以独立 SVG 绘制并以图片引用嵌入，不使用内联 Mermaid")
+
         # Model category rule
         cat = getattr(view, 'model_category', None)
         if cat and cat in MODEL_CATEGORY_LABELS:
@@ -189,14 +224,21 @@ class InstructionBuilder:
         return rules
 
     def _build_template_from_metadata(self, view) -> dict:
-        """Generate template sections from view metadata, with Mermaid injection for diagram views."""
+        """Generate template sections from view metadata, injecting the diagram section."""
         sections = list(getattr(view, 'sections', []) or [])
 
-        # Inject Mermaid diagram section for views that need one
+        # Inject a diagram section for views that need one. Two channels:
+        # inline Mermaid (default) or an external SVG file referenced from the view.
         rep = getattr(view, 'representation', None)
         mermaid_type = REPRESENTATION_TO_MERMAID.get(rep) if rep else None
         if mermaid_type:
-            sections.append(f"## Mermaid 图表 (```{mermaid_type})")
+            if _diagram_output() == DIAGRAM_OUTPUT_SVG:
+                sections.append(
+                    f"## 图示（独立 SVG 文件：{view.view_id}.svg，"
+                    f"Markdown 用 ![..]({view.view_id}.svg) 引用）"
+                )
+            elif _mermaid_enabled():
+                sections.append(f"## Mermaid 图表 (```{mermaid_type})")
 
         return {
             "view_id": view.view_id,

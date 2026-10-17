@@ -13,6 +13,8 @@ DEFAULTS: dict[str, Any] = {
     "views": {
         "include_mermaid": True,
         "include_timestamps": True,
+        #: 图类视图的输出通道：mermaid（内联）| svg（独立文件，以图片引用嵌入）
+        "diagram_output": "mermaid",
     },
     "consistency": {
         "check_enabled": True,

@@ -86,9 +86,14 @@ def init(
 
     # 从内置模板复制默认配置（或生成）
     import yaml
+
+    from dm2.config.manager import DEFAULTS
+
+    # Derive the scaffold from the single source of truth (DEFAULTS) so new
+    # projects never pin stale values — only `trace` is init-specific.
     template_config = {
-        "views": {"include_mermaid": True, "include_timestamps": True},
-        "consistency": {"check_enabled": True, "strict_mode": False},
+        "views": dict(DEFAULTS["views"]),
+        "consistency": dict(DEFAULTS["consistency"]),
         "trace": {"enabled": True},
     }
     if vault:
@@ -1051,6 +1056,11 @@ def validate(
     # Legacy prose heuristics run second
     checker = ConsistencyChecker()
     issues = checker.check_views(views_data)
+
+    # Representation conformance: does each view honour the `representation`
+    # it declares in views.yaml? (Mermaid presence/type, or an external figure.)
+    from dm2.reasoning.representation import RepresentationChecker
+    issues.extend(RepresentationChecker().check(views_data))
 
     # Pedigree-gated verified transition first: it appends the fact-layer
     # modification records that this run then reports.
