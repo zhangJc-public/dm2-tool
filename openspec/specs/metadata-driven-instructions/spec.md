@@ -1,7 +1,9 @@
 ## Purpose
 
 InstructionBuilder generates DoDAF compliance rules and template sections dynamically from view metadata, eliminating hardcoded VIEW_RULES.
+
 ## Requirements
+
 ### Requirement: InstructionBuilder generates rules from view metadata
 The `InstructionBuilder.build_view_instructions()` method SHALL generate DoDAF compliance rules dynamically from the view's metadata fields, prioritizing metadata over hardcoded rules.
 
@@ -31,6 +33,27 @@ The `InstructionBuilder` SHALL use the view's `sections` field as the primary so
 #### Scenario: Mermaid section injected for diagram views only
 - **WHEN** `build_view_instructions` is called for OV-6b with `representation: state-diagram`
 - **THEN** `template.sections` SHALL include a Mermaid diagram section with `stateDiagram-v2` syntax hint
+
+#### Scenario: Inline Mermaid suppressed by configuration
+- **WHEN** the project config sets `views.include_mermaid: false`
+- **AND** `build_view_instructions` is called for a view whose `representation` maps to a Mermaid type
+- **THEN** `template.sections` SHALL NOT contain a "## Mermaid 图表" section
+- **AND** the view's own `sections` SHALL otherwise be unchanged
+
+#### Scenario: External figure channel under svg diagram output
+- **WHEN** the project config sets `views.diagram_output: svg`
+- **AND** `build_view_instructions` is called for a view whose `representation` maps to a Mermaid type
+- **THEN** `template.sections` SHALL contain a section naming an independent SVG file for that view
+- **AND** `template.sections` SHALL NOT contain a Mermaid section
+- **AND** `rules` SHALL state that diagram content is drawn as standalone SVG rather than inline Mermaid
+
+#### Scenario: Unknown diagram_output falls back to Mermaid
+- **WHEN** the project config sets `views.diagram_output` to a value other than `mermaid` or `svg`
+- **THEN** the builder SHALL behave as if the value were `mermaid`
+
+#### Scenario: Diagram output ignored for diagram-free views
+- **WHEN** `views.diagram_output: svg` and `build_view_instructions` is called for a view with `representation: table`
+- **THEN** `template.sections` SHALL contain neither a Mermaid section nor a figure section
 
 ### Requirement: Fallback to hardcoded rules when metadata missing
 When a view lacks the new metadata fields (e.g., loaded from an unenhanced views.yaml), the InstructionBuilder SHALL fall back to the existing VIEW_RULES hardcoded dictionary and generic template.
@@ -86,4 +109,3 @@ associations per view so AI agents can query view requirements directly
   `activityPartOfCapability` (Activity ─▶ Capability) and
   `activityMapsToCapabilityType` (Activity ─▶ CapabilityType) with endpoint
   types
-
