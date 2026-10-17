@@ -127,6 +127,59 @@ class TestActivityPerformerBinding:
     def test_empty_input_yields_no_issues(self, checker):
         assert checker.check_views({}) == []
 
+    def test_table_rows_with_performers_are_bound(self, checker):
+        ov5b = (
+            "| 活动 | 输入 | 输出 | 执行者 | 前置条件 |\n"
+            "|---|---|---|---|---|\n"
+            "| A1 侦测探测 | 信号 | 点迹 | 阵地 | 设备在线 |\n"
+        )
+        issues = checker.check_views({"OV-5a": "x", "OV-5b": ov5b})
+
+        assert not [i for i in issues if i.issue_type == "unbound_activity"]
+
+    def test_table_row_without_a_performer_is_reported(self, checker):
+        ov5b = (
+            "| 活动 | 输入 | 输出 | 执行者 | 前置条件 |\n"
+            "|---|---|---|---|---|\n"
+            "| A1 侦测探测 | 信号 | 点迹 |  | 设备在线 |\n"
+        )
+        issues = checker.check_views({"OV-5a": "x", "OV-5b": ov5b})
+
+        unbound = [i for i in issues if i.issue_type == "unbound_activity"]
+        assert unbound
+        assert unbound[0].severity is IssueSeverity.ERROR
+        assert "A1" in unbound[0].suggestion
+
+    def test_mermaid_label_with_a_performer_is_bound(self, checker):
+        ov5b = '    A1["A1 侦测探测<br/>执行者：阵地<br/>输入：信号"]\n'
+        issues = checker.check_views({"OV-5a": "x", "OV-5b": ov5b})
+
+        assert not [i for i in issues if i.issue_type == "unbound_activity"]
+
+    def test_mermaid_label_with_an_empty_performer_is_reported(self, checker):
+        ov5b = '    A1["A1 侦测探测<br/>执行者：<br/>输入：信号"]\n'
+        issues = checker.check_views({"OV-5a": "x", "OV-5b": ov5b})
+
+        assert [i for i in issues if i.issue_type == "unbound_activity"]
+
+    def test_untracked_ov5a_leaves_are_not_reported(self, checker):
+        """OV-5a decomposes further than OV-5b tracks; that is not a defect."""
+        ov5a = 'A0 --> A1["A1 侦测探测"]\nA1 --> A11["A1.1 雷达探测"]\n'
+        ov5b = "| 活动 | 执行者 |\n|---|---|\n| A1 侦测探测 | 阵地 |\n"
+        issues = checker.check_views({"OV-5a": ov5a, "OV-5b": ov5b})
+
+        assert not [i for i in issues if i.issue_type == "unbound_activity"]
+
+    def test_mermaid_node_identifier_is_not_an_activity(self, checker):
+        """`A53["A5.3 ..."]` names a node; the activity is the label's `A5.3`."""
+        ov5b = '    X --> A53["A5.3 双人确认"]\n'
+        issues = checker.check_views({"OV-5a": "x", "OV-5b": ov5b})
+
+        unbound = [i for i in issues if i.issue_type == "unbound_activity"]
+        assert unbound
+        assert "A5.3" in unbound[0].suggestion
+        assert "A53" not in unbound[0].suggestion
+
 
 class TestResourceFlowIntegrity:
     def test_orphan_resources_are_reported_as_info(self, checker):
@@ -138,6 +191,13 @@ class TestResourceFlowIntegrity:
 
     def test_no_ov2_means_no_resource_check(self, checker):
         issues = checker.check_views({"OV-5a": "x"})
+
+        assert not [i for i in issues if i.issue_type == "orphan_resource"]
+
+    def test_bilingual_title_is_not_a_resource(self, checker):
+        """The English "Resource" in an H1 title is not a resource name."""
+        ov2 = "# OV-2 作战资源流描述（Operational Resource Flow Description）\n\n## 1. 资源流拓扑\n"
+        issues = checker.check_views({"OV-2": ov2})
 
         assert not [i for i in issues if i.issue_type == "orphan_resource"]
 
