@@ -5,6 +5,12 @@ from typing import Optional
 
 from dm2.core.artifacts.graph import ArtifactGraph
 from dm2.core.knowledge.api import KnowledgeAPI
+from dm2.kernel.formats import (
+    default_format,
+    format_extension,
+    is_compatible,
+    preferred_non_mermaid,
+)
 
 #: Diagram output channels for diagram-bearing views.
 DIAGRAM_OUTPUT_MERMAID = "mermaid"
@@ -33,9 +39,94 @@ def _mermaid_enabled() -> bool:
 
 
 def _diagram_output() -> str:
-    """`views.diagram_output` — ``mermaid`` (default) or ``svg``; unknown falls back."""
+    """`views.diagram_output` (deprecated) — ``mermaid`` or ``svg``."""
     value = str(_view_config("views.diagram_output", DIAGRAM_OUTPUT_MERMAID)).strip().lower()
     return DIAGRAM_OUTPUT_SVG if value == DIAGRAM_OUTPUT_SVG else DIAGRAM_OUTPUT_MERMAID
+
+
+def resolve_view_format(view_id: str, representation: Optional[str]) -> tuple[str, str]:
+    """Resolve ``(format, source)`` for one view.
+
+    A view's format is a project decision layered over a per-representation
+    default; it is *not* derived from the representation alone. Order:
+
+    1. ``views.formats.overrides.<view id>``
+    2. ``views.formats.default``
+    3. legacy ``views.diagram_output: svg``
+    4. the representation's default format
+
+    Incompatible values are skipped rather than applied, so a typo degrades to
+    the default instead of producing a view dm2 cannot render.
+    """
+    overrides = _view_config("views.formats.overrides", {}) or {}
+    if isinstance(overrides, dict):
+        candidate = overrides.get(view_id)
+        if candidate and is_compatible(representation, candidate):
+            return str(candidate), "override"
+
+    # A project-wide default shifts how *diagrams* are carried; prose views keep
+    # their markdown form unless explicitly overridden. Without this guard,
+    # `formats.default: svg` would drag every `table` view into a lossy SVG.
+    project_default = _view_config("views.formats.default", None)
+    if (
+        project_default
+        and default_format(representation) != "markdown"
+        and is_compatible(representation, project_default)
+    ):
+        return str(project_default), "project_default"
+
+    # Legacy switch: only a non-default value is honoured, and only for the
+    # diagram representations it used to govern — otherwise `table` (which
+    # tolerates SVG lossily) would be dragged along. The new pictorial→svg
+    # default still applies when a project never set the key.
+    if (
+        _diagram_output() == DIAGRAM_OUTPUT_SVG
+        and representation in REPRESENTATION_TO_MERMAID
+        and is_compatible(representation, "svg")
+    ):
+        return "svg", "legacy_diagram_output"
+
+    fmt = default_format(representation)
+
+    # Legacy switch: `include_mermaid: false` means "anything but Mermaid".
+    # Map it onto a native alternative rather than suppressing the diagram.
+    if fmt == "mermaid" and not _mermaid_enabled():
+        alternative = preferred_non_mermaid(representation)
+        if alternative:
+            return alternative, "legacy_include_mermaid"
+    return fmt, "representation_default"
+
+
+def _diagram_section(view_id: str, representation: Optional[str], fmt: str) -> Optional[str]:
+    """The section that tells the agent how to carry the diagram, if any."""
+    if fmt == "mermaid":
+        mermaid_type = REPRESENTATION_TO_MERMAID.get(representation)
+        return f"## Mermaid 图表 (```{mermaid_type})" if mermaid_type else None
+    if fmt == "markdown":
+        return None  # text / table content lives in the view's own sections
+    if fmt == "svg":
+        return (f"## 图示（独立 SVG 文件：{view_id}.svg，"
+                f"Markdown 用 ![..]({view_id}.svg) 引用）")
+    if fmt == "png":
+        return f"## 图示（外部 PNG 文件：{view_id}.png，以图片引用嵌入）"
+    if fmt == "html":
+        return f"## 输出（HTML 文件：{view_id}.html）"
+    ext = format_extension(fmt)
+    return f"## 外部产物（{fmt} 文件：{view_id}.{ext}，在正文中引用并说明来源）"
+
+
+def _format_rule(representation: Optional[str], fmt: str) -> Optional[str]:
+    """The rule that states the carrier, unless the carrier is the default prose."""
+    if fmt in ("mermaid", "markdown"):
+        return None
+    if fmt == "svg":
+        return "图类内容以独立 SVG 绘制并以图片引用嵌入，不使用内联 Mermaid"
+    if fmt == "png":
+        return "图示以外部 PNG 图片引用嵌入，不使用内联 Mermaid"
+    if fmt == "html":
+        return "该视图以 HTML 文件交付"
+    ext = format_extension(fmt)
+    return f"该视图的 {fmt} 产物由外部提供（{ext} 文件），正文中须引用并说明来源"
 
 
 @dataclass
@@ -204,9 +295,11 @@ class InstructionBuilder:
         if rep and rep in REPRESENTATION_LABELS:
             rules.append(f"该视图必须以{REPRESENTATION_LABELS[rep]}形式呈现")
 
-        # Diagram output channel rule
-        if rep in REPRESENTATION_TO_MERMAID and _diagram_output() == DIAGRAM_OUTPUT_SVG:
-            rules.append("图类内容以独立 SVG 绘制并以图片引用嵌入，不使用内联 Mermaid")
+        # Carrier rule (format axis), when it differs from the default prose
+        fmt, _ = resolve_view_format(view.view_id, rep)
+        format_rule = _format_rule(rep, fmt)
+        if format_rule:
+            rules.append(format_rule)
 
         # Model category rule
         cat = getattr(view, 'model_category', None)
@@ -224,26 +317,22 @@ class InstructionBuilder:
         return rules
 
     def _build_template_from_metadata(self, view) -> dict:
-        """Generate template sections from view metadata, injecting the diagram section."""
+        """Generate template sections from view metadata, injecting the carrier section."""
         sections = list(getattr(view, 'sections', []) or [])
 
-        # Inject a diagram section for views that need one. Two channels:
-        # inline Mermaid (default) or an external SVG file referenced from the view.
-        rep = getattr(view, 'representation', None)
-        mermaid_type = REPRESENTATION_TO_MERMAID.get(rep) if rep else None
-        if mermaid_type:
-            if _diagram_output() == DIAGRAM_OUTPUT_SVG:
-                sections.append(
-                    f"## 图示（独立 SVG 文件：{view.view_id}.svg，"
-                    f"Markdown 用 ![..]({view.view_id}.svg) 引用）"
-                )
-            elif _mermaid_enabled():
-                sections.append(f"## Mermaid 图表 (```{mermaid_type})")
+        representation = getattr(view, 'representation', None)
+        fmt, source = resolve_view_format(view.view_id, representation)
+        carrier = _diagram_section(view.view_id, representation, fmt)
+        if carrier:
+            sections.append(carrier)
 
         return {
             "view_id": view.view_id,
             "view_name": view.view_name,
             "viewpoint": view.viewpoint,
+            "representation": representation,
+            "format": fmt,
+            "format_source": source,
             "sections": sections,
             "required_fields": getattr(view, 'required_fields', []) or [],
         }

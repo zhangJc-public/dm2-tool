@@ -8,6 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- **视图载体格式成为一等概念（`views.formats`）**：`representation`（传达什么信息结构）与
+  `format`（用什么载体）拆为两个正交轴，二者由**兼容矩阵**关联，而不是一对一映射。
+  - `views.formats.overrides.<View-ID>` 按视图指定载体；`views.formats.default` 平移
+    图类视图的默认载体（不影响 table/text）
+  - `dm2 instructions` 的 `template` 新增 `representation` / `format` / `format_source`；
+    段落与规则按载体分派（markdown / mermaid / svg / png / html / xlsx / csv / mp4）
+  - 外部载体（html / xlsx / csv / mp4）由外部产出并在视图中引用，规则中明确说明
+  - 视频是**载体**而非表征：`pictorial` × `mp4` 可声明，`table` × `mp4` 不可
 - **`views.diagram_output`**：图类视图的输出通道，取值 `mermaid`（默认，内联）或 `svg`
   （独立文件，以图片引用嵌入）。设为 `svg` 时不再注入 `## Mermaid 图表` 段落，改注入
   「独立 SVG 文件」段落并同步调整规则；`diagram_output` 的优先级高于 `include_mermaid`。
@@ -17,6 +25,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   （`.svg` / `.png` / `.jpg`）视为满足图示要求，因此以独立图绘制的项目不会被误报。
 
 ### Changed
+- **BREAKING（行为）**：`pictorial` 视图（如 OV-1）的默认载体由内联 Mermaid 改为独立 SVG ——
+  概念图的语义在版面本身，Mermaid 节点图会把它压平成关系网络。需要旧行为的项目配置
+  `views.formats.overrides.OV-1: mermaid` 即可。
+- `views.include_mermaid` 与 `views.diagram_output` 标记为**已废弃**（仍生效）：
+  `include_mermaid: false` 映射到该表征的原生非 Mermaid 载体（图类为 svg）；
+  `diagram_output: svg` 等价于对图类视图设 `formats.default: svg`。
 - `dm2 init` 的配置骨架改为从 `config.manager.DEFAULTS` 派生，不再手抄一份默认值
   （原手抄字典已漏掉 `trace.enabled`）。新项目会显式写入 `views.diagram_output`。
 
