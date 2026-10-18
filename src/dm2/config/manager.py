@@ -11,10 +11,17 @@ from typing import Any, Optional
 # ── 内置默认配置 ──
 DEFAULTS: dict[str, Any] = {
     "views": {
+        #: 已废弃 —— 请改用 views.formats（"不要 Mermaid" 会被映射到原生替代载体）
         "include_mermaid": True,
         "include_timestamps": True,
-        #: 图类视图的输出通道：mermaid（内联）| svg（独立文件，以图片引用嵌入）
+        #: 已废弃 —— 请改用 views.formats.default
         "diagram_output": "mermaid",
+        #: 视图载体格式的解析入口。default 作用于所有兼容的视图，
+        #: overrides 按视图 ID 精确覆盖；两者都优先于按表征派生的默认值。
+        "formats": {
+            "default": None,
+            "overrides": {},
+        },
     },
     "consistency": {
         "check_enabled": True,

@@ -85,15 +85,18 @@ def init(
     (target / ".dm2").mkdir(parents=True, exist_ok=True)
 
     # 从内置模板复制默认配置（或生成）
+    import copy
+
     import yaml
 
     from dm2.config.manager import DEFAULTS
 
     # Derive the scaffold from the single source of truth (DEFAULTS) so new
-    # projects never pin stale values — only `trace` is init-specific.
+    # projects never pin stale values — only `trace` is init-specific. Deep copy
+    # because `views.formats` is nested and must not alias the module default.
     template_config = {
-        "views": dict(DEFAULTS["views"]),
-        "consistency": dict(DEFAULTS["consistency"]),
+        "views": copy.deepcopy(DEFAULTS["views"]),
+        "consistency": copy.deepcopy(DEFAULTS["consistency"]),
         "trace": {"enabled": True},
     }
     if vault:

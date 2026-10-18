@@ -1,17 +1,25 @@
-"""`views.include_mermaid` / `views.diagram_output` must actually steer the
-diagram section the instruction builder injects.
+"""`views.formats` decides a view's carrier; `views.include_mermaid` and
+`views.diagram_output` remain as deprecated aliases.
 
-Both keys were documented (`README.md`, `docs/readme.md`) but never read: the
-Mermaid section was appended unconditionally, so `views.include_mermaid: false`
-silently did nothing. These tests pin the contract.
+A view has two independent properties:
 
-Config resolution reads the project config from the *current working directory*
-at call time, hence the `tmp_dm2_project_cwd` fixture.
+* ``representation`` — what information structure it conveys (fixed by the view)
+* ``format`` — how that structure is carried (a project decision)
+
+These tests pin the resolution order, the per-representation defaults and the
+legacy mappings.
 """
 import pytest
 
 from dm2.core.agent.instructions import InstructionBuilder
 from dm2.core.knowledge.api import KnowledgeAPI
+
+#: state-diagram → mermaid by default
+MERMAID_VIEW = "OV-6b"
+#: table → markdown by default
+TABLE_VIEW = "OV-3"
+#: pictorial → svg by default
+PICTORIAL_VIEW = "OV-1"
 
 
 @pytest.fixture(scope="module")
@@ -23,49 +31,123 @@ def _write_config(root, body: str) -> None:
     (root / ".dm2" / "config.yaml").write_text(body, encoding="utf-8")
 
 
-def _sections(builder, view_id: str = "OV-1") -> list[str]:
-    return builder.build_view_instructions(view_id, "测试").template["sections"]
+def _template(builder, view_id: str) -> dict:
+    return builder.build_view_instructions(view_id, "测试").template
 
 
-class TestIncludeMermaid:
-    def test_default_config_injects_mermaid(self, builder, tmp_dm2_project_cwd):
-        assert any("Mermaid" in s for s in _sections(builder))
-
-    def test_false_suppresses_the_mermaid_section(self, builder, tmp_dm2_project_cwd):
-        _write_config(tmp_dm2_project_cwd, "views:\n  include_mermaid: false\n")
-        assert not any("Mermaid" in s for s in _sections(builder))
-
-    def test_table_view_never_gets_a_diagram(self, builder, tmp_dm2_project_cwd):
-        assert not any("Mermaid" in s for s in _sections(builder, "OV-3"))
+def _sections(builder, view_id: str) -> list[str]:
+    return _template(builder, view_id)["sections"]
 
 
-class TestDiagramOutput:
-    def test_svg_channel_replaces_mermaid(self, builder, tmp_dm2_project_cwd):
-        _write_config(tmp_dm2_project_cwd, "views:\n  diagram_output: svg\n")
-        sections = _sections(builder)
-        assert not any("Mermaid" in s for s in sections)
-        assert any("SVG" in s for s in sections)
+class TestRepresentationDefaults:
+    def test_diagram_views_default_to_mermaid(self, builder, tmp_dm2_project_cwd):
+        template = _template(builder, MERMAID_VIEW)
+        assert template["format"] == "mermaid"
+        assert template["format_source"] == "representation_default"
+        assert any("Mermaid" in s for s in template["sections"])
 
-    def test_svg_channel_adds_an_explicit_rule(self, builder, tmp_dm2_project_cwd):
-        _write_config(tmp_dm2_project_cwd, "views:\n  diagram_output: svg\n")
-        rules = builder.build_view_instructions("OV-1", "测试").rules
-        assert any("SVG" in r for r in rules)
+    def test_table_views_default_to_markdown(self, builder, tmp_dm2_project_cwd):
+        template = _template(builder, TABLE_VIEW)
+        assert template["format"] == "markdown"
+        assert not any("Mermaid" in s or "SVG" in s for s in template["sections"])
 
-    def test_unknown_value_falls_back_to_mermaid(self, builder, tmp_dm2_project_cwd):
-        _write_config(tmp_dm2_project_cwd, "views:\n  diagram_output: bogus\n")
-        assert any("Mermaid" in s for s in _sections(builder))
+    def test_pictorial_defaults_to_svg(self, builder, tmp_dm2_project_cwd):
+        """A concept graphic carries meaning in layout; Mermaid flattens it."""
+        template = _template(builder, PICTORIAL_VIEW)
+        assert template["representation"] == "pictorial"
+        assert template["format"] == "svg"
+        assert any("SVG" in s for s in template["sections"])
+        assert not any("Mermaid" in s for s in template["sections"])
 
-    def test_svg_channel_leaves_diagram_free_views_alone(self, builder, tmp_dm2_project_cwd):
-        _write_config(tmp_dm2_project_cwd, "views:\n  diagram_output: svg\n")
-        sections = _sections(builder, "OV-3")
-        assert not any("SVG" in s or "Mermaid" in s for s in sections)
+    def test_template_always_reports_the_resolved_format(self, builder, tmp_dm2_project_cwd):
+        for view_id in (MERMAID_VIEW, TABLE_VIEW, PICTORIAL_VIEW):
+            template = _template(builder, view_id)
+            assert template["format"]
+            assert template["format_source"]
 
-    def test_svg_wins_over_include_mermaid(self, builder, tmp_dm2_project_cwd):
-        """Explicit `diagram_output: svg` is not overridden by include_mermaid."""
+
+class TestFormatOverrides:
+    def test_per_view_override(self, builder, tmp_dm2_project_cwd):
         _write_config(
             tmp_dm2_project_cwd,
-            "views:\n  diagram_output: svg\n  include_mermaid: true\n",
+            "views:\n  formats:\n    overrides:\n      OV-1: mermaid\n",
         )
-        sections = _sections(builder)
-        assert not any("Mermaid" in s for s in sections)
-        assert any("SVG" in s for s in sections)
+        template = _template(builder, PICTORIAL_VIEW)
+        assert template["format"] == "mermaid"
+        assert template["format_source"] == "override"
+        assert any("Mermaid" in s for s in template["sections"])
+
+    def test_project_default_shifts_diagram_views(self, builder, tmp_dm2_project_cwd):
+        _write_config(tmp_dm2_project_cwd, "views:\n  formats:\n    default: svg\n")
+        template = _template(builder, MERMAID_VIEW)
+        assert template["format"] == "svg"
+        assert template["format_source"] == "project_default"
+        assert any("SVG" in s for s in template["sections"])
+
+    def test_project_default_leaves_prose_views_alone(self, builder, tmp_dm2_project_cwd):
+        """`default: svg` shifts diagrams; a table view stays markdown."""
+        _write_config(tmp_dm2_project_cwd, "views:\n  formats:\n    default: svg\n")
+        assert _template(builder, TABLE_VIEW)["format"] == "markdown"
+
+    def test_incompatible_override_is_ignored(self, builder, tmp_dm2_project_cwd):
+        _write_config(
+            tmp_dm2_project_cwd,
+            "views:\n  formats:\n    overrides:\n      OV-3: mermaid\n",
+        )
+        template = _template(builder, TABLE_VIEW)
+        assert template["format"] == "markdown"
+        assert template["format_source"] == "representation_default"
+
+    def test_override_beats_project_default(self, builder, tmp_dm2_project_cwd):
+        _write_config(
+            tmp_dm2_project_cwd,
+            "views:\n  formats:\n    default: svg\n    overrides:\n      OV-6b: mermaid\n",
+        )
+        template = _template(builder, MERMAID_VIEW)
+        assert template["format"] == "mermaid"
+        assert template["format_source"] == "override"
+
+
+class TestExternalFormats:
+    def test_external_format_gets_an_artifact_section(self, builder, tmp_dm2_project_cwd):
+        _write_config(
+            tmp_dm2_project_cwd,
+            "views:\n  formats:\n    overrides:\n      OV-3: xlsx\n",
+        )
+        template = _template(builder, TABLE_VIEW)
+        assert template["format"] == "xlsx"
+        assert any("xlsx" in s for s in template["sections"])
+        rules = builder.build_view_instructions(TABLE_VIEW, "测试").rules
+        assert any("外部提供" in rule for rule in rules)
+
+    def test_video_is_a_valid_pictorial_carrier(self, builder, tmp_dm2_project_cwd):
+        _write_config(
+            tmp_dm2_project_cwd,
+            "views:\n  formats:\n    overrides:\n      OV-1: mp4\n",
+        )
+        template = _template(builder, PICTORIAL_VIEW)
+        assert template["format"] == "mp4"
+        assert any("mp4" in s for s in template["sections"])
+
+
+class TestLegacyKeys:
+    def test_include_mermaid_false_maps_to_a_native_alternative(
+        self, builder, tmp_dm2_project_cwd
+    ):
+        _write_config(tmp_dm2_project_cwd, "views:\n  include_mermaid: false\n")
+        template = _template(builder, MERMAID_VIEW)
+        assert template["format"] == "svg"
+        assert template["format_source"] == "legacy_include_mermaid"
+        assert not any("Mermaid" in s for s in template["sections"])
+
+    def test_diagram_output_svg_still_works(self, builder, tmp_dm2_project_cwd):
+        _write_config(tmp_dm2_project_cwd, "views:\n  diagram_output: svg\n")
+        template = _template(builder, MERMAID_VIEW)
+        assert template["format"] == "svg"
+        assert template["format_source"] == "legacy_diagram_output"
+
+    def test_diagram_output_does_not_drag_table_views_along(
+        self, builder, tmp_dm2_project_cwd
+    ):
+        _write_config(tmp_dm2_project_cwd, "views:\n  diagram_output: svg\n")
+        assert _template(builder, TABLE_VIEW)["format"] == "markdown"
