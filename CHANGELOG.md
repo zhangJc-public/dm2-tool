@@ -45,6 +45,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   （原手抄字典已漏掉 `trace.enabled`）。新项目会显式写入 `views.diagram_output`。
 
 ### Fixed
+- **R5「必要关联」跨视图聚合**：`check_view_required` 从**所有笔记**累计已声明关联，再按视图比对 ——
+  于是任意一个视图的 frontmatter 会让**全项目**的 R5 告警消失。实测：给一个无关视图声明全部槽位后，
+  SV-6 与 CV-1 的问题数由 1 变成 0。该缺陷在「全项目都没有 frontmatter」时不显现，一旦某个视图补了
+  frontmatter 就会静默失效。现改为**只读取目标视图自己的笔记**；vault 笔记以文件名 stem 为键时按
+  分隔符前缀容错（`OV-5b 作战活动分解` 命中 `OV-5b`，`OV-20` 不会命中 `OV-2`）。
+- **删除死代码** `ConsistencyChecker._extract_performers`：定义后从未被调用。
 - **两条 prose-heuristic 检查的活动 / 资源提取器误报**：
   - `unbound_activity`（ERROR）报出「123 个未分配执行者的活动」。`_extract_activities` 用
     `A\d+[:\s]+` 抓取，把 Mermaid 语法与表格单元格一并吞入；`_extract_bound_activities` 对

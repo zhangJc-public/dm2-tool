@@ -225,21 +225,6 @@ class ConsistencyChecker:
                     declared.append(activity_id)
         return declared
 
-    def _extract_performers(self, content: str) -> List[str]:
-        """提取执行者列表"""
-        import re
-        patterns = [
-            r'(?:Performer|执行者|系统|组织)[:\s]+([^\n]+)',
-            r'\|\s*([^\|]+)\s*\|.*(?:Performer|执行者)',
-        ]
-
-        performers = []
-        for p in patterns:
-            matches = re.findall(p, content)
-            performers.extend([m.strip() for m in matches if m.strip()])
-
-        return list(set(performers))
-
     def _extract_bound_activities(self, content: str) -> set:
         """Activity IDs in OV-5b that carry a performer, in either authoring form."""
         bound: set = set()

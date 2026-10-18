@@ -39,6 +39,22 @@ CONFORMANCE_RULE_BY_ISSUE_TYPE = {
 }
 
 
+def _note_for_view(view_id: str, notes: dict[str, dict]) -> dict:
+    """The structured note that belongs to ``view_id``.
+
+    ``dm2 validate`` keys view notes by view id. Vault notes are keyed by
+    filename stem, which may carry the view name after the id
+    (``OV-2 作战资源流描述``), so a separator-delimited prefix also matches —
+    the separators keep ``OV-2`` from matching ``OV-20``.
+    """
+    if view_id in notes:
+        return notes[view_id]
+    for key, frontmatter in notes.items():
+        if key.startswith((f"{view_id} ", f"{view_id}-", f"{view_id}_")):
+            return frontmatter
+    return {}
+
+
 @dataclass
 class ConformanceIssue:
     """标准符合性问题（元模型层）"""
@@ -240,7 +256,7 @@ class MetamodelConformanceChecker:
 
     # ── view-level check ─────────────────────────────────────────────────
     def check_view_required(self, view_id: str, notes: dict[str, dict]) -> list[ConformanceIssue]:
-        """Necessary associations of a view absent from the structured data."""
+        """Necessary associations of a view absent from *its own* structured note."""
         self.last_ran_rules.add("R5")
         spec = self.index.get_view_spec(view_id)
         if not spec:
@@ -248,10 +264,10 @@ class MetamodelConformanceChecker:
         necessary = {a.get("label") for a in spec.get("necessary_associations", []) if a.get("label")}
         if not necessary:
             return []
-        present = set()
-        for fm in notes.values():
-            for slot in (fm.get("relationships") or {}):
-                present.add(slot)
+        # Only this view's own note counts. Aggregating across every note would
+        # let a single view's frontmatter satisfy every other view's required
+        # associations, which makes the rule unable to report anything.
+        present = set((_note_for_view(view_id, notes).get("relationships") or {}))
         missing = sorted(necessary - present)
         if not missing:
             return []
