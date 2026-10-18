@@ -157,18 +157,6 @@ def default_format(representation: Optional[str]) -> str:
     return "markdown"
 
 
-def preferred_non_mermaid(representation: Optional[str]) -> Optional[str]:
-    """A native carrier other than Mermaid, or ``None``.
-
-    Used by the legacy ``include_mermaid: false`` switch, which only ever
-    consults this when the resolved format is Mermaid — i.e. for diagram views.
-    """
-    for fmt, cap in capabilities(representation).items():
-        if fmt != "mermaid" and cap == NATIVE:
-            return fmt
-    return None
-
-
 def format_extension(fmt: str) -> str:
     """File extension for an artefact of ``fmt``."""
     return {
@@ -228,8 +216,7 @@ def resolve_view_format(view_id: str, representation: Optional[str]) -> tuple[st
 
     1. ``views.formats.overrides.<view id>``
     2. ``views.formats.default`` (diagram views only)
-    3. legacy ``views.diagram_output: svg`` (diagram views only)
-    4. the representation's default format
+    3. the representation's default format
 
     Incompatible values are skipped rather than applied, so a typo degrades to
     the default instead of producing a view dm2 cannot render.
@@ -250,17 +237,4 @@ def resolve_view_format(view_id: str, representation: Optional[str]) -> tuple[st
     if project_default and is_diagram and is_compatible(representation, project_default):
         return str(project_default), "project_default"
 
-    # Legacy switch: only a non-default value is honoured, and only for diagram
-    # views — otherwise `table` (which tolerates SVG lossily) would be dragged
-    # along. The pictorial→svg default still applies when the key was never set.
-    legacy_output = str(_view_config("views.diagram_output", "mermaid")).strip().lower()
-    if legacy_output == "svg" and is_diagram and is_compatible(representation, "svg"):
-        return "svg", "legacy_diagram_output"
-
-    # Legacy switch: `include_mermaid: false` means "anything but Mermaid".
-    # Map it onto a native alternative rather than suppressing the diagram.
-    if derived == "mermaid" and not bool(_view_config("views.include_mermaid", True)):
-        alternative = preferred_non_mermaid(representation)
-        if alternative:
-            return alternative, "legacy_include_mermaid"
     return derived, "representation_default"

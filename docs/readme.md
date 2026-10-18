@@ -454,7 +454,7 @@ dm2 config -p                     # 仅显示项目级配置
 dm2 config -r                     # 显示合并结果（同默认）
 ```
 
-支持嵌套键（点分隔）：`views.include_mermaid` 等。
+支持嵌套键（点分隔）：`views.formats.default` 等。
 
 ### `dm2 completion` — Shell 自动补全
 
@@ -793,9 +793,10 @@ ls dm2-changes/<name>/views/   # 生成的视图文件
 
 ```yaml
 views:
-  include_mermaid: true       # 图类视图注入内联 Mermaid 段落（false 则不注入）
   include_timestamps: true    # 生成视图中包含时间戳
-  diagram_output: mermaid     # 图类视图的输出通道：mermaid（内联）| svg（独立文件，以图片引用嵌入）
+  formats:                    # 视图载体格式：表征与载体是两个正交轴
+    default: null             # 图类视图的默认载体；null = 按表征派生（pictorial→svg，其余图类→mermaid）
+    overrides: {}             # 按视图覆盖，如 {OV-1: mermaid, SV-1: svg}
 
 consistency:
   check_enabled: true         # 启用手动一致性检查
