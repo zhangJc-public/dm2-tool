@@ -25,6 +25,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   （`.svg` / `.png` / `.jpg`）视为满足图示要求，因此以独立图绘制的项目不会被误报。
 
 ### Changed
+- **`dm2 validate` 改为按「表征 + 载体」组合校验视图**：`RepresentationChecker` 不再只看 Mermaid，
+  而是先解析每个视图的载体格式，再核对内容证据。
+  - `markdown` → 不得含 Mermaid（作为插图引用的图文件允许）
+  - `mermaid` → 图型须与表征匹配；声明 mermaid 却只放了独立图文件也算不匹配
+  - `svg` / `png` / `html` / `xlsx` / `csv` / `mp4` → 正文须引用对应扩展名的产物
+  - 新增问题类型 `representation_missing_artifact`；其余沿用既有类型名
+  - 既有项目中「画了独立图但未声明载体」的视图会收到新的 WARNING（默认不阻断，
+    `consistency.strict_mode` 下升级为 ERROR），提示补 `views.formats.overrides`
+- **解析逻辑下沉**：`resolve_view_format` / `MERMAID_TYPE_BY_REPRESENTATION` /
+  `ARTEFACT_EXTENSIONS` 移入 `dm2.kernel.formats`，`instructions.py` 与校验器共用同一实现
 - **BREAKING（行为）**：`pictorial` 视图（如 OV-1）的默认载体由内联 Mermaid 改为独立 SVG ——
   概念图的语义在版面本身，Mermaid 节点图会把它压平成关系网络。需要旧行为的项目配置
   `views.formats.overrides.OV-1: mermaid` 即可。

@@ -179,3 +179,88 @@ def format_extension(fmt: str) -> str:
         "csv": "csv",
         "mp4": "mp4",
     }.get(fmt, fmt)
+
+
+#: Mermaid diagram type per representation. Only consulted when the resolved
+#: format *is* Mermaid; it is a detail of that carrier, not of the representation.
+MERMAID_TYPE_BY_REPRESENTATION: dict[str, str] = {
+    "node-link": "graph",
+    "tree": "graph",
+    "org-chart": "graph",
+    "flowchart": "flowchart",
+    "state-diagram": "stateDiagram",
+    "sequence-diagram": "sequenceDiagram",
+    "er-diagram": "erDiagram",
+    "pictorial": "graph",
+    "gantt": "gantt",
+}
+
+#: File extensions that satisfy each artefact format.
+ARTEFACT_EXTENSIONS: dict[str, tuple[str, ...]] = {
+    "svg": ("svg",),
+    "png": ("png", "jpg", "jpeg"),
+    "html": ("html",),
+    "xlsx": ("xlsx",),
+    "csv": ("csv",),
+    "mp4": ("mp4",),
+}
+
+
+def _view_config(key: str, default):
+    """Read a ``views.*`` config value, falling back to ``default``.
+
+    The import is function-local: ``dm2.kernel`` and ``dm2.config`` share a
+    dependency level and this module must stay importable in isolation. Outside
+    a dm2 project — or with a broken config — defaults still apply.
+    """
+    try:
+        from dm2.config.manager import get
+        return get(key, default)
+    except Exception:
+        return default
+
+
+def resolve_view_format(view_id: str, representation: Optional[str]) -> tuple[str, str]:
+    """Resolve ``(format, source)`` for one view.
+
+    A view's format is a project decision layered over a per-representation
+    default; it is *not* derived from the representation alone. Order:
+
+    1. ``views.formats.overrides.<view id>``
+    2. ``views.formats.default`` (diagram views only)
+    3. legacy ``views.diagram_output: svg`` (diagram views only)
+    4. the representation's default format
+
+    Incompatible values are skipped rather than applied, so a typo degrades to
+    the default instead of producing a view dm2 cannot render.
+    """
+    overrides = _view_config("views.formats.overrides", {}) or {}
+    if isinstance(overrides, dict):
+        candidate = overrides.get(view_id)
+        if candidate and is_compatible(representation, candidate):
+            return str(candidate), "override"
+
+    derived = default_format(representation)
+    is_diagram = derived != "markdown"
+
+    # A project-wide default shifts how *diagrams* are carried; prose views keep
+    # their markdown form unless explicitly overridden. Without this guard,
+    # `formats.default: svg` would drag every `table` view into a lossy SVG.
+    project_default = _view_config("views.formats.default", None)
+    if project_default and is_diagram and is_compatible(representation, project_default):
+        return str(project_default), "project_default"
+
+    # Legacy switch: only a non-default value is honoured, and only for diagram
+    # views — otherwise `table` (which tolerates SVG lossily) would be dragged
+    # along. The pictorial→svg default still applies when the key was never set.
+    legacy_output = str(_view_config("views.diagram_output", "mermaid")).strip().lower()
+    if legacy_output == "svg" and is_diagram and is_compatible(representation, "svg"):
+        return "svg", "legacy_diagram_output"
+
+    # Legacy switch: `include_mermaid: false` means "anything but Mermaid".
+    # Map it onto a native alternative rather than suppressing the diagram.
+    if derived == "mermaid" and not bool(_view_config("views.include_mermaid", True)):
+        alternative = preferred_non_mermaid(representation)
+        if alternative:
+            return alternative, "legacy_include_mermaid"
+    return derived, "representation_default"

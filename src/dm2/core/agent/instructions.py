@@ -6,101 +6,16 @@ from typing import Optional
 from dm2.core.artifacts.graph import ArtifactGraph
 from dm2.core.knowledge.api import KnowledgeAPI
 from dm2.kernel.formats import (
-    default_format,
+    MERMAID_TYPE_BY_REPRESENTATION,
     format_extension,
-    is_compatible,
-    preferred_non_mermaid,
+    resolve_view_format,
 )
-
-#: Diagram output channels for diagram-bearing views.
-DIAGRAM_OUTPUT_MERMAID = "mermaid"
-DIAGRAM_OUTPUT_SVG = "svg"
-
-
-def _view_config(key: str, default):
-    """Read a ``views.*`` config value, falling back to ``default``.
-
-    The import is function-local on purpose: ``dm2.core`` shares a dependency
-    level with ``dm2.config`` and must stay importable in isolation (see
-    ``core/pedigree/completeness.py`` for the same pattern). Outside a dm2
-    project — or with a broken config file — the documented defaults still
-    apply, because instruction generation must never fail on config.
-    """
-    try:
-        from dm2.config.manager import get
-        return get(key, default)
-    except Exception:
-        return default
-
-
-def _mermaid_enabled() -> bool:
-    """`views.include_mermaid` — whether to inject an inline Mermaid section."""
-    return bool(_view_config("views.include_mermaid", True))
-
-
-def _diagram_output() -> str:
-    """`views.diagram_output` (deprecated) — ``mermaid`` or ``svg``."""
-    value = str(_view_config("views.diagram_output", DIAGRAM_OUTPUT_MERMAID)).strip().lower()
-    return DIAGRAM_OUTPUT_SVG if value == DIAGRAM_OUTPUT_SVG else DIAGRAM_OUTPUT_MERMAID
-
-
-def resolve_view_format(view_id: str, representation: Optional[str]) -> tuple[str, str]:
-    """Resolve ``(format, source)`` for one view.
-
-    A view's format is a project decision layered over a per-representation
-    default; it is *not* derived from the representation alone. Order:
-
-    1. ``views.formats.overrides.<view id>``
-    2. ``views.formats.default``
-    3. legacy ``views.diagram_output: svg``
-    4. the representation's default format
-
-    Incompatible values are skipped rather than applied, so a typo degrades to
-    the default instead of producing a view dm2 cannot render.
-    """
-    overrides = _view_config("views.formats.overrides", {}) or {}
-    if isinstance(overrides, dict):
-        candidate = overrides.get(view_id)
-        if candidate and is_compatible(representation, candidate):
-            return str(candidate), "override"
-
-    # A project-wide default shifts how *diagrams* are carried; prose views keep
-    # their markdown form unless explicitly overridden. Without this guard,
-    # `formats.default: svg` would drag every `table` view into a lossy SVG.
-    project_default = _view_config("views.formats.default", None)
-    if (
-        project_default
-        and default_format(representation) != "markdown"
-        and is_compatible(representation, project_default)
-    ):
-        return str(project_default), "project_default"
-
-    # Legacy switch: only a non-default value is honoured, and only for the
-    # diagram representations it used to govern — otherwise `table` (which
-    # tolerates SVG lossily) would be dragged along. The new pictorial→svg
-    # default still applies when a project never set the key.
-    if (
-        _diagram_output() == DIAGRAM_OUTPUT_SVG
-        and representation in REPRESENTATION_TO_MERMAID
-        and is_compatible(representation, "svg")
-    ):
-        return "svg", "legacy_diagram_output"
-
-    fmt = default_format(representation)
-
-    # Legacy switch: `include_mermaid: false` means "anything but Mermaid".
-    # Map it onto a native alternative rather than suppressing the diagram.
-    if fmt == "mermaid" and not _mermaid_enabled():
-        alternative = preferred_non_mermaid(representation)
-        if alternative:
-            return alternative, "legacy_include_mermaid"
-    return fmt, "representation_default"
 
 
 def _diagram_section(view_id: str, representation: Optional[str], fmt: str) -> Optional[str]:
     """The section that tells the agent how to carry the diagram, if any."""
     if fmt == "mermaid":
-        mermaid_type = REPRESENTATION_TO_MERMAID.get(representation)
+        mermaid_type = MERMAID_TYPE_BY_REPRESENTATION.get(representation)
         return f"## Mermaid 图表 (```{mermaid_type})" if mermaid_type else None
     if fmt == "markdown":
         return None  # text / table content lives in the view's own sections
@@ -192,19 +107,9 @@ VIEW_RULES = {
     ],
 }
 
-REPRESENTATION_TO_MERMAID = {
-    "node-link": "graph",
-    "tree": "graph",
-    "org-chart": "graph",
-    "flowchart": "flowchart",
-    "state-diagram": "stateDiagram",
-    "sequence-diagram": "sequenceDiagram",
-    "er-diagram": "erDiagram",
-    "pictorial": "graph",
-    "gantt": "gantt",
-    # table → None (no Mermaid)
-    # text → None (no Mermaid)
-}
+#: Retained as an alias; the taxonomy lives in ``dm2.kernel.formats`` now that
+#: Mermaid is one carrier among several rather than the only one.
+REPRESENTATION_TO_MERMAID = MERMAID_TYPE_BY_REPRESENTATION
 
 MODEL_CATEGORY_LABELS = {
     "Structural": "结构模型 (Structural)，描述系统的静态结构、组成元素及其关系",
