@@ -1,13 +1,12 @@
-"""`views.formats` decides a view's carrier; `views.include_mermaid` and
-`views.diagram_output` remain as deprecated aliases.
+"""`views.formats` decides a view's carrier.
 
 A view has two independent properties:
 
 * ``representation`` — what information structure it conveys (fixed by the view)
 * ``format`` — how that structure is carried (a project decision)
 
-These tests pin the resolution order, the per-representation defaults and the
-legacy mappings.
+These tests pin the resolution order, the per-representation defaults, and the
+fact that the two pre-`formats` switches no longer have any effect.
 """
 import pytest
 
@@ -130,24 +129,17 @@ class TestExternalFormats:
         assert any("mp4" in s for s in template["sections"])
 
 
-class TestLegacyKeys:
-    def test_include_mermaid_false_maps_to_a_native_alternative(
-        self, builder, tmp_dm2_project_cwd
-    ):
+class TestRemovedKeys:
+    """`include_mermaid` / `diagram_output` were removed in favour of `formats`."""
+
+    def test_include_mermaid_is_no_longer_read(self, builder, tmp_dm2_project_cwd):
         _write_config(tmp_dm2_project_cwd, "views:\n  include_mermaid: false\n")
-        template = _template(builder, MERMAID_VIEW)
-        assert template["format"] == "svg"
-        assert template["format_source"] == "legacy_include_mermaid"
-        assert not any("Mermaid" in s for s in template["sections"])
+        assert _template(builder, MERMAID_VIEW)["format"] == "mermaid"
 
-    def test_diagram_output_svg_still_works(self, builder, tmp_dm2_project_cwd):
+    def test_diagram_output_is_no_longer_read(self, builder, tmp_dm2_project_cwd):
         _write_config(tmp_dm2_project_cwd, "views:\n  diagram_output: svg\n")
-        template = _template(builder, MERMAID_VIEW)
-        assert template["format"] == "svg"
-        assert template["format_source"] == "legacy_diagram_output"
+        assert _template(builder, MERMAID_VIEW)["format"] == "mermaid"
 
-    def test_diagram_output_does_not_drag_table_views_along(
-        self, builder, tmp_dm2_project_cwd
-    ):
-        _write_config(tmp_dm2_project_cwd, "views:\n  diagram_output: svg\n")
-        assert _template(builder, TABLE_VIEW)["format"] == "markdown"
+    def test_formats_is_the_only_switch(self, builder, tmp_dm2_project_cwd):
+        _write_config(tmp_dm2_project_cwd, "views:\n  formats:\n    default: svg\n")
+        assert _template(builder, MERMAID_VIEW)["format"] == "svg"

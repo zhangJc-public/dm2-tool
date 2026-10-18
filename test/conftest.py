@@ -12,7 +12,7 @@ def tmp_project():
         root = Path(tmpdir)
         (root / ".dm2").mkdir()
         (root / ".dm2" / "config.yaml").write_text(
-            "views:\n  include_mermaid: true\n  include_timestamps: true\n"
+            "views:\n  include_timestamps: true\n"
         )
         (root / "dm2-changes").mkdir()
         (root / "dm2-archive").mkdir()

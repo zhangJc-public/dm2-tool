@@ -16,7 +16,6 @@ from dm2.kernel.formats import (
     compatible_formats,
     default_format,
     is_compatible,
-    preferred_non_mermaid,
 )
 from dm2.utils.paths import get_reference_path
 
@@ -72,16 +71,3 @@ class TestCarrierSemantics:
 
     def test_unknown_representation_falls_back_to_markdown(self):
         assert default_format("not-a-representation") == "markdown"
-
-
-class TestNativeAlternatives:
-    def test_diagram_views_offer_svg(self):
-        assert preferred_non_mermaid("state-diagram") == "svg"
-        assert preferred_non_mermaid("pictorial") == "svg"
-
-    def test_prose_views_offer_markdown(self):
-        assert preferred_non_mermaid("table") == "markdown"
-        assert preferred_non_mermaid("text") == "markdown"
-
-    def test_unknown_representation_offers_nothing(self):
-        assert preferred_non_mermaid("not-a-representation") is None

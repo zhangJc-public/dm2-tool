@@ -16,9 +16,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     段落与规则按载体分派（markdown / mermaid / svg / png / html / xlsx / csv / mp4）
   - 外部载体（html / xlsx / csv / mp4）由外部产出并在视图中引用，规则中明确说明
   - 视频是**载体**而非表征：`pictorial` × `mp4` 可声明，`table` × `mp4` 不可
-- **`views.diagram_output`**：图类视图的输出通道，取值 `mermaid`（默认，内联）或 `svg`
-  （独立文件，以图片引用嵌入）。设为 `svg` 时不再注入 `## Mermaid 图表` 段落，改注入
-  「独立 SVG 文件」段落并同步调整规则；`diagram_output` 的优先级高于 `include_mermaid`。
 - **视图表征一致性检查**：`dm2 validate` 新增 `RepresentationChecker`，比对视图在
   `views.yaml` 中声明的 `representation` 与实际内容（Mermaid 图型 / 外部图引用 / 无图）。
   默认 WARNING，`consistency.strict_mode: true` 时升级为 ERROR。外部图引用
@@ -38,11 +35,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **BREAKING（行为）**：`pictorial` 视图（如 OV-1）的默认载体由内联 Mermaid 改为独立 SVG ——
   概念图的语义在版面本身，Mermaid 节点图会把它压平成关系网络。需要旧行为的项目配置
   `views.formats.overrides.OV-1: mermaid` 即可。
-- `views.include_mermaid` 与 `views.diagram_output` 标记为**已废弃**（仍生效）：
-  `include_mermaid: false` 映射到该表征的原生非 Mermaid 载体（图类为 svg）；
-  `diagram_output: svg` 等价于对图类视图设 `formats.default: svg`。
+- **BREAKING：移除 `views.include_mermaid` 与 `views.diagram_output`**，由 `views.formats` 取代：
+  - `include_mermaid: false` → `formats.default: svg`，个别视图用 `formats.overrides` 指定
+  - `diagram_output: svg` → `formats.default: svg`
+  - `diagram_output: mermaid` → 直接删除（本来就是默认）
+  - 残留的旧键不再被读取，会被静默忽略
 - `dm2 init` 的配置骨架改为从 `config.manager.DEFAULTS` 派生，不再手抄一份默认值
-  （原手抄字典已漏掉 `trace.enabled`）。新项目会显式写入 `views.diagram_output`。
+  （原手抄字典已漏掉 `trace.enabled`）。新项目会显式写入 `views.formats`。
 
 ### Fixed
 - **R5「必要关联」跨视图聚合**：`check_view_required` 从**所有笔记**累计已声明关联，再按视图比对 ——

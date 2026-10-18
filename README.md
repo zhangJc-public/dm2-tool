@@ -68,7 +68,7 @@ dm2 validate --all              # 一致性校验
 
 ```bash
 dm2 config                                 # 查看合并后的配置（三层解析）
-dm2 config -s views.include_mermaid=true   # 设置配置项（点分隔键）
+dm2 config -s views.formats.default=svg    # 设置配置项（点分隔键）
 ```
 
 dm2-tool 是纯 CLI 工具，**不调用任何 LLM API**，因此不需要 API key 或 LLM 端点配置——LLM 由外部 AI Agent 自行管理，`llm.*` 配置项已移除。
