@@ -54,15 +54,3 @@ Instruction generation SHALL report the view's `representation`, its resolved `f
 #### Scenario: Prose carriers add no carrier section
 - **WHEN** the resolved format is `markdown` or `mermaid`
 - **THEN** the template SHALL use the view's own sections, adding only the Mermaid section for `mermaid`
-
-### Requirement: Legacy output switches map onto the format axis
-The system SHALL continue to honour `views.include_mermaid` and `views.diagram_output`, mapping them onto format resolution, and SHALL document both as deprecated.
-
-#### Scenario: Mermaid disabled
-- **WHEN** `views.include_mermaid` is false and the resolved format would be `mermaid`
-- **THEN** the format SHALL become that representation's native non-Mermaid carrier
-
-#### Scenario: Legacy SVG output selected
-- **WHEN** `views.diagram_output` is `svg`
-- **THEN** diagram views SHALL resolve to `svg`
-- **AND** table and text views SHALL be unaffected
