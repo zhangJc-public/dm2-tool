@@ -21,6 +21,28 @@ _TEMPORAL_EDGE = re.compile(
 
 _SUCCESSOR_KINDS = {"successor", "post", "后继"}
 
+#: An activity ID as authored in OV-5a/OV-5b (``A1``, ``A5.3``). The trailing
+#: lookahead is what separates a real ID from a Mermaid node identifier
+#: (``A53["A5.3 ..."]``) or edge syntax (``A1 --> A2``).
+_ACTIVITY_ID = re.compile(r"(A\d+(?:\.\d+)?)\s+(?=[\w\u4e00-\u9fff])")
+_PERFORMER_MARKER = re.compile(r"执行者|performer", re.IGNORECASE)
+_TABLE_SEPARATOR = re.compile(r"^\s*\|[\s:|-]+\|\s*$")
+#: Values that mean "no performer stated" rather than naming one.
+_NO_PERFORMER = {"", "-", "—", "/", "n/a"}
+
+
+def _performer_value(line: str) -> str:
+    """Text actually stated after a performer marker on ``line``.
+
+    Only the value counts: ``执行者：<br/>输入：...`` states no performer, and
+    neither does a table header like ``执行者（activityPerformedByPerformer）``.
+    """
+    match = _PERFORMER_MARKER.search(line)
+    if not match:
+        return ""
+    tail = re.split(r"<br\s*/?>|\||<", line[match.end():])[0]
+    return tail.strip(" ：:·,，、（）()")
+
 
 class IssueSeverity(str, Enum):
     ERROR = "error"
@@ -95,10 +117,15 @@ class ConsistencyChecker:
                 suggestion="建议生成 OV-5b 将活动追踪到执行者",
             ))
 
-        # 从内容中提取活动列表
-        activities = self._extract_activities(ov5a or ov5b)
+        if not ov5b:
+            return
 
-        # 检查悬空活动（没有执行者的活动）
+        # Every activity OV-5b declares must name a performer. The check is
+        # scoped to OV-5b on purpose: OV-5a is a decomposition tree whose leaves
+        # are not necessarily tracked one by one, so comparing the two views
+        # reports gaps that are not gaps. An activity the model claims to cover
+        # without saying who performs it is the defect worth reporting.
+        activities = self._extract_activities(ov5b)
         bound_activities = self._extract_bound_activities(ov5b)
         unbound = [a for a in activities if a not in bound_activities]
 
@@ -106,8 +133,9 @@ class ConsistencyChecker:
             self._issues.append(ConsistencyIssue(
                 issue_type="unbound_activity",
                 severity=IssueSeverity.ERROR,
+                view_id="OV-5b",
                 message=f"发现 {len(unbound)} 个未分配执行者的活动",
-                related_views=["OV-5b", "OV-4"],
+                related_views=["OV-4"],
                 suggestion=f"请为以下活动分配执行者: {', '.join(unbound[:5])}",
             ))
 
@@ -189,20 +217,13 @@ class ConsistencyChecker:
             ))
 
     def _extract_activities(self, content: str) -> List[str]:
-        """提取活动列表"""
-        import re
-        patterns = [
-            r'A\d+[:\s]+([^\n]+)',
-            r'###?\s+(\w+活动[^\n]*)',
-            r'-\s*([^\n]*活动[^\n]*)',
-        ]
-
-        activities = []
-        for p in patterns:
-            matches = re.findall(p, content)
-            activities.extend([m.strip() for m in matches if m.strip()])
-
-        return list(set(activities))
+        """Activity IDs declared in OV-5b, from node labels and the activity table."""
+        declared: List[str] = []
+        for line in content.splitlines():
+            for activity_id in _ACTIVITY_ID.findall(line):
+                if activity_id not in declared:
+                    declared.append(activity_id)
+        return declared
 
     def _extract_performers(self, content: str) -> List[str]:
         """提取执行者列表"""
@@ -220,18 +241,68 @@ class ConsistencyChecker:
         return list(set(performers))
 
     def _extract_bound_activities(self, content: str) -> set:
-        """从 OV-5b 提取已绑定执行者的活动"""
-        bound = set()
-        for line in content.split('\n'):
-            if '|' in line and '执行者' not in line[:10]:
-                parts = [p.strip() for p in line.split('|')]
-                if parts:
-                    bound.add(parts[0])
+        """Activity IDs in OV-5b that carry a performer, in either authoring form."""
+        bound: set = set()
+
+        # Form 1 — Mermaid node label:
+        #   A1["A1 侦测探测<br/>执行者：阵地 · C2<br/>输入：..."]
+        for line in content.splitlines():
+            if not _performer_value(line):
+                continue
+            bound.update(_ACTIVITY_ID.findall(line))
+
+        # Form 2 — the activity table:
+        #   | 活动 | 输入 | 输出 | 执行者 | 前置条件 |
+        bound |= self._bound_activities_from_table(content)
+        return bound
+
+    def _bound_activities_from_table(self, content: str) -> set:
+        """Activities whose row in the OV-5b activity table names a performer."""
+        bound: set = set()
+        block: List[str] = []
+
+        def flush(rows: List[str]) -> None:
+            if len(rows) < 2:
+                return
+            header = [cell.strip() for cell in rows[0].strip().strip("|").split("|")]
+            activity_col = next((i for i, c in enumerate(header) if "活动" in c), None)
+            performer_col = next(
+                (i for i, c in enumerate(header) if _PERFORMER_MARKER.search(c)), None
+            )
+            if activity_col is None or performer_col is None:
+                return
+            for row in rows[1:]:
+                if _TABLE_SEPARATOR.match(row):
+                    continue
+                cells = [c.strip() for c in row.strip().strip("|").split("|")]
+                if max(activity_col, performer_col) >= len(cells):
+                    continue
+                performer = cells[performer_col].strip().lower()
+                if performer in _NO_PERFORMER:
+                    continue
+                bound.update(_ACTIVITY_ID.findall(cells[activity_col]))
+
+        for line in content.splitlines():
+            if line.strip().startswith("|"):
+                block.append(line)
+            elif block:
+                flush(block)
+                block = []
+        if block:
+            flush(block)
         return bound
 
     def _extract_resources(self, content: str) -> List[str]:
-        """提取资源列表"""
-        import re
+        """提取资源列表
+
+        Level-1 headings are the (bilingual) view title, not a resource list: the
+        English word "Resource" inside a title such as
+        "OV-2 作战资源流描述（Operational Resource Flow Description）" used to be
+        extracted as a resource literally named ``Flow Description）``.
+        """
+        body = "\n".join(
+            line for line in content.splitlines() if not re.match(r"^#\s", line)
+        )
         patterns = [
             r'(?:Resource|资源)[:\s]+([^\n]+)',
             r'\[([^\]]+资源)\]',
@@ -239,7 +310,7 @@ class ConsistencyChecker:
 
         resources = []
         for p in patterns:
-            matches = re.findall(p, content)
+            matches = re.findall(p, body)
             resources.extend([m.strip() for m in matches if m.strip()])
 
         return list(set(resources))

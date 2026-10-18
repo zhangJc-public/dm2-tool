@@ -21,6 +21,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   （原手抄字典已漏掉 `trace.enabled`）。新项目会显式写入 `views.diagram_output`。
 
 ### Fixed
+- **两条 prose-heuristic 检查的活动 / 资源提取器误报**：
+  - `unbound_activity`（ERROR）报出「123 个未分配执行者的活动」。`_extract_activities` 用
+    `A\d+[:\s]+` 抓取，把 Mermaid 语法与表格单元格一并吞入；`_extract_bound_activities` 对
+    `| A1 | … |` 行 `split('|')` 后取 `parts[0]`（首格恒为空串）—— 两个提取器口径互不相容。
+    现改为读取 OV-5b 的两种书写形态（Mermaid 节点标签 / 活动表），取**非空**执行者；
+    检查范围收敛为「OV-5b 声称建模的活动」，不再要求 OV-5a 的分解叶子逐一出现。
+  - `orphan_resource`（INFO）把 OV-2 一级标题里的英文 `Resource` 当成资源名，建议中因此出现
+    `Flow Description）`。现跳过一级标题行（标题是视图名，不是资源清单）。
+  - 效果：一个 26 视图项目的校验由 19 项（1 ERROR + 17 WARNING + 1 INFO）降为 17 项
+    （全部为结构性 WARNING）；ERROR 清零后视图可正常进入 `verified`。
 - **`views.include_mermaid` 是无效果的开关**：该键在 `README.md` / `docs/readme.md` 中被
   当作可用特性记录，也存在于 `DEFAULTS`，但**没有任何代码读取它** —— 指令生成器无条件注入
   Mermaid 段落，因此设为 `false` 毫无作用。现已在 `InstructionBuilder` 中接入。
