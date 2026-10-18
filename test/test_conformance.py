@@ -119,10 +119,15 @@ class TestEndpointType:
 
 
 class TestViewRequired:
+    #: The three associations OV-5b must declare.
+    OV5B_SLOTS = ("activityConsumesResource",
+                  "activityPerformedByPerformer",
+                  "activityProducesResource")
+
     def test_ov5b_missing_associations_warned(self, checker):
         notes = {
-            "act": {"dm2-type": "Activity",
-                    "relationships": {"activityConsumesResource": []}},
+            "OV-5b": {"dm2-type": "Activity",
+                      "relationships": {"activityConsumesResource": []}},
         }
         issues = checker.check_view_required("OV-5b", notes)
         d = _by_type(issues)
@@ -131,13 +136,31 @@ class TestViewRequired:
             assert label in d["required-association"].suggestion
 
     def test_complete_data_passes(self, checker):
-        notes = {
-            "act": {"dm2-type": "Activity",
-                    "relationships": {"activityConsumesResource": [],
-                                      "activityPerformedByPerformer": [],
-                                      "activityProducesResource": []}},
-        }
+        notes = {"OV-5b": {"dm2-type": "Activity",
+                           "relationships": {slot: [] for slot in self.OV5B_SLOTS}}}
         assert checker.check_view_required("OV-5b", notes) == []
+
+    def test_another_views_note_does_not_satisfy_this_view(self, checker):
+        """Regression: every note used to be aggregated, so one view's
+        frontmatter silenced the rule for all views."""
+        notes = {"SOME-OTHER-VIEW": {"dm2-type": "Activity",
+                                     "relationships": {slot: [] for slot in self.OV5B_SLOTS}}}
+        issues = checker.check_view_required("OV-5b", notes)
+        assert _by_type(issues)["required-association"]
+
+    def test_vault_note_with_suffixed_name_is_matched(self, checker):
+        notes = {"OV-5b 作战活动分解": {"dm2-type": "Activity",
+                                       "relationships": {slot: [] for slot in self.OV5B_SLOTS}}}
+        assert checker.check_view_required("OV-5b", notes) == []
+
+    def test_note_for_a_similar_id_is_not_matched(self, checker):
+        """`OV-20` must not satisfy `OV-2`."""
+        notes = {"OV-20": {"dm2-type": "Activity",
+                           "relationships": {"activityConsumesResource": [],
+                                             "activityPerformedByPerformer": [],
+                                             "activityProducesResource": []}}}
+        issues = checker.check_view_required("OV-2", notes)
+        assert _by_type(issues)["required-association"]
 
     def test_unknown_view(self, checker):
         assert checker.check_view_required("NOPE-9", {}) == []
