@@ -22,39 +22,6 @@ The `InstructionBuilder.build_view_instructions()` method SHALL generate DoDAF c
 - **AND** the rules SHALL include "必须包含: 目标活动"
 - **AND** the rules SHALL include "必须包含: 资源类型"
 
-### Requirement: InstructionBuilder generates template sections from metadata
-The `InstructionBuilder` SHALL use the view's `sections` field as the primary source for the instruction template's section outline, replacing the hardcoded generic sections.
-
-#### Scenario: View-specific sections used in template
-- **WHEN** `build_view_instructions` is called for OV-3 with `sections: [资源流矩阵, 交换属性分析, 关键资源流识别, 与 OV-2 一致性说明]`
-- **THEN** `template.sections` SHALL equal the sections from views.yaml exactly
-- **AND** the generic "## Mermaid 图表" section SHALL NOT be present (OV-3 has `representation: table`)
-
-#### Scenario: Mermaid section injected for diagram views only
-- **WHEN** `build_view_instructions` is called for OV-6b with `representation: state-diagram`
-- **THEN** `template.sections` SHALL include a Mermaid diagram section with `stateDiagram-v2` syntax hint
-
-#### Scenario: Inline Mermaid suppressed by configuration
-- **WHEN** the project config sets `views.include_mermaid: false`
-- **AND** `build_view_instructions` is called for a view whose `representation` maps to a Mermaid type
-- **THEN** `template.sections` SHALL NOT contain a "## Mermaid 图表" section
-- **AND** the view's own `sections` SHALL otherwise be unchanged
-
-#### Scenario: External figure channel under svg diagram output
-- **WHEN** the project config sets `views.diagram_output: svg`
-- **AND** `build_view_instructions` is called for a view whose `representation` maps to a Mermaid type
-- **THEN** `template.sections` SHALL contain a section naming an independent SVG file for that view
-- **AND** `template.sections` SHALL NOT contain a Mermaid section
-- **AND** `rules` SHALL state that diagram content is drawn as standalone SVG rather than inline Mermaid
-
-#### Scenario: Unknown diagram_output falls back to Mermaid
-- **WHEN** the project config sets `views.diagram_output` to a value other than `mermaid` or `svg`
-- **THEN** the builder SHALL behave as if the value were `mermaid`
-
-#### Scenario: Diagram output ignored for diagram-free views
-- **WHEN** `views.diagram_output: svg` and `build_view_instructions` is called for a view with `representation: table`
-- **THEN** `template.sections` SHALL contain neither a Mermaid section nor a figure section
-
 ### Requirement: Fallback to hardcoded rules when metadata missing
 When a view lacks the new metadata fields (e.g., loaded from an unenhanced views.yaml), the InstructionBuilder SHALL fall back to the existing VIEW_RULES hardcoded dictionary and generic template.
 
@@ -109,3 +76,39 @@ associations per view so AI agents can query view requirements directly
   `activityPartOfCapability` (Activity ─▶ Capability) and
   `activityMapsToCapabilityType` (Activity ─▶ CapabilityType) with endpoint
   types
+
+### Requirement: InstructionBuilder generates template and carrier sections
+The `InstructionBuilder` SHALL assemble the instruction template from the view's own `sections`, plus one carrier section selected by the view's resolved format.
+
+#### Scenario: View-specific sections used in template
+- **WHEN** `build_view_instructions` is called for a view whose `sections` field lists four sections
+- **THEN** `template.sections` SHALL begin with exactly those sections
+- **AND** no generic section SHALL replace them
+
+#### Scenario: Mermaid section injected for diagram views only
+- **WHEN** a view's resolved format is `mermaid`
+- **THEN** `template.sections` SHALL include a Mermaid section naming the representation's diagram type
+- **AND** a view whose resolved format is `markdown` SHALL NOT receive one
+
+#### Scenario: Carrier follows the resolved format
+- **WHEN** a view's resolved format is `svg`
+- **THEN** `template.sections` SHALL include a section naming an independent SVG file for that view
+- **AND** `template.sections` SHALL NOT include a Mermaid section
+- **AND** `rules` SHALL state that diagram content is drawn as standalone SVG
+
+#### Scenario: Template reports the resolution
+- **WHEN** `build_view_instructions` returns a template
+- **THEN** it SHALL report the view's `representation`, its resolved `format`, and the `format_source` that decided it
+
+#### Scenario: External artefact carrier
+- **WHEN** a view's resolved format is an externally produced artefact such as `xlsx` or `mp4`
+- **THEN** `template.sections` SHALL include a section naming the expected artefact file
+- **AND** `rules` SHALL state that the artefact is provided externally and must be referenced
+
+#### Scenario: Diagram-free views receive no carrier section
+- **WHEN** a view's resolved format is `markdown`
+- **THEN** `template.sections` SHALL contain neither a Mermaid section nor a figure section
+
+#### Scenario: Fallback when metadata is missing
+- **WHEN** a view lacks the metadata fields this requirement relies on
+- **THEN** the builder SHALL fall back to its hardcoded rules and generic template rather than failing

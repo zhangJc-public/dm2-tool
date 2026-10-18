@@ -23,7 +23,7 @@ The system SHALL treat a view's format as independent of its representation, rel
 - **AND** a `table` view configured with `mp4` SHALL be rejected
 
 ### Requirement: Format resolution order
-The system SHALL resolve a view's format from, in order: a per-view override, the project default, the legacy `views.diagram_output` value, and the representation's own default.
+The system SHALL resolve a view's format from, in order: a per-view override, the project default, and the representation's own default.
 
 #### Scenario: Per-view override wins
 - **WHEN** `views.formats.overrides` names the view
