@@ -174,6 +174,13 @@ File System Layer      ← .dm2/ 项目 + dm2-changes/ + dm2-archive/
 >
 > 2026-10-14：**D14 的 12 处缺陷全部修复**（变更 `fix-legacy-engine-defects`：proposal / 4 份 spec delta / design / 13 条 tasks，已归档前状态）。新增规格能力 `six-w-analysis`（6W 维度打分 + 七个实体桶，此前**完全无规格**），修改 `step1-intent-scope` / `step5-analysis` / `step6-documentation` 三份。端到端核验时发现并一并修掉 **D15**（视图输出目录与规格不符），其修正又暴露 `save_views` 的项目根解析缺陷。修复过程中把一处规格措辞收窄到关键词启发式**确实能保证**的范围（匹配到锚点为止、桶间不重复），而不是让规格承诺「解析出实体」。数字：38 spec / 166 requirement / **742 测试**。
 
+> 2026-10-18：**`v0.3.0` 发版**（BREAKING）。`representation` 与 `format` 拆为正交两轴：载体由
+> `views.formats` 决定（override → project default → 表征派生），`pictorial` 默认改为独立 SVG；
+> `dm2 validate` 按「表征 + 载体」组合核对内容证据；移除旧键 `views.include_mermaid` 与
+> `views.diagram_output`。另修三处工具缺陷：workflow 模板的 `--reasoning-file` 骨架不完整、
+> 两条 prose-heuristic 提取器把语法当内容误报、R5「必要关联」跨视图聚合导致单视图 frontmatter
+> 可使全项目告警消失。新增规格能力 `view-output-format`。数字：40 spec / 178 requirement / **803 测试**。
+
 **已验证的强项**（本次不改其行为，仅用测试锁定）：
 
 - **S1 分层干净**：见 §2，无反向依赖 → 已由 `test_architecture_boundaries.py` 守护。
