@@ -618,7 +618,7 @@ def config(
     show_user: bool = typer.Option(False, "--user", "-u", help="显示当前用户级配置"),
     show_project: bool = typer.Option(False, "--project", "-p", help="显示当前项目级配置"),
     show_resolved: bool = typer.Option(False, "--resolved", "-r", help="显示合并解析后的配置"),
-    set_key: str = typer.Option("", "--set", "-s", help="设置用户级配置项 (如 views.include_mermaid=true)"),
+    set_key: str = typer.Option("", "--set", "-s", help="设置用户级配置项 (如 views.formats.default=svg)"),
     json_flag: bool = typer.Option(False, "--json", "-j", help="输出结构化 JSON（供 AI Agent 使用）"),
 ):
     """查看和设置配置"""
