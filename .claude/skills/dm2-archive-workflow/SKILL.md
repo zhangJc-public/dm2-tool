@@ -6,8 +6,8 @@ compatibility: Requires dm2-tool CLI and an active .dm2 project.
 user-invocable: false
 metadata:
   author: "dm2"
-  version: "0.2.0"
-  generatedBy: "dm2-tool/0.2.0"
+  version: "0.3.0"
+  generatedBy: "dm2-tool/0.3.0"
 ---
 
 Archive a completed dm2 architecture change — finalize it and move it to the archive directory.

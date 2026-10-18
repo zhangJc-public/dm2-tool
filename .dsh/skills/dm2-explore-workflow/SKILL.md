@@ -4,8 +4,8 @@ description: "Explore DoDAF architecture concepts, views, and decisions in a rea
 user-invocable: true
 metadata:
   author: "dm2"
-  version: "0.2.0"
-  generatedBy: "dm2-tool/0.2.0"
+  version: "0.3.0"
+  generatedBy: "dm2-tool/0.3.0"
 ---
 
 Enter explore mode. Think deeply. Visualize freely. Follow the conversation wherever it goes.

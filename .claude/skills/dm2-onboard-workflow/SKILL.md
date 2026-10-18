@@ -6,8 +6,8 @@ compatibility: Requires dm2-tool CLI.
 user-invocable: false
 metadata:
   author: "dm2"
-  version: "0.2.0"
-  generatedBy: "dm2-tool/0.2.0"
+  version: "0.3.0"
+  generatedBy: "dm2-tool/0.3.0"
 ---
 
 Guide the user through their first complete dm2 architecture modeling cycle. This is a teaching experience — you'll do real DoDAF modeling work while explaining each step.

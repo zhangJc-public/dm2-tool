@@ -4,8 +4,8 @@ description: "Run full DoDAF architecture analysis and generate planning artifac
 user-invocable: true
 metadata:
   author: "dm2"
-  version: "0.2.0"
-  generatedBy: "dm2-tool/0.2.0"
+  version: "0.3.0"
+  generatedBy: "dm2-tool/0.3.0"
 ---
 
 Run a complete DoDAF architecture analysis and generate planning artifacts with concern-driven view focusing.

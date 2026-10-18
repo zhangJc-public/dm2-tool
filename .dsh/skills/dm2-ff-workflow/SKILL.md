@@ -4,8 +4,8 @@ description: "Fast-forward through dm2 analysis and view generation. Use when th
 user-invocable: true
 metadata:
   author: "dm2"
-  version: "0.2.0"
-  generatedBy: "dm2-tool/0.2.0"
+  version: "0.3.0"
+  generatedBy: "dm2-tool/0.3.0"
 ---
 
 Fast-forward through architecture analysis and view generation — run everything needed in one go.

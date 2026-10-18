@@ -6,8 +6,8 @@ compatibility: Requires dm2-tool CLI.
 user-invocable: false
 metadata:
   author: "dm2"
-  version: "0.2.0"
-  generatedBy: "dm2-tool/0.2.0"
+  version: "0.3.0"
+  generatedBy: "dm2-tool/0.3.0"
 ---
 
 Start a new dm2 architecture analysis session.

@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-10-18
+
 ### Added
 - **视图载体格式成为一等概念（`views.formats`）**：`representation`（传达什么信息结构）与
   `format`（用什么载体）拆为两个正交轴，二者由**兼容矩阵**关联，而不是一对一映射。

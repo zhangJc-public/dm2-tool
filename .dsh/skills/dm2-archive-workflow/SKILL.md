@@ -4,8 +4,8 @@ description: "Archive a single completed dm2 architecture change. Use after the 
 user-invocable: true
 metadata:
   author: "dm2"
-  version: "0.2.0"
-  generatedBy: "dm2-tool/0.2.0"
+  version: "0.3.0"
+  generatedBy: "dm2-tool/0.3.0"
 ---
 
 Archive a completed dm2 architecture change — finalize it and move it to the archive directory.

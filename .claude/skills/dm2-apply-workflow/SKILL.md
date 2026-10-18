@@ -6,8 +6,8 @@ compatibility: Requires dm2-tool CLI and an active .dm2 project.
 user-invocable: false
 metadata:
   author: "dm2"
-  version: "0.2.0"
-  generatedBy: "dm2-tool/0.2.0"
+  version: "0.3.0"
+  generatedBy: "dm2-tool/0.3.0"
 ---
 
 Implement the architecture views planned in `/dm2:propose` by reading tasks.md and executing all pending view generation tasks.

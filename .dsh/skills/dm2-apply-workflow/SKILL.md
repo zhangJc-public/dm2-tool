@@ -4,8 +4,8 @@ description: "Execute the implementation plan from the dm2-propose-workflow skil
 user-invocable: true
 metadata:
   author: "dm2"
-  version: "0.2.0"
-  generatedBy: "dm2-tool/0.2.0"
+  version: "0.3.0"
+  generatedBy: "dm2-tool/0.3.0"
 ---
 
 Implement the architecture views planned in the `dm2-propose-workflow` skill by reading tasks.md and executing all pending view generation tasks.
